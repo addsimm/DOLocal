@@ -22,6 +22,7 @@
             {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
         {% endifinstalled %}
         {% block extra_css %}{% endblock %}
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600' rel='stylesheet' type='text/css'>
     {% endcompress %}
 
     {% compress js %}
@@ -37,33 +38,86 @@
     <![endif]-->
 
     {% block extra_head %}{% endblock %}
+
+    <style>
+
+        body {
+            font-size: 14pt;
+        }
+        .navbar-default {
+            background-image: none;
+            background-repeat: no-repeat;
+            border-radius: 4px;
+            box-shadow: none;
+            background-color: white;
+            border-color: black;
+            }
+
+        .panel {
+            box-shadow: none;
+            margin-bottom: 0;
+        }
+        .panel-default {
+            border-color: white;
+        }
+
+        .panel-body {
+            padding: 0;
+        }
+
+        footer {
+            background-color: white;
+            border-top: 1px solid #e7e7e7;
+            margin-top: 15px;
+            padding-top: 15px;
+            padding-bottom: 0;
+        }
+
+    </style>
+
 </head>
 
-<body id="{% block body_id %}body{% endblock %}">
+<body id="{% block body_id %}body{% endblock %}" style="font-family: 'source sans pro', sans-serif;">
 
     <!-- NAVBAR -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+    <div class="nav navbar-default navbar-fixed-top nav-pills" role="navigation" >
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">{% trans "Toggle Navigation" %}</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- logo -->
-            </div>
-            <div class="navbar-collapse collapse">
-                {% page_menu "pages/menus/dropdown.html" %}
-                <div style="background-color: yellow">
-                    {% include "includes/user_panel.html" %}
+            <div class="row">
+
+                <div class="col-md-2">
+                    <a href="/" class="pull-left">
+                        <img style="height: 100px; margin-top: 10px; margin-left: 20px" src="/static/img/JOSLogo121615.png">
+                    </a>
+                </div>
+
+                <div class="col-md-5">
+                    <p class="text-left" style="color: rgb(65, 45, 120); font-size: 16pt; font-style: italic; line-height: 1; margin-left: 45px; margin-top: 60px;">
+                        Storytelling and community for<br>happier souls and healthier minds.
+                    </p>
+                </div>
+
+                <div class="col-md-5" style="margin-top: 35px;">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">{% trans "Toggle Navigation" %}</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <div class="navbar-collapse collapse">
+                        {% page_menu "pages/menus/dropdown.html" %}
+                        {% include "includes/user_panel.html" %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- MESSAGES / BREADCRUMBS -->
-    <div class="container" style="margin-top: 200px;">
+    <div class="container" style="margin-top: 85px;">
 
         <!-- MESSAGES -->
         {% nevercache %}
@@ -125,10 +179,6 @@
 
                         <h3 style="background-color: yellow">right_panel</h3>{% block right_panel %}
 
-                                {% ifinstalled mezzanine.twitter %}
-                                    {% include "twitter/tweets.html" %}
-                                {% endifinstalled %}
-
                         {% endblock right_panel%}<h3 style="background-color: yellow">end</h3>
 
                     </div>
@@ -139,30 +189,26 @@
     {% endblock all_content %}<h3 style="background-color: yellow">end</h3>
     </div>
 
-
-
 </body>
 
 <!-- FOOTER -->
 <footer>
     <div class="container">
-        {% page_menu "pages/menus/footer.html" %}
+    {% page_menu "pages/menus/footer.html" %}
 
-        <div class="row">
-            <p class="site-info text-center">
-                {% trans "Powered by" %}
-                <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-                <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-                {% trans "and" %}
-                <a href="http://www.djangoproject.com">Django</a>
-                <span class="separator">|</span>
-                {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
-                {% ifinstalled mezzanine.mobile %}
-                    <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-                {% endifinstalled %}
-            </p>
-        </div>
+    <p class="site-info text-right" style="font-size: 8pt;">
+        {% trans "Powered by" %}
+        <a href="http://mezzanine.jupo.org">Mezzanine</a>
+        {% ifinstalled cartridge.shop %},
+            <a href="http://cartridge.jupo.org">Cartridge</a>
+        {% endifinstalled %}
+        {% trans "and" %}
+        <a href="http://www.djangoproject.com">Django</a>
+        {% ifinstalled mezzanine.mobile %}
+            <span class="separator">|</span>
+            <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+        {% endifinstalled %}
+    </p>
     </div>
 
     {% include "includes/footer_scripts.html" %}
