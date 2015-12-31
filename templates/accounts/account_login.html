@@ -1,8 +1,8 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
 
-{% block main %}
-
+{% block all_content %}
+    11111
     {% if request.user.is_authenticated %}
 
         <p>
@@ -17,7 +17,7 @@
 
         <p>
 
-            {% blocktrans with request.GET.next as next %}
+            33333{% blocktrans with request.GET.next as next %}
                 If you don't have an account you can
                 <a href="{{ signup_url }}?next={{ next }}">
                     sign up

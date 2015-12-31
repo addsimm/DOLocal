@@ -73,6 +73,11 @@
             padding-bottom: 0;
         }
 
+        .breadcrumb {
+            color: rgb(65, 45, 120);
+            font-size: 18pt;
+        }
+
     </style>
 
 </head>
@@ -87,12 +92,12 @@
 
                 <div class="col-md-2">
                     <a href="/" class="pull-left">
-                        <img style="height: 100px; margin-top: 10px; margin-left: 20px" src="/static/img/JOSLogo121615.png">
+                        <img style="height: 110px; margin-top: 15px; margin-left: 20px" src="/static/img/JOSLogo121615.png">
                     </a>
                 </div>
 
                 <div class="col-md-5">
-                    <p class="text-left" style="color: rgb(65, 45, 120); font-size: 16pt; font-style: italic; line-height: 1; margin-left: 45px; margin-top: 60px;">
+                    <p class="text-left" style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-left: 60px; margin-top: 52px;">
                         Storytelling and community for<br>happier souls and healthier minds.
                     </p>
                 </div>
@@ -117,9 +122,10 @@
     </div>
 
     <!-- MESSAGES / BREADCRUMBS -->
-    <div class="container" style="margin-top: 85px;">
+    <div class="container">
 
         <!-- MESSAGES -->
+        <div style="height: 65px; margin-top: 80px;">
         {% nevercache %}
             {% if messages %}
                 <div class="messages">
@@ -132,9 +138,10 @@
                 </div>
             {% endif %}
         {% endnevercache %}
+        </div>
 
         <!-- BREADCRUMB -->
-        <ul class="breadcrumb">xxx
+        <ul class="breadcrumb">Go To:&nbsp&nbsp
             {% spaceless %}
                 {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
             {% endspaceless %}

@@ -1,9 +1,16 @@
-{% extends "pages/richtextpage.html" %}
+{% extends "pages/page.html" %}
+{% load mezzanine_tags keyword_tags i18n%}
+
+{% block meta_title %}{% trans "Home" %}{% endblock %}
+{% block title %}yyy{% trans "Home" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
 
 {% block main %}
 
-    BONER
-
+    Not You know what
 
 <!--
 This template is provided as a custom template for the homepage, for

@@ -12,13 +12,13 @@
 
 {% endblock %}
 
-{% block main %}
+{% block all_content %}
 
     {% errors_for form %}
 
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-        <fieldset>
-            <legend>{{ title }}</legend>
+        22222<fieldset>
+        33333<legend>44444 {{ title }} 55555 </legend> 66666
             {% fields_for form %}
             <div class="form-actions">
                 {% block account_form_actions %}

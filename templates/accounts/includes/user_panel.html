@@ -14,41 +14,52 @@
 
 </style>
 
-
-
 <div class="navbar-right navbar-account-controls">
+
 
     {% if request.user.is_authenticated %}
 
-        {% url "profile" request.user.username as profile_url %}
+        <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
+            <div class="col-md-12">
+                <a href="/contact" class="btn btn-default">
+                    {% trans "Contact Us" %}</a>
 
-        {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
+                <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default btn-lg" style="width: 131px;">
+                    {% trans "Sign Out" %}</a>
+            </div>
+        </div>
+        <div class="row pull-right" style="background-color: transparent; margin-top: 12px;">
+            <div class="col-md-12">
 
-        <p class="navbar-text">
+                {% url "profile" request.user.username as profile_url %}
+                {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
 
-            <a class="navbar-link" href="{{ profile_url }}">
-
-                <span class="glyphicon glyphicon-user"></span>
-                {{ request.user|username_or:"email" }}
-
-            </a>
-
-        </p>
-
-        <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default navbar-btn">
-            {% trans "Log out" %}</a>
+                <p>
+                    Signed in as:
+                    <a href="{{ profile_url }}">
+                        <span style="color: green; font-size: 28pt; margin-left: 4px;">
+                            {{ request.user|username_or:"email" }}
+                        </span>
+                        <!-- TODO: photo -->
+                        <span style="color: #428bca; font-size: 10pt; margin-left: 2px;">
+                            Profile
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
 
     {% else %}
 
-        <a href="/contact" class="btn btn-default btn-lg">
-            {% trans "Contact Us" %}</a>
+        <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
+            <div class="col-md-12">
+                <a href="/contact" class="btn btn-default">
+                    {% trans "Contact Us" %}</a>
 
-        <a href="{% url "signup" %}?next={{ request.path }}" class="btn btn-default btn-lg">
-            {% trans "Sign Up" %}</a>
-
-
-        <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
-            {% trans "Log In" %}</a>
+                <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
+                    {% trans "Join / Sign In" %}</a>
+            </div>
+        </div>
 
     {% endif %}
 </div>
