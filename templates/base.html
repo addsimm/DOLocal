@@ -22,7 +22,7 @@
             {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
         {% endifinstalled %}
         {% block extra_css %}{% endblock %}
-        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600' rel='stylesheet' type='text/css'>
     {% endcompress %}
 
     {% compress js %}
@@ -67,8 +67,9 @@
 
         footer {
             background-color: white;
-            border-top: 1px solid #e7e7e7;
-            margin-top: 15px;
+            border-top: none;
+            margin-top: 0;
+            margin-bottom: 5px;
             padding-top: 15px;
             padding-bottom: 0;
         }
@@ -86,23 +87,37 @@
 
     <!-- NAVBAR -->
 
-    <div class="nav navbar-default navbar-fixed-top nav-pills" role="navigation" >
+    <div class="nav navbar-default navbar-fixed-top" role="navigation" >
         <div class="container">
             <div class="row">
-
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <a href="/" class="pull-left">
                         <img style="height: 110px; margin-top: 15px; margin-left: 20px" src="/static/img/JOSLogo121615.png">
                     </a>
                 </div>
-
                 <div class="col-md-5">
-                    <p class="text-left" style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-left: 60px; margin-top: 52px;">
-                        Storytelling and community for<br>happier souls and healthier minds.
-                    </p>
+                        {% nevercache %}
+                            {% if messages %}
+                                <div class="messages">
+                                    {% for message in messages %}
+                                        <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                            <img src="/static/img/peeky-123115.png" height="30px">
+                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt;">&nbsp&nbsp&nbsp&nbspPeeky Says:<br></span>
+                                            <span style="font-family: 'Source Sans Pro'; margin-left: 60px;">You have: {{ message }}!</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-center"
+                                   style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-top: 52px;">
+                                    A storytelling community for<br>happier souls and healthier minds.
+                                </p>
+                            {% endif %}
+                        {% endnevercache %}
                 </div>
-
-                <div class="col-md-5" style="margin-top: 35px;">
+                <div class="col-md-4" style="margin-top: 35px;">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="sr-only">{% trans "Toggle Navigation" %}</span>
@@ -111,7 +126,6 @@
                             <span class="icon-bar"></span>
                         </button>
                     </div>
-
                     <div class="navbar-collapse collapse">
                         {% page_menu "pages/menus/dropdown.html" %}
                         {% include "includes/user_panel.html" %}
@@ -121,105 +135,62 @@
         </div>
     </div>
 
-    <!-- MESSAGES / BREADCRUMBS -->
-    <div class="container">
-
-        <!-- MESSAGES -->
-        <div style="height: 65px; margin-top: 80px;">
-        {% nevercache %}
-            {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endnevercache %}
-        </div>
-
-        <!-- BREADCRUMB -->
-        <ul class="breadcrumb">Go To:&nbsp&nbsp
+    <!-- Breadcrumbs -->
+    <div style="height: 65px; margin-top: 80px;">
+        <ul class="breadcrumb">FIX!!!
             {% spaceless %}
                 {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
             {% endspaceless %}
         </ul>
-
     </div>
 
     <!-- CENTER -->
-
-
-
     <div class="container">
     <h3 style="background-color: yellow">all_content</h3>{% block all_content %}
 
         <div class="row">
-
             <div class="col-md-2 left">
-
                 <h3 style="background-color: yellow">left_panel</h3>{% block left_panel %}
-
                     <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
-
                 {% endblock left_panel %}<h3 style="background-color: yellow">end</h3>
-
             </div>
 
             <div class="col-md-7 middle">
-
                 <h3 style="background-color: yellow">main</h3>{% block main %}
                 {% endblock main%}<h3 style="background-color: yellow">end</h3>
-
             </div>
 
             <div class="col-md-3 right">
-
                 {% nevercache %}
                     {% include "includes/language_selector.html" %}
                 {% endnevercache %}
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-
                         <h3 style="background-color: yellow">right_panel</h3>{% block right_panel %}
-
                         {% endblock right_panel%}<h3 style="background-color: yellow">end</h3>
-
                     </div>
                 </div>
             </div>
         </div>
-
     {% endblock all_content %}<h3 style="background-color: yellow">end</h3>
     </div>
-
 </body>
 
 <!-- FOOTER -->
 <footer>
     <div class="container">
-    {% page_menu "pages/menus/footer.html" %}
+        {% page_menu "pages/menus/footer.html" %}
 
-    <p class="site-info text-right" style="font-size: 8pt;">
-        {% trans "Powered by" %}
-        <a href="http://mezzanine.jupo.org">Mezzanine</a>
-        {% ifinstalled cartridge.shop %},
-            <a href="http://cartridge.jupo.org">Cartridge</a>
-        {% endifinstalled %}
-        {% trans "and" %}
-        <a href="http://www.djangoproject.com">Django</a>
-        {% ifinstalled mezzanine.mobile %}
-            <span class="separator">|</span>
-            <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-        {% endifinstalled %}
-    </p>
+        <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+            Join Our Story is a California Benefit Corporation &copy 2014
+            {% ifinstalled mezzanine.mobile %}
+                <span class="separator">|</span>
+                <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+            {% endifinstalled %}
+        </p>
     </div>
-
     {% include "includes/footer_scripts.html" %}
-
 </footer>
 
 </html>

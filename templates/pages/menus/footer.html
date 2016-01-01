@@ -1,45 +1,89 @@
 {% load i18n pages_tags %}
 
+
+<style>
+    #custom-bootstrap-menu.navbar-default {
+        font-size: 12px;
+        background-color: rgba(65, 45, 120, 1);
+        border-width: 0px;
+        border-radius: 0px;
+    }
+
+    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a {
+        color: white;
+        background-color: rgba(65, 45, 120, 1);
+    }
+
+    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a:hover,
+    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a:focus {
+        color: rgba(65, 45, 120, 1);
+        background-color: white;
+    }
+
+    #custom-bootstrap-menu.navbar-default {
+        border-color: transparent;
+    }
+
+</style>
+
 {% spaceless %}
+
 {% if page_branch_in_menu %}
 
-{% for page in page_branch %}
-    {% if page.is_primary %}
-        {% if forloop.first %}
-            <div class="nav-footer">
+    {% for page in page_branch %}
+
+        {% if page.is_primary %}
+            {% if forloop.first %}
+                <div id="custom-bootstrap-menu" class="navbar navbar-default" style="margin-bottom: 0; padding-right: 30px;" role="footer">
+            {% endif %}
+
+            {% if page.in_menu %}
+                <ul class="nav navbar-nav navbar-right" style="margin-right: 25px;">
+            {% endif %}
+
         {% endif %}
+
         {% if page.in_menu %}
-            <ul class="list-unstyled">
+
+            {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
+                <ul class="nav navbar-nav navbar-right">
+            {% endif %}
+
+                    <li {% if page.is_current_or_ascendant %}
+                            class="active"
+                        {% endif %}
+                        id="footer-menu-{{ page.html_id }}">
+
+                        <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                    </li>
+
         {% endif %}
-    {% endif %}
 
-    {% if page.in_menu %}
-        {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
-            <ul class="list-unstyled">
+        {% if page.in_menu and page.has_children_in_menu %}
+            {% page_menu page %}
         {% endif %}
-        <li {% if page.is_current_or_ascendant %}class="active"{% endif %}
-            id="footer-menu-{{ page.html_id }}">
-            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
-    {% endif %}
 
-    {% if page.in_menu and page.has_children_in_menu %}{% page_menu page %}{% endif %}
-
-    {% if page.in_menu %}
-        {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
-            </li></ul>
-        {% endif %}
-    {% endif %}
-
-    {% if page.is_primary %}
         {% if page.in_menu %}
-            </ul>
-        {% endif %}
-        {% if forloop.last %}
-            </div>
-        {% endif %}
-    {% endif %}
+            {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
+                </li>
+                </ul>
 
-{% endfor %}
+            {% endif %}
+        {% endif %}
+
+        {% if page.is_primary %}
+
+            {% if page.in_menu %}
+                </ul>
+            {% endif %}
+
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+    {% endfor %}
 
 {% endif %}
 {% endspaceless %}

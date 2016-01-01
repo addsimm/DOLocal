@@ -21,7 +21,7 @@
 
         <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
             <div class="col-md-12">
-                <a href="/contact" class="btn btn-default">
+                <a href="/contact" class="btn btn-default btn-lg">
                     {% trans "Contact Us" %}</a>
 
                 <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default btn-lg" style="width: 131px;">
@@ -34,10 +34,10 @@
                 {% url "profile" request.user.username as profile_url %}
                 {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
 
-                <p>
-                    Signed in as:
+                <p style="color: rgb(65, 45, 120); font-size: 28pt;">
+                    Hi!
                     <a href="{{ profile_url }}">
-                        <span style="color: green; font-size: 28pt; margin-left: 4px;">
+                        <span style="color: green; margin-left: 4px;">
                             {{ request.user|username_or:"email" }}
                         </span>
                         <!-- TODO: photo -->
@@ -53,7 +53,7 @@
 
         <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
             <div class="col-md-12">
-                <a href="/contact" class="btn btn-default">
+                <a href="/contact" class="btn btn-default btn-lg">
                     {% trans "Contact Us" %}</a>
 
                 <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
