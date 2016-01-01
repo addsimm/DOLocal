@@ -12,55 +12,62 @@
         color: white;
     }
 
+    .panel, .panel-body, .panel-default {
+        box-shadow: none;
+        border-color: transparent;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+    }
+
 </style>
 
-<div class="navbar-right navbar-account-controls">
+{% if request.user.is_authenticated %}
 
+    <div class="row" style="background-color: transparent;">
+        <div class="col-xs-12 text-right" style="width:100%;">
 
-    {% if request.user.is_authenticated %}
+            <a href="/contact" class="btn btn-default">
+                {% trans "Contact Us" %}</a>
 
-        <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
-            <div class="col-md-12">
-                <a href="/contact" class="btn btn-default btn-lg">
-                    {% trans "Contact Us" %}</a>
+            <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default" style="width: 130px;">
+                {% trans "Sign Out" %}</a>
 
-                <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default btn-lg" style="width: 131px;">
-                    {% trans "Sign Out" %}</a>
-            </div>
-        </div>
-        <div class="row pull-right" style="background-color: transparent; margin-top: 12px;">
-            <div class="col-md-12">
-
-                {% url "profile" request.user.username as profile_url %}
-                {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
-
-                <p style="color: rgb(65, 45, 120); font-size: 28pt;">
-                    Hi!
-                    <a href="{{ profile_url }}">
-                        <span style="color: green; margin-left: 4px;">
-                            {{ request.user|username_or:"email" }}
-                        </span>
-                        <!-- TODO: photo -->
-                        <span style="color: #428bca; font-size: 10pt; margin-left: 2px;">
-                            Profile
-                        </span>
-                    </a>
-                </p>
-            </div>
         </div>
 
-    {% else %}
+        <div class="col-xs-12 text-right" style="width: 100%; padding-top:10px;background-color: transparent;">
 
-        <div class="row pull-right" style="background-color: transparent; margin-top: -30px;">
-            <div class="col-md-12">
-                <a href="/contact" class="btn btn-default btn-lg">
-                    {% trans "Contact Us" %}</a>
+            {% url "profile" request.user.username as profile_url %}
+            {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
 
-                <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
-                    {% trans "Join / Sign In" %}</a>
+            <div style="color: rgb(65, 45, 120); font-size: 24pt;">
+                Hi!
+                <a href="{{ profile_url }}">
+                    <span style="color: green; font-size: 28pt; margin-left: 6px;">
+                        {{ request.user|username_or:"email" }}
+                    </span>
+                    <!-- TODO: photo -->
+                    <span style="color: #428bca; font-size: 8pt; margin-left: 3px;">
+                        Profile
+                    </span>
+                </a>
             </div>
-        </div>
 
-    {% endif %}
-</div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="row pull-right" style="background-color: transparent;">
+        <div class="col-md-12">
+            <a href="/contact" class="btn btn-default btn-lg">
+                {% trans "Contact Us" %}</a>
+
+            <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
+                {% trans "Join / Sign In" %}</a>
+        </div>
+    </div>
+
+{% endif %}
+
 

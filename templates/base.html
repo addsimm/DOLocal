@@ -53,18 +53,6 @@
             border-color: black;
             }
 
-        .panel {
-            box-shadow: none;
-            margin-bottom: 0;
-        }
-        .panel-default {
-            border-color: white;
-        }
-
-        .panel-body {
-            padding: 0;
-        }
-
         footer {
             background-color: white;
             border-top: none;
@@ -72,6 +60,15 @@
             margin-bottom: 5px;
             padding-top: 15px;
             padding-bottom: 0;
+        }
+
+        .messages {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .alert {
+            margin: 0;
         }
 
         .breadcrumb {
@@ -85,95 +82,106 @@
 
 <body id="{% block body_id %}body{% endblock %}" style="font-family: 'source sans pro', sans-serif;">
 
-    <!-- NAVBAR -->
-
-    <div class="nav navbar-default navbar-fixed-top" role="navigation" >
+    <!-- FIXED TOP -->
+    <div id="fixme" style="background-color: white; position: fixed; left: 0;right: 0; top:0; z-index: 1030;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <a href="/" class="pull-left">
-                        <img style="height: 110px; margin-top: 15px; margin-left: 20px" src="/static/img/JOSLogo121615.png">
-                    </a>
+
+            <div class="nav navbar-default" role="navigation" >
+                <div class="hidden-xs hidden-sm hidden-md col-md-2" style="background-color: transparent; padding-left: 30px;">
+                    <div class="row">
+                        <a href="/" class="pull-left">
+                            <img style="height: 80px;" src="/static/img/JOSLogo121615.png">
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-5">
+
+                <div class="col-sm-12 col-md-6" style="background-color: transparent;">
+                    <div class="row">
                         {% nevercache %}
                             {% if messages %}
                                 <div class="messages">
                                     {% for message in messages %}
                                         <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                                            <button type="button" class="close" data-dismiss="alert"
-                                                    aria-hidden="true">&times;</button>
-                                            <img src="/static/img/peeky-123115.png" height="30px">
-                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt;">&nbsp&nbsp&nbsp&nbspPeeky Says:<br></span>
-                                            <span style="font-family: 'Source Sans Pro'; margin-left: 60px;">You have: {{ message }}!</span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                            <img src="/static/img/peeky-123115.png" height="30px" style="margin-left: 5px;">
+                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt;">
+                                                &nbsp&nbspPeeky: {{ message | title }}!
+                                            </span>
                                         </div>
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <p class="text-center"
-                                   style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-top: 52px;">
+                                <p class="text-center" style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-top: 25px;">
                                     A storytelling community for<br>happier souls and healthier minds.
                                 </p>
                             {% endif %}
                         {% endnevercache %}
-                </div>
-                <div class="col-md-4" style="margin-top: 35px;">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">{% trans "Toggle Navigation" %}</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
                     </div>
-                    <div class="navbar-collapse collapse">
-                        {% page_menu "pages/menus/dropdown.html" %}
+                </div>
+
+
+                <div class="col-sm-12 col-md-4" style="background-color: transparent;">
+                    <div class="row">
                         {% include "includes/user_panel.html" %}
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Breadcrumbs -->
-    <div style="height: 65px; margin-top: 80px;">
-        <ul class="breadcrumb">FIX!!!
-            {% spaceless %}
-                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-            {% endspaceless %}
-        </ul>
-    </div>
-
-    <!-- CENTER -->
-    <div class="container">
-    <h3 style="background-color: yellow">all_content</h3>{% block all_content %}
-
-        <div class="row">
-            <div class="col-md-2 left">
-                <h3 style="background-color: yellow">left_panel</h3>{% block left_panel %}
-                    <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
-                {% endblock left_panel %}<h3 style="background-color: yellow">end</h3>
             </div>
 
-            <div class="col-md-7 middle">
-                <h3 style="background-color: yellow">main</h3>{% block main %}
-                {% endblock main%}<h3 style="background-color: yellow">end</h3>
-            </div>
+            <div class="row"><!-- Breadcrumbs -->
+                <div class="col-xs-12" style="margin-top: 5px;">
 
-            <div class="col-md-3 right">
-                {% nevercache %}
-                    {% include "includes/language_selector.html" %}
-                {% endnevercache %}
+                    <ul class="breadcrumb">FIX!!!
+                        {% spaceless %}
+                            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                        {% endspaceless %}
+                    </ul>
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 style="background-color: yellow">right_panel</h3>{% block right_panel %}
-                        {% endblock right_panel%}<h3 style="background-color: yellow">end</h3>
-                    </div>
                 </div>
             </div>
         </div>
-    {% endblock all_content %}<h3 style="background-color: yellow">end</h3>
+    </div>
+
+    <!-- CENTER -->
+    <div class="container" style="background-color: springgreen; margin-top: 100px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 style="background-color: yellow">all_content</h3>{% block all_content %}
+                    <div class="row">
+                        <div class="col-sm-2" style="background-color: lightblue;">
+
+                            <h3 style="background-color: yellow">left_panel</h3>{% block left_panel %}
+
+                                <div class="panel panel-default tree">
+                                    111{% page_menu "pages/menus/tree.html" %}
+                                </div>
+
+                            {% endblock left_panel %}<h3 style="background-color: yellow">end</h3>
+
+                        </div>
+
+                        <div class="col-sm-7" style="background-color: lavender;">
+
+                            <h3 style="background-color: yellow">main</h3>{% block main %}
+                                222
+                            {% endblock main %}<h3 style="background-color: yellow">end</h3>
+
+                        </div>
+
+                        <div class="col-sm-3" style="background-color: lightcoral";>
+
+                            <div class="panel panel-default">
+
+                                <h3 style="background-color: yellow">right_panel</h3>{% block right_panel %}
+                                    333
+                                {% endblock right_panel %}<h3 style="background-color: yellow">end</h3>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endblock all_content %}<h3 style="background-color: yellow">end</h3>
+            </div>
+        </div>
     </div>
 </body>
 
