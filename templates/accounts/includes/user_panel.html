@@ -42,17 +42,16 @@
 
             <div style="color: rgb(65, 45, 120); font-size: 24pt;">
                 Hi!
+                <span style="color: green; font-size: 28pt; margin-left: 6px;">
+                    {{ request.user|username_or:"email" }}
+                </span>
                 <a href="{{ profile_url }}">
-                    <span style="color: green; font-size: 28pt; margin-left: 6px;">
-                        {{ request.user|username_or:"email" }}
-                    </span>
                     <!-- TODO: photo -->
                     <span style="color: #428bca; font-size: 8pt; margin-left: 3px;">
-                        Profile
+                        PROFILE
                     </span>
                 </a>
             </div>
-
         </div>
     </div>
 

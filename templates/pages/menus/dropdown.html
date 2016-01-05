@@ -1,9 +1,9 @@
 {% load i18n pages_tags %}
-{% spaceless %}
+{% spaceless %}CLICK FOR:
     {% if page_branch_in_menu %}
 
         {% if branch_level == 0 %}
-            <ul class="nav navbar-nav" style="font-size: 24pt; padding: 20px;">
+            <ul class="nav navbar-nav" style="color:black; font-size: 24pt; padding: 20px;">
                 {% for page in page_branch %}
                     {% if not has_home and page.is_primary and forloop.first %}
                         <li{% if on_home %} class="active"{% endif %} id="dropdown-menu-home">

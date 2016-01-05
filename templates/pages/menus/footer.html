@@ -2,6 +2,7 @@
 
 
 <style>
+
     #custom-bootstrap-menu.navbar-default {
         font-size: 12px;
         background-color: rgba(65, 45, 120, 1);
@@ -9,19 +10,21 @@
         border-radius: 0px;
     }
 
-    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a {
+    #custom-bootstrap-menu > .navbar-nav > li > a {
         color: white;
-        background-color: rgba(65, 45, 120, 1);
+        text-shadow: none;
+        padding-bottom: 0;
+        padding-top: 10px;
     }
 
-    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a:hover,
-    #custom-bootstrap-menu.navbar-default .navbar-nav > li > a:focus {
-        color: rgba(65, 45, 120, 1);
+    #custom-bootstrap-menu > .navbar-nav > li > a:hover,
+    #custom-bootstrap-menu > .navbar-nav > li > a:focus,
+    #custom-bootstrap-menu > .navbar-nav > .active > a {
+        background-image: none;
+        background-repeat: no-repeat;
+        box-shadow: none;
         background-color: white;
-    }
-
-    #custom-bootstrap-menu.navbar-default {
-        border-color: transparent;
+        color: rgba(65, 45, 120, 1);
     }
 
 </style>
@@ -34,7 +37,7 @@
 
         {% if page.is_primary %}
             {% if forloop.first %}
-                <div id="custom-bootstrap-menu" class="navbar navbar-default" style="margin-bottom: 0; padding-right: 30px;" role="footer">
+                <div id="custom-bootstrap-menu" class="navbar-default" style="margin-bottom: 0; height:40px; padding-right: 30px;" role="footer">
             {% endif %}
 
             {% if page.in_menu %}

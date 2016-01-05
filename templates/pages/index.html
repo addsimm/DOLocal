@@ -1,21 +1,212 @@
-{% extends "pages/page.html" %}
-{% load mezzanine_tags keyword_tags i18n%}
-
-{% block meta_title %}{% trans "Home" %}{% endblock %}
-{% block title %}yyy{% trans "Home" %}{% endblock %}
-
-{% block breadcrumb_menu %}
-    <li class="active">{% trans "Home" %}</li>
-{% endblock %}
-
-{% block main %}
-
-    Not You know what
-
 <!--
 This template is provided as a custom template for the homepage, for
 when it is configured as an editable page in the navigation tree. Feel
 free to modify it.
 -->
-{{ block.super }}
-{% endblock %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load keyword_tags mezzanine_tags pages_tags i18n staticfiles %}
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <title>
+        {% block meta_title %}{% trans "Home" %}{% endblock %}
+        {% block title %}yyy{% trans "Home" %}{% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+        <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+        <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
+        <!-- fix favicon -->
+        {% if LANGUAGE_BIDI %}
+            <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
+        {% ifinstalled cartridge.shop %}
+            <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+            {% if LANGUAGE_BIDI %}
+                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
+        {% endifinstalled %}
+        {% block extra_css %}{% endblock %}
+        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate' rel='stylesheet'
+              type='text/css'>
+    {% endcompress %}
+
+    {% compress js %}
+        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+        <script src="{% static "js/bootstrap.js" %}"></script>
+        <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        {% block extra_js %}{% endblock %}
+    {% endcompress %}
+
+    <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.js" %}"></script>
+        <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<style>
+
+    body {
+        color: rgb(65, 45, 120);
+        font-family: 'source sans pro', sans-serif;
+        font-size: 14pt;
+    }
+
+    .navbar-default {
+        background-image: none;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        box-shadow: none;
+        background-color: white;
+        border-color: black;
+    }
+
+    footer {
+        background-color: white;
+        border-top: none;
+        margin-top: 0;
+        margin-bottom: 5px;
+        padding-top: 15px;
+        padding-bottom: 0;
+    }
+
+    .messages {
+        margin-left: 20px;
+        margin-top: 5px;
+    }
+
+    .alert {
+        margin: 0;
+    }
+
+    .homehead {
+        font-size: 24pt;
+        font-weight: bold;
+    }
+
+</style>
+
+<body style="">
+
+<!-- FIXED TOP -->
+<div id="fixme" style="background-color: transparent; position: fixed; left: 0;right: 0; top:0; z-index: 1030;">
+    <div class="container">
+
+        <div class="nav navbar-default" role="navigation">
+
+
+            <div class="col-sm-12 col-md-6 col-md-offset-2" style="background-color: transparent;">
+                <div class="row">
+                    {% nevercache %}
+                        {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                                        <button type="button" class="close" data-dismiss="alert"
+                                                aria-hidden="true">&times;</button>
+                                        <img src="/static/img/peeky-123115.png" height="30px" style="margin-left: 5px;">
+                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt;">
+                                                &nbsp&nbspPeeky: {{ message | title }}!
+                                            </span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endnevercache %}
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-4" style="background-color: transparent;">
+                <div class="row">
+                    {% include "includes/user_panel.html" %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+        <div class="row">
+            <div class="col-xs-12 text-center" style="margin-top: 50px;">
+                <a href="/">
+                    <img style="height: auto;" src="/static/img/JOSLogo121615.png">
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <p class="text-center" style="font-family: 'stalemate', serif; font-size: 52pt; font-weight: bold; line-height: 1.2; margin-top: 20px;">
+                    A storytelling community for happier souls and healthier minds
+                </p>
+
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="row" style="margin-top: 50px;">
+            <div class="col-xs-4">
+                <p class="homehead text-center">
+                    Enjoy
+                </p>
+                <p>
+                    Enjoy our story.
+                    Hollywood Heights, is a provocative web series about
+                    age, beauty, and truth set against the youth-oriented backdrop
+                    of Tinseltown.
+                </p>
+            </div>
+
+            <div class="col-xs-4">
+                <p class="homehead text-center">
+                    Create
+                </p>
+                <p>
+                    Regardless of where you begin, our fun, collaborative
+                    writing lab produces confident writers. Use our Hollywood
+                    Heights characters and plot lines as a springboard. Your
+                    ideas may become part of the show!
+                </p>
+            </div>
+
+            <div class="col-xs-4">
+                <p class="homehead text-center">
+                    Share
+                </p>
+                <p>
+                    Share stories with new friends.
+                    Chat about Hollywood Heights on our forum, showcase
+                    your stories in a gallery, or drop into the writer’s room to
+                    pitch an idea. You’re guaranteed to make new friends and
+                    enjoy yourself as you explore the craft of storytelling.
+                </p>
+            </div>
+        </div>
+</div>
+
+<footer>
+    <div class="container" style="margin-top: 50px;">
+        {% page_menu "pages/menus/footer.html" %}
+
+        <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+            Join Our Story is a California Benefit Corporation &copy 2014
+            {% ifinstalled mezzanine.mobile %}
+                <span class="separator">|</span>
+                <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+            {% endifinstalled %}
+        </p>
+    </div>
+    {% include "includes/footer_scripts.html" %}
+</footer>
+
+</body>
+
+</html>
