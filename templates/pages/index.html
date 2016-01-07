@@ -14,7 +14,7 @@ free to modify it.
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <title>
         {% block meta_title %}{% trans "Home" %}{% endblock %}
-        {% block title %}yyy{% trans "Home" %}{% endblock %}
+        {% block title %}fix {% trans "Home" %}{% endblock %}
     </title>
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
@@ -111,9 +111,9 @@ free to modify it.
                                         <button type="button" class="close" data-dismiss="alert"
                                                 aria-hidden="true">&times;</button>
                                         <img src="/static/img/peeky-123115.png" height="30px" style="margin-left: 5px;">
-                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt;">
-                                                &nbsp&nbspPeeky: {{ message | title }}!
-                                            </span>
+                                        <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt; margin-left: 20px;">
+                                            {{ message | title }}!
+                                        </span>
                                     </div>
                                 {% endfor %}
                             </div>

@@ -4,10 +4,20 @@
 
 {% block all_content %}
 
-<p class="text-center"
-   style="font-family: 'stalemate', serif; font-size: 72pt; font-weight: bold; line-height: 1.2; margin-top: 20px;">
-    {{ page.title }} Form
-</p>
+
+<style>
+
+    .form-actions {
+        background-color: white;
+        border-radius: 0;
+        border-top: 1px solid rgba(65, 25, 140, .85);
+        margin-bottom: 15px;
+        padding: 20px;
+    }
+
+
+</style>
+
 
 <div class="row">
     <div class="col-xs-offset-1 col-xs-10">
@@ -31,7 +41,8 @@
             {% fields_for form %}
 
             <div class="form-actions">
-                <input class="btn btn-primary btn-lg"
+                <input class="btn btn-default btn-lg"
+                       style=" "
                        type="submit"
                        value="{% if page.form.button_text %}
                                     {{ page.form.button_text }}
