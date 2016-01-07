@@ -13,8 +13,7 @@ free to modify it.
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <title>
-        {% block meta_title %}{% trans "Home" %}{% endblock %}
-        {% block title %}fix {% trans "Home" %}{% endblock %}
+        Home{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}
     </title>
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
@@ -136,7 +135,7 @@ free to modify it.
         <div class="row">
             <div class="col-xs-12 text-center" style="margin-top: 50px;">
                 <a href="/">
-                    <img style="height: auto;" src="/static/img/JOSLogo121615.png">
+                    <img style="height: 325px;" src="/static/img/JOSLogo121615.png">
                 </a>
             </div>
         </div>
@@ -144,7 +143,7 @@ free to modify it.
         <div class="row">
             <div class="col-xs-12">
 
-                <p class="text-center" style="font-family: 'stalemate', serif; font-size: 52pt; font-weight: bold; line-height: 1.2; margin-top: 20px;">
+                <p class="text-center" style="font-family: 'stalemate', serif; font-size: 54pt; font-weight: bold; line-height: 1.2; margin-top: 20px;">
                     A storytelling community for happier souls and healthier minds
                 </p>
 

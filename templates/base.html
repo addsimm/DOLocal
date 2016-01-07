@@ -8,7 +8,8 @@
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <title>
-        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}
+    </title>
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
     {% compress css %}
@@ -84,6 +85,7 @@
         .messages {
             margin-left: 20px;
             margin-top: 5px;
+
         }
 
         .alert {
@@ -118,14 +120,14 @@
                                         <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                             <img src="/static/img/peeky-123115.png" height="30px" style="margin-left: 5px;">
-                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt; margin-left: 20px;">
+                                            <span style="color: black; font-family: 'Abril Fatface'; font-size: 16pt; margin-left: 20px;">
                                                 {{ message | title }}!
                                             </span>
                                         </div>
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <p class="text-center" style="color: rgb(65, 45, 120); font-size: 14pt; line-height: 1; margin-top: 25px;">
+                                <p class="text-center" style="color: rgb(65, 45, 120); font-size: 16pt; line-height: 1.2; margin-top: 25px;">
                                     A storytelling community for<br>happier souls and healthier minds.
                                 </p>
                             {% endif %}

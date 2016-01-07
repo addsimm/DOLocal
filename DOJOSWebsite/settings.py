@@ -287,6 +287,18 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
+#########
+# EMAIL #
+#########
+
+EMAIL_HOST_USER = 'joinus@joinourstory.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = '4Primetime!'
+EMAIL_PORT = 587
+SERVER_EMAIL = EMAIL_HOST_USER
+
+
 ##################
 # LOCAL SETTINGS #
 ##################
