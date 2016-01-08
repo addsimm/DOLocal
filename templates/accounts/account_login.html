@@ -2,51 +2,54 @@
 {% load i18n %}
 
 {% block all_content %}
-    11111
-    {% if request.user.is_authenticated %}
 
-        <p>
-            {% trans "You're already logged in. If you'd like to log in as a different user, you'll need to log out first." %}
-        </p>
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+            {% if request.user.is_authenticated %}
 
-    {% else %}
+                <p>
+                    {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out first." %}
+                </p>
 
-        {{ block.super }}
+            {% else %}
 
-        {% url "signup" as signup_url %}
+                {% url "signup" as signup_url %}
 
-        <p>
+                <h3>
 
-            33333{% blocktrans with request.GET.next as next %}
-                If you don't have an account you can
-                <a href="{{ signup_url }}?next={{ next }}">
-                    sign up
-                </a>
-                for one now.
-            {% endblocktrans %}
+                    {% blocktrans with request.GET.next as next %}
+                        If you don't haven't signed up yet, please click here:
+                        <a href="{{ signup_url }}?next={{ next }}">
+                            Sign Up
+                        </a>
+                    {% endblocktrans %}
 
-        </p>
+                </h3>
+                {% url "mezzanine_password_reset" as password_reset_url %}
+                {% url "profile_update" as profile_update_url %}
 
-        {% url "mezzanine_password_reset" as password_reset_url %}
+                {% blocktrans %}
 
-        {% url "profile_update" as profile_update_url %}
+                    <h3>
+                        If you have password problems, click here:
 
-        {% blocktrans %}
+                        <a href="{{ password_reset_url }}?next={{ profile_update_url }}">
+                            Reset Your Password
+                        </a>
 
-            <p>
-                You can also
+                        <br><br>Otherwise, enter the correct info and press "{{ title }}."<br><br>
 
-                <a href="{{ password_reset_url }}?next={{ profile_update_url }}">
-                    reset your password
-                </a>
+                    </h3>
 
-                if you've forgotten it.
+                {% endblocktrans %}
 
-            </p>
 
-        {% endblocktrans %}
+                {{ block.super }}
 
-        </p>
-    {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
 
-{% endblock %}
+{% endblock all_content %}

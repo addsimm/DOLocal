@@ -14,17 +14,29 @@
 
 {% block all_content %}
 
+    <style>
+
+        .form-actions {
+            background-color: white;
+            border-radius: 0;
+            border-top: 1px solid rgba(65, 25, 140, .85);
+            margin-bottom: 15px;
+            padding: 20px;
+        }
+
+    </style>
+
     {% errors_for form %}
 
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-        22222<fieldset>
-        33333<legend>44444 {{ title }} 55555 </legend> 66666
+        <fieldset>
             {% fields_for form %}
             <div class="form-actions">
                 {% block account_form_actions %}
-                    <input class="btn btn-primary btn-lg pull-right" type="submit" value="{{ title }}">
+                    <input class="btn btn-default btn-lg pull-left" type="submit" value="{{ title }}">
                 {% endblock %}
             </div>
         </fieldset>
     </form>
-{% endblock %}
+
+{% endblock all_content %}
