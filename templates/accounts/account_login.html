@@ -1,50 +1,48 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
 
-{% block all_content %}
-
+{% block accounts_content %}
 
     {% if request.user.is_authenticated %}
 
         <p>
-            {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out first." %}
+            {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out." %}
         </p>
 
     {% else %}
 
         {% url "signup" as signup_url %}
-
-        <h3>
-
-            {% blocktrans with request.GET.next as next %}
-                If you don't haven't signed up yet, please click here:
-                <a href="{{ signup_url }}?next={{ next }}">
-                    Sign Up
-                </a>
-            {% endblocktrans %}
-
-        </h3>
         {% url "mezzanine_password_reset" as password_reset_url %}
         {% url "profile_update" as profile_update_url %}
 
         {% blocktrans %}
 
             <h3>
-                If you have password problems, click here:
-
-                <a href="{{ password_reset_url }}?next={{ profile_update_url }}">
-                    Reset Your Password
-                </a>
-
-                <br><br>Otherwise, enter the correct info and press "{{ title }}."<br><br>
+                If you:
+                <ul style="margin-left: 4%;">
+                    <li>
+                        haven't signed up yet, please click here:
+                        <a href="{{ signup_url }}?next={{ next }}">
+                            Sign Up
+                        </a>
+                    </li>
+                    <li>
+                        have password problems, click here:
+                        <a href="{{ password_reset_url }}?next={{ profile_update_url }}">
+                            Reset Password
+                        </a>
+                    </li>
+                </ul>
+                Otherwise, enter the correct info and press "{{ title }}."
 
             </h3>
 
         {% endblocktrans %}
 
-
-        {{ block.super }}
-
     {% endif %}
 
-{% endblock all_content %}
+    {{ block.super }}
+
+{% endblock accounts_content %}
+
+

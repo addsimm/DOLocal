@@ -16,6 +16,10 @@
 
     <style>
 
+        h3 {
+            line-height: 165%;
+        }
+
         .form-actions {
             background-color: white;
             border-radius: 0;
@@ -26,25 +30,33 @@
 
     </style>
 
-<div class="row">
-    <div class="col-xs-offset-1 col-xs-10">
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+            {% block accounts_content %}
 
-        {% errors_for form %}
+                {% errors_for form %}
 
-        <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-            <fieldset>
-                {% fields_for form %}
-                <div class="form-actions">
-                    {% block account_form_actions %}
-                        <input class="btn btn-default btn-lg pull-left" type="submit" value="{{ title }}">
-                    {% endblock %}
-                </div>
-            </fieldset>
-        </form>
+                <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+                    <fieldset>
+                        {% fields_for form %}
+                        <div class="form-actions">
+                            {% block account_form_actions %}
+                                <input class="btn btn-default btn-lg pull-left" type="submit" value="{{ title }}">
+                            {% endblock %}
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+
+            {% endblock accounts_content %}
+
+        <div class="col-xs-1"></div>
 
     </div>
 
-    <div class="col-xs-1"></div>
-</div>
-
 {% endblock all_content %}
+
+
+
+
