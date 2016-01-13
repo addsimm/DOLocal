@@ -17,13 +17,12 @@ class StrippedCharField(models.CharField):
         return super(StrippedCharField, self).clean(value)
 
 class JOSStaffMember(AdminThumbMixin, Displayable):
-    '''
-    A model for JOS Staff Members
-    '''
+    ''' A model for JOS Staff Members '''
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
-    first_name =StrippedCharField(max_length=60)
-    last_name = StrippedCharField(max_length=60)
+    first_name = models.CharField(max_length=60)
+    last_name = models.CharField(max_length=60)
+    jos_title = models.CharField(max_length=60, blank=True)
     email = models.EmailField(blank=True)
     bio_text = models.TextField(blank=True)
     bio_image = FileField(verbose_name=_("Bio Image"),

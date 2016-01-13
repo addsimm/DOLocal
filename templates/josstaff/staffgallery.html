@@ -4,7 +4,20 @@
 
 {% block all_content %}
 
-    <img class="img-responsive" src="{{ MEDIA_URL }}image.jpg">
-    <img style="height: 80px;" src="/static/img/JOSLogo121615.png">
+    {% for member in staff %}
+        <img class="img-responsive" src="{{ MEDIA_URL }}{% thumbnail member.bio_image 150 0 %}">
+        <h3>
+            {{ member.first_name }} {{ member.last_name }}
+        </h3>
+        <p style="font-style: italic">
+            {{ member.jos_title }}
+        </p>
+        <p>
+            {{ member.bio_text }}
+        </p>
+        <p>
+            {{ member.email }}
+        </p>
+    {% endfor %}
 
 {% endblock %}
