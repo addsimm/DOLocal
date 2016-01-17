@@ -46,6 +46,13 @@
             color: rgb(65, 45, 120);
             font-family: 'source sans pro', sans-serif;
             font-size: 14pt;
+            line-height: 110%;
+            padding-top: 165px;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding-top: 205px;
         }
 
         a {
@@ -158,7 +165,7 @@
     </div>
 
     <!-- CENTER -->
-    <div class="container" style="background-color: transparent; margin-top: 100px;">
+    <div class="container" style="background-color: transparent;">
         {% block all_content %}
             <div class="row">
                 <div class="col-sm-2" style="background-color: lightblue;">
