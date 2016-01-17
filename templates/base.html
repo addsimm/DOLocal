@@ -210,7 +210,9 @@
                 Join Our Story is a California Benefit Corporation &copy 2014
                 {% ifinstalled mezzanine.mobile %}
                     <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
+                        {% trans "View Mobile Site" %}
+                    </a>
                 {% endifinstalled %}
             </p>
         </div>
