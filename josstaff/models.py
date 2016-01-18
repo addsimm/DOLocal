@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.fields import FileField
+from mezzanine.core.models import Orderable
 from mezzanine.pages.models import Displayable
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
@@ -17,7 +18,7 @@ class StrippedCharField(models.CharField):
             value = value.strip()
         return super(StrippedCharField, self).clean(value)
 
-class JOSStaffMember(AdminThumbMixin, Displayable):
+class JOSStaffMember(Orderable, AdminThumbMixin, Displayable):
     ''' A model for JOS Staff Members '''
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
