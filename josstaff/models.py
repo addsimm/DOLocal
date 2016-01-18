@@ -9,6 +9,7 @@ from mezzanine.pages.models import Displayable
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
 
+
 class StrippedCharField(models.CharField):
     """Newforms CharField that strips trailing and leading spaces."""
     def clean(self, value):
