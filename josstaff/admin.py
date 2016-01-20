@@ -1,10 +1,10 @@
 from django.contrib import admin
+from orderable.admin import OrderableAdmin, OrderableTabularInline
 from josstaff.models import JOSStaffMember
 
-from mezzanine.core.admin import TabularDynamicInlineAdmin
-
-class JOSStaffMemberAdmin(admin.ModelAdmin):
+class JOSStaffMemberAdmin(OrderableAdmin):
     model = JOSStaffMember
+    list_display = ('__unicode__', 'sort_order_display')
 
 # Register your models here.
 

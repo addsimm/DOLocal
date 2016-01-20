@@ -223,6 +223,7 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     # "mezzanine.mobile",
+    "orderable",
     "josstaff",
 )
 
@@ -332,3 +333,4 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
