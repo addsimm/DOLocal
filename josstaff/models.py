@@ -21,7 +21,7 @@ class StrippedCharField(models.CharField):
 class JOSStaffMember(Orderable, AdminThumbMixin, Displayable):
     ''' A model for JOS Staff Members '''
 
-    _order = models.IntegerField(blank=True)
+    _order = models.IntegerField(default=10, blank=True)
 
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)

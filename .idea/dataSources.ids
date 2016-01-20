@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>1922</introspection-state-number>
-        <introspection-timestamp>2016-01-20.11:25:11.706</introspection-timestamp>
+        <introspection-state-number>1936</introspection-state-number>
+        <introspection-timestamp>2016-01-20.11:36:56.637</introspection-timestamp>
       </schema>
       <sequence id="3" parent="2" name="auth_group_id_seq">
         <object-id>16419</object-id>
@@ -263,7 +263,7 @@
       </table>
       <table id="65" parent="2" name="josstaff_josstaffmember">
         <object-id>17021</object-id>
-        <state-number>1922</state-number>
+        <state-number>1936</state-number>
       </table>
       <table id="66" parent="2" name="pages_link">
         <object-id>16753</object-id>
@@ -2190,7 +2190,8 @@ old_path</columns>
         <data-type>integer</data-type>
       </column>
       <column id="434" parent="65" name="_order">
-        <state-number>1922</state-number>
+        <state-number>1936</state-number>
+        <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
       <index id="435" parent="65" name="josstaff_josstaffmember_pkey">
@@ -2211,7 +2212,7 @@ old_path</columns>
       </index>
       <index id="438" parent="65" name="josstaff_josstaffmember_a73f1f77">
         <object-id>17057</object-id>
-        <columns>#25</columns>
+        <columns>_order</columns>
         <desc-columns></desc-columns>
       </index>
       <key id="439" parent="65" name="josstaff_josstaffmember_pkey">
