@@ -225,6 +225,7 @@ INSTALLED_APPS = (
     # "mezzanine.mobile",
     "orderable",
     "josstaff",
+    "josaccounts",
 )
 
 # List of processors used by RequestContext to populate the context.
@@ -334,3 +335,8 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
+###############
+# josaccounts #
+###############
+
+AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"

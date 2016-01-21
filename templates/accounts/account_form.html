@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags %}
+{% load i18n mezzanine_tags pages_tags %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -8,7 +8,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    <li>{{ title }}</li>
+    <li class="active">{{ title }}</li>
 
 {% endblock %}
 

@@ -1,6 +1,17 @@
-{% extends "pages/page.html" %}
+{% extends "base.html" %}
 
 {% load mezzanine_tags staticfiles %}
+
+{% block meta_title %}About{% endblock %}
+{% block title %}About{% endblock %}
+{% block body_id %}<!-- ??? What is Body ID ??? -->{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    <li class="active">About Us</li>
+
+{% endblock %}
 
 {% block all_content %}
 
@@ -30,7 +41,7 @@
         {% if forloop.counter|divisibleby:2 %}
             <div class="row" style="background-color: rgba(65, 25, 140, .20); margin: 15px; padding: 15px; line-height: 1.1;">
                 <div class="col-xs-2">
-                    <img class="img-responsive" style=" "
+                    <img class="img-responsive" style="margin-top: 30px;"
                          src="{{ MEDIA_URL }}{% thumbnail member.bio_image 150 0 %}">
                 </div>
 
@@ -72,7 +83,7 @@
                 </div>
 
                 <div class="col-xs-2">
-                    <img class="img-responsive" style=" " src="{{ MEDIA_URL }}{% thumbnail member.bio_image 150 0 %}">
+                    <img class="img-responsive" style="margin-top: 30px;" src="{{ MEDIA_URL }}{% thumbnail member.bio_image 150 0 %}">
                 </div>
 
             </div>
