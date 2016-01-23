@@ -223,7 +223,7 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     # "mezzanine.mobile",
-    "orderable",
+    "adminsortable",
     "josstaff",
     "josaccounts",
 )

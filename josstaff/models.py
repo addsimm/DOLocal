@@ -5,9 +5,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.fields import FileField
-from orderable.models import Orderable
 from mezzanine.pages.models import Displayable
 from mezzanine.utils.models import AdminThumbMixin, upload_to
+
+from adminsortable.models import SortableMixin
 
 
 
@@ -18,10 +19,16 @@ class StrippedCharField(models.CharField):
             value = value.strip()
         return super(StrippedCharField, self).clean(value)
 
-class JOSStaffMember(Orderable, AdminThumbMixin, Displayable):
+class JOSStaffMember(SortableMixin, AdminThumbMixin, Displayable):
     ''' A model for JOS Staff Members '''
 
-    _order = models.IntegerField(default=10, blank=True)
+    class Meta:
+        verbose_name = 'JOS Staff Member'
+        verbose_name_plural = 'JOS Staff Members'
+        ordering = ['the_order']
+
+    # define the field the model should be ordered by
+    the_order = models.PositiveIntegerField(default=0, editable=True)
 
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
@@ -41,7 +48,5 @@ class JOSStaffMember(Orderable, AdminThumbMixin, Displayable):
         un = str(self.first_name + self.last_name)
         return (un.lower())
 
-
-    class Meta:
-        verbose_name = _("JOS Staff Member")
-        verbose_name_plural = _("JOS Staff Members")
+    def __unicode__(self):
+        return self.title

@@ -1,10 +1,9 @@
 from django.contrib import admin
-from orderable.admin import OrderableAdmin, OrderableTabularInline
+from adminsortable.admin import SortableAdmin
 from josstaff.models import JOSStaffMember
 
-class JOSStaffMemberAdmin(OrderableAdmin):
+class JOSStaffMemberAdmin(SortableAdmin):
     model = JOSStaffMember
-    list_display = ('__unicode__', 'sort_order_display')
 
 # Register your models here.
 

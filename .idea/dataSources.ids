@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>2034</introspection-state-number>
-        <introspection-timestamp>2016-01-22.11:29:01.500</introspection-timestamp>
+        <introspection-state-number>2364</introspection-state-number>
+        <introspection-timestamp>2016-01-23.08:49:38.631</introspection-timestamp>
       </schema>
       <sequence id="3" parent="2" name="auth_group_id_seq">
         <object-id>16419</object-id>
@@ -271,7 +271,7 @@
       </table>
       <table id="67" parent="2" name="josstaff_josstaffmember">
         <object-id>17021</object-id>
-        <state-number>1936</state-number>
+        <state-number>2364</state-number>
       </table>
       <table id="68" parent="2" name="pages_link">
         <object-id>16753</object-id>
@@ -2230,48 +2230,47 @@ old_path</columns>
         <mandatory>1</mandatory>
         <data-type>varchar(60)</data-type>
       </column>
-      <column id="444" parent="67" name="sort_order">
-        <state-number>1906</state-number>
+      <column id="444" parent="67" name="the_order">
+        <state-number>2364</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="445" parent="67" name="_order">
-        <state-number>1936</state-number>
-        <mandatory>1</mandatory>
-        <data-type>integer</data-type>
-      </column>
-      <index id="446" parent="67" name="josstaff_josstaffmember_pkey">
+      <index id="445" parent="67" name="josstaff_josstaffmember_pkey">
         <object-id>17028</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="447" parent="67" name="josstaff_josstaffmember_76776489">
+      <index id="446" parent="67" name="josstaff_josstaffmember_76776489">
         <object-id>17035</object-id>
         <columns>publish_date</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="448" parent="67" name="josstaff_josstaffmember_9365d6e7">
+      <index id="447" parent="67" name="josstaff_josstaffmember_9365d6e7">
         <object-id>17036</object-id>
         <columns>site_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="449" parent="67" name="josstaff_josstaffmember_a73f1f77">
+      <index id="448" parent="67" name="josstaff_josstaffmember_a73f1f77">
         <object-id>17057</object-id>
         <columns>_order</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="450" parent="67" name="josstaff_josstaffmember_pkey">
+      <key id="449" parent="67" name="josstaff_josstaffmember_pkey">
         <columns>id</columns>
         <underlying-index>josstaff_josstaffmember_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="451" parent="67" name="josstaff_josstaffmem_site_id_53d1fd049da8216d_fk_django_site_id">
+      <foreign-key id="450" parent="67" name="josstaff_josstaffmem_site_id_53d1fd049da8216d_fk_django_site_id">
         <columns>site_id</columns>
         <ref-key>~.django_site.django_site_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
+      <check id="451" parent="67" name="josstaff_josstaffmember_the_order_check">
+        <columns>#28</columns>
+        <predicate>the_order &gt;= 0</predicate>
+      </check>
       <column id="452" parent="68" name="page_ptr_id">
         <state-number>759</state-number>
         <mandatory>1</mandatory>
