@@ -36,21 +36,21 @@
 
         </div>
 
-        <div class="col-xs-12 text-right" style="width: 100%; padding-top:10px;background-color: transparent;">
+        <div class="col-xs-12 text-right" style="width: 100%; padding-top:20px;background-color: transparent;">
 
             {% url "profile" request.user.username as profile_url %}
 
             {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
 
-            <div style="color: rgb(65, 45, 120); font-size: 24pt;">
-                Hi!
-                <span style="color: green; font-size: 28pt; margin-left: 6px;">
-                    {{ request.user|username_or:"email" }}
+            <div style="color: rgb(65, 45, 120); font-size: 24pt; font-weight: bold;">
+                Hello!
+                <span style="color: green; font-size: 28pt; margin: 0 7px;">
+                    {{ user.get_short_name }}
                 </span>
                 <a href="{{ profile_url }}">
                     <!-- TODO: photo -->
                     <span style="color: #942fab; font-size: 8pt; margin-left: 3px;">
-                        PROFILE
+                        ACCESS PROFILE
                     </span>
                 </a>
             </div>
