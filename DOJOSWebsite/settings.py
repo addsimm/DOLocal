@@ -339,4 +339,4 @@ else:
 # josaccounts #
 ###############
 
-AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"
+### AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"

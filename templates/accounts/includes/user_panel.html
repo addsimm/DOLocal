@@ -43,7 +43,7 @@
             {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
 
             <div style="color: rgb(65, 45, 120); font-size: 24pt; font-weight: bold;">
-                Hello!
+                Hello! {{ profile_url }}
                 <span style="color: green; font-size: 28pt; margin: 0 7px;">
                     {{ user.get_short_name }}
                 </span>
