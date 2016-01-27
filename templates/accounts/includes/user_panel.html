@@ -32,7 +32,7 @@
                 {% trans "Contact Us" %}</a>
 
             <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default" style="width: 130px;">
-                {% trans "Sign Out" %}</a>
+                {% trans "Log Out" %}</a>
 
         </div>
 
@@ -50,7 +50,7 @@
                 <a href="{{ profile_url }}">
                     <!-- TODO: photo -->
                     <span style="color: #942fab; font-size: 8pt; margin-left: 3px;">
-                        ACCESS PROFILE
+                        CHANGE PROFILE
                     </span>
                 </a>
             </div>
@@ -65,7 +65,7 @@
                 {% trans "Contact Us" %}</a>
 
             <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-lg">
-                {% trans "Join / Sign In" %}</a>
+                {% trans "Join / Log In" %}</a>
         </div>
     </div>
 

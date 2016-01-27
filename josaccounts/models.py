@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import date
 
 # Create your models here.
 
@@ -12,8 +12,8 @@ class JOSProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True, blank=True)
-    join_date = models.DateField(auto_now_add=True)
-    modified_date = models.DateField(auto_now=True)
+    join_date = models.DateField(default=date.today)
+    modified_date = models.DateTimeField(auto_now=True)
 
-    background = models.TextField(null=True, blank=True)
+    about_me = models.TextField(null=True, blank=True)
 

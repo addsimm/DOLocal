@@ -340,3 +340,4 @@ else:
 ###############
 
 AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
