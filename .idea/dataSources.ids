@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>2364</introspection-state-number>
-        <introspection-timestamp>2016-01-23.08:49:38.631</introspection-timestamp>
+        <introspection-state-number>2405</introspection-state-number>
+        <introspection-timestamp>2016-01-26.11:42:12.128</introspection-timestamp>
       </schema>
       <sequence id="3" parent="2" name="auth_group_id_seq">
         <object-id>16419</object-id>
@@ -2086,14 +2086,14 @@ old_path</columns>
         <state-number>2034</state-number>
         <data-type>date</data-type>
       </column>
-      <column id="414" parent="66" name="bio">
-        <state-number>2034</state-number>
-        <data-type>text</data-type>
-      </column>
-      <column id="415" parent="66" name="user_id">
+      <column id="414" parent="66" name="user_id">
         <state-number>2021</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
+      </column>
+      <column id="415" parent="66" name="background">
+        <state-number>2405</state-number>
+        <data-type>text</data-type>
       </column>
       <index id="416" parent="66" name="josaccounts_josprofile_pkey">
         <object-id>17081</object-id>
