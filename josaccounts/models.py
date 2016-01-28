@@ -9,6 +9,7 @@ class JOSProfile(models.Model):
     class Meta:
         verbose_name = 'JOS Member Profile'
         verbose_name_plural = 'JOS Members Profile'
+        ordering = ("user",)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True, blank=True)
