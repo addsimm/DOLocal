@@ -294,13 +294,12 @@ OPTIONAL_APPS = (
 # EMAIL #
 #########
 
-EMAIL_HOST_USER = 'joinus@joinourstory.com'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = '4Primetime!'
-EMAIL_PORT = 587
-SERVER_EMAIL = EMAIL_HOST_USER
-
+# EMAIL_SUBJECT_PREFIX = 'Join Our Story'
+# DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_PASSWORD = '4Primetime!'
+# EMAIL_PORT = 587
 
 ##################
 # LOCAL SETTINGS #
@@ -342,3 +341,4 @@ else:
 AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_NO_USERNAME = True
+ACCOUNTS_VERIFICATION_REQUIRED = True
