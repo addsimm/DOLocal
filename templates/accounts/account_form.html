@@ -37,14 +37,57 @@
                 {% errors_for form %}
 
                 <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+
+
                     <fieldset>
-                        {% fields_for form %}
+
+
+                        {% nevercache %}
+                            <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+                            {% csrf_token %}
+                        {% endnevercache %}
+
+
+
+                        {% for field in form %}
+                            {% if field.is_hidden %}
+                                {{ field }}
+                            {% else %}
+                                <div class="form-group input_{{ field.id_for_label }} {{ field.field.type }}{% if field.errors %} has-error{% endif %}">
+                                    {% if field.label %}
+                                        <label class="control-label"
+                                        for="{{ field.auto_id }}">{{ field.label }}</label>
+                                    {% endif %}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <p class="help-block">
+                                            {% for e in field.errors %}
+                                                {% if not forloop.first %} / {% endif %}{{ e }}
+                                            {% endfor %}
+                                        </p>
+                                    {% elif field.help_text %}
+                                        <p class="help-block">
+                                            {{ field.help_text }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+
+
+
+                        <!-- sumbit -->
+
                         <div class="form-actions">
                             {% block account_form_actions %}
                                 <input class="btn btn-default btn-lg pull-left" type="submit" value="{{ title }}">
                             {% endblock %}
                         </div>
                     </fieldset>
+
+
+
                 </form>
 
             </div>
