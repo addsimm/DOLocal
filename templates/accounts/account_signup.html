@@ -2,16 +2,43 @@
 {% load i18n %}
 
 {% block all_content %}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
 
-    {% if request.user.is_authenticated %}
-        <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
-    {% else %}
-        {{ block.super }}
-        {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
-            <p>{% trans "After signing up, your account will be reviewed for approval. You'll receive an email when your account is activated." %}</p>
-        {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-            <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
-        {% endif %}
-    {% endif %}
+            {% if request.user.is_authenticated %}
+
+                <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
+
+                {% else %}
+
+                    <h3>
+                        Completeing this form will sign you up for Join Our Story.
+                    </h3>
+                    <h4>
+                        By signing up, you agree to abide by our community rules and our terms and conditions.<br><br>
+                        For your password: we suggest choosing a simple, four word sentence, then entering the words in lower case with no spaces.<br><br>
+
+                        When you're ready, please press "Sign up." If something is not right, the computer will indicate what you should change.<br><br>
+                        {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
+                            Once submitted, your account must be approved. You'll receive an email when it's activated; if you do not receive an email within 8 hours, please use the upper right button to "Contact Us."<br>
+                            <br>
+
+                        {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
+                            Once submitted, your account must be verfied. You'll receive an email with instructions. If you do not receive an email within 8 hours, please use the upper right button to "Contact Us."<br>
+                            <br>
+
+                        {% endif %}
+
+                    </h4>
+
+                </div>
+
+                <div class="col-sm-1"></div>
+
+            </div>
+
+                    {{ block.super }}
+
+            {% endif %}
 
 {% endblock %}
