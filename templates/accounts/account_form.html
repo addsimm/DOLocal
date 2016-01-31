@@ -31,9 +31,11 @@
     </style>
 
     <div class="row">
+
         <div class="col-xs-offset-1 col-xs-10">
             {% block accounts_content %}
 
+                {# form.as_p #}
                 {% errors_for form %}
 
                 <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
@@ -49,10 +51,8 @@
                             {% if field.is_hidden %}
                                 {{ field }}
 
-
-
-
-                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email_address" or field.name == "password1" or field.name == "password2" %}
+                            {# else #}
+                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email_address" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" %}
 
                                 <div class="form-group input_{{ field.id_for_label }}
                                                              {{ field.field.type }}
@@ -60,6 +60,7 @@
                                                                 has-error
                                                              {% endif %}">
 
+                                    {# field.name #}
                                     {% if field.label %}
                                         <label class="control-label"
                                         for="{{ field.auto_id }}">{{ field.label | title }}</label>
