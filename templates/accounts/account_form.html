@@ -34,7 +34,6 @@
 
         <div class="col-xs-offset-1 col-xs-10">
             {% block accounts_content %}
-
                 {# form.as_p #}
                 {% errors_for form %}
 
@@ -50,9 +49,10 @@
                         {% for field in form %}
                             {% if field.is_hidden %}
                                 {{ field }}
-
+                            {% elif field.name == "join_date" %}
+                                <input type="hidden" name="join_date" value={% now "SHORT_DATE_FORMAT" %}>
                             {# else #}
-                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email_address" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" %}
+                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" or field.name == "agree_to_terms" %}
 
                                 <div class="form-group input_{{ field.id_for_label }}
                                                              {{ field.field.type }}
