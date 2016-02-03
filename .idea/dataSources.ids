@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>2839</introspection-state-number>
-        <introspection-timestamp>2016-02-02.10:20:48.423</introspection-timestamp>
+        <introspection-state-number>2907</introspection-state-number>
+        <introspection-timestamp>2016-02-02.22:14:03.093</introspection-timestamp>
       </schema>
       <sequence id="3" parent="2" name="auth_group_id_seq">
         <object-id>16419</object-id>
@@ -267,7 +267,7 @@
       </table>
       <table id="66" parent="2" name="josaccounts_josprofile">
         <object-id>17074</object-id>
-        <state-number>2799</state-number>
+        <state-number>2905</state-number>
       </table>
       <table id="67" parent="2" name="josstaff_josstaffmember">
         <object-id>17021</object-id>

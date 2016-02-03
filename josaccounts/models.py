@@ -15,7 +15,6 @@ class JOSProfile(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     join_date = models.DateField(default=date.today)
     modified_date = models.DateTimeField(auto_now=True)
-    agree_to_terms = models.BooleanField(required=True)
 
     about_me = models.TextField(null=True, blank=True)
 
