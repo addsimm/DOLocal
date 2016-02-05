@@ -7,7 +7,7 @@
 
 {% block breadcrumb_menu %}
     {{ block.super }}
-    <li>{{ profile_user|username_or:"get_full_name" }}</li>
+    <li class="active">{{ profile_user|username_or:"get_full_name" }}</li>
 {% endblock %}
 
 {% block all_content %}
