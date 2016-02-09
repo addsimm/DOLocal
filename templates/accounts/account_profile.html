@@ -12,8 +12,11 @@
 
 {% block all_content %}
     <div class="row">
+        {{ profile_user|profile_fields }}<br>
+        000 {{ profile_user }}
+
         <div class="profile-image col-md-3">
-            <img class="img-thumbnail" src="{% gravatar_url profile_user.email 128 %}">
+            <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="height: 140px;">
             {% if profile_user == request.user %}
                 <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
             {% endif %}
@@ -21,8 +24,8 @@
         <div class="profile-content col-md-9">
             <h2>{{ profile_user.get_full_name }}</h2>
             {% for field, value in profile_user|profile_fields %}
-                <h3>{{ field }}</h3>
-                <p>{{ value|linebreaksbr }}</p>
+                <h3>111{{ field }}</h3>
+                <p>222{{ value|linebreaksbr }}</p>
             {% endfor %}
         </div>
     </div>
