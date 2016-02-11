@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags %}
+
+{% block meta_title %}{{ profile_user|username_or:"get_full_name" }}{% endblock %}
+{% block title %}{{ profile_user|username_or:"get_full_name" }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    <li class="active">{{ profile_user|username_or:"get_full_name" }}</li>
+{% endblock %}
+
+{% block all_content %}
+    <div class="row">
+        super boner
+        {{ profile_user|profile_fields }}<br>
+        {{ MEDIA_URL }}<br>
+        000 <img class="img-thumbnail" src="{{ MEDIA_URL }}{% thumbnail josaccounts.profile_photo 150 0 %}"><br>
+        {{ profile_user }}
+
+        <div class="profile-image col-md-3">
+            <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="height: 140px;">
+            {% if profile_user == request.user %}
+                <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
+            {% endif %}
+        </div>
+        <div class="profile-content col-md-9">
+            <h2>{{ profile_user.get_full_name }}</h2>
+            {% for field, value in profile_user|profile_fields %}
+                <h3>111{{ field }}</h3>
+                <p>222{{ value|linebreaksbr }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
