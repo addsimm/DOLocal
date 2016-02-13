@@ -12,10 +12,10 @@
 
 {% block all_content %}
     <div class="row">
-        super boner
-        {{ profile_user|profile_fields }}<br>
+        111 {{ about_me }}<br>
+        222 {{  profile_photo }}<br>
         {{ MEDIA_URL }}<br>
-        000 <img class="img-thumbnail" src="{{ MEDIA_URL }}{% thumbnail josaccounts.profile_photo 150 0 %}"><br>
+        000 <img class="img-thumbnail" src="{{ MEDIA_URL }}{% thumbnail profile_photo 150 0 %}"><br>
         {{ profile_user }}
 
         <div class="profile-image col-md-3">
