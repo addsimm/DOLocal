@@ -2,7 +2,7 @@
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
-<head>
+<head><div>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
@@ -39,7 +39,7 @@
     <![endif]-->
 
     {% block extra_head %}{% endblock %}
-
+    </div>
     <style>
 
         body {
@@ -59,6 +59,15 @@
         a {
             color: #942fab;
             text-decoration: underline;
+        }
+
+        .form-actions {
+            background-color: white;
+            border-radius: 0;
+            border-top: 1px solid rgba(65, 25, 140, .85);
+            margin-bottom: 15px;
+            margin-top: 30px;
+            padding: 20px;
         }
 
         .btn-default {
@@ -92,15 +101,14 @@
         }
 
         .messages {
-            margin-left: 20px;
-            margin-top: 5px;
-
+            margin-left: 10px;
+            margin-top: 15px;
         }
 
         .alert {
             margin: 0;
+            padding: 15px;
         }
-
 
     </style>
 

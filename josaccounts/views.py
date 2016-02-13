@@ -20,8 +20,8 @@ def josprofile(request, username, template="josaccounts/josaccounts_josprofile.h
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
     context = {"profile_user": user}
-    context.update({"about_me": currentProfile.about_me,
-                    "profile_photo": currentProfile.profile_photo})
+    context.update({"profile": currentProfile,
+                    })
     return TemplateResponse(request, template, context)
 
 
