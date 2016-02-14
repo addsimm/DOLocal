@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from datetime import date
 
+from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.core.fields import FileField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
 # Create your models here.
 
 
-class JOSProfile(AdminThumbMixin, models.Model):
+class JOSProfile(AdminThumbMixin, Ownable, Displayable):
     class Meta:
         verbose_name = 'JOS Member Profile'
         verbose_name_plural = 'JOS Members Profile'
@@ -17,8 +18,6 @@ class JOSProfile(AdminThumbMixin, models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True, blank=True)
-    join_date = models.DateField(default=date.today)
-    modified_date = models.DateTimeField(auto_now=True)
 
     about_me = models.TextField(null=True, blank=True)
 
@@ -28,3 +27,12 @@ class JOSProfile(AdminThumbMixin, models.Model):
 
     admin_thumb_field = "profile_photo"
 
+
+TimeStamped
+created = models.DateTimeField(null=True, editable=False)
+updated = models.DateTimeField(null=True, editable=False)
+
+Ownable, \
+
+
+Displayable

@@ -1,25 +1,50 @@
+from __future__ import unicode_literals
+
+from copy import deepcopy
+
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
-# Register your models here.
-
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from mezzanine.core.admin import (DisplayableAdmin, OwnableAdmin,)
 
 from josaccounts.models import JOSProfile
 
+# Register your models here.
+
+josprofile_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
+josprofile_list_display = ["title", "user", "status", "admin_link"]
+josprofile_fieldsets[0][1]["fields"].insert(-2, "profile_photo")
+josprofile_list_display.insert(0, "admin_thumb")
+josprofile_fieldsets = list(josprofile_fieldsets)
+
+# blogpost_fieldsets.insert(1, (_("Other posts"), {
+#     "classes": ("collapse-closed",),
+#     "fields": ("related_posts",)}))
+# blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
+
+
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
-class JOSProfileInline(admin.StackedInline):
-    model = JOSProfile
-    can_delete = False
-    verbose_name_plural = 'Profiles'
+class JOSProfileAdmin(DisplayableAdmin, OwnableAdmin):
+    """
+    Admin class for JOSProfiles.
+    """
+    can_delete = True
+    verbose_name_plural = 'JOS Profiles'
 
 
-# Define a new User admin
-class UserAdmin(BaseUserAdmin):
-    inlines = (JOSProfileInline,)
+
+    fieldsets = josprofile_fieldsets
+    list_display = josprofile_list_display
+    # list_filter = josprofile_list_filter
+    # filter_horizontal = ("categories", "related_posts",)
+
+    def save_form(self, request, form, change):
+        """
+        Super class ordering is important here - user must get saved first.
+        """
+        OwnableAdmin.save_form(self, request, form, change)
+        return DisplayableAdmin.save_form(self, request, form, change)
 
 
-# Re-register UserAdmin
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(JOSProfile, JOSProfileAdmin)

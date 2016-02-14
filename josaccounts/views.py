@@ -35,3 +35,5 @@ def josprofile(request, username, template="josaccounts/josaccounts_josprofile.h
 #     context = {"profile_user": get_object_or_404(User, **lookup)}
 #     context.update(extra_context or {})
 #     return TemplateResponse(request, template, context)
+
+
