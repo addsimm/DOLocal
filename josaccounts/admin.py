@@ -5,7 +5,7 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from mezzanine.core.admin import (DisplayableAdmin, OwnableAdmin,)
+from mezzanine.core.admin import DisplayableAdmin
 
 from josaccounts.models import JOSProfile
 
@@ -17,22 +17,13 @@ josprofile_fieldsets[0][1]["fields"].insert(-2, "profile_photo")
 josprofile_list_display.insert(0, "admin_thumb")
 josprofile_fieldsets = list(josprofile_fieldsets)
 
-# blogpost_fieldsets.insert(1, (_("Other posts"), {
-#     "classes": ("collapse-closed",),
-#     "fields": ("related_posts",)}))
-# blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
-
-# Define an inline admin descriptor for Employee model
-# which acts a bit like a singleton
-class JOSProfileAdmin(DisplayableAdmin, OwnableAdmin):
+class JOSProfileAdmin(DisplayableAdmin):
     """
     Admin class for JOSProfiles.
     """
     can_delete = True
     verbose_name_plural = 'JOS Profiles'
-
-
 
     fieldsets = josprofile_fieldsets
     list_display = josprofile_list_display
@@ -43,7 +34,7 @@ class JOSProfileAdmin(DisplayableAdmin, OwnableAdmin):
         """
         Super class ordering is important here - user must get saved first.
         """
-        OwnableAdmin.save_form(self, request, form, change)
+        # OwnableAdmin.save_form(self, request, form, change)
         return DisplayableAdmin.save_form(self, request, form, change)
 
 

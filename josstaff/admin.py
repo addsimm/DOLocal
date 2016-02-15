@@ -1,8 +1,7 @@
 from django.contrib import admin
-from adminsortable.admin import SortableAdmin
 from josstaff.models import JOSStaffMember
 
-class JOSStaffMemberAdmin(SortableAdmin):
+class JOSStaffMemberAdmin(admin.ModelAdmin):
     model = JOSStaffMember
 
 # Register your models here.
