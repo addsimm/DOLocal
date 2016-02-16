@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import date
 
 from mezzanine.core.models import Ownable, Displayable
-from mezzanine.core.fields import FileField
+from mezzanine.core.fields import FileField, RichTextField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
 # Create your models here.
@@ -22,7 +22,7 @@ class JOSProfile(AdminThumbMixin, Displayable):
 
     date_of_birth = models.DateField(null=True, blank=True)
 
-    about_me = models.TextField(null=True, blank=True)
+    about_me = RichTextField(null=True, blank=True)
 
     profile_photo = FileField(verbose_name=_("Profile Photo"),
                                upload_to=upload_to("josaccounts.JOSProfile.profile_photo", "josaccounts"),

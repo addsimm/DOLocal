@@ -11,10 +11,7 @@
 {% endblock %}
 
 
-
-
 {% block all_content %}
-    {{ editable }}
     <div class="row">
 
         <div class="col-xs-2">
@@ -28,10 +25,15 @@
         </div>
 
         <div class="col-xs-10">
-            <h3>About {{ profile_user.get_short_name }}:</h3>
+            {% editable profile.about_me %}
+                <h3>
+                    About {{ profile_user.get_short_name }}:
+                </h3>
+
                 <p>
                     {{ profile.about_me }}
                 </p>
+            {% endeditable %}
             {% for field, value in profile_user|profile_fields %}
                 <h4>{{ field }}</h4>
                 <p>{{ value|linebreaksbr }}</p>

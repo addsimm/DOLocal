@@ -34,8 +34,8 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
     email = models.EmailField(blank=True)
     bio_text = models.TextField(blank=True)
     bio_image = FileField(verbose_name=_("Bio Image"),
-                               upload_to=upload_to("josstaff.staffgallery.bio_image", "josstaff"),
-                               format="Image", max_length=255, null=True, blank=True)
+                          upload_to=upload_to("josstaff.staffgallery.bio_image", "josstaff"),
+                          format="Image", max_length=255, null=True, blank=True)
 
     admin_thumb_field = "bio_image"
 
