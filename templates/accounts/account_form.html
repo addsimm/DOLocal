@@ -15,27 +15,19 @@
 {% block all_content %}
 
     <style>
-
         h3 {
             line-height: 165%;
         }
-
-
-
     </style>
 
     <div class="row">
-
         <div class="col-xs-offset-1 col-xs-10">
             {% block accounts_content %}
                 {# form.as_p #}
-
                 {% errors_for form %}
 
                 <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-
                     <fieldset>
-
                         {% nevercache %}
                             <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
                             {% csrf_token %}
@@ -46,15 +38,13 @@
                                 {{ field }}
                             {% elif field.name == "join_date" %}
                                 <input type="hidden" name="join_date" value={% now "SHORT_DATE_FORMAT" %}>
-                            {# else #}
-                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" %}
-
+                            {% else %}
+                            {# elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" #}
                                 <div class="form-group input_{{ field.id_for_label }}
                                                              {{ field.field.type }}
                                                              {% if field.errors %}
                                                                 has-error
                                                              {% endif %}">
-
                                     {# field.name #}
                                     {% if field.label %}
                                         <label class="control-label"
@@ -81,13 +71,13 @@
                               {% endif %}
                         {% endfor %}
 
-                        <!-- sumbit -->
-
-                        <div class="form-actions">
+                        <div class="form-actions"><!-- sumbit -->
                             {% block account_form_actions %}
                                 {% if title == "Sign up" %}
                                     <p>
-                                        I agree to the <a href="/community-rules">community rules</a> as well as the <a href="/legals">terms and conditions</a>.
+                                        I agree to the
+                                        <a href="/community-rules">community rules</a>
+                                        as well as the <a href="/legals">terms and conditions</a>.
                                     </p>
                                 {% endif %}
                                 <input class="btn btn-default btn-lg pull-left" style="margin-top: 10px;" type="submit" value="{{ title }}">
@@ -95,9 +85,7 @@
                         </div>
 
                     </fieldset>
-
                 </form>
-
             </div>
 
             {% endblock accounts_content %}
