@@ -28,6 +28,23 @@ class JOSProfile(AdminThumbMixin, Displayable):
                                upload_to=upload_to("josaccounts.JOSProfile.profile_photo", "josaccounts"),
                                format="Image", max_length=255, null=True, blank=True)
 
+
+    title
+    slug
+    _meta_title
+    description
+    gen_description
+    keywords
+    status
+    publish_date
+    expiry_date
+    short_url
+    in_sitemap
+
+
+
+
+
     admin_thumb_field = "profile_photo"
 
     def get_absolute_url(request):

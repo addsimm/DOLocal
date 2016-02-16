@@ -36,10 +36,12 @@
                         {% for field in form %}
                             {% if field.is_hidden %}
                                 {{ field }}
-                            {% elif field.name == "join_date" %}
-                                <input type="hidden" name="join_date" value={% now "SHORT_DATE_FORMAT" %}>
-                            {% else %}
-                            {# elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" #}
+                            {% elif field.name == "title" or field.name == "status"%}
+                                <input type="hidden" name="title" value="TBD" %}>
+                                <input type="hidden" name="status" value=2 %}>
+                                <input type="hidden" name="in_sitemap" value=0 %}>
+                            {# else #}
+                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" %}
                                 <div class="form-group input_{{ field.id_for_label }}
                                                              {{ field.field.type }}
                                                              {% if field.errors %}
