@@ -57,8 +57,7 @@ urlpatterns += patterns('',
     ### url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
     ###     views.profile_redirect, name="profile_redirect"),
 
-    url("%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
-        "josaccounts.views.josprofile", name="josprofile"),
+    ##### url("%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash), "josaccounts.views.josprofile", name="josprofile"),
 
     ("^", include("mezzanine.urls")),
 

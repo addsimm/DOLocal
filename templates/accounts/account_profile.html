@@ -12,18 +12,20 @@
 
 {% block all_content %}
     <div class="row">
-        {{ profile_user|profile_fields }}<br>
-        {{ MEDIA_URL }}<br>
-        000 <img class="img-thumbnail" src="{{ MEDIA_URL }}{% thumbnail josaccounts.profile_photo 150 0 %}"><br>
-        {{ profile_user }}
+        <div class="col-xs-3">
+            000<br>
+            <img class="img-thumbnail" src="{{ MEDIA_URL }}uploads/josaccounts/Adam.jpg"><br>
+            {{ profile_user }}
+        </div>
 
-        <div class="profile-image col-md-3">
+        <div class="profile-image col-xs-3">
             <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="height: 140px;">
             {% if profile_user == request.user %}
                 <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
             {% endif %}
         </div>
-        <div class="profile-content col-md-9">
+
+        <div class="profile-content col-xs-6">
             <h2>{{ profile_user.get_full_name }}</h2>
             {% for field, value in profile_user|profile_fields %}
                 <h3>111{{ field }}</h3>

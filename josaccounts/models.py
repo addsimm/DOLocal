@@ -20,32 +20,12 @@ class JOSProfile(AdminThumbMixin, Displayable):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    happy = RichTextField(null=True, blank=True)
+
     date_of_birth = models.DateField(null=True, blank=True)
 
     about_me = RichTextField(null=True, blank=True)
 
-    profile_photo = FileField(verbose_name=_("Profile Photo"),
-                               upload_to=upload_to("josaccounts.JOSProfile.profile_photo", "josaccounts"),
-                               format="Image", max_length=255, null=True, blank=True)
-
-
-    title
-    slug
-    _meta_title
-    description
-    gen_description
-    keywords
-    status
-    publish_date
-    expiry_date
-    short_url
-    in_sitemap
-
-
-
-
-
-    admin_thumb_field = "profile_photo"
 
     def get_absolute_url(request):
         username = request.user.username

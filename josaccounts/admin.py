@@ -38,4 +38,4 @@ class JOSProfileAdmin(DisplayableAdmin):
         return DisplayableAdmin.save_form(self, request, form, change)
 
 
-admin.site.register(JOSProfile, JOSProfileAdmin)
+#admin.site.unregister(JOSProfile, JOSProfileAdmin)
