@@ -224,7 +224,6 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     # "mezzanine.mobile",
     "josstaff",
-    "josaccounts",
 )
 
 
@@ -334,13 +333,13 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
-###############
-# josaccounts #
-###############
+####################
+# PROFILE SETTINGS #
+####################
 
 ACCOUNTS_NO_USERNAME = True
-ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 # AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"
 
 # ACCOUNTS_VERIFICATION_REQUIRED = False
