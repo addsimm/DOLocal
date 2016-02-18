@@ -224,6 +224,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     # "mezzanine.mobile",
     "josstaff",
+    "josmembers",
 )
 
 
@@ -340,7 +341,7 @@ else:
 ACCOUNTS_NO_USERNAME = True
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
-# AUTH_PROFILE_MODULE = "josaccounts.JOSProfile"
+AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
 
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
