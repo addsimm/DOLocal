@@ -10,7 +10,7 @@ User = get_user_model()
 
 # Create your views here.
 
-def josprofile(request, username, template="josaccounts/josaccounts_josprofile.html", extra_context=None):  ### CHANGE
+def josprofile(request, username, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
     Display a profile.
     """
@@ -19,6 +19,6 @@ def josprofile(request, username, template="josaccounts/josaccounts_josprofile.h
     currentProfile = get_object_or_404(JOSProfile, user=user)
     context = {"profile_user": user}
     context.update({"profile": currentProfile,
-                    })
+                    "profile_photo": JOSProfile.profile_photo})
 
     return TemplateResponse(request, template, context)
