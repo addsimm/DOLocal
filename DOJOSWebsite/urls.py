@@ -8,7 +8,12 @@ from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
 
 from mezzanine.accounts import views
+
+ACCOUNT_URL = getattr(settings, "ACCOUNT_URL", "/accounts/")
 PROFILE_URL = getattr(settings, "PROFILE_URL", "/users/")
+PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL",
+                             "/%s/update/" % ACCOUNT_URL.strip("/"))
+
 _slash = "/" if settings.APPEND_SLASH else ""
 
 admin.autodiscover()
@@ -57,7 +62,13 @@ urlpatterns += patterns('',
     ### url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
     ###     views.profile_redirect, name="profile_redirect"),
 
-    url("%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash), "josmembers.views.josprofile", name="josprofile"),
+    url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
+    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile", name="josprofile"),
+
+    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile_update", name="josprofile_update"),
 
     ("^", include("mezzanine.urls")),
 
