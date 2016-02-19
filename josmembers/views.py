@@ -1,3 +1,4 @@
+### josmembers/views.py
 from __future__ import unicode_literals
 
 from django.contrib.auth import (login as auth_login, authenticate,
@@ -38,7 +39,7 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
 
 
 @login_required
-def josprofile_update(request, template="accounts/account_profile_update.html",
+def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
                    extra_context=None):
     """
     Profile update form.
