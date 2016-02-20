@@ -6,7 +6,7 @@ from django.contrib.auth import (login as auth_login, authenticate,
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info, error
 from django.core.urlresolvers import NoReverseMatch, get_script_prefix
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,12 +16,39 @@ from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
 
+from cloudinary.forms import cl_init_js_callbacks
 
-from josmembers.models import JOSProfile
+from .forms import JOSProfileForm
+from .models import JOSProfile
 
 User = get_user_model()
 
+
 # Create your views here.
+
+
+def upload_prompt(request):
+    context = dict(direct_form=JOSProfileForm())
+    cl_init_js_callbacks(context['direct_form'], request)
+    return render(request, 'upload_prompt.html', context)
+
+
+import json
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def direct_upload_complete(request):
+    form = JOSProfileForm(request.POST)
+    if form.is_valid():
+        form.save()
+        ret = dict(photo_id=form.instance.id)
+    else:
+        ret = dict(errors=form.errors)
+
+    return HttpResponse(json.dumps(ret), content_type='application/json')
+
 
 def josprofile(request, username, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
@@ -32,7 +59,7 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
     currentProfile = get_object_or_404(JOSProfile, user=user)
     context = {"profile_user": user}
     context.update({"profile": currentProfile,
-                    "profile_photo": JOSProfile.profile_photo})
+                    "profile_photo": currentProfile.profile_photo})
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -68,36 +95,6 @@ def josprofile_redirect(request):
     return redirect("profile", username=request.user.username)
 
 ### Original:
-
-# @login_required
-# def profile_update(request, template="accounts/account_profile_update.html",
-#                    extra_context=None):
-#     """
-#     Profile update form.
-#     """
-#     profile_form = get_profile_form()
-#     form = profile_form(request.POST or None, request.FILES or None,
-#                         instance=request.user)
-#     if request.method == "POST" and form.is_valid():
-#         user = form.save()
-#         info(request, _("Profile updated"))
-#         try:
-#             return redirect("profile", username=user.username)
-#         except NoReverseMatch:
-#             return redirect("profile_update")
-#     context = {"form": form, "title": _("Update Profile")}
-#     context.update(extra_context or {})
-#     return TemplateResponse(request, template, context)
-#
-#
-# @login_required
-# def profile_redirect(request):
-#     """
-#     Just gives the URL prefix for profiles an action - redirect
-#     to the logged in user's profile.
-#     """
-#     return redirect("profile", username=request.user.username)
-
 
 def signup(request, template="accounts/account_signup.html",
            extra_context=None):

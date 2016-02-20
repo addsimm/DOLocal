@@ -6,6 +6,7 @@ from mezzanine.core.models import TimeStamped
 from mezzanine.core.fields import FileField, RichTextField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -22,9 +23,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     about_me = RichTextField(null=True, blank=True)
 
-    profile_photo = FileField(verbose_name=_("Profile Photo"),
-                            upload_to=upload_to("josmembers.JOSProfile.profile_photo", "josmembers"),
-                            format="Image", max_length=255, null=True, blank=True)
+    profile_photo = CloudinaryField('image')
 
     def __str__(self):
         return self.user.username

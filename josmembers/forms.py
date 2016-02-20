@@ -15,6 +15,8 @@ from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
 
+from cloudinary.forms import CloudinaryJsFileField
+
 User = get_user_model()
 
 _exclude_fields = tuple(getattr(settings,
@@ -44,6 +46,7 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
+    profile_photo = CloudinaryJsFileField()
 
     password1 = forms.CharField(label=_("Password"),
                                 widget=forms.PasswordInput(render_value=False))
