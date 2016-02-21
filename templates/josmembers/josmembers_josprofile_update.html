@@ -7,7 +7,7 @@
 
 {% block all_content %}
 
-    <form action="{% url "josmembers.views.direct_upload_complete" %}" method="post">
+    <form action="{% url "direct_upload_complete" %}" method="post">
         {% csrf_token %}
         {{ direct_form }}
         {# altenatively, use: {% cloudinary_direct_upload_field "image", request=request %} #}
