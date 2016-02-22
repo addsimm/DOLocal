@@ -69,7 +69,7 @@ urlpatterns += patterns('',
     url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_update", name="josprofile_update"),
 
-    url(r'^upload/complete$', "josmembers.views.direct_upload_complete", name="direct_upload_complete"),
+    ### url(r'^upload/complete$', "josmembers.views.direct_upload_complete", name="direct_upload_complete"),
 
     ("^", include("mezzanine.urls")),
 
