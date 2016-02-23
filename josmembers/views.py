@@ -19,6 +19,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
+from .forms import JOSProfileForm
 
 User = get_user_model()
 
@@ -49,6 +50,29 @@ User = get_user_model()
 #     return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
+@login_required
+def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
+                   extra_context=None):
+    """
+    Profile update form.
+    """
+    profile_form = get_profile_form()
+    form = profile_form(request.POST or None, request.FILES or None,
+                        instance=request.user)
+    context = dict(direct_form=JOSProfileForm)
+    cl_init_js_callbacks(form, request)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        info(request, _("Profile updated")) ### what is info and where are errors?
+        try:
+            return redirect("profile", username=user.username)
+        except NoReverseMatch:
+            return redirect("profile_update")
+    context.update({"form": form, "title": _("Update Profile")})
+    context.update(extra_context or {})
+    return render(request, template, context)
+
+
 def josprofile(request, username, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
     Display a profile.
@@ -61,27 +85,6 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
                     "profile_photo": currentProfile.profile_photo})
     context.update(extra_context or {})
 
-    return TemplateResponse(request, template, context)
-
-
-@login_required
-def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
-                   extra_context=None):
-    """
-    Profile update form.
-    """
-    profile_form = get_profile_form()
-    form = profile_form(request.POST or None, request.FILES or None,
-                        instance=request.user)
-    if request.method == "POST" and form.is_valid():
-        user = form.save()
-        info(request, _("Profile updated"))
-        try:
-            return redirect("profile", username=user.username)
-        except NoReverseMatch:
-            return redirect("profile_update")
-    context = {"form": form, "title": _("Update Profile")}
-    context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 
 

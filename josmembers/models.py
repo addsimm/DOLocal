@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.models import TimeStamped
-from mezzanine.core.fields import FileField, RichTextField
-from mezzanine.utils.models import AdminThumbMixin, upload_to
+from mezzanine.core.fields import RichTextField
+from mezzanine.utils.models import AdminThumbMixin
 
 from cloudinary.models import CloudinaryField
 

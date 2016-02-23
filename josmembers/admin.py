@@ -28,10 +28,4 @@ class JOSProfileAdmin(admin.ModelAdmin):
     # list_filter = josprofile_list_filter
     # filter_horizontal = ("categories", "related_posts",)
 
-    def save_form(self, request, form, change):
-        """
-        Super class ordering is important here - user must get saved first.
-        """
-        return admin.ModelAdmin.save_form(self, request, form, change)
-
 admin.site.register(JOSProfile, JOSProfileAdmin)
