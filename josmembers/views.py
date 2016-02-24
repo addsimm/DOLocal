@@ -26,30 +26,6 @@ User = get_user_model()
 
 # Create your views here.
 
-### cloudinary:
-# def upload_prompt(request):
-#     context = dict(direct_form=JOSProfileForm())
-#     cl_init_js_callbacks(context['direct_form'], request)
-#     return render(request, 'upload_prompt.html', context)
-#
-#
-# import json
-# from django.http import HttpResponse
-# from django.views.decorators.csrf import csrf_exempt
-#
-#
-# @csrf_exempt
-# def direct_upload_complete(request):
-#     form = JOSProfileForm(request.POST)
-#     if form.is_valid():
-#         form.save()
-#         ret = dict(photo_id=form.instance.id)
-#     else:
-#         ret = dict(errors=form.errors)
-#
-#     return HttpResponse(json.dumps(ret), content_type='application/json')
-
-
 @login_required
 def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
                    extra_context=None):
@@ -70,7 +46,7 @@ def josprofile_update(request, template="josmembers/josmembers_josprofile_update
             return redirect("profile_update")
     context.update({"form": form, "title": _("Update Profile")})
     context.update(extra_context or {})
-    return render(request, template, context)
+    return TemplateResponse(request, template, context)
 
 
 def josprofile(request, username, template="josmembers/josmembers_josprofile.html", extra_context=None):
@@ -81,8 +57,7 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
     context = {"profile_user": user}
-    context.update({"profile": currentProfile,
-                    "profile_photo": currentProfile.profile_photo})
+    context.update({"profile": currentProfile})
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

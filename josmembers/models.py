@@ -19,11 +19,11 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_birth = models.DateField(blank=True, null=True)
 
-    about_me = RichTextField(null=True, blank=True)
+    about_me = RichTextField(default="Coming Soon!", null=True)
 
-    profile_photo = CloudinaryField('image')
+    profile_photo = CloudinaryField('profile_photo', blank=True)
 
     def __str__(self):
         return self.user.username

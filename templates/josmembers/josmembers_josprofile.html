@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags accounts_tags %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
+{% cloudinary_includes %}
+{% cloudinary_js_config %}
 
 <div>
     {% block meta_title %}
@@ -21,12 +23,14 @@
 {% block all_content %}
     <div class="row">
 
-        <div class="col-xs-2">
-            {% if profile_photo %}
-                <img class="img-thumbnail" src="{{ MEDIA_URL }}{% thumbnail profile.profile_photo 0 200 %}">
+        <div class="col-xs-2" style="margin-top: 20px;">
+
+            {% if profile.profile_photo %}
+                {% cloudinary profile.profile_photo width=140 %}
             {% else %}
                 <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="width: 150px;">
             {% endif %}
+
         </div>
 
         <div class="col-xs-8" style="background-color: transparent">
