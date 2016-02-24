@@ -23,7 +23,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     about_me = RichTextField(default="Coming Soon!", null=True)
 
-    profile_photo = CloudinaryField('profile photo', blank=True)
+    profile_image = CloudinaryField('image', blank=True)
 
     def __str__(self):
         return self.user.username

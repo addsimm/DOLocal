@@ -46,7 +46,7 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-    profile_photo = CloudinaryJsFileField()
+    profile_image = CloudinaryJsFileField()
 
     password1 = forms.CharField(label=_("Password"),
                                 widget=forms.PasswordInput(render_value=False))
