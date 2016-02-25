@@ -85,12 +85,13 @@ free to modify it.
     }
 
     .messages {
-        margin-left: 20px;
-        margin-top: 5px;
+        margin-left: 0;
+        margin-top: 10px;
     }
 
     .alert {
         margin: 0;
+        padding: 10px;
     }
 
     .homehead {
@@ -117,16 +118,24 @@ free to modify it.
                     {% nevercache %}
                         {% if messages %}
                             <div class="messages">
-                                {% for message in messages %}
-                                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                                        <button type="button" class="close" data-dismiss="alert"
-                                                aria-hidden="true">&times;</button>
-                                        <img src="/static/img/peeky-123115.png" height="30px" style="margin-left: 5px;">
-                                        <span style="color: black; font-family: 'Abril Fatface'; font-size: 14pt; margin-left: 20px;">
-                                            {{ message | title }}!
-                                        </span>
+
+                                <div class="alert alert-dismissable alert-info" data-alert="alert">
+                                    <div class="row">
+                                        <div class="col-xs-1">
+                                            <img src="/static/img/peeky-123115.png" height="40px"
+                                                 style="margin-left: 0;">
+                                        </div>
+                                        <div class="col-xs-10"
+                                             style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
+                                            {% for message in messages %}
+                                                <span style="color: black; font-family: 'Abril Fatface'; font-size: 16pt; line-height: 1.2; margin-left: 0;">
+                                                            {{ message }}!
+                                                        </span>
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                {% endfor %}
+                                </div>
+
                             </div>
                         {% endif %}
                     {% endnevercache %}

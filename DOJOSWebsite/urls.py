@@ -14,6 +14,13 @@ PROFILE_URL = getattr(settings, "PROFILE_URL", "/users/")
 PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL",
                              "/%s/update/" % ACCOUNT_URL.strip("/"))
 
+PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL",
+                             "/%s/password/reset/" % ACCOUNT_URL.strip("/"))
+PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
+                                    "/%s/password/verify/" %
+                                    ACCOUNT_URL.strip("/"))
+
+_verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
 _slash = "/" if settings.APPEND_SLASH else ""
 
 admin.autodiscover()
@@ -68,6 +75,15 @@ urlpatterns += patterns('',
         "josmembers.views.josprofile", name="josprofile"),
     url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_update", name="josprofile_update"),
+
+    url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
+        "josmembers.views.password_reset", name="mezzanine_password_reset"),
+    url("^%s%s%s$" %
+        (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
+        "josmembers.views.password_reset_verify", name="password_reset_verify"),
+
+    url("^%s%s$" % (ACCOUNT_URL.strip("/"), _slash),
+        views.account_redirect, name="account_redirect"),
 
     ### url(r'^upload/complete$', "josmembers.views.direct_upload_complete", name="direct_upload_complete"),
 

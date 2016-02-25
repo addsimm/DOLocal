@@ -127,3 +127,26 @@ def account_redirect(request):
     to the profile update form.
     """
     return redirect("profile_update")
+
+### Passwords:
+
+def password_reset(request, template="accounts/account_password_reset.html",
+                       form_class=PasswordResetForm, extra_context=None):
+    form = form_class(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        send_verification_mail(request, user, "password_reset_verify")
+        info(request, _("Email with password reset link sent"))
+    context = {"form": form, "title": _("Password Reset")}
+    context.update(extra_context or {})
+    return TemplateResponse(request, template, context)
+
+
+def password_reset_verify(request, uidb36=None, token=None):
+    user = authenticate(uidb36=uidb36, token=token, is_active=True)
+    if user is not None:
+        auth_login(request, user)
+        return redirect("profile_update")
+    else:
+        error(request, _("The link you clicked is no longer valid."))
+        return redirect("/")
