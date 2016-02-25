@@ -19,12 +19,12 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSProfileForm
+from .forms import JOSSignupForm
 
 User = get_user_model()
 
-
 # Create your views here.
+
 
 @login_required
 def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
@@ -32,19 +32,18 @@ def josprofile_update(request, template="josmembers/josmembers_josprofile_update
     """
     Profile update form.
     """
+    context = {}
     profile_form = get_profile_form()
-    form = profile_form(request.POST or None, request.FILES or None,
-                        instance=request.user)
-    context = dict(direct_form=JOSProfileForm)
+    form = profile_form(request.POST or None, request.FILES or None, instance=request.user)
     cl_init_js_callbacks(form, request)
     if request.method == "POST" and form.is_valid():
         user = form.save()
-        info(request, _("Profile updated")) ### what is info and where are errors?
+        info(request, _("Profile changed"))
         try:
             return redirect("profile", username=user.username)
         except NoReverseMatch:
             return redirect("profile_update")
-    context.update({"form": form, "title": _("Update Profile")})
+    context.update({"form": form, "title": _("Change Profile")})
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 
@@ -78,8 +77,8 @@ def signup(request, template="accounts/account_signup.html",
     """
     Signup form.
     """
-    profile_form = get_profile_form()
-    form = profile_form(request.POST or None, request.FILES or None)
+    signup_form = JOSSignupForm
+    form = signup_form(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
         new_user = form.save()
         if not new_user.is_active:

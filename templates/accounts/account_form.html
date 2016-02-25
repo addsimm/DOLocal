@@ -38,15 +38,11 @@
                             {% csrf_token %}
                         {% endnevercache %}
 
-
-
                         {% for field in form %}
                             {% if field.is_hidden %}
                                 {{ field }}
-                            {# else #}
-                            {% elif field.name == "first_name" or field.name == "last_name" or field.name == "email" or field.name == "password1" or field.name == "password2" or field.name == "username" or field.name == "password" or field.name == "profile_image" %}
-
-                                <div class="form-group input_{{ field.id_for_label }}
+                            {% else %}
+                                 <div class="form-group input_{{ field.id_for_label }}
                                                              {{ field.field.type }}
                                                              {% if field.errors %}
                                                                 has-error
@@ -73,8 +69,7 @@
                                     {% endif %}
 
                                 </div>
-
-                              {% endif %}
+                            {% endif %}
                         {% endfor %}
 
                         <div class="form-actions"><!-- sumbit -->

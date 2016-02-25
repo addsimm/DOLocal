@@ -10,6 +10,11 @@ from mezzanine.conf import settings
 from mezzanine.accounts import views
 
 ACCOUNT_URL = getattr(settings, "ACCOUNT_URL", "/accounts/")
+SIGNUP_URL = getattr(settings, "SIGNUP_URL",
+                     "/%s/signup/" % ACCOUNT_URL.strip("/"))
+SIGNUP_VERIFY_URL = getattr(settings, "SIGNUP_VERIFY_URL",
+                            "/%s/verify/" % ACCOUNT_URL.strip("/"))
+
 PROFILE_URL = getattr(settings, "PROFILE_URL", "/users/")
 PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL",
                              "/%s/update/" % ACCOUNT_URL.strip("/"))
@@ -71,10 +76,18 @@ urlpatterns += patterns('',
 
     url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
+
     url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", name="josprofile"),
+
     url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_update", name="josprofile_update"),
+
+    url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
+        "josmembers.views.signup", name="signup"),
+
+    url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
+        "josmembers.views.signup_verify", name="signup_verify"),
 
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         "josmembers.views.password_reset", name="mezzanine_password_reset"),

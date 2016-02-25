@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>3686</introspection-state-number>
-        <introspection-timestamp>2016-02-23.17:08:08.048</introspection-timestamp>
+        <introspection-state-number>3851</introspection-state-number>
+        <introspection-timestamp>2016-02-25.13:15:08.660</introspection-timestamp>
       </schema>
       <schema id="3" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -273,7 +273,7 @@
       </table>
       <table id="67" parent="2" name="josmembers_josprofile">
         <object-id>18003</object-id>
-        <state-number>3641</state-number>
+        <state-number>3851</state-number>
       </table>
       <table id="68" parent="2" name="josstaff_josstaffmember">
         <object-id>17021</object-id>
@@ -20971,11 +20971,11 @@ old_path</columns>
         <default-expression>nextval(&apos;josmembers_josprofile_id_seq&apos;::regclass)</default-expression>
       </column>
       <column id="3762" parent="67" name="date_of_birth">
-        <state-number>3570</state-number>
+        <state-number>3750</state-number>
         <data-type>date</data-type>
       </column>
       <column id="3763" parent="67" name="about_me">
-        <state-number>3570</state-number>
+        <state-number>3851</state-number>
         <data-type>text</data-type>
       </column>
       <column id="3764" parent="67" name="user_id">
@@ -20991,8 +20991,8 @@ old_path</columns>
         <state-number>3633</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="3767" parent="67" name="profile_photo">
-        <state-number>3686</state-number>
+      <column id="3767" parent="67" name="profile_image">
+        <state-number>3851</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)</data-type>
       </column>
