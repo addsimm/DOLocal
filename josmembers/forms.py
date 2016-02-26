@@ -79,13 +79,13 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
         #                     "to change your password")
 
         # Add any profile fields to the form.
-        self.fields['first_name'].widget.attrs['readonly'] = True
-        self.fields['last_name'].widget.attrs['readonly'] = True
+        ### self.fields['first_name'].widget.attrs['readonly'] = True
+        ### self.fields['last_name'].widget.attrs['readonly'] = True
         try:
             profile_fields_form = self.get_profile_fields_form()
             profile_fields = profile_fields_form().fields
-            # self.fields = profile_fields
-            self.fields.update(profile_fields)
+            self.fields = profile_fields
+            # self.fields.update(profile_fields)
             # if not self._signup:
             user_profile = get_profile_for_user(self.instance)
             for field in profile_fields:

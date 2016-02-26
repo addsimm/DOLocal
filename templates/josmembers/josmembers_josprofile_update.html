@@ -1,6 +1,27 @@
-{% extends "accounts/account_form.html" %}
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
 
-{% block accounts_content %}
+{% cloudinary_includes %}
+{% cloudinary_js_config %}
+
+<div>
+    {% block meta_title %}
+        {{ request.GET.firstname}}
+    {% endblock %}
+    {% block title %}
+        {{ request.GET.firstname }}
+    {% endblock %}
+    {# block body_id }account{ endblock #}
+
+    {% block breadcrumb_menu %}
+        {{ block.super }}
+        <li class="active">
+            Change {{ request.GET.firstname }}'s Profile
+        </li>
+    {% endblock %}
+</div>
+
+{% block all_content %}
 
     <!-- b1wbumye -->
 
@@ -16,6 +37,6 @@
         When the form is complete, please press "Change profile." Then, you should see the changes!<br><br>
     </h4>
 
-    {{ block.super }}
+    {{ form.as_p }}
 
-{% endblock accounts_content %}
+{% endblock all_content %}
