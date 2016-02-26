@@ -30,6 +30,7 @@
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
         {% block extra_js %}{% endblock %}
     {% endcompress %}
 
@@ -102,6 +103,7 @@
 
         .messages {
             margin-left: 0;
+            margin-right: 25px;
             margin-top: 10px;
         }
 
