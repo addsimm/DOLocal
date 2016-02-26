@@ -130,7 +130,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-5 col-md-offset-1" >
+                    <div class="col-sm-12 col-md-6 col-md-offset-1" >
                         <div class="row">
                             {% nevercache %}<!-- messages -->
                                 {% if messages %}
@@ -144,7 +144,7 @@
                                                 </div>
                                                 <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
                                                     {% for message in messages %}
-                                                        <span style="color: black; font-family: 'Abril Fatface'; font-size: 16pt; line-height: 1.2; margin-left: 0;">
+                                                        <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
                                                             {{ message }}!
                                                         </span>
                                                     {% endfor %}
@@ -162,7 +162,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-4" style="background-color: transparent;">
+                    <div class="col-sm-12 col-md-3" style="background-color: transparent;">
                         <div class="row">
                             {% include "includes/user_panel.html" %}
                         </div>
