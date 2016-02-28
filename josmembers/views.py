@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth import (login as auth_login, authenticate,
                                  logout as auth_logout, get_user_model)
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.contrib.messages import info, error
 from django.core.urlresolvers import NoReverseMatch, get_script_prefix
 from django.shortcuts import render, get_object_or_404, redirect
@@ -19,7 +20,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm
+from .forms import JOSSignupForm, JOSPasswordResetForm
 
 User = get_user_model()
 
@@ -95,6 +96,7 @@ def signup(request, template="accounts/account_signup.html",
             info(request, _("Successfully signed up"))
             auth_login(request, new_user)
             return login_redirect(request)
+
     context = {"form": form, "title": _("Sign up")}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
@@ -141,11 +143,32 @@ def password_reset(request, template="accounts/account_password_reset.html",
     return TemplateResponse(request, template, context)
 
 
-def password_reset_verify(request, uidb36=None, token=None):
+def password_reset_verify(request, uidb36=None, token=None,template="josmembers/jos_passwordreset_form_template.html",
+                          extra_context=None):
     user = authenticate(uidb36=uidb36, token=token, is_active=True)
+
     if user is not None:
-        auth_login(request, user)
-        return redirect("profile_update")
+        info(request, _("view"))
+        info(request, _(user))
+
+        username = user.username
+        email = user.email
+
+        form = JOSPasswordResetForm(request.POST or None, initial={'email':email})
+
+        if request.method == "POST" and form.is_valid():
+            form.save()
+            info(request, _("Password reset"))
+            ### if user.is_anonymous():
+
+            #auth_login(request, user)
+            return login_redirect(request)
+
+        # context = {"form": form, "title": _("Password reset")}
+        # context.update(extra_context or {})
+        context = {"form": form, "title": _("Password reset")}
+        return TemplateResponse(request, template, context)
+
     else:
-        error(request, _("The link you clicked is no longer valid."))
+        error(request, _("Sorry - the link you clicked has expired. Please try again"))
         return redirect("/")

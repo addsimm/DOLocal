@@ -21,6 +21,7 @@ PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL",
 
 PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL",
                              "/%s/password/reset/" % ACCOUNT_URL.strip("/"))
+
 PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
                                     "/%s/password/verify/" %
                                     ACCOUNT_URL.strip("/"))
@@ -90,7 +91,8 @@ urlpatterns += patterns('',
         "josmembers.views.signup_verify", name="signup_verify"),
 
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
-        "josmembers.views.password_reset", name="mezzanine_password_reset"),
+        "josmembers.views.password_reset", name="password_reset"),
+
     url("^%s%s%s$" %
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
