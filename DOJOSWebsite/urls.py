@@ -91,7 +91,7 @@ urlpatterns += patterns('',
         "josmembers.views.signup_verify", name="signup_verify"),
 
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
-        "josmembers.views.password_reset", name="password_reset"),
+        "josmembers.views.password_reset", name="jos_password_reset"),
 
     url("^%s%s%s$" %
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),

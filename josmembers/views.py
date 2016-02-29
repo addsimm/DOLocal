@@ -1,18 +1,16 @@
 ### josmembers/views.py
 from __future__ import unicode_literals
 
-from django.contrib.auth import (login as auth_login, authenticate,
-                                 logout as auth_logout, get_user_model)
+from django.contrib.auth import (login as auth_login, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.messages import info, error
-from django.core.urlresolvers import NoReverseMatch, get_script_prefix
-from django.shortcuts import render, get_object_or_404, redirect
+from django.core.urlresolvers import NoReverseMatch
+from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.accounts import get_profile_form
-from mezzanine.accounts.forms import LoginForm, PasswordResetForm
+from mezzanine.accounts.forms import PasswordResetForm, ProfileForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
@@ -20,7 +18,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm, JOSPasswordResetForm
+from .forms import JOSSignupForm
 
 User = get_user_model()
 
@@ -143,32 +141,15 @@ def password_reset(request, template="accounts/account_password_reset.html",
     return TemplateResponse(request, template, context)
 
 
-def password_reset_verify(request, uidb36=None, token=None,template="josmembers/jos_passwordreset_form_template.html",
-                          extra_context=None):
+def password_reset_verify(request, uidb36=None, token=None):
+
     user = authenticate(uidb36=uidb36, token=token, is_active=True)
-
     if user is not None:
-        info(request, _("view"))
-        info(request, _(user))
-
-        username = user.username
-        email = user.email
-
-        form = JOSPasswordResetForm(request.POST or None, initial={'email':email})
-
-        if request.method == "POST" and form.is_valid():
-            form.save()
-            info(request, _("Password reset"))
-            ### if user.is_anonymous():
-
-            #auth_login(request, user)
-            return login_redirect(request)
-
-        # context = {"form": form, "title": _("Password reset")}
-        # context.update(extra_context or {})
-        context = {"form": form, "title": _("Password reset")}
+        auth_login(request, user)
+        form = ProfileForm(request.POST or None)
+        template = "josmembers/josmembers_jospassword_reset.html"
+        context = {"form": form, "title": _("Reset password")}
         return TemplateResponse(request, template, context)
-
     else:
-        error(request, _("Sorry - the link you clicked has expired. Please try again"))
-        return redirect("/")
+        error(request, _("This link has expired. Please enter your email address again"))
+        return redirect("jos_password_reset")
