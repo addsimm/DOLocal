@@ -7,7 +7,7 @@ free to modify it.
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 {% load keyword_tags mezzanine_tags pages_tags i18n staticfiles %}
 
-<head>
+<head><div>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
@@ -22,17 +22,17 @@ free to modify it.
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
 
-        {% if LANGUAGE_BIDI %}
-            <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
+        {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
         {% ifinstalled cartridge.shop %}
             <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-            {% if LANGUAGE_BIDI %}
-                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
+            {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
         {% endifinstalled %}
         {% block extra_css %}{% endblock %}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate' rel='stylesheet'
+        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate'
+              rel='stylesheet'
               type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
     {% endcompress %}
 
     {% compress js %}
@@ -48,8 +48,7 @@ free to modify it.
     <![endif]-->
 
     {% block extra_head %}{% endblock %}
-</head>
-
+</div>
 <style>
 
     body {
@@ -107,14 +106,24 @@ free to modify it.
 
 </style>
 
-<body>
+</head>
+
+<body id="{% block body_id %}body{% endblock %}" style="font-family: 'source sans pro', sans-serif;">
+
 
 <div id="fixme" style="background-color: transparent; position: fixed; left: 0;right: 0; top:0; z-index: 1030;"><!-- FIXED TOP NAV -->
     <div class="container">
         <div class="nav navbar-default" role="navigation">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-2" style="background-color: white; padding-left: 30px;">
+                    <div class="row">
+                        <a href="/" class="pull-left">
+                            <img style="height: 90px; opacity: .05;" src="/static/img/JOSLogo121615.png">
+                        </a>
+                    </div>
+                </div>
 
-
-            <div class="col-sm-12 col-md-6 col-md-offset-3" style="background-color: transparent;">
+            <div class="col-sm-12 col-md-6 col-md-offset-1">
                 <div class="row">
                     {% nevercache %}<!-- messages -->
                         {% if messages %}
@@ -126,17 +135,15 @@ free to modify it.
                                             <img src="/static/img/peeky-123115.png" height="40px"
                                                  style="margin-left: 0;">
                                         </div>
-                                        <div class="col-xs-10"
-                                             style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
+                                        <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
                                             {% for message in messages %}
                                                 <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
-                                                            {{ message }}!
-                                                        </span>
+                                                    {{ message }}!<br>
+                                                </span>
                                             {% endfor %}
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         {% endif %}
                     {% endnevercache %}

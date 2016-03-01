@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
-        <!-- fix favicon -->
+
         {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
         {% ifinstalled cartridge.shop %}
             <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
@@ -53,7 +53,7 @@
 
         @media screen and (max-width: 768px) {
             body {
-                padding-top: 205px;
+                padding-top: 230px;
             }
         }
 
@@ -118,10 +118,9 @@
 
 <body id="{% block body_id %}body{% endblock %}" style="font-family: 'source sans pro', sans-serif;">
 
-    <!-- FIXED TOP -->
-    <div id="fixme" style="background-color: transparent; position: fixed; left: 0;right: 0; top:0; z-index: 1030;">
-        <div class="container" style="background-color: transparent;"><!-- top menu -->
 
+    <div id="fixme" style="background-color: transparent; position: fixed; left: 0;right: 0; top:0; z-index: 1030;">
+        <div class="container">
             <div class="nav navbar-default" role="navigation" >
                 <div class="row">
                     <div class="hidden-xs hidden-sm col-md-2" style="background-color: white; padding-left: 30px;">
@@ -147,13 +146,12 @@
                                                 <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
                                                     {% for message in messages %}
                                                         <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
-                                                            {{ message }}!
+                                                            {{ message }}!<br>
                                                         </span>
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 {% else %}
                                     <p class="text-center" style="color: rgb(65, 45, 120); font-size: 16pt; line-height: 1.2; margin-top: 25px;">

@@ -10,7 +10,7 @@ from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.accounts import get_profile_form
-from mezzanine.accounts.forms import PasswordResetForm, ProfileForm
+from mezzanine.accounts.forms import PasswordResetForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
@@ -18,7 +18,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm
+from .forms import JOSSignupForm, JOSPasswordResetVerifyForm
 
 User = get_user_model()
 
@@ -141,15 +141,44 @@ def password_reset(request, template="accounts/account_password_reset.html",
     return TemplateResponse(request, template, context)
 
 
-def password_reset_verify(request, uidb36=None, token=None):
 
+
+#         form = ProfileForm(request.POST or None)
+#         template = ""
+#
+# >> > a = Article.objects.get(pk=1)
+# >> > f = ArticleForm(request.POST, instance=a)
+# >> > f.save()
+
+def password_reset_verify(request, uidb36=None, token=None):
     user = authenticate(uidb36=uidb36, token=token, is_active=True)
+
     if user is not None:
         auth_login(request, user)
-        form = ProfileForm(request.POST or None)
         template = "josmembers/josmembers_jospassword_reset.html"
+
+        user_id = user.id
+        info(request, _(user_id))
+
+        # if this is a POST request we need to process the form data
+        if request.method == 'POST':
+            # create a form instance and populate it with data from the request:
+            form = JOSPasswordResetVerifyForm(request.POST)
+            # check whether it's valid:
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                info(request, _("form valid"))
+                # redirect to a new URL:
+                return redirect('/')
+
+        # if a GET (or any other method) we'll create a blank form
+        #else:
+
+        form = JOSPasswordResetVerifyForm({"user_id": user_id})
+
         context = {"form": form, "title": _("Reset password")}
         return TemplateResponse(request, template, context)
+
     else:
         error(request, _("This link has expired. Please enter your email address again"))
         return redirect("jos_password_reset")

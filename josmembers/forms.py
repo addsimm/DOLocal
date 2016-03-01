@@ -7,7 +7,8 @@ from django.db.models.manager import Manager
 from django import forms
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext, ugettext_lazy as _
-from django.contrib.messages import info, error
+from django.shortcuts import get_object_or_404, render_to_response
+
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
@@ -227,20 +228,31 @@ class JOSSignupForm(Html5Mixin, forms.ModelForm):
         return user
 
 
-class JOSPasswordResetForm(Html5Mixin, forms.ModelForm):
+class JOSPasswordResetVerifyForm(Html5Mixin, forms.ModelForm):
+
+    user_id = forms.IntegerField(widget=forms.HiddenInput())
     password1 = forms.CharField(label=_("Password"),
                                 widget=forms.PasswordInput(render_value=False))
 
-    password2 = forms.CharField(label=_("Password (again)"),
-                                widget=forms.PasswordInput(render_value=False))
+    # password2 = forms.CharField(label=_("Password (again)"),
+    #                             widget=forms.PasswordInput(render_value=False))
 
     class Meta:
         model = User
         fields = ("email",)
         widgets = {'email': forms.TextInput(attrs={'readonly': 'readonly'})}
 
-    def __init__(self, request, *args, **kwargs):
-        super(JOSPasswordResetForm, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(JOSPasswordResetVerifyForm, self).__init__(*args, **kwargs)
+        user_id = self.data['user_id']
+
+        try:
+            self.user = User.objects.get(id=user_id)
+        except self.user.DoesNotExist:
+            return render_to_response('Cannot find user')
+
+        user_email = self.user.email
+        self.fields['email'].label = "Account: %s" % user_email
 
         for field in self.fields:
             if field.startswith("password"):
@@ -248,9 +260,6 @@ class JOSPasswordResetForm(Html5Mixin, forms.ModelForm):
                 self.fields[field].widget.attrs.pop("required", "")
                 oldlabel = unicode(self.fields[field].label)
                 self.fields[field].label = "New " + oldlabel
-            if field.startswith("email"):
-                self.fields['email'].label = "Reset Account Password:"
-
 
     def clean_password2(self):
         """
@@ -281,12 +290,7 @@ class JOSPasswordResetForm(Html5Mixin, forms.ModelForm):
         use as the profile's slug.
         """
 
-        raise forms.ValidationError(ugettext("can't find user"))
-
         user = super(self.user)
-        if not user:
-            raise forms.ValidationError(ugettext("can't find user"))
-
         password = self.cleaned_data.get("password1")
         if password:
             user.set_password(password)
