@@ -1,7 +1,7 @@
 ### josmembers/views.py
 from __future__ import unicode_literals
 
-from django.contrib.auth import (login as auth_login, authenticate, get_user_model)
+from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info, error
 from django.core.urlresolvers import NoReverseMatch
@@ -18,11 +18,19 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm, JOSPasswordResetVerifyForm
+from .forms import JOSSignupForm, JOSNewPasswordForm
 
 User = get_user_model()
 
 # Create your views here.
+
+def logout(request):
+    """
+    Log the user out.
+    """
+    auth_logout(request)
+    info(request, _("Successfully logged out - come back soon"))
+    return redirect("/")
 
 
 @login_required
@@ -71,8 +79,7 @@ def josprofile_redirect(request):
 
 ### Original:
 
-def signup(request, template="accounts/account_signup.html",
-           extra_context=None):
+def signup(request, template="accounts/account_signup.html", extra_context=None):
     """
     Signup form.
     """
@@ -141,44 +148,36 @@ def password_reset(request, template="accounts/account_password_reset.html",
     return TemplateResponse(request, template, context)
 
 
-
-
-#         form = ProfileForm(request.POST or None)
-#         template = ""
-#
-# >> > a = Article.objects.get(pk=1)
-# >> > f = ArticleForm(request.POST, instance=a)
-# >> > f.save()
-
 def password_reset_verify(request, uidb36=None, token=None):
     user = authenticate(uidb36=uidb36, token=token, is_active=True)
 
     if user is not None:
         auth_login(request, user)
-        template = "josmembers/josmembers_jospassword_reset.html"
-
-        user_id = user.id
-        info(request, _(user_id))
-
-        # if this is a POST request we need to process the form data
-        if request.method == 'POST':
-            # create a form instance and populate it with data from the request:
-            form = JOSPasswordResetVerifyForm(request.POST)
-            # check whether it's valid:
-            if form.is_valid():
-                # process the data in form.cleaned_data as required
-                info(request, _("form valid"))
-                # redirect to a new URL:
-                return redirect('/')
-
-        # if a GET (or any other method) we'll create a blank form
-        #else:
-
-        form = JOSPasswordResetVerifyForm({"user_id": user_id})
-
-        context = {"form": form, "title": _("Reset password")}
-        return TemplateResponse(request, template, context)
+        return redirect('jos_new_password')
 
     else:
         error(request, _("This link has expired. Please enter your email address again"))
         return redirect("jos_password_reset")
+
+
+def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.html", extra_context=None):
+
+    user_id = request.user.id
+    info(request, _(user_id))
+    form = JOSNewPasswordForm({"password1": "xxxxxx", "user_id": user_id})
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        form = JOSNewPasswordForm(request.POST)
+        if form.is_valid():
+            info(request, _("form valid"))
+            user = User.objects.get(id=user_id)
+            password = form.jos_clean_password()
+            if password:
+                user.set_password(password)
+                info(request, _(password))
+
+            return redirect("/")
+
+    context = {"form": form, "title": _("Reset password")}
+    return TemplateResponse(request, template, context)

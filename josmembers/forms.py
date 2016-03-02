@@ -227,14 +227,13 @@ class JOSSignupForm(Html5Mixin, forms.ModelForm):
                                     is_active=True)
         return user
 
-
-class JOSPasswordResetVerifyForm(Html5Mixin, forms.ModelForm):
+class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
 
     user_id = forms.IntegerField(widget=forms.HiddenInput())
-    password1 = forms.CharField(label=_("Password"),
+    password1 = forms.CharField(label=_("New Password"),
                                 widget=forms.PasswordInput(render_value=False))
 
-    # password2 = forms.CharField(label=_("Password (again)"),
+    # password2 = forms.CharField(label=_("Confirm New Password"),
     #                             widget=forms.PasswordInput(render_value=False))
 
     class Meta:
@@ -243,23 +242,16 @@ class JOSPasswordResetVerifyForm(Html5Mixin, forms.ModelForm):
         widgets = {'email': forms.TextInput(attrs={'readonly': 'readonly'})}
 
     def __init__(self, *args, **kwargs):
-        super(JOSPasswordResetVerifyForm, self).__init__(*args, **kwargs)
-        user_id = self.data['user_id']
+        super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
+        self.user_id = self.data['user_id']
+        # self.user_id = self.data['user_id']
 
         try:
-            self.user = User.objects.get(id=user_id)
-        except self.user.DoesNotExist:
-            return render_to_response('Cannot find user')
-
-        user_email = self.user.email
-        self.fields['email'].label = "Account: %s" % user_email
-
-        for field in self.fields:
-            if field.startswith("password"):
-                self.fields[field].widget.attrs["autocomplete"] = "off"
-                self.fields[field].widget.attrs.pop("required", "")
-                oldlabel = unicode(self.fields[field].label)
-                self.fields[field].label = "New " + oldlabel
+            self.user = User.objects.get(id=self.user_id)
+            user_email = self.user.email
+            self.fields['email'].label = "Account: %s" % user_email
+        except:
+            pass
 
     def clean_password2(self):
         """
@@ -281,7 +273,7 @@ class JOSPasswordResetVerifyForm(Html5Mixin, forms.ModelForm):
                 self._errors["password1"] = self.error_class(errors)
         return password2
 
-    def save(self, *args, **kwargs):
+    def jos_clean_password(self, *args, **kwargs):
         """
         Create the new user. If no username is supplied (may be hidden
         via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
@@ -290,9 +282,6 @@ class JOSPasswordResetVerifyForm(Html5Mixin, forms.ModelForm):
         use as the profile's slug.
         """
 
-        user = super(self.user)
         password = self.cleaned_data.get("password1")
-        if password:
-            user.set_password(password)
 
-        return user
+        return password

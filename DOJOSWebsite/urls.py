@@ -23,8 +23,12 @@ PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL",
                              "/%s/password/reset/" % ACCOUNT_URL.strip("/"))
 
 PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
-                                    "/%s/password/verify/" %
-                                    ACCOUNT_URL.strip("/"))
+                                    "/%s/password/verify/" % ACCOUNT_URL.strip("/"))
+
+JOS_NEW_PASSWORD_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
+                               "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
+
+LOGOUT_URL = settings.LOGOUT_URL
 
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
 _slash = "/" if settings.APPEND_SLASH else ""
@@ -93,12 +97,15 @@ urlpatterns += patterns('',
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         "josmembers.views.password_reset", name="jos_password_reset"),
 
+    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
+        "josmembers.views.jos_new_password", name="jos_new_password"),
+
     url("^%s%s%s$" %
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
 
-    url("^%s%s$" % (ACCOUNT_URL.strip("/"), _slash),
-        views.account_redirect, name="account_redirect"),
+    url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
+        "josmembers.views.logout", name="logout"),
 
     ### url(r'^upload/complete$', "josmembers.views.direct_upload_complete", name="direct_upload_complete"),
 
