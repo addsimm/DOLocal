@@ -162,21 +162,17 @@ def password_reset_verify(request, uidb36=None, token=None):
 
 def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.html", extra_context=None):
 
-    user_id = request.user.id
-    info(request, _(user_id))
-    form = JOSNewPasswordForm({"password1": "xxxxxx", "user_id": user_id})
+    # user_id = request.user.id
+    # info(request, _(user_id))
+    form = JOSNewPasswordForm()
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        form = JOSNewPasswordForm(request.POST)
+        form = JOSNewPasswordForm(request.POST, instance=request.user)
         if form.is_valid():
             info(request, _("form valid"))
-            user = User.objects.get(id=user_id)
-            password = form.jos_clean_password()
-            if password:
-                user.set_password(password)
-                info(request, _(password))
-
+            form.save()
+            info(request, _("form saved"))
             return redirect("/")
 
     context = {"form": form, "title": _("Reset password")}

@@ -229,7 +229,8 @@ class JOSSignupForm(Html5Mixin, forms.ModelForm):
 
 class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
 
-    user_id = forms.IntegerField(widget=forms.HiddenInput())
+    # user_id = forms.HiddenInput()
+    # fakeemail = forms.EmailField(label="Change for Account Email:")
     password1 = forms.CharField(label=_("New Password"),
                                 widget=forms.PasswordInput(render_value=False))
 
@@ -238,20 +239,15 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("email",)
-        widgets = {'email': forms.TextInput(attrs={'readonly': 'readonly'})}
+        fields = ()
 
     def __init__(self, *args, **kwargs):
         super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
-        self.user_id = self.data['user_id']
         # self.user_id = self.data['user_id']
-
-        try:
-            self.user = User.objects.get(id=self.user_id)
-            user_email = self.user.email
-            self.fields['email'].label = "Account: %s" % user_email
-        except:
-            pass
+        for field in self.fields:
+            if field.startswith("password"):
+                self.fields[field].widget.attrs["autocomplete"] = "off"
+                self.fields[field].widget.attrs.pop("required", "")
 
     def clean_password2(self):
         """
@@ -273,7 +269,7 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
                 self._errors["password1"] = self.error_class(errors)
         return password2
 
-    def jos_clean_password(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         """
         Create the new user. If no username is supplied (may be hidden
         via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
@@ -281,7 +277,12 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
         that if profile pages are enabled, we still have something to
         use as the profile's slug.
         """
+        kwargs["commit"] = False
+        user = super(JOSNewPasswordForm, self).save(*args, **kwargs)
 
         password = self.cleaned_data.get("password1")
 
-        return password
+        user.set_password(password)
+        user.save()
+
+        return user
