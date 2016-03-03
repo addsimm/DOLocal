@@ -6,24 +6,31 @@
 {% block body_id %}account{% endblock %}
 
 {% block breadcrumb_menu %}
-{{ block.super }}
-<li>{{ profile_user|username_or:"get_full_name" }}</li>
+    {{ block.super }}
+    <li class="active">{{ profile_user|username_or:"get_full_name" }}</li>
 {% endblock %}
 
-{% block main %}
-<div class="row">
-<div class="profile-image col-md-3">
-    <img class="img-thumbnail" src="{% gravatar_url profile_user.email 128 %}">
-    {% if profile_user == request.user %}
-    <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
-    {% endif %}
-</div>
-<div class="profile-content col-md-9">
-    <h2>{{ profile_user.get_full_name }}</h2>
-    {% for field, value in profile_user|profile_fields %}
-    <h3>{{ field }}</h3>
-    <p>{{ value|linebreaksbr }}</p>
-    {% endfor %}
-</div>
-</div>
+{% block all_content %}
+    <div class="row">
+        <div class="col-xs-3">
+            000<br>
+            <img class="img-thumbnail" src="{{ MEDIA_URL }}uploads/josaccounts/Adam.jpg"><br>
+            {{ profile_user }}
+        </div>
+
+        <div class="profile-image col-xs-3">
+            <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="height: 140px;">
+            {% if profile_user == request.user %}
+                <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
+            {% endif %}
+        </div>
+
+        <div class="profile-content col-xs-6">
+            <h2>{{ profile_user.get_full_name }}</h2>
+            {% for field, value in profile_user|profile_fields %}
+                <h3>111{{ field }}</h3>
+                <p>222{{ value|linebreaksbr }}</p>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

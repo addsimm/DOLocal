@@ -222,8 +222,12 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    "mezzanine.mobile",
+    "cloudinary",
+    # "mezzanine.mobile",
+    "josstaff",
+    "josmembers",
 )
+
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -287,6 +291,18 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
+#########
+# EMAIL #
+#########
+
+# EMAIL_SUBJECT_PREFIX = 'Join Our Story'
+# SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_PASSWORD = '4Primetime!'
+# EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
+
 ##################
 # LOCAL SETTINGS #
 ##################
@@ -319,3 +335,17 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+####################
+# PROFILE SETTINGS #
+####################
+
+ACCOUNTS_NO_USERNAME = True
+
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
+ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
+
+# ACCOUNTS_VERIFICATION_REQUIRED = False
+# ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
+

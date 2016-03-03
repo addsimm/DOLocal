@@ -1,24 +1,78 @@
 {% load i18n mezzanine_tags accounts_tags %}
 
+<style>
+
+    .btn-default {
+        background-color: rgb(230, 225, 240);
+        background-image: none;
+        background-repeat: no-repeat;
+        border-color: rgb(65, 25, 140);
+        box-shadow: none;
+        font-size: 14pt;
+        text-decoration: none;
+        text-shadow: none;
+        color: rgb(65, 25, 140);
+    }
+
+    .panel, .panel-body, .panel-default {
+        box-shadow: none;
+        border-color: transparent;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+</style>
+
 {% if request.user.is_authenticated %}
-    <p>
-    {% trans "Logged in as: " %}
-    {% url "profile" request.user.username as profile_url %}
-    {% if profile_url %}
-        <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>
-    </p>
-        <a href="{% url "profile_update" %}" class="btn btn-default btn-sm btn-account">
-            <span class="glyphicon glyphicon-edit"></span> {% trans "Update profile" %}</a>
-    {% else %}
-        <a href="{% url "profile_update" %}">{{ request.user|username_or:"email" }}</a>
-    </p>
-    {% endif %}
-    <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-sm btn-danger btn-account">
-        <span class="glyphicon glyphicon-log-out"></span> {% trans "Log out" %}</a>
+
+    <div class="row" style="background-color: transparent;">
+        <div class="col-xs-12 text-right" style="width:100%;">
+
+            <a href="/contact" class="btn btn-default">
+                {% trans "Contact Us" %}</a>
+
+            <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default" style="width: 122px;">
+                Log Out</a>
+
+        </div>
+
+        <div class="col-xs-12 text-right" style="width: 100%; line-height: 1.1; padding-top:0; background-color: transparent;">
+
+            {% url "profile" request.user.username as profile_url %}
+
+            {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
+
+            <div style="color: rgb(65, 45, 120); font-size: 18pt; font-weight: bold;">
+                Hello!
+                <span style="color: green; font-size: 28pt; margin-left: 5px; margin-right: 3px;">
+                    {{ user.get_short_name }}
+                </span>
+                <a href="{{ profile_url }}">
+
+                    <!-- TODO: photo -->
+                    <span style="color: #942fab; font-size: 8pt;">
+                        VIEW PROFILE
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
 {% else %}
-    <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default btn-sm btn-account">
-        <span class="glyphicon glyphicon-log-in"></span> {% trans "Log in" %}</a>
-    &nbsp;{% trans "or" %}&nbsp;
-    <a href="{% url "signup" %}?next={{ request.path }}" class="btn btn-default btn-sm btn-account">
-        <span class="glyphicon glyphicon-edit"></span> {% trans "Sign up" %}</a>
+
+    <div class="row pull-right" style="background-color: transparent;">
+        <div class="col-md-12">
+
+           <a href="/contact" class="btn btn-default">
+                {% trans "Contact Us" %}</a>
+
+           <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-default">
+                {% trans "Join / Log In" %}</a>
+
+        </div>
+    </div>
+
 {% endif %}
+
+

@@ -1,27 +1,48 @@
 {% load i18n pages_tags %}
 
-{% if on_home %}
-<li>{% trans "Home" %}</li>
-{% else %}
+<style>
+
+    .breadcrumb {
+        background-color: rgb(230, 225, 240);
+        border-radius: 4px;
+        list-style: outside none none;
+        margin-bottom: 0;
+        padding: 7px 3px 3px;
+    }
+
+    .breadcrumb > .active {
+        color: black;
+        font-size: 18pt;
+        font-weight: bold;
+    }
+
+    .breadcrumb > li + li::before {
+        color: black;
+        content: ">";
+        font-size: 14pt;
+        padding: 0 30px;
+    }
+
+
+</style>
+
+<li id="breadcrumb-menu-home" style="margin-left: 30px;">
+    <a href="{% url "home" %}">{% trans "Home" %}</a>
+</li>
+
 {% for page in page_branch %}
 
-    {% if not has_home and page.is_primary and forloop.first %}
-    <li id="breadcrumb-menu-home">
-        <a href="{% url "home" %}">{% trans "Home" %}</a>
-    </li>
-    {% endif %}
-
     {% if page.is_current_or_ascendant %}
-    {% if page.is_current %}
-    <li id="breadcrumb-menu-{{ page.html_id }}"
-        class="active">{{ page.title }}</li>
-    {% else %}
-    <li id="breadcrumb-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
-    </li>
-    {% endif %}
-    {% if page.has_children %}{% page_menu page %}{% endif %}
+        {% if page.is_current %}
+            <li id="breadcrumb-menu-{{ page.html_id }}"
+                class="active">{{ page.title }}</li>
+        {% else %}
+            <li id="breadcrumb-menu-{{ page.html_id }}">
+                <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+            </li>
+        {% endif %}
+        {% if page.has_children %}{% page_menu page %}{% endif %}
     {% endif %}
 
 {% endfor %}
-{% endif %}
+

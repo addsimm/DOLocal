@@ -2,154 +2,227 @@
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
-<head>
+<head><div>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <title>
-        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}
+    </title>
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
-
-    {% ifinstalled mezzanine.blog %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
-        <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
-    {% endifinstalled %}
 
     {% compress css %}
         <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
-        {% if LANGUAGE_BIDI %}
-            <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">
-        {% endif %}
+
+        {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
         {% ifinstalled cartridge.shop %}
             <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-            {% if LANGUAGE_BIDI %}
-                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
-            {% endif %}
+            {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
         {% endifinstalled %}
         {% block extra_css %}{% endblock %}
+        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate' rel='stylesheet' type='text/css'>
     {% endcompress %}
 
     {% compress js %}
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
         {% block extra_js %}{% endblock %}
     {% endcompress %}
 
     <!--[if lt IE 9]>
-<script src="{% static "js/html5shiv.js" %}"></script>
-<script src="{% static "js/respond.min.js" %}"></script>
-<![endif]-->
+        <script src="{% static "js/html5shiv.js" %}"></script>
+        <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
 
     {% block extra_head %}{% endblock %}
+    </div>
+    <style>
+
+        body {
+            color: rgb(65, 45, 120);
+            font-family: 'source sans pro', sans-serif;
+            font-size: 14pt;
+            line-height: 110%;
+            padding-top: 165px;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding-top: 230px;
+            }
+        }
+
+        a {
+            color: #942fab;
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            background-color: white;
+            border-radius: 0;
+            border-top: 2px solid rgba(65, 25, 140, .85);
+            margin-bottom: 15px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .btn-default {
+            background-color: rgb(230, 225, 240);
+            background-image: none;
+            background-repeat: no-repeat;
+            border-color: rgb(65, 25, 140);
+            box-shadow: none;
+            font-size: 14pt;
+            text-decoration: none;
+            text-shadow: none;
+            color: rgb(65, 25, 140);
+        }
+
+        .navbar-default {
+            background-image: none;
+            background-repeat: no-repeat;
+            border-radius: 4px;
+            box-shadow: none;
+            background-color: white;
+            border-color: black;
+            }
+
+        footer {
+            background-color: white;
+            border-top: none;
+            margin-top: 0;
+            margin-bottom: 5px;
+            padding-top: 15px;
+            padding-bottom: 0;
+        }
+
+        .messages {
+            margin-left: 0;
+            margin-right: 25px;
+            margin-top: 10px;
+        }
+
+        .alert {
+            margin: 0;
+            padding: 10px;
+        }
+
+    </style>
+
 </head>
 
-<body id="{% block body_id %}body{% endblock %}">
+<body id="{% block body_id %}body{% endblock %}" style="font-family: 'source sans pro', sans-serif;">
 
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">{% trans "Toggle Navigation" %}</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
-            {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
-        </div>
-        <div class="navbar-collapse collapse">
-            {% search_form "all" %}
-            {% page_menu "pages/menus/dropdown.html" %}
-        </div>
-    </div>
-</div>
 
-<div class="container">
-
-    {% nevercache %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
+    <div id="fixme" style="background-color: transparent; position: fixed; left: 0;right: 0; top:0; z-index: 1030;">
+        <div class="container">
+            <div class="nav navbar-default" role="navigation" >
+                <div class="row">
+                    <div class="hidden-xs hidden-sm col-md-2" style="background-color: white; padding-left: 30px;">
+                        <div class="row">
+                            <a href="/" class="pull-left">
+                                <img style="height: 90px;" src="/static/img/JOSLogo121615.png">
+                            </a>
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endnevercache %}
 
-    <h1>{% block title %}{% endblock %}</h1>
+                    <div class="col-sm-12 col-md-6 col-md-offset-1" >
+                        <div class="row">
+                            {% nevercache %}<!-- messages -->
+                                {% if messages %}
+                                    <div class="messages">
 
-    <ul class="breadcrumb">
-        {% spaceless %}
-            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-        {% endspaceless %}
-    </ul>
+                                        <div class="alert alert-dismissable alert-info" data-alert="alert">
+                                            <div class="row">
+                                                <div class="col-xs-1">
+                                                    <img src="/static/img/peeky-123115.png" height="40px"
+                                                         style="margin-left: 0;">
+                                                </div>
+                                                <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
+                                                    {% for message in messages %}
+                                                        <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
+                                                            {{ message }}!<br>
+                                                        </span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <p class="text-center" style="color: rgb(65, 45, 120); font-size: 16pt; line-height: 1.2; margin-top: 25px;">
+                                        A storytelling community for<br>happier souls and healthier minds.
+                                    </p>
+                                {% endif %}
+                            {% endnevercache %}
+                        </div>
+                    </div>
 
-</div>
-
-<div class="container">
-    <div class="row">
-
-        <div class="col-md-2 left">
-            <h3>Celeste is a wonderful<br>
-                xxxxx</h3>
-            {% block left_panel %}
-                <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
-            {% endblock %}
-        </div>
-
-        <div class="col-md-7 middle">
-            {% block main %}{% endblock %}
-        </div>
-
-        <div class="col-md-3 right">
-            {% nevercache %}
-                {% include "includes/language_selector.html" %}
-                {% include "includes/user_panel.html" %}
-            {% endnevercache %}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {% block right_panel %}
-                        {% ifinstalled mezzanine.twitter %}
-                            {% include "twitter/tweets.html" %}
-                        {% endifinstalled %}
-                    {% endblock %}
+                    <div class="col-sm-12 col-md-3" style="background-color: transparent;">
+                        <div class="row">
+                            {% include "includes/user_panel.html" %}
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="row" style="background-color: white; " >
+                <div class="col-xs-12" style="margin-top: 5px; padding-bottom: 4px; background-color: rgba(65, 25, 140, .05);">
+                    <!-- BREADCRUMB -->
+                    <ul class="breadcrumb" style="background-color: transparent;">
+                        {% spaceless %}
+                            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                        {% endspaceless %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" style="background-color: transparent; margin-top: 5px;">
+
+                <div class="hidden-xs hidden-sm col-sm-12" style="background-color: transparent; padding-right: 0;">
+                    <button class="btn btn-warning btn-sm pull-right" onclick="goBack()">Go Back</button>
+
+                    <script>function goBack() {
+                        window.history.back();
+                    }</script>
+                </div>
+
+            </div>
         </div>
-
     </div>
-</div>
 
-<footer>
-    <div class="container">
-        {% page_menu "pages/menus/footer.html" %}
 
-        <div class="row">
-            <p class="site-info text-center">
-                {% trans "Powered by" %}
-                <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-                <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-                {% trans "and" %}
-                <a href="http://www.djangoproject.com">Django</a>
-                <span class="separator">|</span>
-                {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
+    <!-- CENTER -->
+    <div class="container" style="background-color: transparent;">
+
+        {% block all_content %}
+
+        {% endblock all_content %}
+    </div>
+
+    <footer>
+        <div class="container" style="margin-top: 30px;">
+            {% page_menu "pages/menus/footer.html" %}
+
+            <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+                Join Our Story is a California Benefit Corporation &copy 2014
                 {% ifinstalled mezzanine.mobile %}
                     <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
+                        {% trans "View Mobile Site" %}
+                    </a>
                 {% endifinstalled %}
             </p>
         </div>
-    </div>
-</footer>
-
-{% include "includes/footer_scripts.html" %}
-
+        {% include "includes/footer_scripts.html" %}
+    </footer>
 </body>
+
+<!-- FOOTER -->
+
+
 </html>

@@ -2,10 +2,25 @@
 
 {% load mezzanine_tags %}
 
-{% block main %}{{ block.super }}
+{% block all_content %}
 
-{% editable page.richtextpage.content %}
-{{ page.richtextpage.content|richtext_filters|safe }}
-{% endeditable %}
+    <style>
+        #rtfdiv {
+            font-size: 14pt;
+            color: rgb(65, 45, 120);
+        }
+
+    </style>
+
+    <div id="rtfdiv" class="row">
+        <div class="col-sm-10 col-sm-offset-1" style="background-color: transparent;">
+
+
+        {% editable page.richtextpage.content %}
+            {{ page.richtextpage.content|richtext_filters|safe }}
+        {% endeditable %}
+
+        </div>
+    </div>
 
 {% endblock %}

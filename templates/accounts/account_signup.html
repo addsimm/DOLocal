@@ -1,17 +1,47 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
 
-{% block main %}
+{% block accounts_content %}
 
-{% if request.user.is_authenticated %}
-    <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
-{% else %}
-    {{ block.super }}
-    {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
-    <p>{% trans "After signing up, your account will be reviewed for approval. You'll receive an email when your account is activated." %}</p>
-    {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-    <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
+    {% if request.user.is_authenticated  %}
+
+        <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
+
+    {% else %}
+
+        <h3 style="font-family: 'source sans pro', sans-serif; font-size: 18pt; font-weight: bold;">
+            Completing this form signs you up for Join Our Story.
+        </h3>
+        <h4 style="font-family: 'source sans pro', sans-serif; font-size: 16pt; line-height: 1.55;">
+            By signing up, you agree to abide by our <a href="/community-rules">community rules</a> and our
+            <a href="/legals">terms and conditions</a>.<br><br>
+
+            TO CREATE YOUR PASSWORD, WE SUGGEST YOU:<br>
+            &nbsp&nbsp&nbsp1. Choose two words and a punctuation mark.<br>
+            &nbsp&nbsp&nbsp2. Put them together with no spaces and no capital letters.<br>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            For example: "Happy" and "Camper" and "!' becomes "happycamper!"<br>
+            &nbsp&nbsp&nbsp3. Remember your password and enter it twice below.<br>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-- Don't worry, you can easily reset your password anytime.<br><br>
+
+            Please enter your new password twice to verify the typing.<br><br>
+
+            When the form is complete, please press "Sign up" - if something is not right, the computer will indicate what you should change.<br><br>
+
+            After you sign up, personalize your profile to let everyone know your here!<br><br>
+
+            {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
+                Once submitted, your account must be approved. You'll receive an email when it's activated; if you do not receive an email within 8 hours, please use the upper right button to "Contact Us."<br><br>
+
+            {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
+                Once submitted, your account must be verfied. You'll receive an email with instructions. If you do not receive an email within 8 hours, please use the upper right button to "Contact Us."<br><br>
+
+            {% endif %}
+
+        </h4>
+
+        {{ block.super }}
+
     {% endif %}
-{% endif %}
 
-{% endblock %}
+{% endblock accounts_content %}

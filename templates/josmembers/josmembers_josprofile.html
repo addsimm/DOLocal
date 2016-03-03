@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
+
+{% cloudinary_includes %}
+{% cloudinary_js_config %}
+
+<div>
+    {% block meta_title %}
+        {{ profile_user|username_or:"get_short_name" }}
+    {% endblock %}
+    {% block title %}
+        {{ profile_user|username_or:"get_short_name" }}
+    {% endblock %}
+    {# block body_id }account{ endblock #}
+
+    {% block breadcrumb_menu %}
+        {{ block.super }}
+        <li class="active">
+            {{ profile_user|username_or:"get_short_name" }}'s Profile
+        </li>
+    {% endblock %}
+</div>
+
+{% block all_content %}
+    <div class="row">
+
+        <div class="col-xs-2" style="margin-top: 20px;">
+
+            {% if profile.profile_image %}
+                {% cloudinary profile.profile_image width=140 %}
+            {% else %}
+                <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="width: 150px;">
+            {% endif %}
+
+        </div>
+
+        <div class="col-xs-8" style="background-color: transparent">
+            <h3>
+                About {{ profile_user.get_short_name }}:
+            </h3>
+
+            <p>
+                {{ profile.about_me|safe }}
+            </p>
+        </div>
+
+        <div class="col-xs-2 form-actions" style="background-color: transparent; padding-right: 0;">
+            {% if profile_user == request.user %}
+
+                <a class="btn btn-info btn-default pull-right" href="{% url "profile_update" %}?firstname={{ profile_user.get_short_name }}">
+                    {% trans "Change profile" %}
+                </a>
+
+                <p class="pull-right" style="line-height: 1.3; margin-top: 10px;">
+                    Last Change:<br>
+                    <span style="color: green">{{ profile.updated|date:"M d, Y" }}</span>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row" style="font-size: 10px; margin-top: 30px;">
+        {% for field, value in profile_user|profile_fields %}
+
+            <div class="row" style="margin-top: 5px; ">
+                <div class="col-xs-2" style="font-weight: bold; text-align: right;">
+                    {{ field }}
+                </div>
+                <div class="col-xs-8" style=" ">
+                    {{ value|linebreaksbr }}
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
