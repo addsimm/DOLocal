@@ -8,7 +8,8 @@ free to modify it.
 {% load keyword_tags mezzanine_tags pages_tags i18n staticfiles %}
 
 <head><div>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="text/html">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
     <meta name="description" content="{% block meta_description %}{% endblock %}">
@@ -123,39 +124,39 @@ free to modify it.
                     </div>
                 </div>
 
-            <div class="col-sm-12 col-md-6 col-md-offset-1">
-                <div class="row">
-                    {% nevercache %}<!-- messages -->
-                        {% if messages %}
-                            <div class="messages">
+                <div class="col-sm-12 col-md-6 col-md-offset-1">
+                    <div class="row">
+                        {% nevercache %}<!-- messages -->
+                            {% if messages %}
+                                <div class="messages">
 
-                                <div class="alert alert-dismissable alert-info" data-alert="alert">
-                                    <div class="row">
-                                        <div class="col-xs-1">
-                                            <img src="/static/img/peeky-123115.png" height="40px"
-                                                 style="margin-left: 0;">
-                                        </div>
-                                        <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
-                                            {% for message in messages %}
-                                                <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
-                                                    {{ message }}!<br>
-                                                </span>
-                                            {% endfor %}
+                                    <div class="alert alert-dismissable alert-info" data-alert="alert">
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                <img src="/static/img/peeky-123115.png" height="40px"
+                                                     style="margin-left: 0;">
+                                            </div>
+                                            <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
+                                                {% for message in messages %}
+                                                    <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
+                                                        {{ message }}!<br>
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endnevercache %}
+                            {% endif %}
+                        {% endnevercache %}
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-3" style="background-color: transparent;">
+                    <div class="row">
+                        {% include "includes/user_panel.html" %}
+                    </div>
                 </div>
             </div>
-
-            <div class="col-sm-12 col-md-3" style="background-color: transparent;">
-                <div class="row">
-                    {% include "includes/user_panel.html" %}
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

@@ -83,6 +83,7 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
     """
     Signup form.
     """
+    remote_address = request.META.get('HTTP_X_REAL_IP')
     signup_form = JOSSignupForm
     form = signup_form(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
@@ -103,6 +104,7 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
             return login_redirect(request)
 
     context = {"form": form, "title": _("Sign up")}
+    context.update ({"remote_address": remote_address})
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 

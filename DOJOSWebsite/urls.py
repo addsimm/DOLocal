@@ -117,6 +117,15 @@ urlpatterns += patterns('',
 
 )
 
+### DJANGO-DEBUG-TOOLBAR
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+        )
+
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.
 handler404 = "mezzanine.core.views.page_not_found"
