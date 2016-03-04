@@ -73,41 +73,39 @@ urlpatterns += patterns('',
     # If you'd like more granular control over the patterns:
 
     ### JOS Staff
+
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
 
-    ### JOS Accounts
-    ### url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
-    ###     views.profile_redirect, name="profile_redirect"),
-
-    url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
-
-    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile", name="josprofile"),
-
-    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile_update", name="josprofile_update"),
-
-    url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
-        "josmembers.views.signup", name="signup"),
-
-    url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
-        "josmembers.views.signup_verify", name="signup_verify"),
-
-    url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
-        "josmembers.views.password_reset", name="jos_password_reset"),
-
-    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
-        "josmembers.views.jos_new_password", name="jos_new_password"),
-
-    url("^%s%s%s$" %
-        (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
-        "josmembers.views.password_reset_verify", name="password_reset_verify"),
+    ### JOS Accounts & Members ###
 
     url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
         "josmembers.views.logout", name="logout"),
 
-    ### url(r'^upload/complete$', "josmembers.views.direct_upload_complete", name="direct_upload_complete"),
+    url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
+        "josmembers.views.signup", name="signup"),
+    url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
+        "josmembers.views.signup_verify", name="signup_verify"),
+
+    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile", name="josprofile"),
+    url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
+    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
+         "josmembers.views.josprofile_update", name="josprofile_update"),
+
+    url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
+        "josmembers.views.password_reset", name="jos_password_reset"),
+    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
+        "josmembers.views.jos_new_password", name="jos_new_password"),
+    url("^%s%s%s$" %
+        (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
+        "josmembers.views.password_reset_verify", name="password_reset_verify"),
+
+    ### DJOINGO ###
+
+    url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
+
+    ###############
 
     ("^", include("mezzanine.urls")),
 

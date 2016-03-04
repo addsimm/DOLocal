@@ -226,6 +226,8 @@ INSTALLED_APPS = (
     # "mezzanine.mobile",
     "josstaff",
     "josmembers",
+    "josdjoingo",
+
 )
 
 
