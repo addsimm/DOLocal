@@ -1,7 +1,5 @@
 <!--
-This template is provided as a custom template for the homepage, for
-when it is configured as an editable page in the navigation tree. Feel
-free to modify it.
+This template is just for the landing page.
 -->
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
@@ -24,16 +22,11 @@ free to modify it.
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
 
         {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">{% endif %}
-        {% ifinstalled cartridge.shop %}
-            <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-            {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">{% endif %}
-        {% endifinstalled %}
         {% block extra_css %}{% endblock %}
-        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate'
-              rel='stylesheet'
-              type='text/css'>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
+        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate'
+              rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     {% endcompress %}
 
     {% compress js %}
@@ -216,6 +209,7 @@ free to modify it.
                 </ul>
             </div>
         </div>
+
 
     <div class="row" style="margin-top: 80px;">
         <div class="col-xs-12 homehead text-center">
