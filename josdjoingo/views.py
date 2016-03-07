@@ -26,7 +26,13 @@ def djoingo_main(request):
     """
     template = "josdjoingo/djoingo_main.html"
     card = JoingoCard()
-    card.entries = generate_card_entries()
+    # card.entries = generate_card_entries()
+    card.card_serial = 123
+
+
+    card.tags =[1,2,3,4]
+    card.tags.insert(0, 0)
+    typecard = type(card.tags)
     card.save()
     context = {"card": card}
 

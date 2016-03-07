@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
+import random
 
 from mezzanine.core.models import TimeStamped
 
@@ -17,7 +18,9 @@ class JoingoCard(TimeStamped, models.Model):
         verbose_name = 'Joingo Card'
         verbose_name_plural = 'Joingo Cards'
 
-    entries = ArrayField(models.PositiveSmallIntegerField())
+    card_serial = models.PositiveIntegerField()
+    entries = ArrayField(models.PositiveSmallIntegerField(), size=25, null=True)
+    tags = ArrayField(models.CharField(max_length=200))
 
     # card_owner_team = models.ForeignKey(JoingoTeam)
 

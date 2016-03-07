@@ -15,10 +15,35 @@
 {% block all_content %}
 <div class="row">
 
-Hello
+Hello<br><br>
 
-{{ card.entries }}
+card_serial {{ card.card_serial }}<br><br>
 
+card_id {{ card.id }}<br><br>
+
+{% if card.tags %}
+    card.tags {{ card.tags }}<br><br>
+{% endif %}
+
+card_tags {{ card_tags }}<br><br>
+
+
+<ul>
+    {% for x in card.tags %}
+
+        <li>
+            {{ forloop.counter0 }}
+            tag {{ x }}
+        </li><br><br>
+
+    {% empty %}
+
+        Nothing in list
+
+    {% endfor %}
+</ul>
+
+end
 
 </div>
 {% endblock all_content %}
