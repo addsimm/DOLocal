@@ -19,7 +19,7 @@ class JoingoCard(TimeStamped, models.Model):
         verbose_name_plural = 'Joingo Cards'
 
     card_serial = models.PositiveIntegerField()
-    entries = ArrayField(models.PositiveSmallIntegerField(), size=25, null=True)
+    entries = ArrayField(models.IntegerField(), default=None, size=25, null=True)
     tags = ArrayField(models.CharField(max_length=200))
 
     # card_owner_team = models.ForeignKey(JoingoTeam)

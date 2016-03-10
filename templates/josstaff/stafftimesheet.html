@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+{% block meta_title %}About Join Our Story{% endblock %}
+{% block title %}About Join Our Story{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    <li class="active">About Join Our Story</li>
+
+{% endblock %}
+
+{% block all_content %}
+
+    <div class="row" style=" ">
+        <div class="col-xs-offset-1 col-xs-10" style="margin-top: 15px; margin-bottom: 25px; line-height: 1.1;">
+            <h2 class="text-center" style="font-family: 'Abril Fatface', serif; font-size: 36pt;font-weight: bold; line-height: .8;">
+                Our Mission<br><br>
+            </h2>
+            <p class="text-center" style="font-size: 24pt;font-weight: bold; line-height: 1.4;">
+                We enrich lives - especially older adults'- by delivering a fun,<br>supportive space for meaningful expression, learning and friendship.
+            </p>
+
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
+
+
+
+    <div class="row" style="background-color: rgba(65, 25, 140, .20); margin: 15px; padding: 15px; line-height: 1.1;">
+        <div class="col-xs-2">
+            <img class="img-responsive" style="margin-top: 30px;"
+                 src="{{ MEDIA_URL }}{% thumbnail member.bio_image 150 0 %}">
+        </div>
+
+        <div class="col-xs-10">
+            <h3>
+                {{ member.first_name }} {{ member.last_name }}
+                <a href="mailto:{{ member.email }}?Subject=From%20JOSAboutUs">
+                    {{ member.email }}
+                </a>
+            </h3>
+            <p>
+                <span style="font-style: italic; margin-left: 10px;">
+                    {{ member.jos_title }}
+                </span>
+            </p>
+            <p style="line-height: 1.25;">
+                {{ member.bio_text }}
+            </p>
+        </div>
+    </div>
+
+{% endblock all_content %}

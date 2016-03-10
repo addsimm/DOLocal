@@ -29,7 +29,7 @@ def djoingo_main(request):
     # card.entries = generate_card_entries()
     card.card_serial = 123
 
-
+    card.entries= [1, 2, 3, 4]
     card.tags =[1,2,3,4]
     card.tags.insert(0, 0)
     typecard = type(card.tags)

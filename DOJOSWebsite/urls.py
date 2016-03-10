@@ -101,6 +101,10 @@ urlpatterns += patterns('',
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
 
+    url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
+        "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
+
+
     ### DJOINGO ###
 
     url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
