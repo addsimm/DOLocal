@@ -57,12 +57,11 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
         return cumhours
 
 
-
-
-
-
 class JOSStaffHoursEntry(TimeStamped, models.Model):
 
     staff_member = models.ForeignKey(JOSStaffMember)
+    period_date_start = models.DateField()
+    period_date_end = models.DateField()
     hours_claimed = models.PositiveSmallIntegerField()
     hours_notes = models.TextField()
+    time_claim_approved = models.BooleanField(default=False)
