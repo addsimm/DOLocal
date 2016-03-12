@@ -25,7 +25,6 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
 
     class Meta:
         verbose_name = 'JOS Staff Member'
-        verbose_name_plural = 'JOS Staff Members'
 
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)

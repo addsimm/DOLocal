@@ -1,5 +1,4 @@
 from django import forms
-from django.shortcuts import get_object_or_404, render_to_response
 
 from mezzanine.core.forms import Html5Mixin
 
@@ -14,6 +13,15 @@ class JOSStaffHoursEntryForm(Html5Mixin, forms.ModelForm):
     class Meta:
         model = JOSStaffHoursEntry
         fields = '__all__'
+        widgets = {
+            'period_date_start': forms.DateInput(),
+            'period_date_end': forms.DateInput()
+        }
+
+    member = forms.CharField(label="Member", widget=forms.TextInput(), initial='z')
 
     def __init__(self, *args, **kwargs):
         super(JOSStaffHoursEntryForm, self).__init__(*args, **kwargs)
+
+
+

@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.messages import info, error
 from josstaff.models import JOSStaffMember
+from django.utils.translation import ugettext_lazy as _
 
 from .forms import JOSStaffHoursEntryForm
 
