@@ -9,9 +9,6 @@ from mezzanine.core.models import TimeStamped
 from mezzanine.pages.models import Orderable, Displayable
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
-from adminsortable.models import SortableMixin
-
-
 
 class StrippedCharField(models.CharField):
     """Newforms CharField that strips trailing and leading spaces."""
@@ -32,6 +29,7 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     jos_title = models.CharField(max_length=60, blank=True)
+
     email = models.EmailField(blank=True)
 
     bio_text = models.TextField(blank=True)
@@ -57,6 +55,8 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
 
 
 class JOSStaffHoursEntry(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'JOS Staff Member Hours Entry'
 
     staff_member = models.ForeignKey(JOSStaffMember)
     period_date_start = models.DateField()

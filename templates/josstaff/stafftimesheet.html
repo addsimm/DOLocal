@@ -10,7 +10,6 @@
     <li class="active">Timekeeping:<span style="margin-left: 12px;">{{ member.first_name }} {{ member.last_name }}</span></li>
 {% endblock %}
 
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static "css/datepicker.css" %}">
 {% endblock %}
@@ -23,29 +22,40 @@
 {% block all_content %}
 
     <div class="row">
+        <div class="col-xs-7 col-xs-offset-1">
+            <h3>Previous Entries:</h3>
+            {# form.as_p #}
+            {{ staffmember_entries.as_table }}
+        </div>
+        <div class="col-xs-2 col-xs-offset-2">
+            <img class="img-responsive" style="margin-top: 30px;"
+                 src="{{ MEDIA_URL }}{% thumbnail member.bio_image 50 0 %}">
+        </div>
+    </div>
+
+
+
+    <div class="row">
         <div class="col-xs-10 col-xs-offset-1">
+
             {% errors_for form %}
 
             <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
                 <fieldset>
 
                     <!-- datepicker test -->
-
-
-
-                        <div class="row">
-                            <div class='col-sm-6'>
-                                <input type="text" class="form-control" id="dpinput">
-                            </div>
-                            <script type="text/javascript">
-                                $(function () {
-                                    $('#dpinput').datepicker({
-                                        todayBtn: "linked"
-                                    });
-                                });
-                            </script>
+                    <div class="row">
+                        <div class='col-xs-4 col-xs-offset-5'>
+                            Datepickertest: <input type="text" class="form-control" id="dpinput">
                         </div>
-
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#dpinput').datepicker({
+                                    todayBtn: "linked"
+                                });
+                            });
+                        </script>
+                    </div>
 
 
                     {% nevercache %}

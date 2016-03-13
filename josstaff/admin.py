@@ -1,9 +1,17 @@
 from django.contrib import admin
-from josstaff.models import JOSStaffMember
+from .models import JOSStaffMember, JOSStaffHoursEntry
 
-class JOSStaffMemberAdmin(admin.ModelAdmin):
+
+class JOSStaffHoursEntryAdmin(admin.ModelAdmin):
+    model = JOSStaffHoursEntry
+
+
+
+class JOSStaffMemberAdmin(admin.StackedInline):
     model = JOSStaffMember
+    inlines = [JOSStaffHoursEntry]
 
 # Register your models here.
 
+admin.site.register(JOSStaffHoursEntry, JOSStaffHoursEntryAdmin)
 admin.site.register(JOSStaffMember, JOSStaffMemberAdmin)
