@@ -37,7 +37,7 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
                           upload_to=upload_to("josstaff.staffgallery.bio_image", "josstaff"),
                           format="Image", max_length=255, null=True, blank=True)
 
-    start_hours = models.PositiveSmallIntegerField()
+    cumalative_hours = models.PositiveSmallIntegerField(default=0)
 
     admin_thumb_field = "bio_image"
 
@@ -48,15 +48,11 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
     def __unicode__(self):
         return self.title
 
-    def get_cumulative_hours(self):
-        cumhours = JOSStaffHoursEntry.objects.filter(self).aggregate(sum('hours_claimed'))
-
-        return cumhours
-
 
 class JOSStaffHoursEntry(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Staff Member Hours Entry'
+        verbose_name = 'Hours Entry'
+        ordering = ("staff_member", "period_date_start")
 
     staff_member = models.ForeignKey(JOSStaffMember)
     period_date_start = models.DateField()
