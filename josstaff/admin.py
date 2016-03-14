@@ -12,7 +12,8 @@ class JOSStaffHoursEntryAdmin(admin.ModelAdmin):
     list_display = ('staff_member', 'created', 'period_date_start', 'period_date_end',
                     'hours_claimed', 'time_claim_approved',)
     list_editable = ('time_claim_approved',)
-    list_display_links = ('staff_member',)
+    list_filter = ('staff_member', 'time_claim_approved')
+    # list_display_links = ('staff_member',)
 
 
 class JOSStaffMemberAdmin(admin.ModelAdmin):

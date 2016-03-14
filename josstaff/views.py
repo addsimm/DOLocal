@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.messages import info, error
 from josstaff.models import JOSStaffMember
 from django.utils.translation import ugettext_lazy as _
+from django.core import serializers
 
 from mezzanine.utils.email import send_approve_mail
 
@@ -23,9 +24,18 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
 
     firstname = request.GET.get('firstname')
     staffmember = get_object_or_404(JOSStaffMember, first_name = firstname)
-    staffmember_entries = JOSStaffHoursEntry.objects.filter(staff_member_id__exact = staffmember.id)
-    form = JOSStaffHoursEntryForm()
-    context = {"form": form, 'member': staffmember, "staffmember_entries": staffmember_entries}
+    #smes = JOSStaffHoursEntry.objects.filter(staff_member_id=staffmember.id)
+    smes = staffmember.josstaffhoursentry_set.all()
+
+
+
+
+    staffmember_entries = serializers.serialize("python", smes)
+
+
+    form = JOSStaffHoursEntryForm(instance=request.user)
+    context = {"form": form, 'member': staffmember,
+               "smes": smes, "staffmember_entries": staffmember_entries}
 
     if request.method == 'POST':
         form = JOSStaffHoursEntryForm(request.POST, instance=request.user)
