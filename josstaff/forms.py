@@ -20,9 +20,6 @@ class JOSStaffHoursEntryForm(Html5Mixin, forms.ModelForm):
             'period_date_end': forms.DateInput()
         }
 
-    membertest = forms.CharField(label="Member", widget=forms.TextInput())
-    date_field = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}))
-
     def __init__(self, *args, **kwargs):
         super(JOSStaffHoursEntryForm, self).__init__(*args, **kwargs)
 

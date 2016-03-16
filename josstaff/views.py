@@ -24,7 +24,9 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
     staffmember_entries = staffmember.josstaffhoursentry_set.all().values('period_date_start', 'period_date_end','hours_claimed', 'time_claim_approved').order_by('period_date_start')
     staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
 
-    form = JOSStaffHoursEntryForm(instance=request.user)
+    josstaffhoursentry = JOSStaffHoursEntry(staff_member = staffmember)
+
+    form = JOSStaffHoursEntryForm(instance=josstaffhoursentry)
     context = {"form": form, "member": staffmember, "total_hours": staffmember_total_hours, "member_entries": staffmember_entries}
 
     if request.method == 'POST':
