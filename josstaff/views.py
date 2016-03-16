@@ -1,10 +1,7 @@
-
-
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404
 from django.contrib.messages import info, error
-from josstaff.models import JOSStaffMember
 from django.utils.translation import ugettext_lazy as _
-from django.core import serializers
 
 from mezzanine.utils.email import send_approve_mail
 
@@ -24,18 +21,11 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
 
     firstname = request.GET.get('firstname')
     staffmember = get_object_or_404(JOSStaffMember, first_name = firstname)
-    #smes = JOSStaffHoursEntry.objects.filter(staff_member_id=staffmember.id)
-    smes = staffmember.josstaffhoursentry_set.all()
-
-
-
-
-    staffmember_entries = serializers.serialize("python", smes)
-
+    staffmember_entries = staffmember.josstaffhoursentry_set.all().values('period_date_start', 'period_date_end','hours_claimed', 'time_claim_approved').order_by('period_date_start')
+    staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
 
     form = JOSStaffHoursEntryForm(instance=request.user)
-    context = {"form": form, 'member': staffmember,
-               "smes": smes, "staffmember_entries": staffmember_entries}
+    context = {"form": form, "member": staffmember, "total_hours": staffmember_total_hours, "member_entries": staffmember_entries}
 
     if request.method == 'POST':
         form = JOSStaffHoursEntryForm(request.POST, instance=request.user)
