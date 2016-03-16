@@ -20,11 +20,11 @@
             $(document).ready(function () {
                 $('#datepickerstart').datepicker();
                 $('#datepickerstart').on("changeDate", function () {
-                    $('#period_start_date_field').val($('#datepickerstart').datepicker('getFormattedDate'));
+                    $('#id_period_date_start').val($('#datepickerstart').datepicker('getFormattedDate'));
                 });
                 $('#datepickerend').datepicker();
                 $('#datepickerend').on("changeDate", function () {
-                    $('#period_end_date_field').val($('#datepickerend').datepicker('getFormattedDate'));
+                    $('#id_period_date_end').val($('#datepickerend').datepicker('getFormattedDate'));
                 });
             });
     </script>
@@ -32,6 +32,27 @@
 
 
 {% block all_content %}
+
+    <style>
+
+        #id_hours_notes {
+            font-size: 14pt;
+            height: 150px;
+            padding: 10px;
+            width: 500px;
+        }
+
+        #id_hours_claimed {
+            font-size: 18pt;
+            padding: 10px;
+            width: 100px;
+        }
+
+        #id_period_date_start, #id_period_date_end {
+            width: 90px;
+        }
+
+    </style>
 
     <div class="row" style="margin-bottom: 50px; margin-top: 30px;">
         <div class="col-xs-2">
@@ -93,21 +114,9 @@
                         <div id="datepickerend" data-provide="datepicker-inline"></div>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 30px;">
+                <div class="row" style="margin-top: 10px;">
                     {% for field in form %}
                         {% if field.is_hidden %}
-                            {% if field.errors %}
-                                <p class="help-block">
-                                    {% for e in form.hours_claimed.errors %}
-                                        {% if not forloop.first %} / {% endif %}{{ e }}
-                                    {% endfor %}
-                                </p>
-
-                            {% elif field.help_text %}
-                                <p class="help-block">
-                                    {{ form.hours_claimed.help_text }}
-                                </p>
-                            {% endif %}
                             {{ field }}
                         {% endif %}
                     {% endfor %}
@@ -118,75 +127,90 @@
                                                     has-error
                                                  {% endif %}">
 
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                {{ form.period_date_start }}
+                                {% if form.period_date_start.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.period_date_start.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
 
-                        <div class="col-xs-4 col-xs-offset-1" style="margin-top: 25px;">
+                                {% elif form.period_date_start.help_text %}
+                                    <p class="help-block">
+                                        {{ form.period_date_start.help_text }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                {{ form.period_date_end }}
+                                {% if form.period_date_end.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.period_date_end.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
 
-                            <label class="control-label" style="font-size: 18pt;"
-                                   for="{{ form.hours_claimed.auto_id }}">
-                                Hours Claimed:
-                            </label>
-                            <style>
-
-                                #id_hours_claimed {
-                                    font-size: 18pt;
-                                    padding: 10px;
-                                    width: 100px;
-                                }
-
-                            </style>
-
-                            {{ form.hours_claimed }}
-
-                            {% if form.hours_claimed.errors %}
-                                <p class="help-block">
-                                    {% for e in form.hours_claimed.errors %}
-                                        {% if not forloop.first %} / {% endif %}{{ e }}
-                                    {% endfor %}
-                                </p>
-
-                            {% elif form.hours_claimed.help_text %}
-                                <p class="help-block">
-                                    {{ form.hours_claimed.help_text }}
-                                </p>
-                            {% endif %}
-
-                        </div>
-                        <div class="col-xs-5 pull-left">
-
-                            <label class="control-label" style="font-size: 14pt;"
-                                   for="{{ form.hours_notes.auto_id }}">
-                                Notes:
-                            </label>
-                            <style>
-
-                                #id_hours_notes {
-                                    font-size: 14pt;
-                                    height: 150px;
-                                    padding: 10px;
-                                    width: 500px;
-                                }
-
-                            </style>
-
-                            {{ form.hours_notes }}
-
-                            {% if form.hours_notes.errors %}
-                                <p class="help-block">
-                                    {% for e in form.hours_claimed.errors %}
-                                        {% if not forloop.first %} / {% endif %}{{ e }}
-                                    {% endfor %}
-                                </p>
-
-                            {% elif form.hours_notes.help_text %}
-                                <p class="help-block">
-                                    {{ form.hours_claimed.help_text }}
-                                </p>
-                            {% endif %}
-
+                                {% elif form.period_date_end.help_text %}
+                                    <p class="help-block">
+                                        {{ form.period_date_end.help_text }}
+                                    </p>
+                                {% endif %}
+                            </div>
                         </div>
 
+                        <div class="row" style="margin-top: 25px;">
+                            <div class="col-xs-4 col-xs-offset-1" style="margin-top: 25px;">
+
+                                <label class="control-label" style="font-size: 18pt;"
+                                       for="{{ form.hours_claimed.auto_id }}">
+                                    Hours Claimed:
+                                </label>
+
+                                {{ form.hours_claimed }}
+
+                                {% if form.hours_claimed.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.hours_claimed.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.hours_claimed.help_text %}
+                                    <p class="help-block">
+                                        {{ form.hours_claimed.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-xs-5">
+
+                                <label class="control-label" style="font-size: 14pt;"
+                                       for="{{ form.hours_notes.auto_id }}">
+                                    Notes:
+                                </label>
+
+                                {{ form.hours_notes }}
+
+                                {% if form.hours_notes.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.hours_notes.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.hours_notes.help_text %}
+                                    <p class="help-block">
+                                        {{ form.hours_notes.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+
 
                 <div class="form-actions"><!-- sumbit -->
                     {% block account_form_actions %}

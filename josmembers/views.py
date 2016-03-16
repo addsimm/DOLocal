@@ -166,15 +166,14 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
 
     # user_id = request.user.id
     # info(request, _(user_id))
-    form = JOSNewPasswordForm()
+    form = JOSNewPasswordForm(instance=request.user)
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         form = JOSNewPasswordForm(request.POST, instance=request.user)
         if form.is_valid():
-            info(request, _("form valid"))
             form.save()
-            info(request, _("form saved"))
+            info(request, _("Password Changed"))
             return redirect("/")
 
     context = {"form": form, "title": _("Reset password")}

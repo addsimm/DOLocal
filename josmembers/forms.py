@@ -234,12 +234,12 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
     password1 = forms.CharField(label=_("New Password"),
                                 widget=forms.PasswordInput(render_value=False))
 
-    # password2 = forms.CharField(label=_("Confirm New Password"),
-    #                             widget=forms.PasswordInput(render_value=False))
+    password2 = forms.CharField(label=_("Confirm New Password"),
+                                widget=forms.PasswordInput(render_value=False))
 
     class Meta:
         model = User
-        fields = ()
+        fields = ('email',)
 
     def __init__(self, *args, **kwargs):
         super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
@@ -248,6 +248,7 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
             if field.startswith("password"):
                 self.fields[field].widget.attrs["autocomplete"] = "off"
                 self.fields[field].widget.attrs.pop("required", "")
+            self.fields["email"].widget.attrs["readonly"] = "readonly"
 
     def clean_password2(self):
         """

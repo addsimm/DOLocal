@@ -25,12 +25,12 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
     firstname = request.GET.get('firstname')
     staffmember = get_object_or_404(JOSStaffMember, first_name = firstname)
     staffmember_entries = staffmember.josstaffhoursentry_set.all().values('period_date_start', 'period_date_end','hours_claimed', 'time_claim_approved').order_by('period_date_start')
-    staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
+
 
     josstaffhoursentry = JOSStaffHoursEntry(staff_member = staffmember)
 
     form = JOSStaffHoursEntryForm(instance=josstaffhoursentry)
-    context = {"form": form, "member": staffmember, "total_hours": staffmember_total_hours, "member_entries": staffmember_entries}
+    context = {"form": form, "member": staffmember, "member_entries": staffmember_entries}
 
     if request.method == 'POST':
         form = JOSStaffHoursEntryForm(request.POST)
@@ -38,6 +38,9 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
             form.save()
             # send_approve_mail(request, staffmember)
             info(request, _("Entry accepted"))
+
+    staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
+    context.update({"total_hours": staffmember_total_hours})
 
     return render(request, template, context)
 
