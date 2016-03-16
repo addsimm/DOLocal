@@ -16,9 +16,10 @@ class JOSStaffHoursEntryForm(Html5Mixin, forms.ModelForm):
         widgets = {
             'staff_member': forms.HiddenInput(),
             'time_claim_approved': forms.HiddenInput(),
-            'period_date_start': forms.TextInput(attrs = {'id': 'period_start_date_field'}),
-            'period_date_end': forms.TextInput(attrs={'id': 'period_end_date_field'})
+            'period_date_start': forms.HiddenInput(attrs = {'id': 'period_start_date_field', 'required': 'true'}),
+            'period_date_end': forms.HiddenInput(attrs={'id': 'period_end_date_field', 'required': 'true'})
         }
+
 
     def __init__(self, *args, **kwargs):
         super(JOSStaffHoursEntryForm, self).__init__(*args, **kwargs)

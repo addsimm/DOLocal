@@ -72,10 +72,7 @@
     {# form.as_p #}
 
     <div class="row">
-
-
         <div class="col-xs-10 col-xs-offset-2" style="border-top: 2px solid rgba(65, 25, 140, 0.25);">
-
 
             {% errors_for form %}
 
@@ -99,44 +96,103 @@
                 <div class="row" style="margin-top: 30px;">
                     {% for field in form %}
                         {% if field.is_hidden %}
+                            {% if field.errors %}
+                                <p class="help-block">
+                                    {% for e in form.hours_claimed.errors %}
+                                        {% if not forloop.first %} / {% endif %}{{ e }}
+                                    {% endfor %}
+                                </p>
+
+                            {% elif field.help_text %}
+                                <p class="help-block">
+                                    {{ form.hours_claimed.help_text }}
+                                </p>
+                            {% endif %}
                             {{ field }}
-                        {% else %}
-                            <div class="form-group input_{{ field.id_for_label }}
-                                                         {{ field.field.type }}
-                                                         {% if field.errors %}
-                                                            has-error
-                                                         {% endif %}">
-                                {# field.name #}
-                                {% if field.label %}
-                                    <label class="control-label"
-                                           for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                                {% endif %}
-
-                                {{ field }}
-
-                                {% if field.errors %}
-                                    <p class="help-block">
-                                        {% for e in field.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
-
-                                {% elif field.help_text %}
-                                    <p class="help-block">
-                                        {{ field.help_text }}
-                                    </p>
-                                {% endif %}
-
-                            </div>
                         {% endif %}
                     {% endfor %}
 
-                    <div class="form-actions"><!-- sumbit -->
-                        {% block account_form_actions %}
-                            <input class="btn btn-default btn-lg pull-left"
-                                   style="margin-top: 10px;" type="submit" value="Submit">
-                        {% endblock account_form_actions %}
+                    <div class="form-group input_{{ field.id_for_label }}
+                                                 {{ field.field.type }}
+                                                 {% if field.errors %}
+                                                    has-error
+                                                 {% endif %}">
+
+
+                        <div class="col-xs-5" style="margin-top: 25px;">
+
+                            <label class="control-label" style="font-size: 24pt;"
+                                   for="{{ form.hours_claimed.auto_id }}">
+                                Hours Claimed:
+                            </label>
+                            <style>
+
+                                #id_hours_claimed {
+                                    font-size: 24pt;
+                                    padding: 10px;
+                                    width: 100px;
+                                }
+
+                            </style>
+
+                            {{ form.hours_claimed }}
+
+                            {% if form.hours_claimed.errors %}
+                                <p class="help-block">
+                                    {% for e in form.hours_claimed.errors %}
+                                        {% if not forloop.first %} / {% endif %}{{ e }}
+                                    {% endfor %}
+                                </p>
+
+                            {% elif form.hours_claimed.help_text %}
+                                <p class="help-block">
+                                    {{ form.hours_claimed.help_text }}
+                                </p>
+                            {% endif %}
+
+                        </div>
+                        <div class="col-xs-5">
+
+                            <label class="control-label" style="font-size: 14pt;"
+                                   for="{{ form.hours_notes.auto_id }}">
+                                Notes:
+                            </label>
+                            <style>
+
+                                #id_hours_notes {
+                                    font-size: 14pt;
+                                    height: 150px;
+                                    padding: 10px;
+                                    width: 500px;
+                                }
+
+                            </style>
+
+                            {{ form.hours_notes }}
+
+                            {% if form.hours_notes.errors %}
+                                <p class="help-block">
+                                    {% for e in form.hours_claimed.errors %}
+                                        {% if not forloop.first %} / {% endif %}{{ e }}
+                                    {% endfor %}
+                                </p>
+
+                            {% elif form.hours_notes.help_text %}
+                                <p class="help-block">
+                                    {{ form.hours_claimed.help_text }}
+                                </p>
+                            {% endif %}
+
+                        </div>
+
                     </div>
+                </div>
+
+                <div class="form-actions"><!-- sumbit -->
+                    {% block account_form_actions %}
+                        <input class="btn btn-default btn-lg pull-left"
+                               style="margin-top: 10px;" type="submit" value="Submit">
+                    {% endblock account_form_actions %}
                 </div>
 
             </form>

@@ -30,10 +30,10 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
     context = {"form": form, "member": staffmember, "total_hours": staffmember_total_hours, "member_entries": staffmember_entries}
 
     if request.method == 'POST':
-        form = JOSStaffHoursEntryForm(request.POST, instance=request.user)
+        form = JOSStaffHoursEntryForm(request.POST)
         if form.is_valid():
             form.save()
-            send_approve_mail(request, staffmember)
+            # send_approve_mail(request, staffmember)
             info(request, _("Entry accepted"))
 
     return render(request, template, context)
