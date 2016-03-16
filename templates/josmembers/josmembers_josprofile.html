@@ -58,7 +58,7 @@
                 </p>
             {% endif %}
 
-            {% if profile_user == request.user %}
+            {% if request.user.is_active and request.user.is_staff %}
 
                 <a class="btn btn-info btn-default pull-right"
                    href="{% url "josstaff_timesheet" %}?firstname={{ profile_user.get_short_name }}">
