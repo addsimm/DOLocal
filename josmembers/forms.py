@@ -82,6 +82,7 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
         kwargs["commit"] = False
         user = super(JOSProfileForm, self).save(*args, **kwargs)
 
+
         try:
             profile = get_profile_for_user(user)
             profile_form = self.get_profile_fields_form()

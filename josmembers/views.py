@@ -42,8 +42,10 @@ def josprofile_update(request, template="josmembers/josmembers_josprofile_update
     context = {}
     profile_form = get_profile_form()
     form = profile_form(request.POST or None, request.FILES or None, instance=request.user)
-    cl_init_js_callbacks(form, request)
+    #cl_init_js_callbacks(form, request)
     if request.method == "POST" and form.is_valid():
+        if request.POST.get['temp_profile_image']:
+            form.fields['profile_image']=request.POST.get['temp_profile_image']
         user = form.save()
         info(request, _("Profile changed"))
         try:
