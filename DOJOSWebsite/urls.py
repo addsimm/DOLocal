@@ -66,11 +66,7 @@ urlpatterns += patterns('',
     # MEZZANINE'S URLS
     # ----------------
     # ADD YOUR OWN URLPATTERNS *ABOVE* THE LINE BELOW.
-    # ``mezzanine.urls`` INCLUDES A *CATCH ALL* PATTERN
-    # FOR PAGES, SO URLPATTERNS ADDED BELOW ``mezzanine.urls``
-    # WILL NEVER BE MATCHED!
-
-    # If you'd like more granular control over the patterns:
+    # URLPATTERNS ADDED BELOW ``mezzanine.urls`` WILL NEVER BE MATCHED!
 
     ### JOS Staff
 
@@ -86,13 +82,6 @@ urlpatterns += patterns('',
     url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.signup_verify", name="signup_verify"),
 
-    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile", name="josprofile"),
-    url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
-    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
-         "josmembers.views.josprofile_update", name="josprofile_update"),
-
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         "josmembers.views.password_reset", name="jos_password_reset"),
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
@@ -103,6 +92,17 @@ urlpatterns += patterns('',
 
     url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
         "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
+
+
+    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile", name="josprofile"),
+
+
+
+    url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
+    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
+        "josmembers.views.josprofile_update", name="josprofile_update"),
 
 
     ### DJOINGO ###

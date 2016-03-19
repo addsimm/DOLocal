@@ -22,16 +22,7 @@ from .forms import JOSSignupForm, JOSNewPasswordForm
 
 User = get_user_model()
 
-# Create your views here.
-
-def logout(request):
-    """
-    Log the user out.
-    """
-    auth_logout(request)
-    info(request, _("Successfully logged out - come back soon"))
-    return redirect("/")
-
+### Profiles:
 
 @login_required
 def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
@@ -64,7 +55,14 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
     lookup = {"username__iexact": username, "is_active": True}
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
-    context = {"profile_user": user}
+
+    query_string = request.GET.get('edit')
+
+
+
+    context = {"profile_user": user, 'query_string': query_string}
+
+
     context.update({"profile": currentProfile})
     context.update(extra_context or {})
 
@@ -79,7 +77,7 @@ def josprofile_redirect(request):
     """
     return redirect("profile", username=request.user.username)
 
-### Original:
+### Signup:
 
 def signup(request, template="accounts/account_signup.html", extra_context=None):
     """
@@ -180,3 +178,12 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
 
     context = {"form": form, "title": _("Reset password")}
     return TemplateResponse(request, template, context)
+
+
+def logout(request):
+    """
+    Log the user out.
+    """
+    auth_logout(request)
+    info(request, _("Successfully logged out - come back soon"))
+    return redirect("/")

@@ -40,9 +40,7 @@ else:
 
 class JOSProfileForm(Html5Mixin, forms.ModelForm):
     """
-    ModelForm for auth.User - used for signup and profile update.
-    If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
-    fields are injected into the form.
+    ModelForm for auth.User - ``AUTH_PROFILE_MODULE``fields injected into the form.
     """
 
     class Meta:
@@ -72,16 +70,11 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
 
     def save(self, *args, **kwargs):
         """
-        Create the new user. If no username is supplied (may be hidden
-        via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
-        ``ACCOUNTS_NO_USERNAME``), we generate a unique username, so
-        that if profile pages are enabled, we still have something to
-        use as the profile's slug.
+        Create the new user. If no username is supplied generates a unique username.
         """
 
         kwargs["commit"] = False
         user = super(JOSProfileForm, self).save(*args, **kwargs)
-
 
         try:
             profile = get_profile_for_user(user)
