@@ -21,13 +21,16 @@
     {% endblock %}
 </div>
 
-
-<!-- removed code
-href="{% url "profile_update" %}?firstname={{ profile_user.get_short_name }}">
--->
-
-
 {% block all_content %}
+
+    <style>
+        .side-panel {
+            padding-left: 15px;
+            padding-right: 0;
+            padding-top: 15px;
+        }
+
+    </style>
 
     <h3>{{ edit_string }}</h3>
 
@@ -38,49 +41,50 @@ href="{% url "profile_update" %}?firstname={{ profile_user.get_short_name }}">
             {% if profile.profile_image %}
                 {% cloudinary profile.profile_image width=140 %}
             {% else %}
-                <img class="img-thumbnail" src="/static/img/coming-soon-profile.png" style="width: 150px;">
+                <img class="img-thumbnail" src="/static/img/coming-soon-profile.png"
+                     style="width: 150px;">
             {% endif %}
 
         </div>
 
-        <div class="col-xs-8" style="background-color: transparent">
+        <div class="col-xs-9">
             <h3>
                 About {{ profile_user.get_short_name }}:
-                <button class="btn btn-warning btn-sm">Edit</button>
+                {% if edit_string == 'True' %}
+                    <button class="btn btn-info pull-right" style="margin-bottom: 0; margin-right: 35px;">
+                        <span class="glyphicon glyphicon-pencil"style="margin-right: 4px;"> </span>
+                        Edit</button>
+                {% endif %}
             </h3>
 
-            <p>
+            <p style="line-height: 1.4">
                 {{ profile.about_me|safe }}
             </p>
         </div>
 
-        <div class="col-xs-2 form-actions" style="background-color: transparent; padding-right: 0;">
+        <div class="col-xs-1 side-panel" style="margin-right: 0;">
+
+
             {% if profile_user == request.user %}
 
-
-                <a class="btn btn-info btn-default pull-right"
+                <a class="btn btn-default pull-right"
                    href="{% url "josprofile_edit" request.user.username %}">
                     {% trans "Edit profile" %}
                 </a>
 
-                <p class="pull-right" style="line-height: 1.3; margin-top: 10px;">
-                    Last Change:<br>
-                    <span style="color: green">{{ profile.updated|date:"M d, Y" }}</span>
+                <p style="margin-top: 50px; line-height: 1.2;">
+                    Last edit:<br>
+                    <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
                 </p>
-
-
-
 
             {% endif %}
 
 
-
-
             {% if request.user.is_active and request.user.is_staff %}
 
-                <a class="btn btn-info btn-default pull-right"
+                <a class="btn btn-default pull-right" style="margin-top: 40px;"
                    href="{% url "josstaff_timesheet" %}?firstname={{ profile_user.get_short_name }}">
-                    {% trans "Staff Timekeeping" %}
+                    {% trans "Staff only" %}
                 </a>
 
             {% endif %}
