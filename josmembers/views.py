@@ -48,7 +48,7 @@ def josprofile_update(request, template="josmembers/josmembers_josprofile_update
     return TemplateResponse(request, template, context)
 
 
-def josprofile(request, username, template="josmembers/josmembers_josprofile.html", extra_context=None):
+def josprofile(request, username, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
     Display a profile.
     """
@@ -56,11 +56,11 @@ def josprofile(request, username, template="josmembers/josmembers_josprofile.htm
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
-    query_string = request.GET.get('edit')
+    edit_string = str(edit)
 
 
 
-    context = {"profile_user": user, 'query_string': query_string}
+    context = {"profile_user": user, 'edit_string': edit_string}
 
 
     context.update({"profile": currentProfile})
