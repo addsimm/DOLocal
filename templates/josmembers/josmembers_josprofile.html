@@ -51,7 +51,7 @@
             <h3>
                 About {{ profile_user.get_short_name }}:
                 {% if edit_string == 'True' %}
-                    <button class="btn btn-info pull-right" style="margin-bottom: 0; margin-right: 35px;">
+                    <button class="btn btn-info pull-right" style="margin-bottom: 0; margin-right: 25px;">
                         <span class="glyphicon glyphicon-pencil"style="margin-right: 4px;"> </span>
                         Edit</button>
                 {% endif %}
@@ -72,7 +72,7 @@
                     {% trans "Edit profile" %}
                 </a>
 
-                <p style="margin-top: 50px; line-height: 1.2;">
+                <p style="margin-top: 50px; line-height: 1.3;">
                     Last edit:<br>
                     <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
                 </p>
