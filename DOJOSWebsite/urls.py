@@ -51,20 +51,15 @@ if settings.USE_MODELTRANSLATION:
     )
 
 urlpatterns += patterns('',
-    # few patterns you can use to set it up.
-
-    # HOMEPAGE AS STATIC TEMPLATE
-    # url("^$", direct_to_template, {"template": "index.html"}, name="home"),
-
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
 
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
-
-    # HOMEPAGE FOR A BLOG-ONLY SITE
-
-
     # ADD URLPATTERNS *ABOVE*; IF ADDED BELOW ``mezzanine.urls`` WILL NEVER BE MATCHED!
+
+    ### Utilities
+
+    url("mcerichtextedit/$", "josmembers.views.mcerichtextedit", name="mcerichtextedit"),
 
     ### JOS Staff
 

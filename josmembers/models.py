@@ -31,3 +31,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
     def get_absolute_url(request):
         username = request.user.username
         return "/users/%s/" % username
+
+class MCERichTextEditHolder(models.Model):
+
+    content = RichTextField("Content")

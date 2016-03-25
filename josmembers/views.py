@@ -18,7 +18,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm, JOSNewPasswordForm
+from .forms import JOSSignupForm, JOSNewPasswordForm, MCERichTextEditForm
 
 User = get_user_model()
 
@@ -45,27 +45,6 @@ def josprofile_update(request, template="josmembers/josmembers_josprofile_update
             return redirect("profile_update")
     context.update({"form": form, "title": _("Change Profile")})
     context.update(extra_context or {})
-    return TemplateResponse(request, template, context)
-
-
-def josprofile(request, username, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
-    """
-    Display a profile.
-    """
-    lookup = {"username__iexact": username, "is_active": True}
-    user = get_object_or_404(User, **lookup)
-    currentProfile = get_object_or_404(JOSProfile, user=user)
-
-    edit_string = str(edit)
-
-
-
-    context = {"profile_user": user, 'edit_string': edit_string}
-
-
-    context.update({"profile": currentProfile})
-    context.update(extra_context or {})
-
     return TemplateResponse(request, template, context)
 
 
@@ -187,3 +166,29 @@ def logout(request):
     auth_logout(request)
     info(request, _("Successfully logged out - come back soon"))
     return redirect("/")
+
+
+def josprofile(request, username, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
+    """
+    Display a profile.
+    """
+    lookup = {"username__iexact": username, "is_active": True}
+    user = get_object_or_404(User, **lookup)
+    currentProfile = get_object_or_404(JOSProfile, user=user)
+
+    edit_string = str(edit)
+
+    context = {"profile_user": user, 'edit_string': edit_string}
+    context.update({"profile": currentProfile})
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+### Writing Utilities
+
+def mcerichtextedit(request, template="josmembers/josmcerichtextedit.html", extra_context=None):
+    form = MCERichTextEditForm()
+    context = {'form': form}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
