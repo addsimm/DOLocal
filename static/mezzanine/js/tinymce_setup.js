@@ -60,7 +60,7 @@ jQuery(function($) {
 
     if (typeof tinyMCE != 'undefined') {
 
-        tinyMCE.init({
+        tinyMCE.init({ //Modified
             selector: "textarea.mceEditor",
             height: '500px',
             language: language_codes[window.__language_code] || 'en',
@@ -74,7 +74,7 @@ jQuery(function($) {
             convert_urls: false,
             menubar: false,
             statusbar: false,
-            toolbar: ("insertfile undo redo | styleselect | bold italic | " +
+            toolbar: ("insertfile undo redo | bold italic | " +
                       "alignleft aligncenter alignright alignjustify | " +
                       "bullist numlist outdent indent | link image table | " +
                       "code fullscreen"),
