@@ -364,6 +364,7 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
+TINYMCE_SETUP_JS = "mezzanine/js/jostinymce_setup.js"
 
 ### COMMENT IN TO GET TOOLBAR
 def show_toolbar(request):
