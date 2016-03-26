@@ -62,22 +62,21 @@ jQuery(function($) {
 
         tinyMCE.init({ //Modified
             selector: "textarea.mceEditor",
-            height: '500px',
+            height: '700px',
             language: language_codes[window.__language_code] || 'en',
             plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
+                "advlist lists image charmap print preview",
                 "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
+                "insertdatetime textcolor paste"
             ],
             link_list: '/displayable_links.js',
             relative_urls: false,
             convert_urls: false,
             menubar: false,
             statusbar: false,
-            toolbar: ("insertfile undo redo | bold italic | " +
-                      "alignleft aligncenter alignright alignjustify | " +
-                      "bullist numlist outdent indent | link image table | " +
-                      "code fullscreen"),
+            toolbar: ("undo redo | bold italic underline strikethrough | charmap | " +
+                      "alignleft aligncenter alignright | " + "forecolor backcolor | " +
+                      "bullist numlist outdent indent | image visualblocks fullscreen"),
             file_browser_callback: custom_file_browser,
             content_css: window.__tinymce_css
         });
