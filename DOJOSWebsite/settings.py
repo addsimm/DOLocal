@@ -222,6 +222,7 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
+    "ckeditor",
     "cloudinary",
     # "mezzanine.mobile",
     "josstaff",
