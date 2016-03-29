@@ -337,9 +337,9 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
-####################
-# PROFILE SETTINGS #
-####################
+###########
+# PROFILE #
+###########
 
 ACCOUNTS_NO_USERNAME = True
 
@@ -365,9 +365,74 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
+############
+# CKEDITOR #
+############
+
 TINYMCE_SETUP_JS = "mezzanine/js/jostinymce_setup.js"
 
-### COMMENT IN TO GET TOOLBAR
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
+             'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ],
+        'height': 300,
+        'width': 300,
+    },
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_JOSSimpleToolbarConfig': [
+            ### {'name': 'document', 'items': ['Preview', 'Print', '-', 'Templates']},
+            {'name': 'styles', 'items': ['Font', 'FontSize']},
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+            ### {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            ### '/',  # put this to force next toolbar on new line
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            ### {'name': 'smiley', 'items': ['Smiley']},
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList',
+                                            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
+            {'name': 'editing', 'items': ['Find']},
+        ],
+
+        'toolbar': 'JOSSimpleToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': 600,
+        'width': 900,
+        'contentsCss': 'css/jquery.spellchecker.css',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # you extra plugins here
+                'div',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'widget',
+            ]),
+    }
+}
+
+
+##############################################
+### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
+
 def show_toolbar(request):
     return True
 

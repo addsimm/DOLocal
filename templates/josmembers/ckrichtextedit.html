@@ -21,6 +21,7 @@
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        <script src="{% static "ckeditor/ckeditor/plugins/jqueryspellchecker/plugin.js" %}"></script>
         {% block extra_js %}{% endblock %}
     {% endcompress %}
 
@@ -38,16 +39,18 @@
 <div class="container" style="background-color: yellow; border: 3px dashed black; margin-left:15px; margin-top:15px;">
     <div class="row">
         <div class="col-xs-12">
-
             <h2 class="text-center" style="margin-bottom: 30px; margin-top: 30px;">Join Our Story Editor</h2>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
             {{ form.media }}
 
             {{ form.content }}
-
         </div>
     </div>
-    <div class="row" style="margin-bottom: 20px; margin-top: 20px;"><!-- BUTTONS -->
+
+    <div class="row" style="margin-bottom: 20px; margin-right: 20px; margin-top: 20px;"><!-- BUTTONS -->
 
         <div class="col-xs-3 col-xs-offset-9">
             <div class="pull-right">
@@ -56,10 +59,8 @@
             </div>
         </div>
 
-
     </div>
 </div>
-
 </body>
 </html>
 
