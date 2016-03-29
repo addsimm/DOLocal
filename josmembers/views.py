@@ -18,7 +18,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile
-from .forms import JOSSignupForm, JOSNewPasswordForm, MCERichTextEditForm
+from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
 
 User = get_user_model()
 
@@ -186,8 +186,8 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 
 ### Writing Utilities
 
-def mcerichtextedit(request, template="josmembers/josmcerichtextedit.html", extra_context=None):
-    form = MCERichTextEditForm()
+def ckrichtextedit(request, template="josmembers/ckrichtextedit.html", extra_context=None):
+    form = CKRichTextEditForm()
     context = {'form': form}
     context.update(extra_context or {})
 

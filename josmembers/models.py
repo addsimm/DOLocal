@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.models import TimeStamped
-from mezzanine.core.fields import RichTextField
+from ckeditor.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin
 
 from cloudinary.models import CloudinaryField
@@ -32,6 +32,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         username = request.user.username
         return "/users/%s/" % username
 
-class MCERichTextEditHolder(models.Model):
+
+class CKRichTextEditHolder(models.Model):
 
     content = RichTextField("Content")

@@ -59,7 +59,7 @@ urlpatterns += patterns('',
 
     ### Utilities
 
-    url("mcerichtextedit/$", "josmembers.views.mcerichtextedit", name="mcerichtextedit"),
+    url("ckrichtextedit/$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
 
     ### JOS Staff
 

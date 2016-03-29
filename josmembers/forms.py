@@ -16,7 +16,7 @@ from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin,TinyMceWidget
 from mezzanine.utils.urls import slugify, unique_slug
 
-from .models import MCERichTextEditHolder
+from .models import CKRichTextEditHolder
 
 User = get_user_model()
 
@@ -286,8 +286,8 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
         return user
 
 
-class MCERichTextEditForm(Html5Mixin, forms.ModelForm):
+class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
 
     class Meta:
-        model = MCERichTextEditHolder
+        model = CKRichTextEditHolder
         fields = ("content",)
