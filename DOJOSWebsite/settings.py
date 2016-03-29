@@ -411,7 +411,7 @@ CKEDITOR_CONFIGS = {
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
         'height': 600,
         'width': 900,
-        'contentsCss': 'css/jquery.spellchecker.css',
+        'disableNativeSpellChecker': False,
         # 'filebrowserWindowHeight': 725,
         # 'filebrowserWindowWidth': 940,
         # 'toolbarCanCollapse': True,
