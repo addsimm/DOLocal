@@ -173,23 +173,16 @@
                 <div class="col-xs-12" style="margin-top: 5px; padding-bottom: 4px; background-color: rgba(65, 25, 140, .05);">
                     <!-- BREADCRUMB -->
                     <ul class="breadcrumb" style="background-color: transparent;">
+                        <button class="btn btn-warning btn-sm" onclick="goBack()">Go back</button>
                         {% spaceless %}
                             {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
                         {% endspaceless %}
+
+                        <script>function goBack() {
+                            window.history.back();
+                        }</script>
                     </ul>
                 </div>
-            </div>
-
-            <div class="row" style="background-color: transparent; margin-top: 5px;">
-
-                <div class="hidden-xs hidden-sm col-sm-12" style="background-color: transparent; padding-right: 0;">
-                    <button class="btn btn-warning btn-sm pull-right" onclick="goBack()">Go Back</button>
-
-                    <script>function goBack() {
-                        window.history.back();
-                    }</script>
-                </div>
-
             </div>
         </div>
     </div>

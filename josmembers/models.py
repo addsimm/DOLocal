@@ -33,7 +33,4 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         return "/users/%s/" % username
 
 
-class CKRichTextEditHolder(models.Model):
 
-    field = models.CharField(max_length=30)
-    content = RichTextField("Content")
