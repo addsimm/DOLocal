@@ -6,17 +6,17 @@
 
 <div>
     {% block meta_title %}
-        {{ profile_user|username_or:"get_short_name" }}
+        {{ profile.user|username_or:"get_short_name" }}
     {% endblock %}
     {% block title %}
-        {{ profile_user|username_or:"get_short_name" }}
+        {{ profile.user|username_or:"get_short_name" }}
     {% endblock %}
     {# block body_id }account{ endblock #}
 
     {% block breadcrumb_menu %}
         {{ block.super }}
         <li class="active">
-            {{ profile_user|username_or:"get_short_name" }}'s Profile
+            {{ profile.user|username_or:"get_short_name" }}'s Profile
         </li>
     {% endblock %}
 </div>
@@ -33,9 +33,7 @@
 
     </style>
 
-    <h3>{{ edit_string }}</h3>
-
-    <div class="row">
+    <div class="row" >
 
         <div class="col-xs-2" style="margin-top: 20px;">
 
@@ -48,42 +46,54 @@
 
         </div>
 
-        <div class="col-xs-9">
-            <h3>
-                About {{ profile_user.get_short_name }}:
+        <div class="col-xs-9" style="font-size: 16pt; padding-right: 20px; padding-top: 20px;">
+            <span style="font-size: 16pt; font-weight: bold;">
+                About {{ profile.user.get_short_name }}:
+            </span>
 
-                {% if edit_string == 'True' %}
-                    <a class="btn btn-info pull-right" style="margin-bottom: 0; margin-right: 25px;" href="{% url "ckrichtextedit" %}">
-                        <span class="glyphicon glyphicon-pencil"style="margin-right: 4px;"> </span>Edit
-                    </a>
-                {% endif %}
-            </h3>
+            {% if edit %}
+                <a class="btn btn-info pull-right" style="margin-right: 17px; text-decoration: none;"
+                   href="{% url "ckrichtextedit" %}">
+                   <span class="glyphicon glyphicon-pencil" style="margin-right: 7px;"></span>Edit
+                </a>
+            {% endif %}
 
-            <p style="line-height: 1.4">
+            <div style="line-height: 1.4; margin-top: 5px; {% if edit %}outline: 3px dashed #28a4c9;{% endif %} margin-right: 20px; padding: 10px;">
                 {{ profile.about_me|safe }}
-            </p>
+            </div>
         </div>
 
-        <div class="col-xs-1 side-panel" style="margin-right: 0;">
+        <div class="col-xs-1 side-panel" style="border-top: 2px solid rgba(65, 25, 140, .85); margin-right: 0; margin-top: 50px;">
 
-            {% if profile_user == request.user %}
+            {% if profile.user == request.user %}
 
-                <a class="btn btn-default pull-right"
-                   href="{% url "josprofile_edit" request.user.username %}">
-                    {% trans "Edit profile" %}
-                </a>
+                {% if edit %}
+
+                    <a class="btn pull-right btn-default" style="background-color: #28a4c9; color: white;"
+                       href="{% url "josprofile" request.user.username %}">
+                        {% trans "Stop editing" %}
+                    </a>
+
+                {% else %}
+
+                    <a class="btn btn-default pull-right"
+                       href="{% url "josprofile_edit" request.user.username %}">
+                        {% trans "Edit profile" %}
+                    </a>
+
+                {% endif %}
 
                 <p style="margin-top: 50px; line-height: 1.3;">
                     Last edit:<br>
                     <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
                 </p>
 
-            {% endif %}
+             {% endif %}
 
             {% if request.user.is_active and request.user.is_staff %}
 
                 <a class="btn btn-default pull-right" style="margin-top: 40px;"
-                   href="{% url "josstaff_timesheet" %}?firstname={{ profile_user.get_short_name }}">
+                   href="{% url "josstaff_timesheet" %}?firstname={{ profile.user.get_short_name }}">
                     {% trans "Staff only" %}
                 </a>
 
@@ -91,10 +101,10 @@
         </div>
     </div>
 
-    <div class="row" style="font-size: 10px; margin-top: 30px;">
-        {% for field, value in profile_user|profile_fields %}
+    <div class="row" style="font-size: 9px; margin-top: 50px;">
+        {% for field, value in profile.user|profile_fields %}
 
-            <div class="row" style="margin-top: 5px; ">
+            <div class="row" style="margin-top: 0; ">
                 <div class="col-xs-2" style="font-weight: bold; text-align: right;">
                     {{ field }}
                 </div>

@@ -176,10 +176,7 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
-    edit_string = str(edit)
-
-    context = {"profile_user": user, 'edit_string': edit_string}
-    context.update({"profile": currentProfile})
+    context = {"profile": currentProfile, "edit": edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

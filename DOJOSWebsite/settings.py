@@ -373,21 +373,6 @@ TINYMCE_SETUP_JS = "mezzanine/js/jostinymce_setup.js"
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
-             'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ],
-        'height': 300,
-        'width': 300,
-    },
-}
-
-CKEDITOR_CONFIGS = {
-    'default': {
         'skin': 'moono',
         # 'skin': 'office2013',
         'toolbar_Basic': [
@@ -410,7 +395,7 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'JOSSimpleToolbarConfig',  # put selected toolbar config here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
         'height': 600,
-        'width': 900,
+        'width': 920,
         'disableNativeSpellChecker': False,
         # 'filebrowserWindowHeight': 725,
         # 'filebrowserWindowWidth': 940,
@@ -424,7 +409,6 @@ CKEDITOR_CONFIGS = {
             ]),
     }
 }
-
 
 
 ##############################################
