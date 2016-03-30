@@ -35,4 +35,5 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
 class CKRichTextEditHolder(models.Model):
 
+    field = models.CharField(max_length=30)
     content = RichTextField("Content")

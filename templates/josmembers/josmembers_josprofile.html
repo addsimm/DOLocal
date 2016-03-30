@@ -33,9 +33,12 @@
 
     </style>
 
-    <div class="row" >
+    <div class="row">
 
         <div class="col-xs-2" style="margin-top: 20px;">
+            id: {{ id }}<br>
+            field_to_edit: {{ field_to_edit }}<br>
+            content: {{ content }}
 
             {% if profile.profile_image %}
                 {% cloudinary profile.profile_image width=140 %}
@@ -53,7 +56,7 @@
 
             {% if edit %}
                 <a class="btn btn-info pull-right" style="margin-right: 17px; text-decoration: none;"
-                   href="{% url "ckrichtextedit" %}">
+                   href="{% url "josprofile_edit" request.user.username %}?field_to_edit=about_me">
                    <span class="glyphicon glyphicon-pencil" style="margin-right: 7px;"></span>Edit
                 </a>
             {% endif %}

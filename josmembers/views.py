@@ -17,7 +17,7 @@ from mezzanine.utils.urls import login_redirect, next_url
 
 from cloudinary.forms import cl_init_js_callbacks
 
-from .models import JOSProfile
+from .models import JOSProfile, CKRichTextEditHolder
 from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
 
 User = get_user_model()
@@ -176,7 +176,22 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
-    context = {"profile": currentProfile, "edit": edit}
+    try:
+        field_to_edit = request.GET['field_to_edit']
+    except:
+        field_to_edit = "xxx"
+
+    if field_to_edit != "xxx":
+        content = getattr(currentProfile, field_to_edit)
+        ckrtfholder = CKRichTextEditHolder.objects.create(field=field_to_edit, content=content)
+        id = ckrtfholder.id
+        query_string = "/?id=" + str(id)
+        return redirect("ckrichtextedit" + query_string)
+    else:
+        content = "zzz"
+        id = 0
+
+    context = {"profile": currentProfile, "edit": edit, "field_to_edit": field_to_edit, "content": content, "id": id}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -184,7 +199,9 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 ### Writing Utilities
 
 def ckrichtextedit(request, template="josmembers/ckrichtextedit.html", extra_context=None):
-    form = CKRichTextEditForm()
+    id = request.GET['id']
+    instance = get_object_or_404(CKRichTextEditHolder, pk=id)
+    form = CKRichTextEditForm(instance=instance)
     context = {'form': form}
     context.update(extra_context or {})
 
