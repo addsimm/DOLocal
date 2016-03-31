@@ -1,13 +1,15 @@
 /*
 Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
+
+### modified
 */
 
 body
 {
 	/* Font */
 	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
+	font-size: 16pt;
 
 	/* Text color */
 	color: #333;
@@ -20,7 +22,7 @@ body
 
 .cke_editable
 {
-	font-size: 13px;
+	font-size: 16pt;
 	line-height: 1.6;
 }
 

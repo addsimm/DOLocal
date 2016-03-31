@@ -33,4 +33,12 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         return "/users/%s/" % username
 
 
+class CKRichTextHolder(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'CK Rich Text Holder'
+
+    author = models.ForeignKey(User)
+    title = models.CharField(max_length=150, default="notitle")
+    field_to_edit = models.CharField(max_length=150, default="nofield")
+    content = RichTextField()
 

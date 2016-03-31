@@ -391,7 +391,7 @@ CKEDITOR_CONFIGS = {
                                             '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
             {'name': 'editing', 'items': ['Find']},
         ],
-
+        'contentsCss': ['/static/ckeditor/ckeditor/contents.css'],
         'toolbar': 'JOSSimpleToolbarConfig',  # put selected toolbar config here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
         'height': 600,

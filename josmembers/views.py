@@ -17,8 +17,8 @@ from mezzanine.utils.urls import login_redirect, next_url
 
 from cloudinary.forms import cl_init_js_callbacks
 
-from .models import JOSProfile, CKRichTextEditHolder
-from .forms import JOSSignupForm, JOSNewPasswordForm #, CKRichTextEditForm
+from .models import JOSProfile, CKRichTextHolder
+from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
 
 User = get_user_model()
 
@@ -179,19 +179,19 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
     try:
         field_to_edit = request.GET['field_to_edit']
     except:
-        field_to_edit = "xxx"
+        field_to_edit = "nofield"
 
-    if field_to_edit != "xxx":
+    if field_to_edit != "nofield":
         content = getattr(currentProfile, field_to_edit)
-        ckrtfholder = CKRichTextEditHolder.objects.create(user=user, field=field_to_edit, content=content)
+        ckrtfholder = CKRichTextHolder.objects.create(author=user, field_to_edit=field_to_edit, content=content)
         pk = ckrtfholder.pk
-        query_string = "/?id=" + str(pk)
+        query_string = "/?pk=" + str(pk)
         return redirect("ckrichtextedit" + query_string)
     else:
-        content = "zzz"
+        content = "nocontent"
         pk = 0
 
-    context = {"profile": currentProfile, "edit": edit, "field_to_edit": field_to_edit, "content": content, "pk": pk}
+    context = {"profile": currentProfile, "edit": edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -199,10 +199,21 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 ### Writing Utilities
 
 def ckrichtextedit(request, template="josmembers/ckrichtextedit.html", extra_context=None):
-    id = request.GET['pk']
-    # instance = get_object_or_404(CKRichTextEditHolder, pk=pk)
-    # form = CKRichTextEditForm(instance=instance)
-    context = {'form': form}
+
+    try:
+        pk = request.GET['pk']
+        instance = get_object_or_404(CKRichTextHolder, pk=pk)
+        author = instance.author.get_full_name()
+        field_to_edit = instance.field_to_edit.replace('_', ' ')
+        title = instance.title
+        form = CKRichTextEditForm(instance=instance)
+    except:
+        author = "noauthor"
+        field_to_edit = "nofield"
+        title = "notitle"
+        form = CKRichTextEditForm()
+
+    context = {'form': form, 'author': author, 'field_to_edit': field_to_edit, 'title': title}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
