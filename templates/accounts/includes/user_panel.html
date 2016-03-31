@@ -2,14 +2,6 @@
 
 <style>
 
-    .panel, .panel-body, .panel-default {
-        box-shadow: none;
-        border-color: transparent;
-        border-radius: 0;
-        padding: 0;
-        margin: 0;
-    }
-
     .btn-default {
         background-color: rgb(230, 225, 240);
         background-image: none;
@@ -26,8 +18,8 @@
 
 {% if request.user.is_authenticated %}
 
-    <div class="row" style="background-color: transparent;">
-        <div class="col-xs-12 text-right" style="width:100%;">
+    <div class="row" style=" ">
+        <div class="col-xs-12 text-right" style="padding-right: 0;">
 
             <a href="/contact" class="btn btn-default">
                 {% trans "Contact Us" %}</a>
@@ -36,32 +28,26 @@
                 Log Out</a>
 
         </div>
-
-        <div class="col-xs-12 text-right" style="width: 100%; line-height: 1.1; padding-top:0; background-color: transparent;">
+    </div>
+    <div class="row" style=" margin-top: 5px;">
+        <div class="col-xs-12 text-right" style="background-color: transparent; line-height: 1.2; padding-right: 0;">
 
             {% url "profile" request.user.username as profile_url %}
 
-            {% if not profile_url %}{% url "profile_update" as profile_url %}{% endif %}
+            <!-- TODO: photo -->
 
-            <div style="color: rgb(65, 45, 120); font-size: 18pt; font-weight: bold;">
-                Hello!
-                <span style="color: green; font-size: 28pt; margin-left: 5px; margin-right: 3px;">
-                    {{ user.get_short_name }}
-                </span>
-                <a href="{{ profile_url }}">
-                    <!-- TODO: photo -->
-                    <span style="color: #942fab; font-size: 8pt;">
-                        VIEW PROFILE
-                    </span>
-                </a>
+            <div style="color: green; font-size: 28pt; font-weight: bold;">
+                <span style="color: rgb(65, 25, 140); font-size: 10pt; margin-right: 8px;">Logged in as:</span>
+                {{ user.get_short_name }}
+                <a href="{{ profile_url }}" style="color: #942fab; font-size: 10pt; margin-left: 8px; margin-right: 5px;">View Profile</a>
             </div>
         </div>
     </div>
 
 {% else %}
 
-    <div class="row pull-right" style="background-color: transparent;">
-        <div class="col-md-12">
+    <div class="row" style="background-color: transparent;">
+        <div class="col-md-12  text-right" style="padding-right: 0;">
 
            <a href="/contact" class="btn btn-default">
                 {% trans "Contact Us" %}</a>

@@ -20,14 +20,18 @@
         color: black;
         content: ">";
         font-size: 14pt;
-        padding: 0 30px;
+        padding: 0 10px;
     }
 
 
 </style>
 
-<li id="breadcrumb-menu-home" style="margin-left: 20px;">
-    <a href="{% url "home" %}">{% trans "Home" %}</a>
+<li id="breadcrumb-menu-home" style="margin-left: 0;">
+    <button class="btn btn-warning btn-sm" style="margin-left: 3px;" onclick="goBack()">Go back</button>
+    <script>function goBack() {
+        window.history.back();
+    }</script>
+    <a href="{% url "home" %}" style="margin-left: 20px;">{% trans "Home" %}</a>
 </li>
 
 {% for page in page_branch %}

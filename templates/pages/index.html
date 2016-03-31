@@ -49,14 +49,24 @@ This template is just for the landing page.
         color: rgb(65, 45, 120);
         font-family: 'source sans pro', sans-serif;
         font-size: 16pt;
-        padding-top: 60px;
-        line-height: 1.85;
+        padding-top: 165px;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 983px) {
         body {
-            padding-top: 20px;
+            padding-top: 200px;
         }
+    }
+
+    @media screen and (min-width: 984px) {
+        body {
+            padding-top: 140px;
+        }
+    }
+
+    a {
+        color: #942fab;
+        text-decoration: underline;
     }
 
     .navbar-default {
@@ -77,27 +87,16 @@ This template is just for the landing page.
         padding-bottom: 0;
     }
 
-    .messages {
-        margin-left: 0;
-        margin-right: 25px;
-        margin-top: 10px;
-    }
-
-    .alert {
-        margin: 0;
-        padding: 10px;
-    }
-
-    .homehead {
-        font-family: "Abril Fatface", Serif;
-        font-size: 32pt;
-        font-weight: normal;
-
-        margin-bottom: 0;
-    }
-
-    .fa-li {
-        margin-top: 5px;
+    .btn-default {
+        background-color: rgb(230, 225, 240);
+        background-image: none;
+        background-repeat: no-repeat;
+        border-color: rgb(65, 25, 140);
+        box-shadow: none;
+        font-size: 14pt;
+        text-decoration: none;
+        text-shadow: none;
+        color: rgb(65, 25, 140);
     }
 
 </style>
@@ -119,37 +118,29 @@ This template is just for the landing page.
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-md-6" style="background-color: transparent;">
-                    <div class="row" style="margin-left: 0;">
-                        {% nevercache %}<!-- messages -->
-                            {% if messages %}
-                                <div class="messages">
-
-                                    <div class="alert alert-dismissable alert-info" data-alert="alert">
-                                        <div class="row">
-                                            <div class="col-xs-1">
-                                                <img src="/static/img/peeky-123115.png" height="40px"
-                                                     style="margin-left: 0;">
-                                            </div>
-                                            <div class="col-xs-10" style="background-color: transparent; margin-left: 15px; margin-right: 5px;">
-                                                {% for message in messages %}
-                                                    <span style="color: black; font-family: 'Source Sans Pro',sans-serif; font-size: 16pt; font-weight: bold; line-height: 1.2; margin-left: 0;">
-                                                        {{ message }}!<br>
-                                                    </span>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="col-sm-12 col-md-7" style="padding-right: 0;">
+                    <!-- messages -->
+                    {% nevercache %}{% if messages %}
+                        <div class="messages" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt; font-weight: bold; line-height: 1.2;">
+                            <div class="row" style="background-color: yellow; height: 70px;
+                                                    margin: 10px 15px 10px 40px; padding: 12px;">
+                                <div class="col-xs-1">
+                                    <img src="/static/img/peeky-123115.png" height="40px" style=" ">
                                 </div>
-                            {% endif %}
-                        {% endnevercache %}
-                    </div>
+                                <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
+                                    {% for message in messages %}
+                                        <span style=" ">
+                                            {{ message }}!<br>
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}{% endnevercache %}
                 </div>
 
-                <div class="col-sm-12 col-md-4" style="background-color: transparent;">
-                    <div class="row">
-                        {% include "includes/user_panel.html" %}
-                    </div>
+                <div class="col-sm-12 col-md-3" style="margin-top: 10px;">
+                    {% include "accounts/includes/user_panel.html" %}
                 </div>
             </div>
         </div>
