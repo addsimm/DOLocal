@@ -38,6 +38,7 @@
 
 <div class="container" style="background-color: aliceblue; border: 3px dashed #28a4c9; margin-left:15px; margin-top:15px; width: 960px;">
     <div class="row">
+
         <div class="col-xs-12">
             <div style="font-size: 18pt; line-height: 1.3; margin-bottom: 20px; margin-top: 20px;">
                 <span style="font-weight: bold;">Join Our Story Editor</span><br>
@@ -47,24 +48,29 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            {{ form.media }}
+    <form id='ckrichtextedit_form' method="post" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+        <div class="row">
+            <div class="col-xs-12">
+                {{ form.media }}
 
-            {{ form.content }}
-        </div>
-    </div>
-
-    <div class="row" style="margin-bottom: 20px; margin-right: 20px; margin-top: 20px;"><!-- BUTTONS -->
-
-        <div class="col-xs-3 col-xs-offset-9">
-            <div class="pull-right">
-                <input class="btn btn-danger btn-lg" style=" " type="submit" value="Cancel">
-                <input class="btn btn-success btn-lg" style=" " type="submit" value="Save">
+                {{ form.content }}
             </div>
         </div>
 
-    </div>
+        <!-- bootbox.js -->
+
+        <input class="btn btn-success btn-lg pull-right" style="margin: 20px 10px;" type="submit"
+               onclick="return confirm('Are you sure?')" value="Save">
+
+    </form>
+
+    <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;" onclick="goReferrer()">
+        Cancel
+    </button>
+    <script>function goReferrer() {
+        window.location.href = document.referrer;
+    }</script>
+
 </div>
 </body>
 </html>
