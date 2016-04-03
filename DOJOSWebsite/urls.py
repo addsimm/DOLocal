@@ -59,7 +59,8 @@ urlpatterns += patterns('',
 
     ### Utilities
 
-    url("ckrichtextedit/$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
+    url("ckrichtextedit/(?P<pk>\d+)$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
+    url("ckrichtextedit", "josmembers.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
 
     ### JOS Staff
 

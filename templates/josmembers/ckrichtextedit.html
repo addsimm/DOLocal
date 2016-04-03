@@ -58,31 +58,33 @@
         </div>
     </div>
     <form id='ckrichtextedit_form' method="post" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+
         {% csrf_token %}
         <div class="row">
             <div class="col-xs-12">
-                {{ form.media }}
 
-                {{ form.content }}
+                {# form.media #}
+
+                {{ form.as_p }}
+
             </div>
         </div>
 
-        <button class="btn btn-success btn-lg pull-right" style="margin: 20px 10px;"
-            data-target="#Save_Modal" data-toggle="modal">Save changes</button>
+        <input class="btn btn-success btn-lg pull-right" type=submit style="margin: 20px 10px;" value="Save changes">
 
     </form>
 
-    <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;" onclick="goReferrer()">
+    <!-- <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;" data-target="#Discard_Modal"
+            data-toggle="modal">
         Discard changes
-    </button>
+    </button> -->
 
     <script>function goReferrer() {
         window.location.href = document.referrer;
     }</script>
 
-
     <div id="Save_Modal" class="modal fade" tabindex="-1" role="dialog"
-         style="background-color: lightyellow; height: 170px; padding: 30px 10px 0; position: fixed; left: 150px; top: 150px; width: 750px;">
+         style="background-color: lightyellow; height: 200px; padding: 30px 10px 0; position: fixed; left: 150px; top: 150px; width: 750px;">
 
             <div class="row" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt;
                                     font-weight: bold; line-height: 1.4; margin: 0; padding: 12px;">
@@ -97,7 +99,7 @@
 
             <div class="row" style="padding-top: 10px; margin-right: 10px;">
                 <!-- form post action -->
-                <button class="btn btn-success pull-right" style="">
+                <button class="btn btn-success pull-right" style="" onclick="submitForm()">
                     Save changes
                 </button>
                 <button class="btn btn-danger pull-right" style="margin-right: 10px;" data-dismiss="modal">
@@ -108,6 +110,39 @@
         <!-- form cancel action confirm change to event driven-->
 
     </div><!-- modal -->
+
+    <script>function submitForm() {
+        $("form").submit();
+    }</script>
+
+    <div id="Discard_Modal" class="modal fade" tabindex="-1" role="dialog"
+         style="background-color: lightyellow; height: 200px; padding: 30px 10px 0; position: fixed; left: 150px; top: 150px; width: 750px;">
+
+        <div class="row" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt;
+                                    font-weight: bold; line-height: 1.4; margin: 0; padding: 12px;">
+            <div class="col-xs-1">
+                <img src="/static/img/peeky-123115.png" height="50px" style=" ">
+            </div>
+            <div class="col-xs-11" style="font-weight: bold; padding: 0 20px;">
+                Please confirm discard changes:<br>
+                &nbsp&nbsp&nbsp&nbsp Note:&nbsp this action will NOT save your changes and will restore previous text.
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 10px; margin-right: 10px;">
+            <!-- form post action -->
+            <button class="btn btn-success pull-right" style="" onclick="goReferrer()">
+                Discard changes
+            </button>
+            <button class="btn btn-danger pull-right" style="margin-right: 10px;" data-dismiss="modal">
+                Cancel
+            </button>
+        </div>
+
+        <!-- form cancel action confirm change to event driven-->
+
+    </div><!-- modal -->
+
 </div>
 </body>
 </html>

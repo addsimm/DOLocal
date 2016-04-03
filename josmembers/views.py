@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
+
 from mezzanine.accounts import get_profile_form
 from mezzanine.accounts.forms import PasswordResetForm
 from mezzanine.conf import settings
@@ -176,38 +177,58 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
     user = get_object_or_404(User, **lookup)
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
-    try:
-        field_to_edit = request.GET['field_to_edit']
-    except:
-        field_to_edit = "nofield"
+    pk = request.GET.get('pk', None)
+    contentAdded = request.GET.get('contentAdded', False)
+    field_to_edit = request.GET.get('field_to_edit', "nofield")
+
+    if pk != None:
+        ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
+        content = ckrtfholder.content
+        currentProfile.about_me = content
+        currentProfile.save()
+    else:
+        content = currentProfile.about_me
+        ckrtfholder = None
 
     if field_to_edit != "nofield":
         content = getattr(currentProfile, field_to_edit)
         ckrtfholder = CKRichTextHolder.objects.create(author=user, field_to_edit=field_to_edit, content=content)
         pk = ckrtfholder.pk
-        query_string = "/?pk=" + str(pk)
-        return redirect("ckrichtextedit" + query_string)
-    else:
-        content = "nocontent"
-        pk = 0
+        query_string = "/" + str(pk)
+        return redirect("/ckrichtextedit" + query_string)
 
-    context = {"profile": currentProfile, "edit": edit}
+        # setattr(currentProfile, field_to_edit, addedContent)
+        # currentProfile.about_me = "barf"
+        # currentProfile.save()
+        # message = ckrtfholder.field_to_edit + " changed"
+        # info(request, _(message))
+        # edit = False
+
+    context = {"profile": currentProfile, "edit": edit, 'field_to_edit': field_to_edit, 'pk': pk, 'contentAdded': contentAdded, "content": content, 'ckrtfholder': ckrtfholder}
     context.update(extra_context or {})
-
     return TemplateResponse(request, template, context)
 
 ### Writing Utilities
 
-def ckrichtextedit(request, template="josmembers/ckrichtextedit.html", extra_context=None):
 
+def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
+
+    if request.method == 'POST':
+        form = CKRichTextEditForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = User.objects.get(id=request.POST['author']).username
+            query_string = "/?pk=" + pk + "&contentAdded=True"
+            return redirect("/users/"+ username + query_string)
     try:
-        pk = request.GET['pk']
         instance = get_object_or_404(CKRichTextHolder, pk=pk)
         author = instance.author.get_full_name()
         field_to_edit = instance.field_to_edit.replace('_', ' ')
         title = instance.title
         form = CKRichTextEditForm(instance=instance)
+
     except:
+        instance = None
         author = "noauthor"
         field_to_edit = "nofield"
         title = "notitle"

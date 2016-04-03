@@ -290,4 +290,5 @@ class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
 
     class Meta:
         model  = CKRichTextHolder
-        fields = ("content",)
+        fields = ("author", "title", "field_to_edit", "content")
+

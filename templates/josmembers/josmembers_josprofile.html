@@ -37,6 +37,12 @@
 
         <div class="col-xs-2" style="margin-top: 20px;">
 
+            pk= {{ pk }}<br>
+            contentAdded= {{ contentAdded }}<br>
+            field_to_edit= {{ field_to_edit }}<br>
+            content= {{ content}}<br>
+            ckrtfholder.content = {{ ckrtfholder.content }} <br>
+
             {% if profile.profile_image %}
                 {% cloudinary profile.profile_image width=140 %}
             {% else %}
@@ -59,7 +65,7 @@
                 </a>
             {% endif %}
 
-            <div style="line-height: 1.4; margin-top: 5px; {% if edit %}outline: 3px dashed #28a4c9;{% endif %} margin-right: 20px; padding: 10px;">
+            <div style="line-height: 1.4; margin-top: 2px; {% if edit %}outline: 3px dashed #28a4c9;{% endif %} margin-right: 20px; padding: 10px;">
                 {{ profile.about_me|safe }}
             </div>
         </div>
