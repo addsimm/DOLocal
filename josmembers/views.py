@@ -204,6 +204,10 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 
 ### Writing Utilities
 
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
     instance = CKRichTextHolder.objects.get(pk=pk)
@@ -215,12 +219,13 @@ def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra
         form = CKRichTextEditForm()
     else:
         form = CKRichTextEditForm(instance=instance)
+        author = instance.author
 
     if request.method == 'POST' and instance:
         content = request.POST['content']
         instance.content = content
         instance.save()
-        username = User.objects.get(id=request.POST['author']).username
+        username = str(instance.author)
         query_string = "/?pk=" + pk + "&contentAdded=True"
 
         return redirect("/users/"+ username + query_string)

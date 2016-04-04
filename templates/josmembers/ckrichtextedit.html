@@ -63,34 +63,42 @@
         <div class="row">
             <div class="col-xs-12">
 
-                {# form.media #}
+                {{ form.media }}
 
-                {{ form.as_p }}
+                {{ form.content }}
 
             </div>
         </div>
 
-        <input class="btn btn-success btn-lg pull-right" type=submit style="margin: 20px 10px;" value="Save changes">
+        <!-- MAIN BUTTONS -->
+
+        <button class="btn btn-success btn-lg pull-right" style="margin: 20px 10px;"
+                data-target="#Save_Modal" data-toggle="modal">
+            Save changes
+        </button>
+
 
     </form>
 
-    <!-- <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;" data-target="#Discard_Modal"
-            data-toggle="modal">
+    <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;"
+            data-target="#Discard_Modal" data-toggle="modal">
         Discard changes
-    </button> -->
+    </button>
 
-    <script>function goReferrer() {
-        window.location.href = document.referrer;
-    }</script>
+    <!-- MODALS -->
+
+    <!-- SAVE -->
 
     <div id="Save_Modal" class="modal fade" tabindex="-1" role="dialog"
-         style="background-color: lightyellow; height: 200px; padding: 30px 10px 0; position: fixed; left: 150px; top: 150px; width: 750px;">
+         style="background-color: lightyellow; height: 250px; padding: 30px 10px 0;
+                position: fixed; left: 100px; top: 100px; width: 750px;">
 
             <div class="row" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt;
                                     font-weight: bold; line-height: 1.4; margin: 0; padding: 12px;">
                 <div class="col-xs-1">
                     <img src="/static/img/peeky-123115.png" height="50px" style=" ">
                 </div>
+
                 <div class="col-xs-11" style="font-weight: bold; padding: 0 20px;">
                     Please confirm save changes:<br>
                     &nbsp&nbsp&nbsp&nbsp Note:&nbsp this action will replace previous text.
@@ -99,24 +107,27 @@
 
             <div class="row" style="padding-top: 10px; margin-right: 10px;">
                 <!-- form post action -->
+
                 <button class="btn btn-success pull-right" style="" onclick="submitForm()">
                     Save changes
                 </button>
+
                 <button class="btn btn-danger pull-right" style="margin-right: 10px;" data-dismiss="modal">
                     Cancel
                 </button>
             </div>
 
-        <!-- form cancel action confirm change to event driven-->
-
-    </div><!-- modal -->
+    </div>
 
     <script>function submitForm() {
         $("form").submit();
     }</script>
 
+    <!-- DISCARD -->
+
     <div id="Discard_Modal" class="modal fade" tabindex="-1" role="dialog"
-         style="background-color: lightyellow; height: 200px; padding: 30px 10px 0; position: fixed; left: 150px; top: 150px; width: 750px;">
+         style="background-color: lightyellow; height: 250px; padding: 30px 10px 0;
+                position: fixed; left: 100px; top: 100px; width: 750px;">
 
         <div class="row" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt;
                                     font-weight: bold; line-height: 1.4; margin: 0; padding: 12px;">
@@ -139,9 +150,13 @@
             </button>
         </div>
 
+        <script>function goReferrer() {
+            window.location.href = document.referrer;
+        }</script>
+
         <!-- form cancel action confirm change to event driven-->
 
-    </div><!-- modal -->
+    </div>
 
 </div>
 </body>

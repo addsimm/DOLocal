@@ -290,9 +290,9 @@ class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
 
     class Meta:
         model  = CKRichTextHolder
-        fields = ("author", "title", "field_to_edit", "content")
+        fields = ("content", "author", 'title', 'field_to_edit')
         widgets = {'author': forms.HiddenInput(),
                    'title': forms.HiddenInput(),
-                   'field_to_edit': forms.HiddenInput()
-                   }
+                   'field_to_edit': forms.HiddenInput()}
+
 
