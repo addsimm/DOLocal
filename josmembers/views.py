@@ -197,44 +197,35 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
         query_string = "/" + str(pk)
         return redirect("/ckrichtextedit" + query_string)
 
-        # setattr(currentProfile, field_to_edit, addedContent)
-        # currentProfile.about_me = "barf"
-        # currentProfile.save()
-        # message = ckrtfholder.field_to_edit + " changed"
-        # info(request, _(message))
-        # edit = False
-
-    context = {"profile": currentProfile, "edit": edit, 'field_to_edit': field_to_edit, 'pk': pk, 'contentAdded': contentAdded, "content": content, 'ckrtfholder': ckrtfholder}
+    context = {"profile": currentProfile, "edit": edit}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 
-### Writing Utilities
 
+### Writing Utilities
 
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
-    if request.method == 'POST':
-        form = CKRichTextEditForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = User.objects.get(id=request.POST['author']).username
-            query_string = "/?pk=" + pk + "&contentAdded=True"
-            return redirect("/users/"+ username + query_string)
-    try:
-        instance = get_object_or_404(CKRichTextHolder, pk=pk)
-        author = instance.author.get_full_name()
-        field_to_edit = instance.field_to_edit.replace('_', ' ')
-        title = instance.title
-        form = CKRichTextEditForm(instance=instance)
+    instance = CKRichTextHolder.objects.get(pk=pk)
 
-    except:
-        instance = None
+    if not instance:
         author = "noauthor"
         field_to_edit = "nofield"
         title = "notitle"
         form = CKRichTextEditForm()
+    else:
+        form = CKRichTextEditForm(instance=instance)
 
-    context = {'form': form, 'author': author, 'field_to_edit': field_to_edit, 'title': title}
+    if request.method == 'POST' and instance:
+        content = request.POST['content']
+        instance.content = content
+        instance.save()
+        username = User.objects.get(id=request.POST['author']).username
+        query_string = "/?pk=" + pk + "&contentAdded=True"
+
+        return redirect("/users/"+ username + query_string)
+
+    context = {'form': form}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

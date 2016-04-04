@@ -37,12 +37,6 @@
 
         <div class="col-xs-2" style="margin-top: 20px;">
 
-            pk= {{ pk }}<br>
-            contentAdded= {{ contentAdded }}<br>
-            field_to_edit= {{ field_to_edit }}<br>
-            content= {{ content}}<br>
-            ckrtfholder.content = {{ ckrtfholder.content }} <br>
-
             {% if profile.profile_image %}
                 {% cloudinary profile.profile_image width=140 %}
             {% else %}
@@ -100,7 +94,7 @@
             {% if request.user.is_active and request.user.is_staff %}
 
                 <a class="btn btn-default pull-right" style="margin-top: 30px;"
-                   href="{% url "josstaff_timesheet" %}?firstname={{ profile.user.get_short_name }}">
+                   href="{% url "josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
                     {% trans "For staff" %}
                 </a>
 

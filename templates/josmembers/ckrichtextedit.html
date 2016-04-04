@@ -51,9 +51,9 @@
         <div class="col-xs-12">
             <div style="font-size: 18pt; line-height: 1.4; margin-bottom: 20px; margin-top: 20px;">
                 <span style="font-weight: bold;">Join Our Story Editor</span><br>
-                Author: <span style="color: green; margin-left: 10px;">{{ author }}</span><br>
-                {% if title != 'notitle' %}Title: <span style="color: green; margin-left: 10px;">{{ title | title }}</span><br>{% endif %}
-                {% if field_to_edit != 'nofield' %}Editing: <span style="color: green; margin-left: 10px;">{{ field_to_edit | title }}</span><br>{% endif %}
+                Author: <span style="color: green; margin-left: 10px;">{{ user.get_short_name }}</span><br>
+                {% if form.title.value != 'notitle' %}Title: <span style="color: green; margin-left: 10px;">{{ form.title.value | title }}</span><br>{% endif %}
+                {% if form.field_to_edit.value != 'nofield' %}Editing: <span style="color: green; margin-left: 10px;">{{ form.field_to_edit.value | title }}</span><br>{% endif %}
             </div>
         </div>
     </div>
