@@ -33,33 +33,44 @@
 
     </style>
 
-    <div class="row" style="margin-top: 50px;">
+    <div class="row" style="margin-top: 40px;">
 
-        <div class="col-xs-2" style="margin-top: 20px;">
+        <div class="col-xs-2 text-center" style="padding: 3px;">
 
-            {% if profile.profile_image %}
-                {% cloudinary profile.profile_image width=140 %}
-            {% else %}
-                <img class="img-thumbnail" src="/static/img/coming-soon-profile.png"
-                     style="width: 150px;">
+            <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} padding: 10px;">
+
+                {% if profile.profile_image %}
+                    <img class="img-responsive" style=" " src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image }}">
+                {% else %}
+                    <img class="img-responsive" style=" " src="/static/img/coming-soon-profile.png">
+                {% endif %}
+
+            </div>
+
+            {% if edit %}
+
+                <a class="btn btn-info" style="margin-top: 2px; text-decoration: none;"
+                   href="{% url "josprofile_edit" request.user.username %}?field_to_edit=about_me">
+                    <span class="glyphicon glyphicon-camera"></span>
+                    <span style="margin-left: 7px;">Change image</span>
+                </a>
+
             {% endif %}
 
         </div>
 
-        <div class="col-xs-9" style="font-size: 16pt; padding-right: 20px; padding-top: 20px;">
-            <span style="font-size: 16pt; font-weight: bold;">
-                About {{ profile.user.get_short_name }}:
-            </span>
+        <div class="col-xs-9" style="font-size: 16pt;">
+            <span style="font-size: 16pt; font-weight: bold;">About {{ profile.user.get_short_name }}</span>
 
             {% if edit %}
                 <a class="btn btn-info pull-right" style="margin-right: 17px; text-decoration: none;"
                    href="{% url "josprofile_edit" request.user.username %}?field_to_edit=about_me">
                    <span class="glyphicon glyphicon-pencil"></span>
-                   <span style="margin-left: 7px;">Edit Section</span>
+                   <span style="margin-left: 7px;">Edit section</span>
                 </a>
             {% endif %}
 
-            <div style="line-height: 1.4; margin-top: 2px; {% if edit %}outline: 3px dashed #28a4c9;{% endif %} margin-right: 20px; padding: 10px;">
+            <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} line-height: 1.4; margin-top: 2px; margin-right: 20px; padding: 10px;">
                 {{ profile.about_me|safe }}
             </div>
         </div>

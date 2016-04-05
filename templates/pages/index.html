@@ -64,18 +64,6 @@ This template is just for the landing page.
         line-height: 1.8;
     }
 
-    @media screen and (max-width: 983px) {
-        body {
-            padding-top: 95px;
-        }
-    }
-
-    @media screen and (min-width: 984px) {
-        body {
-            padding-top: 95px;
-        }
-    }
-
     a {
         color: #942fab;
         text-decoration: underline;
@@ -134,7 +122,7 @@ This template is just for the landing page.
                     <!-- messages -->
                     {% nevercache %}{% if messages %}
                         <div class="messages" style="color: rgb(65, 45, 120); font-family: 'Source Sans Pro',sans-serif; font-size: 18pt; font-weight: bold; line-height: 1.2;">
-                            <div class="row" style="background-color: lightgreen; height: 70px;
+                            <div class="row" style="background-color: rgb(200, 250, 150); height: 70px;
                                                     margin: 10px 15px 10px 40px; padding: 12px;">
                                 <div class="col-xs-1">
                                     <img src="/static/img/peeky-123115.png" height="40px" style=" ">
@@ -162,14 +150,12 @@ This template is just for the landing page.
 <div class="container">
 
     <div class="row" style="margin-top: 0;"><!-- logo -- slogan -->
-        <div class="col-xs-2">
-            <img style="height: 125px;" src="/static/img/JOSLogo121615.png">
+        <div class="col-xs-3">
+            <img class="img-responsive" style="max-height: 125px;" src="/static/img/JOSLogo121615.png">
         </div>
-        <div class="col-xs-9" style="padding-top: 65px;">
-            <p class="text-center"
-               style="font-family: 'Stalemate', cursive; font-size: 48pt; line-height: 1.2; margin-top: 0;">
-                A storytelling community for happier souls and healthier minds.
-            </p>
+        <div class="col-xs-9" style="font-family: 'Stalemate', cursive; font-size: 48pt;
+                                                 line-height: 1.2; padding-top: 65px;">
+            A storytelling community for happier souls and healthier minds.
         </div>
 
     </div>
@@ -177,7 +163,7 @@ This template is just for the landing page.
     <div class="row" style="background-color: transparent; margin-top: 20px;"><!-- MAIN -->
 
         <div class="col-xs-3" style="background-color: transparent;">
-            <img class=" " style="height: 250px; padding-left:0;" src="/static/img/enjoy040316.png">
+            <img class="img-responsive" style="max-height: 250px; padding-left:0;" src="/static/img/enjoy040316.png">
         </div>
 
         <div class="col-xs-2" style="background-color: transparent; padding-top: 100px;">
@@ -191,7 +177,7 @@ This template is just for the landing page.
         <div class="col-xs-5" style="background-color: transparent;">
 
             <ul class="hometext" style="list-style: disc; margin-left: 0; padding-top: 65px;">
-                <li>Fun, smart and oringinal shows</li>
+                <li>Fun, smart and original shows</li>
                 <li>JOS Live Fit - personalized wellness</li>
                 <li>Tailored Lessons and Workshops</li>
             </ul>
@@ -202,7 +188,7 @@ This template is just for the landing page.
     <div class="row" style="background-color: transparent; margin-top: 20px;"><!-- MAIN -->
 
         <div class="col-xs-3 col-xs-offset-1" style="background-color: transparent;">
-            <img class=" " style="height: 250px; padding-left:0;" src="/static/img/create040316.png">
+            <img class="img-responsive" style="max-height: 250px; padding-left:0;" src="/static/img/create040316.png">
         </div>
 
         <div class="col-xs-2" style="background-color: transparent; padding-top: 100px;">
@@ -218,7 +204,7 @@ This template is just for the landing page.
             <ul class="hometext" style="list-style: disc; margin-left: 0; padding-top: 65px;">
                 <li>Stories of all kinds</li>
                 <li>Characters & plots for shows</li>
-                <li>Personal memoires</li>
+                <li>Personal memoire</li>
             </ul>
 
         </div>
@@ -227,7 +213,7 @@ This template is just for the landing page.
     <div class="row" style="background-color: transparent; margin-top: 20px;"><!-- MAIN -->
 
         <div class="col-xs-3 col-xs-offset-2" style="background-color: transparent;">
-            <img class=" " style="height: 250px; padding-left:0;" src="/static/img/share040316.png">
+            <img class="img-responsive" style="max-height: 250px; padding-left:0;" src="/static/img/share040316.png">
         </div>
 
         <div class="col-xs-2" style="background-color: transparent; padding-top: 100px;">
@@ -241,9 +227,9 @@ This template is just for the landing page.
         <div class="col-xs-5" style="background-color: transparent;">
 
             <ul class="hometext" style="list-style: disc; margin-left: 0; padding-top: 65px;">
+                <li>Make friends</li>
                 <li>Exhibit your work</li>
-                <li>Make friends in collaborations</li>
-                <li>Leave a permanent display</li>
+                <li>Leave a legacy</li>
             </ul>
 
         </div>
@@ -259,7 +245,7 @@ This template is just for the landing page.
 </div>
 
 <footer>
-    <div class="container" style="margin-top: 60px; padding: 0">
+    <div class="container" style="margin-top: 40px; padding: 0">
         {% page_menu "pages/menus/footer.html" %}
 
         <p class="text-left" style="font-size: 8pt; margin-top: 0;">
