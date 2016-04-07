@@ -25,6 +25,8 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     profile_image = CloudinaryField('image', blank=True)
 
+    profile_image_idstr = models.CharField(max_length=150, default="noimage1")
+
     def __str__(self):
         return self.user.username
 

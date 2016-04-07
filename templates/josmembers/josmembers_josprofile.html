@@ -35,12 +35,15 @@
 
     <div class="row" style="margin-top: 40px;">
 
+        profile.profile_image_idstr = {{ profile.profile_image_idstr }}<br>
+        potentialNewProfileImageId = {{ potentialNewProfileImageId }}<br>
+
         <div class="col-xs-2 text-center" style="padding: 3px;">
 
             <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} padding: 10px;">
 
-                {% if profile.profile_image %}
-                    <img class="img-responsive" style=" " src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image }}">
+                {% if profile.profile_image_image_idstr == "noimage1" %}
+                    <img class="img-responsive" style=" " src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
                 {% else %}
                     <img class="img-responsive" style=" " src="/static/img/coming-soon-profile.png">
                 {% endif %}

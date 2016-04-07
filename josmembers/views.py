@@ -178,7 +178,6 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
     pk = request.GET.get('pk', None)
-    contentAdded = request.GET.get('contentAdded', False)
     field_to_edit = request.GET.get('field_to_edit', "nofield")
 
     if pk != None:
@@ -187,8 +186,7 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
         currentProfile.about_me = content
         currentProfile.save()
     else:
-        content = currentProfile.about_me
-        ckrtfholder = None
+        pass
 
     if field_to_edit != "nofield":
         content = getattr(currentProfile, field_to_edit)
@@ -197,7 +195,13 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
         query_string = "/" + str(pk)
         return redirect("/ckrichtextedit" + query_string)
 
-    context = {"profile": currentProfile, "edit": edit}
+    import re
+    oldProfileImageId = currentProfile.profile_image_idstr
+    split = re.split('(\d.*)', oldProfileImageId)
+    newnum = int(split[1])+1
+    potentialNewProfileImageId = username + str(newnum)
+
+    context = {"profile": currentProfile, "edit": edit, "potentialNewProfileImageId": potentialNewProfileImageId}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 
@@ -210,23 +214,22 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
-    instance = CKRichTextHolder.objects.get(pk=pk)
+    try:
+        instance = get_object_or_404(CKRichTextHolder, pk=pk)
+    except:
+        instance = None
 
-    if not instance:
-        author = "noauthor"
-        field_to_edit = "nofield"
-        title = "notitle"
-        form = CKRichTextEditForm()
-    else:
+    if instance:
         form = CKRichTextEditForm(instance=instance)
-        author = instance.author
+    else:
+        form = CKRichTextEditForm()
 
     if request.method == 'POST' and instance:
         content = request.POST['content']
         instance.content = content
         instance.save()
         username = str(instance.author)
-        query_string = "/?pk=" + pk + "&contentAdded=True"
+        query_string = "/?pk=" + pk
 
         return redirect("/users/"+ username + query_string)
 
