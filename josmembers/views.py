@@ -179,6 +179,18 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 
     pk = request.GET.get('pk', None)
     field_to_edit = request.GET.get('field_to_edit', "nofield")
+    new_image = request.GET.get('new_image', False)
+
+    def getPotentialNewProfileImageIdStr():
+        import re
+        oldProfileImageId = currentProfile.profile_image_idstr
+        split = re.split('(\d.*)', oldProfileImageId)
+        newnum = int(split[1]) + 1
+        return username + str(newnum)
+
+    if new_image:
+        currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
+        currentProfile.save()
 
     if pk != None:
         ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
@@ -195,13 +207,7 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
         query_string = "/" + str(pk)
         return redirect("/ckrichtextedit" + query_string)
 
-    import re
-    oldProfileImageId = currentProfile.profile_image_idstr
-    split = re.split('(\d.*)', oldProfileImageId)
-    newnum = int(split[1])+1
-    potentialNewProfileImageId = username + str(newnum)
-
-    context = {"profile": currentProfile, "edit": edit, "potentialNewProfileImageId": potentialNewProfileImageId}
+    context = {"profile": currentProfile, "edit": edit, "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr()}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 
