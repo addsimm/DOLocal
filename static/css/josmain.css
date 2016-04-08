@@ -1,0 +1,139 @@
+
+body {
+    color: rgb(65, 45, 120);
+    font-family: 'source sans pro', sans-serif;
+    font-size: 16pt;
+    line-height: normal;
+}
+
+@media screen and (max-width: 983px) {
+    body {
+        padding-top: 200px;
+    }
+}
+
+@media screen and (min-width: 984px) {
+    body {
+        padding-top: 140px;
+    }
+}
+
+a {
+    color: rgb(112, 154, 109);
+    outline: 2px dotted rgb(112, 154, 109);
+    padding: 2px;
+}
+
+.messages {
+    background-color: lightgreen;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.joscursive {
+    font-family: 'Stalemate', cursive;
+    font-size: 40pt;
+}
+
+.josinstructions {
+    font-size: 22pt;
+    line-height: 165%;
+}
+
+.josinstructions ul {
+    margin-left: 4%;
+}
+
+.josinstructions li {
+    margin-top: 15px;
+}
+
+.homehead {
+    font-family: "Abril Fatface", Serif;
+    font-size: 36pt;
+}
+
+.side-panel {
+    padding-left: 15px;
+    padding-right: 0;
+    padding-top: 15px;
+}
+
+.change-image {
+    margin-top: 2px;
+    text-decoration: none;
+}
+
+.navbar-default {
+    background-image: none;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    box-shadow: none;
+    background-color: white;
+    border-color: black;
+}
+
+
+footer {
+    background-color: white;
+    border-top: none;
+    margin-top: 0;
+    margin-bottom: 5px;
+    padding-top: 15px;
+    padding-bottom: 0;
+}
+
+#custom-bootstrap-menu.navbar-default {
+    background-image: none;
+    background-repeat: no-repeat;
+    border: none;
+    border-width: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+    font-size: 12px;
+    background-color: rgba(65, 45, 120, 1);
+
+}
+#custom-bootstrap-menu > .navbar-nav > li > a {
+    color: white;
+    text-decoration: none;
+    text-shadow: none;
+    padding-bottom: 0;
+    padding-top: 10px;
+    outline: none;
+}
+#custom-bootstrap-menu > .navbar-nav > li > a:hover,
+#custom-bootstrap-menu > .navbar-nav > li > a:focus,
+#custom-bootstrap-menu > .navbar-nav > .active > a {
+    background-image: none;
+    background-repeat: no-repeat;
+    box-shadow: none;
+    background-color: white;
+    color: rgb(65, 45, 140);
+}
+
+.form-actions {
+    background-color: white;
+    border-radius: 0;
+    border-top: 2px solid rgba(65, 25, 140);
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.btn-default {
+    background-color: rgb(231, 209, 222);
+    background-image: none;
+    background-repeat: no-repeat;
+    border-color: rgb(65, 25, 140);
+    box-shadow: none;
+    color: rgb(65, 25, 140);
+    font-size: 14pt;
+    outline: none;
+    text-decoration: none;
+    text-shadow: none;
+
+}
+
+
+

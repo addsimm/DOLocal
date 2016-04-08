@@ -1,21 +1,5 @@
 {% load i18n mezzanine_tags accounts_tags %}
 
-<style>
-
-    .btn-default {
-        background-color: rgb(230, 225, 240);
-        background-image: none;
-        background-repeat: no-repeat;
-        border-color: rgb(65, 25, 140);
-        box-shadow: none;
-        font-size: 14pt;
-        text-decoration: none;
-        text-shadow: none;
-        color: rgb(65, 25, 140);
-    }
-
-</style>
-
 {% if request.user.is_authenticated %}
 
     <div class="row" style=" ">
@@ -30,16 +14,17 @@
         </div>
     </div>
     <div class="row" style=" margin-top: 5px;">
-        <div class="col-xs-12 text-right" style="background-color: transparent; line-height: 1.2; padding-right: 0;">
+        <div class="col-xs-12 text-right" style="padding-right: 0;">
 
             {% url "profile" request.user.username as profile_url %}
 
             <!-- TODO: photo -->
 
-            <div style="color: green; font-size: 30pt; font-weight: bold;">
+            <span style="color: green; font-size: 30pt; font-weight: bold; margin-right: 10px;">
                 {{ user.get_short_name }}
-                <a href="{{ profile_url }}" style="color: #942fab; font-size: 10pt; margin-left: 5px; margin-right: 5px;">My profile</a>
-            </div>
+            </span>
+            <a href="{{ profile_url }}" style="font-size: 10pt; margin-bottom: 5px; margin-right: 2px;">My profile</a>
+
         </div>
     </div>
 

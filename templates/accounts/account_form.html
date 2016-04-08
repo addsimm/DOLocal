@@ -17,12 +17,6 @@
 
 {% block all_content %}
 
-    <style>
-        h3 {
-            line-height: 165%;
-        }
-    </style>
-
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10">
             {% block accounts_content %}
@@ -73,11 +67,11 @@
                         <div class="form-actions"><!-- sumbit -->
                             {% block account_form_actions %}
                                 {% if title == "Sign up" %}
-                                    <p>
+                                    <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
                                         I agree to the
                                         <a href="/community-rules">community rules</a>
                                         as well as the <a href="/legals">terms and conditions</a>.
-                                    </p>
+                                    </div>
                                 {% endif %}
                                 <input class="btn btn-default btn-lg pull-left" style="margin-top: 10px;" type="submit" value="{{ title }}">
                             {% endblock account_form_actions %}

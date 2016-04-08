@@ -5,9 +5,9 @@
 
     {% if request.user.is_authenticated %}
 
-        <p>
+        <div class="josinstructions">
             {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out." %}
-        </p>
+        </div>
 
     {% else %}
 
@@ -17,9 +17,9 @@
 
         {% blocktrans %}
 
-            <h3>
+            <div class="josinstructions" style="margin-bottom: 30px; margin-top: 30px;">
                 If you:
-                <ul style="margin-left: 4%;">
+                <ul>
                     <li>
                         haven't signed up yet, please click here:
                         <a href="{{ signup_url }}?next={{ next }}">
@@ -34,7 +34,7 @@
                     </li>
                 </ul>
                 Otherwise, enter the correct info and press "{{ title }}."
-            </h3>
+            </div>
 
         {% endblocktrans %}
 
