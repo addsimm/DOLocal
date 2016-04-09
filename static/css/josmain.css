@@ -4,18 +4,7 @@ body {
     font-family: 'source sans pro', sans-serif;
     font-size: 16pt;
     line-height: normal;
-}
-
-@media screen and (max-width: 983px) {
-    body {
-        padding-top: 200px;
-    }
-}
-
-@media screen and (min-width: 984px) {
-    body {
-        padding-top: 140px;
-    }
+    padding-top: 140px;
 }
 
 a {
@@ -32,7 +21,7 @@ a {
 
 .joscursive {
     font-family: 'Stalemate', cursive;
-    font-size: 40pt;
+    font-size: 32pt;
 }
 
 .josinstructions {
@@ -51,6 +40,15 @@ a {
 .homehead {
     font-family: "Abril Fatface", Serif;
     font-size: 36pt;
+}
+
+.form-actions {
+    background-color: white;
+    border-radius: 0;
+    border-top: 2px solid rgba(65, 25, 140, 0.85);
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding: 20px;
 }
 
 .side-panel {
@@ -72,7 +70,6 @@ a {
     background-color: white;
     border-color: black;
 }
-
 
 footer {
     background-color: white;
