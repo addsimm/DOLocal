@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 from mezzanine.accounts import get_profile_form
-from mezzanine.accounts.forms import PasswordResetForm
+from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
@@ -23,31 +23,35 @@ from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
 
 User = get_user_model()
 
+
+def login(request, template="accounts/account_login.html",
+          form_class=LoginForm, extra_context=None):
+        """
+        Login form.
+        """
+        form = form_class(request.POST or None)
+        if request.method == "POST" and form.is_valid():
+            authenticated_user = form.save()
+            info(request, _("Successfully logged in"))
+            auth_login(request, authenticated_user)
+            pk = str(authenticated_user.id)
+            return redirect("/personaldesk/" + pk)
+
+        context = {"form": form, "title": _("Log in")}
+        context.update(extra_context or {})
+        return TemplateResponse(request, template, context)
+
+
+def logout(request):
+    """
+    Log the user out.
+    """
+    auth_logout(request)
+    info(request, _("Successfully logged out - come back soon"))
+    return redirect("/")
+
+
 ### Profiles:
-
-@login_required
-def josprofile_update(request, template="josmembers/josmembers_josprofile_update.html",
-                   extra_context=None):
-    """
-    Profile update form.
-    """
-    context = {}
-    profile_form = get_profile_form()
-    form = profile_form(request.POST or None, request.FILES or None, instance=request.user)
-    #cl_init_js_callbacks(form, request)
-    if request.method == "POST" and form.is_valid():
-        if request.POST.get['temp_profile_image']:
-            form.fields['profile_image']=request.POST.get['temp_profile_image']
-        user = form.save()
-        info(request, _("Profile changed"))
-        try:
-            return redirect("profile", username=user.username)
-        except NoReverseMatch:
-            return redirect("profile_update")
-    context.update({"form": form, "title": _("Change Profile")})
-    context.update(extra_context or {})
-    return TemplateResponse(request, template, context)
-
 
 @login_required
 def josprofile_redirect(request):
@@ -160,14 +164,6 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
     return TemplateResponse(request, template, context)
 
 
-def logout(request):
-    """
-    Log the user out.
-    """
-    auth_logout(request)
-    info(request, _("Successfully logged out - come back soon"))
-    return redirect("/")
-
 
 def josprofile(request, username, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
@@ -216,7 +212,6 @@ def josprofile(request, username, edit, template="josmembers/josmembers_josprofi
 
 from django.views.decorators.csrf import csrf_exempt
 
-
 @csrf_exempt
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
@@ -240,6 +235,33 @@ def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra
         return redirect("/users/"+ username + query_string)
 
     context = {'form': form}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+def personaldesk(request, pk, template="josmembers/jospersonaldesk.html", extra_context=None):
+    user = get_object_or_404(User, pk=pk)
+    currentProfile = get_object_or_404(JOSProfile, user=user)
+
+    instance = None
+
+    if instance:
+        form = CKRichTextEditForm(instance=instance)
+    else:
+        form = CKRichTextEditForm()
+
+    if request.method == 'POST' and instance:
+        content = request.POST['content']
+        instance.content = content
+        instance.save()
+        username = str(instance.author)
+        query_string = "/?pk=" + pk
+
+        return redirect("/users/" + username + query_string)
+
+    context = {"profile": currentProfile}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

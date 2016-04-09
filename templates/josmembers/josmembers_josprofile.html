@@ -70,7 +70,9 @@
 
                                 function (error, result) { // < Callback
                                     console.log(error, result);
-                                    window.location.href = "/users/{{ profile.user.username }}/?new_image=True";
+                                    if (typeof result != 'undefined') {
+                                        window.location.href = "/users/{{ profile.user.username }}/?new_image=True";
+                                    }
                                 });
                     });
                 </script>

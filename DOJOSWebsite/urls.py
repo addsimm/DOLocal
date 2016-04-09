@@ -28,6 +28,7 @@ PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
 JOS_NEW_PASSWORD_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
                                "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
 
+LOGIN_URL = settings.LOGIN_URL
 LOGOUT_URL = settings.LOGOUT_URL
 
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
@@ -61,6 +62,8 @@ urlpatterns += patterns('',
 
     url("ckrichtextedit/(?P<pk>\d+)$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
     url("ckrichtextedit", "josmembers.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
+    url("personaldesk/(?P<pk>\d+)$", "josmembers.views.personaldesk", name="personaldesk"),
+    url("personaldesk", "josmembers.views.personaldesk", {'pk': None}, name="personaldesk"),
 
     ### JOS Staff
 
@@ -74,25 +77,21 @@ urlpatterns += patterns('',
 
     url("^%s/(?P<username>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': True}, name="josprofile_edit"),
-
     url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': False}, name="josprofile"),
-
     url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
 
-    url("^%s%s$" % (PROFILE_UPDATE_URL.strip("/"), _slash),
-        "josmembers.views.josprofile_update", name="josprofile_update"),
-
-
-
-
+    url("^%s%s$" % (LOGIN_URL.strip("/"), _slash),
+        "josmembers.views.login", name="login"),
     url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
         "josmembers.views.logout", name="logout"),
+
     url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
         "josmembers.views.signup", name="signup"),
     url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.signup_verify", name="signup_verify"),
+
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         "josmembers.views.password_reset", name="jos_password_reset"),
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),

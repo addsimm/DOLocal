@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
+
+{% cloudinary_includes %}
+
+{% block meta_title %}
+    {{ profile.user|username_or:"get_short_name" }}
+{% endblock %}
+{% block title %}
+    {{ profile.user|username_or:"get_short_name" }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    <li class="active">
+        {{ profile.user|username_or:"get_short_name" }}'s Personal Desk
+    </li>
+{% endblock %}
+
+{% block all_content %}
+
+    <div class="row" style="margin-left: 0; margin-top: 30px;">
+
+        <a href="{% url "profile" request.user.username %}">My profile</a>
+
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+        <div class="col-xs-1 text-center" style="padding: 3px;">
+
+            <div style="padding: 10px;">
+
+                {% if profile.profile_image_image_idstr != "noimage1" %}
+                    <img class="img-responsive"
+                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
+                {% else %}
+                    <img class="img-responsive" src="/static/img/coming-soon-profile.png">
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
