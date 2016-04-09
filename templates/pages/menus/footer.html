@@ -1,5 +1,40 @@
 {% load i18n pages_tags %}
 
+<style>
+
+    #custom-bootstrap-menu.navbar-default {
+        background-image: none;
+        background-repeat: no-repeat;
+        border: none;
+        border-width: 0px;
+        border-radius: 0px;
+        box-shadow: none;
+        font-size: 12px;
+        background-color: rgba(65, 45, 120, 1);
+
+    }
+
+    #custom-bootstrap-menu > .navbar-nav > li > a {
+        color: white;
+        text-decoration: none;
+        text-shadow: none;
+        padding-bottom: 0;
+        padding-top: 10px;
+        outline: none;
+    }
+
+    #custom-bootstrap-menu > .navbar-nav > li > a:hover,
+    #custom-bootstrap-menu > .navbar-nav > li > a:focus,
+    #custom-bootstrap-menu > .navbar-nav > .active > a {
+        background-image: none;
+        background-repeat: no-repeat;
+        box-shadow: none;
+        background-color: white;
+        color: rgb(65, 45, 140);
+    }
+
+</style>
+
 {% spaceless %}
 
 {% if page_branch_in_menu %}

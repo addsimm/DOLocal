@@ -39,7 +39,10 @@
     <script>function goBack() {
         window.history.back();
     }</script>
-    <a href="{% url "personaldesk" %}/{{ request.user.id }}" style="margin-left: 30px;">Personal Desk</a>
+
+    <a href="{% url "personaldesk" %}/{{ request.user.id }}" style="margin-left: 30px;">
+        My desk&nbsp
+    </a>
 </li>
 
 {% for page in page_branch %}

@@ -13,31 +13,91 @@
 {% block breadcrumb_menu %}
     {{ block.super }}
     <li class="active">
-        {{ profile.user|username_or:"get_short_name" }}'s Personal Desk
+        {{ profile.user|username_or:"get_short_name" }}'s personal desk
     </li>
 {% endblock %}
 
 {% block all_content %}
 
-    <div class="row" style="margin-left: 0; margin-top: 30px;">
+    <style>
 
-        <a href="{% url "profile" request.user.username %}">My profile</a>
+    .joslargelinkbutton {
+        font-size: 18pt;
+        padding: 8px;
+    }
 
-    </div>
-    <div class="row" style="margin-top: 10px;">
+    .nav-tabs.nav-justified > li > a {
+        outline: none;
+    }
 
-        <div class="col-xs-1 text-center" style="padding: 3px;">
+    .nav-tabs.nav-justified > li {
+        border-bottom: 2px dotted #412d78;
+        border-right: 2px dotted #412d78;
+        border-radius: 0;
+    }
 
-            <div style="padding: 10px;">
+    .nav-tabs.nav-justified > li.active {
+        border: 3px dashed #412d78;
+        border-bottom: none;
+        border-radius: 0;
+    }
 
+    #worktabs a {
+        color: #412d78;
+        font-family: "Abril Fatface", Serif;
+        font-size: 24pt;
+        outline: none;
+    }
+
+    </style>
+
+    <div class="row" style="margin-left: 0; margin-top: 25px;">
+
+        <div class="col-xs-12" style="padding: 0;">
+            <a class="joslargelinkbutton" href="{% url "profile" request.user.username %}">
                 {% if profile.profile_image_image_idstr != "noimage1" %}
-                    <img class="img-responsive"
+                    <img class="img-responsive" style="display: inline; max-height: 35px;"
                          src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
                 {% else %}
-                    <img class="img-responsive" src="/static/img/coming-soon-profile.png">
+                    <img class="img-responsive" style="display: inline; max-height: 35px;"
+                         src="/static/img/coming-soon-profile.png">
                 {% endif %}
+                <span style="margin-left: 5px;"> My profile</span>
+            </a>
+        </div>
 
-            </div>
+    </div>
+    <div class="row" style="margin-top: 25px;">
+
+        <div class="col-xs-12 text-center" style=" ">
+
+            <ul id="worktabs" class="nav nav-tabs nav-justified">
+                <li class="active"><a data-toggle="tab" href="#enjoy">
+                    <i class="fa fa-television fa-fw" style="margin-right: 10px;"></i>Enjoy
+                </a></li>
+                <li><a data-toggle="tab" href="#create">
+                    <i class="fa fa-keyboard-o fa-lg fa-fw" style="margin-right: 10px;"></i>Create
+                </a></li>
+                <li><a data-toggle="tab" href="#share">
+                    <i class="fa fa-globe fa-lg fa-fw" style="margin-right: 10px;"></i>Share
+                </a></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="tab-content">
+        <div id="enjoy" class="tab-pane fade in active">
+            <h3>enjoy</h3>
+            <p>Some content.</p>
+        </div>
+        <div id="create" class="tab-pane fade">
+            <h3>create</h3>
+            <p>asd adsdsfasdf sadfsdf </p>
+        </div>
+        <div id="share" class="tab-pane fade">
+            <h3>share</h3>
+            <p>asd dddddd </p>
         </div>
     </div>
 
