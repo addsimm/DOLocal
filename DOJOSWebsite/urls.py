@@ -105,6 +105,7 @@ urlpatterns += patterns('',
 
     url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
+    (r'^forum/', include('pybb.urls', namespace='pybb')),
     ##################
     # ----------------
     # MEZZANINE'S URLS

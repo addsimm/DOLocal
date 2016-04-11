@@ -224,6 +224,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "ckeditor",
     "cloudinary",
+    "pybb",
     # "mezzanine.mobile",
     "josstaff",
     "josmembers",
@@ -242,6 +243,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
     "mezzanine.pages.context_processors.page",
+    "pybb.context_processors.processor",
+
 )
 
 # List of middleware classes to use. Order is important; in the request phase,
@@ -271,6 +274,7 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
+    'pybb.middleware.PybbMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
