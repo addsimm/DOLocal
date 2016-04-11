@@ -414,6 +414,7 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+PYBB_PROFILE_RELATED_NAME = 'JOSProfile'
 
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###

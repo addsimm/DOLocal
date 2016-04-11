@@ -7,17 +7,18 @@ from ckeditor.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin
 
 from cloudinary.models import CloudinaryField
+from pybb.profiles import PybbProfile
 
 # Create your models here.
 
 
-class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
+class JOSProfile(AdminThumbMixin, TimeStamped, PybbProfile, models.Model):
     class Meta:
         verbose_name = 'JOS Member Profile'
         verbose_name_plural = 'JOS Members Profile'
         ordering = ("user",)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='JOSProfile', on_delete=models.CASCADE)
 
     date_of_birth = models.DateField(blank=True, null=True)
 
