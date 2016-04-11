@@ -9,6 +9,7 @@ Twisted-Core==13.2.0
 Unidecode==0.04.19
 apt-xapian-index==0.45
 argparse==1.2.1
+bbcode==1.0.22
 beautifulsoup4==4.4.1
 bleach==1.4.2
 chardet==2.0.1
