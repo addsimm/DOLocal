@@ -61,6 +61,7 @@ def josprofile_redirect(request):
     """
     return redirect("profile", username=request.user.username)
 
+
 ### Signup:
 
 def signup(request, template="accounts/account_signup.html", extra_context=None):
@@ -72,6 +73,7 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
     form = signup_form(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
         new_user = form.save()
+
         if not new_user.is_active:
             if settings.ACCOUNTS_APPROVAL_REQUIRED:
                 send_approve_mail(request, new_user)
@@ -90,6 +92,7 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
     context = {"form": form, "title": _("Sign up")}
     context.update ({"remote_address": remote_address})
     context.update(extra_context or {})
+
     return TemplateResponse(request, template, context)
 
 
@@ -119,6 +122,7 @@ def account_redirect(request):
     to the profile update form.
     """
     return redirect("profile_update")
+
 
 ### Passwords:
 

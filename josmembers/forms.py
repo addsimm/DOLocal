@@ -96,10 +96,10 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
 
 class JOSSignupForm(Html5Mixin, forms.ModelForm):
     password1 = forms.CharField(label=_("Password"),
-                                widget=forms.PasswordInput(render_value=False))
+                                widget=forms.TextInput())
 
     password2 = forms.CharField(label=_("Password (again)"),
-                                widget=forms.PasswordInput(render_value=False))
+                                widget=forms.TextInput())
 
     class Meta:
         model = User
