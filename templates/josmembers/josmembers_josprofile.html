@@ -71,7 +71,7 @@
                                 function (error, result) { // < Callback
                                     console.log(error, result);
                                     if (typeof result != 'undefined') {
-                                        window.location.href = "/users/{{ profile.user.username }}/?new_image=True";
+                                        window.location.href = "/users/{{ profile.user.id }}/?new_image=True";
                                     }
                                 });
                     });

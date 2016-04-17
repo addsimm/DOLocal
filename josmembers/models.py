@@ -50,3 +50,10 @@ class CKRichTextHolder(TimeStamped, models.Model):
     title = models.CharField(max_length=150, default="notitle")
     field_to_edit = models.CharField(max_length=150, default="nofield")
     content = RichTextField()
+
+    def get_jos_name(author):
+        first_name = author.get_short_name()[:8]
+        last_initial = author.user.last_name[:1].upper()
+        jos_name = first_name + " " + last_initial + "."
+        return jos_name
+

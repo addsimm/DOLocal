@@ -60,7 +60,9 @@
     <form id='ckrichtextedit_form' method="post" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
 
         {% csrf_token %}
+
         <div class="row">
+
             <div class="col-xs-12">
 
                 {{ form.media }}
@@ -73,19 +75,20 @@
         <!-- MAIN BUTTONS -->
 
         <button class="btn btn-success btn-lg pull-right" style="margin: 20px 10px;"
-                data-target="#Save_Modal" data-toggle="modal">
-            Save changes
-        </button>
+               data-target="#Save_Modal" data-toggle="modal">
+            <!-- <button class="btn" onclick="submitForm()"> -->
+                  Save changes
+              </button>
 
 
-    </form>
+          </form>
 
-    <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;"
-            data-target="#Discard_Modal" data-toggle="modal">
-        Discard changes
-    </button>
+          <button class="btn btn-danger btn-lg pull-right" style="margin: 20px 10px;"
+                  data-target="#Discard_Modal" data-toggle="modal">
+              Discard changes
+          </button>
 
-    <!-- MODALS -->
+          <!-- MODALS -->
 
     <!-- SAVE -->
 
@@ -120,7 +123,7 @@
     </div>
 
     <script>function submitForm() {
-        $("form").submit();
+        $("#ckrichtextedit_form").submit();
     }</script>
 
     <!-- DISCARD -->

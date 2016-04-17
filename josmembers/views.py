@@ -4,19 +4,14 @@ from __future__ import unicode_literals
 from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info, error
-from django.core.urlresolvers import NoReverseMatch
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
-
-from mezzanine.accounts import get_profile_form
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
-
-from cloudinary.forms import cl_init_js_callbacks
 
 from .models import JOSProfile, CKRichTextHolder
 from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
@@ -173,8 +168,7 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
     """
     Display a profile.
     """
-    lookup = {"id": userid, "is_active": True}
-    user = get_object_or_404(User, **lookup)
+    user = User.objects.get(id=userid)
     username = user.username
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
@@ -220,24 +214,16 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
-    try:
-        instance = get_object_or_404(CKRichTextHolder, pk=pk)
-    except:
-        instance = None
+    instance = get_object_or_404(CKRichTextHolder, pk=pk)
+    form = CKRichTextEditForm(instance=instance)
 
-    if instance:
-        form = CKRichTextEditForm(instance=instance)
-    else:
-        form = CKRichTextEditForm()
-
-    if request.method == 'POST' and instance:
+    if request.method == 'POST':
         content = request.POST['content']
         instance.content = content
         instance.save()
-        username = str(instance.get_jos_name())
         query_string = "/?pk=" + pk
 
-        return redirect("/users/"+ username + query_string)
+        return redirect("/users/"+ str(instance.author_id) + query_string)
 
     context = {'form': form}
     context.update(extra_context or {})
