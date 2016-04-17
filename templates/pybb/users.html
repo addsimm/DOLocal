@@ -4,7 +4,7 @@
 
 {% load pybb_tags i18n %}
 
-{% block content %}
+{% block all_content %}
     <h1>{% trans "Users" %}</h1>
     <form method="get" class="filter_form">
         {% csrf_token %}
@@ -25,4 +25,4 @@
         {% include "pybb/pagination.html" %}
     {% endwith %}
 
-{% endblock %}
+{% endblock all_content %}

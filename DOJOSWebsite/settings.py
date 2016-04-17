@@ -189,7 +189,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "ckeditor",
     "cloudinary",
-    # "pybb",
+    "pybb",
     # "mezzanine.mobile",
     "josstaff",
     "josmembers",
@@ -371,4 +371,4 @@ CKEDITOR_CONFIGS = {
 
 
 ###  This is fucked up VVV
-PYBB_PROFILE_RELATED_NAME = 'JOSProfile'
+#PYBB_PROFILE_RELATED_NAME = 'JOSProfile'

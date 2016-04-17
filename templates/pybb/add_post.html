@@ -27,9 +27,9 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block all_content %}
 
 <h1>{% if forum %}{% trans "New topic" %}{% else %}{% trans "New reply" %}{% endif %}</h1>
 
 {% include "pybb/post_form.html" %}
-{% endblock content %}
+{% endblock all_content %}
