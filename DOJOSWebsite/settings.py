@@ -11,9 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 # The following settings are already defined with default values in
 # the ``defaults.py`` module within each of Mezzanine's apps, but are
 # common enough to be put here, commented out, for conveniently
-# overriding. Please consult the settings documentation for a full list
-# of settings Mezzanine implements:
-# http://mezzanine.jupo.org/docs/configuration.html#default-settings
+# overriding
 
 # Controls the ordering and grouping of the admin menu.
 #
@@ -33,13 +31,8 @@ from django.utils.translation import ugettext_lazy as _
 #     ("mezzanine_tags.recent_actions",),
 # )
 
-# A sequence of templates used by the ``page_menu`` template tag. Each
-# item in the sequence is a three item sequence, containing a unique ID
-# for the template, a label for the template, and the template path.
-# These templates are then available for selection when editing which
-# menus a page should appear in. Note that if a menu template is used
-# that doesn't appear in this setting, all pages will appear in it.
-
+# A sequence of templates used by the ``page_menu`` template tag.
+#
 # PAGE_MENU_TEMPLATES = (
 #     (1, _("Top navigation bar"), "pages/menus/dropdown.html"),
 #     (2, _("Left-hand tree"), "pages/menus/tree.html"),
@@ -47,13 +40,7 @@ from django.utils.translation import ugettext_lazy as _
 # )
 
 # A sequence of fields that will be injected into Mezzanine's (or any
-# library's) models. Each item in the sequence is a four item sequence.
-# The first two items are the dotted path to the model and its field
-# name to be added, and the dotted path to the field class to use for
-# the field. The third and fourth items are a sequence of positional
-# args and a dictionary of keyword args, to use when creating the
-# field instance. When specifying the field class, the path
-# ``django.models.db.`` can be omitted for regular Django model fields.
+# library's) models.
 #
 # EXTRA_MODEL_FIELDS = (
 #     (
@@ -75,22 +62,16 @@ from django.utils.translation import ugettext_lazy as _
 #     ),
 # )
 
-# Setting to turn on featured images for blog posts. Defaults to False.
-#
-# BLOG_USE_FEATURED_IMAGE = True
+# If True, the django-modeltranslation will be added .
+# USE_MODELTRANSLATION = False
 
-# If True, the django-modeltranslation will be added to the
-# INSTALLED_APPS setting.
-USE_MODELTRANSLATION = False
-
-
-########################
-# MAIN DJANGO SETTINGS #
-########################
+###################
+# DJANGO SETTINGS #
+###################
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118', '*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -123,8 +104,8 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
-USE_L10N = True
+USE_I18N = False
+USE_L10N = False
 
 AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 
@@ -139,21 +120,15 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 
 DATABASES = {
     "default": {
-        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
         "ENGINE": "django.db.backends.",
-        # DB name or path to database file if using sqlite3.
         "NAME": "",
-        # Not used with sqlite3.
         "USER": "",
-        # Not used with sqlite3.
         "PASSWORD": "",
-        # Set to empty string for localhost. Not used with sqlite3.
+        # Set to empty string for localhost.
         "HOST": "",
-        # Set to empty string for default. Not used with sqlite3.
         "PORT": "",
     }
 }
-
 
 #########
 # PATHS #
@@ -174,29 +149,19 @@ CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 STATIC_URL = "/static/"
 
 # Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a trailing slash.
 MEDIA_URL = STATIC_URL + "media/"
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
 ROOT_URLCONF = "%s.urls" % PROJECT_APP
 
-# Put strings here, like "/home/html/django_templates"
-# or "C:/www/django/templates".
-# Always use forward slashes, even on Windows.
 # Don't forget to use absolute paths, not relative paths.
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
-
 
 ################
 # APPLICATIONS #
@@ -278,8 +243,7 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-# Store these package names here as they may change in the future since
-# at the moment we are using custom forks of them.
+# Store these package names here as they may change in the future.
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
@@ -312,17 +276,11 @@ DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 # LOCAL SETTINGS #
 ##################
 
-# Allow any settings to be defined in local_settings.py which should be
-# ignored in your version control system allowing for settings to be
-# defined per machine.
-
 # Instead of doing "from .local_settings import *", we use exec so that
 # local_settings has full access to everything defined in this module.
-
 f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
 if os.path.exists(f):
     exec(open(f, "rb").read())
-
 
 ####################
 # DYNAMIC SETTINGS #
@@ -330,10 +288,7 @@ if os.path.exists(f):
 
 # set_dynamic_settings() will rewrite globals based on what has been
 # defined so far, in order to provide some better defaults where
-# applicable. We also allow this settings module to be imported
-# without Mezzanine installed, as the case may be when using the
-# fabfile, where setting the dynamic settings below isn't strictly
-# required.
+# applicable.
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
