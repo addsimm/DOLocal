@@ -13,11 +13,11 @@
 
         </div>
     </div>
-    <div class="row" style=" margin-top: 5px;">
+    <div class="row" style="margin-top: 5px;">
         <div class="col-xs-12 text-right" style="padding-right: 0;">
 
-            <span style="color: green; font-size: 30pt; font-weight: bold; margin-right: 10px;">
-                {{ user.get_short_name }}
+            <span style="color: green; font-size: 30pt; font-weight: bold; margin-right: 5px;">
+                {{ user.JOSProfile.get_jos_name }}
             </span>
 
             <a href="{% url "personaldesk" %}/{{ request.user.id }}" style="font-size: 10pt; margin-bottom: 5px; margin-right: 2px;">My desk</a>

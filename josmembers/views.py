@@ -169,12 +169,13 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
 
 
 
-def josprofile(request, username, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
+def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
     Display a profile.
     """
-    lookup = {"username__iexact": username, "is_active": True}
+    lookup = {"id": userid, "is_active": True}
     user = get_object_or_404(User, **lookup)
+    username = user.username
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
     pk = request.GET.get('pk', None)
@@ -233,7 +234,7 @@ def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra
         content = request.POST['content']
         instance.content = content
         instance.save()
-        username = str(instance.author)
+        username = str(instance.get_jos_name())
         query_string = "/?pk=" + pk
 
         return redirect("/users/"+ username + query_string)

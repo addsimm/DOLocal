@@ -75,9 +75,9 @@ urlpatterns += patterns('',
 
     ### JOS Accounts & Members ###
 
-    url("^%s/(?P<username>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
+    url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': True}, name="josprofile_edit"),
-    url("^%s/(?P<username>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
+    url("^%s/(?P<userid>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': False}, name="josprofile"),
     url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_redirect", name="josprofile_redirect"),

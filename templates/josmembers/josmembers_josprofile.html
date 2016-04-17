@@ -4,17 +4,17 @@
 {% cloudinary_includes %}
 
 {% block meta_title %}
-    {{ profile.user|username_or:"get_short_name" }}
+    {{ user.JOSProfile.get_jos_name }}
 {% endblock %}
 {% block title %}
-    {{ profile.user|username_or:"get_short_name" }}
+    {{ user.JOSProfile.get_jos_name }}
 {% endblock %}
 {# block body_id }account{ endblock #}
 
 {% block breadcrumb_menu %}
     {{ block.super }}
     <li class="active">
-        {{ profile.user|username_or:"get_short_name" }}'s Profile
+        {{ user.JOSProfile.get_jos_name }}'s Profile
     </li>
 {% endblock %}
 
@@ -84,11 +84,11 @@
         </div>
 
         <div class="col-xs-9" style="font-size: 16pt;">
-            <span style="font-weight: bold;">About {{ profile.user.get_short_name }}</span>
+            <span style="font-weight: bold;">About {{ user.JOSProfile.get_jos_name }}</span>
 
             {% if edit %}
                 <a class="btn btn-info pull-right" style="margin-right: 17px; outline: none; text-decoration: none;"
-                   href="{% url "josprofile_edit" request.user.username %}?field_to_edit=about_me">
+                   href="{% url "josprofile_edit" request.user.id %}?field_to_edit=about_me">
                    <span class="glyphicon glyphicon-pencil"></span>
                    <span style="margin-left: 7px;">Edit section</span>
                 </a>
@@ -106,14 +106,14 @@
                 {% if edit %}
 
                     <a class="btn pull-right btn-default" style="background-color: #28a4c9; border: none; color: white; outline: none; width: 100px;"
-                       href="{% url "josprofile" request.user.username %}">
+                       href="{% url "josprofile" request.user.id %}">
                         {% trans "Hide edit" %}
                     </a>
 
                 {% else %}
 
                     <a class="btn btn-default pull-right"
-                       href="{% url "josprofile_edit" request.user.username %}">
+                       href="{% url "josprofile_edit" request.user.id %}">
                         {% trans "Edit mode" %}
                     </a>
 

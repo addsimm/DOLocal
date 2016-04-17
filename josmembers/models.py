@@ -35,6 +35,12 @@ class JOSProfile(AdminThumbMixin, TimeStamped, PybbProfile, models.Model):
         username = request.user.username
         return "/users/%s/" % username
 
+    def get_jos_name(request):
+        first_name = request.user.get_short_name()[:8]
+        last_initial = request.user.last_name[:1].upper()
+        jos_name = first_name + " " + last_initial + "."
+        return jos_name
+
 
 class CKRichTextHolder(TimeStamped, models.Model):
     class Meta:
@@ -44,4 +50,3 @@ class CKRichTextHolder(TimeStamped, models.Model):
     title = models.CharField(max_length=150, default="notitle")
     field_to_edit = models.CharField(max_length=150, default="nofield")
     content = RichTextField()
-

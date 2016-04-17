@@ -4,16 +4,16 @@
 {% cloudinary_includes %}
 
 {% block meta_title %}
-    {{ profile.user|username_or:"get_short_name" }}
+    {{ user.JOSProfile.get_jos_name }}
 {% endblock %}
 {% block title %}
-    {{ profile.user|username_or:"get_short_name" }}
+    {{ user.JOSProfile.get_jos_name }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
     {{ block.super }}
     <li class="active">
-        {{ profile.user|username_or:"get_short_name" }}'s personal desk
+        {{ user.JOSProfile.get_jos_name }}'s personal desk
     </li>
 {% endblock %}
 
@@ -54,7 +54,7 @@
     <div class="row" style="margin-left: 0; margin-top: 40px;">
 
         <div class="col-xs-12" style="padding: 0;">
-            <a class="joslargelinkbutton" href="{% url "profile" request.user.username %}">
+            <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
                 {% if profile.profile_image_idstr != "noimage1" %}
                     <img class="img-responsive" style="display: inline; max-height: 35px;"
                          src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
