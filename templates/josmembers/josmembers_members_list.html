@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
+
+{% cloudinary_includes %}
+
+{% block meta_title %}
+    {{ user.JOSProfile.get_jos_name }}
+{% endblock %}
+{% block title %}
+    {{ user.JOSProfile.get_jos_name }}
+{% endblock %}
+{# block body_id }account{ endblock #}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    <li class="active">
+        Community Members
+    </li>
+{% endblock %}
+
+{% block all_content %}
+
+    <style>
+
+        input {
+            font-size: 20pt;
+            padding: 5px;
+        }
+
+    </style>
+
+    <div class="row" style="margin-top: 50px; padding-left: 50px;">
+
+
+            <form class="form-inline" method="post">
+
+                <label class="josinstructions">
+                    Search members:
+                </label>
+                <input type="text" placeholder="Start typing here">
+                <button class="btn btn-warning" style="margin-top: -4px;" type="submit">
+                    <i class="fa fa-search" style="margin-right: 10px;"></i>Search
+                </button>
+
+            </form>
+
+    </div>
+
+    <div class="row" style="margin-top: 50px;">
+
+        <div class="col-xs-12" style="padding-left: 30px;">
+
+
+            {% for profile in profiles %}
+
+                    <a class="joslargelinkbutton" href="{% url "profile" profile.user.id %}">
+                        {% if profile.profile_image_idstr != "noimage1" %}
+                            <img class="img-responsive" style="display: inline; max-height: 35px;"
+                                 src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
+                        {% else %}
+                            <img class="img-responsive" style="display: inline; max-height: 35px;"
+                                 src="/static/img/coming-soon-profile.png">
+                        {% endif %}
+                        <span style="margin-left: 5px;">{{ profile.get_jos_name }}</span>
+                    </a><br><br>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+{% endblock all_content %}
+
+
+
+
+
+

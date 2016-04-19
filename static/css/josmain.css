@@ -76,15 +76,6 @@ footer {
     padding-bottom: 0;
 }
 
-.form-actions {
-    background-color: white;
-    border-radius: 0;
-    border-top: 2px solid rgba(65, 25, 140);
-    margin-bottom: 15px;
-    margin-top: 30px;
-    padding: 20px;
-}
-
 .btn-default {
     background-color: rgb(231, 209, 222);
     background-image: none;

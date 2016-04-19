@@ -87,19 +87,32 @@
     </div>
 
     <div class="tab-content">
+
         <div id="enjoy" class="tab-pane fade in active">
-            <h3>enjoy</h3>
+            <div class="josinstructions text-center">enjoy</div>
             <p>Some content.</p>
             {# include "accounts/includes/user_panel.html" %}#}
         </div>
+
         <div id="create" class="tab-pane fade">
             <h3>create</h3>
             <p>asd adsdsfasdf sadfsdf </p>
         </div>
+
+
+        <!--#############-->
+        <!--### SHARE ###-->
+        <!--#############-->
         <div id="share" class="tab-pane fade">
-            <h3>share</h3>
-            <p>asd dddddd </p>
+
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-xs-12" style="padding-left: 30px;">
+                    <a href="{% url "josmembers_list" %}">Find fellow members</a>
+                </div>
+            </div>
+
         </div>
+
     </div>
 
 {% endblock %}

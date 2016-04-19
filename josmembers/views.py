@@ -207,7 +207,7 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
     return TemplateResponse(request, template, context)
 
 
-### Writing Utilities
+### Work Utilities
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -253,6 +253,16 @@ def personaldesk(request, pk, template="josmembers/jospersonaldesk.html", extra_
         return redirect("/users/" + username + query_string)
 
     context = {"profile": currentProfile}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+def members_list(request, template="josmembers/josmembers_members_list.html", extra_context=None):
+
+    profiles = JOSProfile.objects.all()
+    context = {"profiles": profiles}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
