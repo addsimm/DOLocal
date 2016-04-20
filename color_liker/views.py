@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render_to_response
 from django.views.generic import ListView
 from color_liker.models import Color
-
-# Create your views here.
 
 MIN_SEARCH_CHARS = 2
 """
@@ -35,7 +33,7 @@ class ColorList(ListView):
         # The current context.
         context = super(ColorList, self).get_context_data(**kwargs)
 
-        # global MIN_SEARCH_CHARS
+        global MIN_SEARCH_CHARS
 
         search_text = ""  # Assume no search
         if (self.request.method == "GET"):
@@ -44,25 +42,38 @@ class ColorList(ListView):
             it. If it's less than MIN_SEARCH_CHARS characters, ignore the
             request.
 
-            Must be GET, not post, and if(self.request.method == "GET")
+            Must be GET, not post.
+            - http://stackoverflow.com/questions/25878993/django-view-works-with-default-call-but-form-submission-to-same-view-only-calls
+
+            Also, must use
+
+                if(self.request.method == "GET")
+
+            not
+
+                if(self.request.GET)
+
+            https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest.method
+            https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest.POST
             """
             search_text = self.request.GET.get("search_text", "").strip().lower()
-            # if (len(search_text) < MIN_SEARCH_CHARS):
-            #     search_text = ""  # Ignore search
+            if (len(search_text) < MIN_SEARCH_CHARS):
+                search_text = ""  # Ignore search
 
-        found = 0
         if (search_text != ""):
             color_search_results = Color.objects.filter(name__contains=search_text)
-            found = len(color_search_results)
-
-        if found == 0:
-            # An all list instead of None. In the template, use {% if color_search_results.count > 0 %}
-            color_search_results = Color.objects.all()
+        else:
+            # An empty list instead of None. In the template, use
+            #  {% if color_search_results.count > 0 %}
+            color_search_results = []
 
         # Add items to the context:
+
+        # The search text for display and result set
         context["search_text"] = search_text
-        context["found"] = found
         context["color_search_results"] = color_search_results
+
+        # For display under the search form
         context["MIN_SEARCH_CHARS"] = MIN_SEARCH_CHARS
 
         return context
@@ -72,7 +83,8 @@ def toggle_color_like(request, color_id):
     """Toggle "like" for a single color, then refresh the color-list page."""
     color = None
     try:
-        # There's only one object, but this returns a list - use [0]
+        # There's only one object with this id, but this returns a list
+        # of length one. Get the first (index 0)
         color = Color.objects.filter(id=color_id)[0]
     except Color.DoesNotExist as e:
         raise ValueError("Unknown color.id=" + str(color_id) + ". Original error: " + str(e))
@@ -84,4 +96,9 @@ def toggle_color_like(request, color_id):
 
     # print("post-toggle: color_id=" + str(color_id) + ", color.is_favorited=" + str(color.is_favorited) + "")
 
-    return redirect("color_list")  # See urls.py
+    ### return redirect("color_list")  # See urls.py
+
+    # Render the just-clicked-on like-button.
+    return render_to_response("color_liker/color_like_link__html_snippet.txt",
+                              {"color": color}
+                              )
