@@ -35,7 +35,7 @@ class ColorList(ListView):
         # The current context.
         context = super(ColorList, self).get_context_data(**kwargs)
 
-        global MIN_SEARCH_CHARS
+        # global MIN_SEARCH_CHARS
 
         search_text = ""  # Assume no search
         if (self.request.method == "GET"):
@@ -47,17 +47,21 @@ class ColorList(ListView):
             Must be GET, not post, and if(self.request.method == "GET")
             """
             search_text = self.request.GET.get("search_text", "").strip().lower()
-            if (len(search_text) < MIN_SEARCH_CHARS):
-                search_text = ""  # Ignore search
+            # if (len(search_text) < MIN_SEARCH_CHARS):
+            #     search_text = ""  # Ignore search
 
+        found = 0
         if (search_text != ""):
             color_search_results = Color.objects.filter(name__contains=search_text)
-        else:
-            # An empty list instead of None. In the template, use {% if color_search_results.count > 0 %}
-            color_search_results = []
+            found = len(color_search_results)
+
+        if found == 0:
+            # An all list instead of None. In the template, use {% if color_search_results.count > 0 %}
+            color_search_results = Color.objects.all()
 
         # Add items to the context:
         context["search_text"] = search_text
+        context["found"] = found
         context["color_search_results"] = color_search_results
         context["MIN_SEARCH_CHARS"] = MIN_SEARCH_CHARS
 
