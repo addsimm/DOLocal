@@ -58,6 +58,10 @@ urlpatterns += patterns('',
 
     # ADD URLPATTERNS *ABOVE*; IF ADDED BELOW ``mezzanine.urls`` WILL NEVER BE MATCHED!
 
+    ### color_liker ajax example
+
+    (r'^color_liker/', include('color_liker.urls')),
+
     ### Members
 
     url("members_list", "josmembers.views.members_list", name="josmembers_list"),
