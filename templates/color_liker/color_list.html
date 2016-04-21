@@ -45,33 +45,13 @@
 <body>
 
 <div class="search_section">
-    <form id="search_colors_form_id" method="get" action="{% url 'color_list' %}">
-        {# csrf_token is not needed #}
+    <!-- This no longer needs to be a form. It's submitted on every key press ("keyup") to the ajax
+   function. Django then renders the sub-template: color_search_results__html_snippet.txt.
+   output is fed back to the ajax function. Ajax then populates the rendered sub-template into the div -->
 
-        <input type="text" id="search_text" name="search_text">
-        <input id="id_pic_submit_button" type="submit" value="Search for color"/>
-        <p>(Requires {{ MIN_SEARCH_CHARS|apnumber }} or more characters)</p>
+    <input type="text" id="color_search_text" name="search_text"/>
 
-    </form>
-
-    {% if  search_text|length >= MIN_SEARCH_CHARS %}
-
-        <p><b>Searching for &quot;<code>{{ search_text }}</code>&quot;:</b>
-
-            {% if  color_search_results.count > 0 %}
-                </p>
-                <ul>
-                    {% for  color in color_search_results %}
-                        <li>{{ color.name }}</li>
-                    {% endfor %}
-                </ul>
-
-            {% else %}
-                <i>No results</i></p>
-
-            {% endif %}
-
-    {% endif %}
+    <div id="color_search_results"></div>
 </div>
 
 <div class="content_section">
@@ -86,18 +66,11 @@
                 <th colspan="2">Color</th>
                 <th>Fav.?</th>
             </tr>
-            <!--
-               The table cell is in this main template, the button in
+            <!-- table cell is in this main template, the button in
                it, is in the "include"d sub-template. The button
                sub-template is used by the below for-loop, and also by
-               the toggle_color_like view, which is called by Ajax.
+               the toggle_color_like view, which is called by Ajax. -->
 
-               Ajax calls Django, which renders the sub-template and
-               feeds it back to Ajax, which then replaces the current
-               button/sub-template with the new one.
-
-               (The data-color_id is how the id is passed to JQuery)
-            -->
             {% for  color in colors %}
 
                 <tr>
@@ -121,20 +94,57 @@
 <script type='text/javascript'
         src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 <script language="javascript">
-    /* Before our JavaScript, the url to toggle the like) needs to be set; its located in color_liker.urls.
-     Since an id must be provided to the Django url, give it a bogus one, then immediately lop it off */
+    /* Before our JavaScript, the urls need to be set; its located in color_liker.urls. */
+    var SUBMIT_URL = "{% url 'search_color_list' %}";
     var LIKE_URL_PRE_ID = "{% url 'toggle_color_like' color_id='999999' %}"
     LIKE_URL_PRE_ID = LIKE_URL_PRE_ID.substring(0, LIKE_URL_PRE_ID.length - "999999/".length);
 </script>
 
 <script language="javascript">
-    /* immediately before </body> tag and after JQuery and Underscore.js.
-     Milliseconds to ignore clicks on the *same* like, after a button *that was not ignored* was clicked. */
-    var MILLS_TO_IGNORE_LIKES = 500;
+    /** Executes a search for colors containing a substring. */
+    var processSearch = function () {
+        //Get and trim the search text.
+        var searchText = $('#color_search_text').val().trim().toLowerCase();
+
+        if (searchText.length < 3) {
+            //Too short. Ignore the submission, and erase any current results.
+            $('#color_search_results').html("nothing yet");
+
+        } else {
+            //There are at least 3 characters. Execute the search.
+            var processServerResponse = function (serverResponse_data,
+                                                  textStatus_ignored,
+                                                  jqXHR_ignored) {
+                alert("SUBMIT_URL=" + SUBMIT_URL +
+                      "; color_search_text=" + searchText +
+                      "; serverResponse_data=" + serverResponse_data +
+                      "; textStatus_ignored=" + textStatus_ignored +
+                      "; jqXHR_ignored=" + jqXHR_ignored
+                );
+                $('#color_search_results').html(serverResponse_data);
+            }
+
+            var config = {
+                type: "GET",
+                url: SUBMIT_URL,
+                data: {
+                    'color_search_text': searchText,
+                },
+                dataType: 'html',
+                success: processServerResponse,
+                fail: function () { alert("Fail") }
+            };
+            $.ajax(config);
+        }
+    };
+
+</script>
+
+<script language="javascript">
     /** Executes a like click. */
     var processLike = function () {
 
-        //In this scope, "this" is the clicked button; "this" in processServerResponse is *not* the clicked button
+        //In this scope, "this" is the clicked button; "this" in processServerResponse is *not*
         var $button_just_clicked_on = $(this);
 
         //The value of the "data-color_id" attribute.
@@ -144,10 +154,10 @@
                                               textStatus_ignored,
                                               jqXHR_ignored) {
 
-            alert("sf serverResponse_data=" + serverResponse_data + "; " +
+            /* alert("sf serverResponse_data=" + serverResponse_data + "; " +
                     "textStatus_ignored=" + textStatus_ignored + "; " +
                     "jqXHR_ignored=" + jqXHR_ignored + "; " +
-                    "color_id=" + color_id);
+                    "color_id=" + color_id); */
 
             $('#toggle_color_like_cell_' + color_id).html(serverResponse_data);
         }
@@ -161,41 +171,31 @@
         $.ajax(config);
     };
 
+</script>
+<script language="javascript">
+
     /** The Ajax "main" function. Attaches the listeners to the elements on page load,
      each of which only take effect every MILLS_TO_IGNORE_LIKES seconds.
 
-     This protection is only against a single user pressing buttons as fast as they can. This is in no way a
-     protection against a real DDOS attack, of which almost 100% bypass the client (browser)
-     (they instead directly attack the server).
+     This protection is only against a single user pressing buttons as fast as they can.
 
-    The protection is implemented via Underscore.js' debounce function:
-     - http://underscorejs.org/#debounce
+     Using this requires importing underscore-min.js. Noy underscore-min.map */
 
-     Using this only requires importing underscore-min.js. underscore-min.map
-     is not needed. */
-
+    var MILLS_TO_IGNORE_SEARCH = 100;
+    var MILLS_TO_IGNORE_LIKES = 500;
     $(document).ready(function () {
+
         /*
          There are many buttons having the class td__toggle_color_like_button.
          This attaches a listener to *every one*. Calling this again would attach a *second* listener
          to every button, meaning each click would be processed twice.
          */
+        $('#color_search_text').keyup(_.debounce(processSearch,
+                MILLS_TO_IGNORE_SEARCH, true));
         $('.td__toggle_color_like_button')
-                .click(
-                        _.debounce(processLike,
-                                   MILLS_TO_IGNORE_LIKES,
-                                   true)
+                .click(_.debounce(processLike, MILLS_TO_IGNORE_LIKES, true)
                 );
-
-        /*
-         Warning: Placing the true parameter outside of the debounce call:
-
-         $('#color_search_text').keyup(_.debounce(processSearch,
-         MILLS_TO_IGNORE_SEARCH), true);
-
-         results in "TypeError: e.handler.apply is not a function".
-         */
-    });
+       });
 
 </script>
 </body>

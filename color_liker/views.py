@@ -33,50 +33,41 @@ class ColorList(ListView):
         # The current context.
         context = super(ColorList, self).get_context_data(**kwargs)
 
-        global MIN_SEARCH_CHARS
-
-        search_text = ""  # Assume no search
-        if (self.request.method == "GET"):
-            """
-            The search form has been submitted. Get the search text from
-            it. If it's less than MIN_SEARCH_CHARS characters, ignore the
-            request.
-
-            Must be GET, not post.
-            - http://stackoverflow.com/questions/25878993/django-view-works-with-default-call-but-form-submission-to-same-view-only-calls
-
-            Also, must use
-
-                if(self.request.method == "GET")
-
-            not
-
-                if(self.request.GET)
-
-            https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest.method
-            https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest.POST
-            """
-            search_text = self.request.GET.get("search_text", "").strip().lower()
-            if (len(search_text) < MIN_SEARCH_CHARS):
-                search_text = ""  # Ignore search
-
-        if (search_text != ""):
-            color_search_results = Color.objects.filter(name__contains=search_text)
-        else:
-            # An empty list instead of None. In the template, use
-            #  {% if color_search_results.count > 0 %}
-            color_search_results = []
-
-        # Add items to the context:
-
-        # The search text for display and result set
-        context["search_text"] = search_text
-        context["color_search_results"] = color_search_results
-
-        # For display under the search form
-        context["MIN_SEARCH_CHARS"] = MIN_SEARCH_CHARS
-
         return context
+
+
+def submit_color_search_from_ajax(request):
+    """
+    Processes a search request
+    """
+
+    color_search_text = ""  # Assume no search
+
+    if (request.method == "GET"):
+        """
+        The search form has been submitted. Get the search text from
+        it. Must be GET, not post.
+        """
+
+        color_search_text = request.GET.get("color_search_text", "").strip().lower()
+
+    color_search_results = []
+
+    if (color_search_text != ""):
+        color_search_results = Color.objects.filter(name__contains=color_search_text)
+
+    # print('search_text="' + search_text + '", results=' + str(color_results))
+
+
+    # Add items to the context:
+
+    # The search text for display and result set
+    context = {
+        "color_search_text": color_search_text,
+        "color_search_results": color_search_results
+    }
+
+    return render_to_response("color_liker/color_search_results__html_snippet.txt", context)
 
 
 def toggle_color_like(request, color_id):
@@ -99,6 +90,5 @@ def toggle_color_like(request, color_id):
     ### return redirect("color_list")  # See urls.py
 
     # Render the just-clicked-on like-button.
-    return render_to_response("color_liker/color_like_link__html_snippet.txt",
-                              {"color": color}
-                              )
+    return render_to_response("color_liker/color_like_link__html_snippet.txt", {"color": color})
+
