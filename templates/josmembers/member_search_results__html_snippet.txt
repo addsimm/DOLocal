@@ -1,0 +1,27 @@
+
+<div class= "josinstructions" style="color: #5bc0de;">
+    Searching for "{{ member_search_text }}".<br>
+    &nbsp&nbsp&nbsp&nbspFound {{ member_search_results.count}} members:<br>
+{% if  member_search_results.count > 0 %}
+  <ul>
+     {% for  profile in member_search_results %}
+
+        <div class="col-xs-12" style="margin-top: 20px; padding: 0;">
+            <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
+                {% if profile.profile_image_idstr != "noimage1" %}
+                    <img class="img-responsive" style="display: inline; max-height: 35px;"
+                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
+                {% else %}
+                    <img class="img-responsive" style="display: inline; max-height: 35px;"
+                         src="/static/img/coming-soon-profile.png">
+                {% endif %}
+                <span style="margin-left: 5px; margin-right: 5px;">{{ profile.jos_name }}</span>
+            </a>
+        </div>
+
+     {% endfor %}
+  </ul>
+{% else %}
+    <i>No results</i>
+{% endif %}
+<br><br><br>

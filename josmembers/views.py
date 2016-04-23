@@ -4,9 +4,10 @@ from __future__ import unicode_literals
 from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info, error
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -209,8 +210,6 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
 
 ### Work Utilities
 
-from django.views.decorators.csrf import csrf_exempt
-
 @csrf_exempt
 def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
 
@@ -266,3 +265,36 @@ def members_list(request, template="josmembers/josmembers_members_list.html", ex
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
+
+
+def submit_member_search_from_ajax(request):
+    """
+    Processes a search request
+    """
+
+    member_search_text = ""  # Assume no search
+
+    if (request.method == "GET"):
+        """
+        The search form has been submitted. Get the search text - must be GET.
+        """
+        member_search_text = request.GET.get("member_search_t"
+                                             "ext", "").strip().lower()
+
+    member_search_results = []
+
+    if (member_search_text != ""):
+        member_search_results = JOSProfile.objects.filter(user__username__contains=member_search_text).order_by('user__username')
+
+    # print('search_text="' + search_text + '", results=' + str(color_results))
+    # Add items to the context:
+
+    # The search text for display and result set
+    context = {
+        "member_search_text": member_search_text,
+        "member_search_results": member_search_results
+    }
+
+    return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
+
+

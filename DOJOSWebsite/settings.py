@@ -1,69 +1,7 @@
 
 from __future__ import absolute_import, unicode_literals
-import os
 from django.utils.translation import ugettext_lazy as _
-
-
-######################
-# MEZZANINE SETTINGS #
-######################
-
-# The following settings are already defined with default values in
-# the ``defaults.py`` module within each of Mezzanine's apps, but are
-# common enough to be put here, commented out, for conveniently
-# overriding
-
-# Controls the ordering and grouping of the admin menu.
-#
-# ADMIN_MENU_ORDER = (
-#     ("Content", ("pages.Page", "blog.BlogPost",
-#        "generic.ThreadedComment", (_("Media Library"), "fb_browse"),)),
-#     ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
-#     ("Users", ("auth.User", "auth.Group",)),
-# )
-
-# A three item sequence, each containing a sequence of template tags
-# used to render the admin dashboard.
-#
-# DASHBOARD_TAGS = (
-#     ("blog_tags.quick_blog", "mezzanine_tags.app_list"),
-#     ("comment_tags.recent_comments",),
-#     ("mezzanine_tags.recent_actions",),
-# )
-
-# A sequence of templates used by the ``page_menu`` template tag.
-#
-# PAGE_MENU_TEMPLATES = (
-#     (1, _("Top navigation bar"), "pages/menus/dropdown.html"),
-#     (2, _("Left-hand tree"), "pages/menus/tree.html"),
-#     (3, _("Footer"), "pages/menus/footer.html"),
-# )
-
-# A sequence of fields that will be injected into Mezzanine's (or any
-# library's) models.
-#
-# EXTRA_MODEL_FIELDS = (
-#     (
-#         # Dotted path to field.
-#         "mezzanine.blog.models.BlogPost.image",
-#         # Dotted path to field class.
-#         "somelib.fields.ImageField",
-#         # Positional args for field class.
-#         (_("Image"),),
-#         # Keyword args for field class.
-#         {"blank": True, "upload_to": "blog"},
-#     ),
-#     # Example of adding a field to *all* of Mezzanine's content types:
-#     (
-#         "mezzanine.pages.models.Page.another_field",
-#         "IntegerField", # 'django.db.models.' is implied if path is omitted.
-#         (_("Another name"),),
-#         {"blank": True, "default": 1},
-#     ),
-# )
-
-# If True, the django-modeltranslation will be added .
-# USE_MODELTRANSLATION = False
+import os
 
 ###################
 # DJANGO SETTINGS #
@@ -214,9 +152,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 )
 
-# List of middleware classes to use. Order is important; in the request phase,
-# these middleware classes will be applied in the order given, and in the
-# response phase the middleware will be applied in reverse order.
+# Middleware. Order is important; in the request classes will be applied in order, response in reverse order.
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
 
@@ -274,40 +210,14 @@ OPTIONAL_APPS = (
 # EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 
-##################
-# LOCAL SETTINGS #
-##################
-
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
-f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
-if os.path.exists(f):
-    exec(open(f, "rb").read())
-
-####################
-# DYNAMIC SETTINGS #
-####################
-
-# set_dynamic_settings() will rewrite globals based on what has been
-# defined so far, in order to provide some better defaults where
-# applicable.
-try:
-    from mezzanine.utils.conf import set_dynamic_settings
-except ImportError:
-    pass
-else:
-    set_dynamic_settings(globals())
-
 ###########
 # PROFILE #
 ###########
 
 ACCOUNTS_NO_USERNAME = True
-
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
 ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
-
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
 
@@ -372,5 +282,85 @@ CKEDITOR_CONFIGS = {
 }
 
 
-###  This is fucked up VVV
+##################
+# LOCAL SETTINGS #
+##################
+
+# Instead of doing "from .local_settings import *", we use exec so that
+# local_settings has full access to everything defined in this module.
+f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
+if os.path.exists(f):
+    exec (open(f, "rb").read())
+
+####################
+# DYNAMIC SETTINGS #
+####################
+
+# set_dynamic_settings() will rewrite globals based on what has been
+# defined so far, in order to provide some better defaults where
+# applicable.
+try:
+    from mezzanine.utils.conf import set_dynamic_settings
+except ImportError:
+    pass
+else:
+    set_dynamic_settings(globals())
+
+
+### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+### This is fucked up
 #PYBB_PROFILE_RELATED_NAME = 'JOSProfile'
+
+
+##################################
+# COMMENTS ON MEZZANINE SETTINGS #
+##################################
+
+# The following settings are defined with defaults in mezz ``defaults.py``
+#
+# If True, the django-modeltranslation will be added .
+# USE_MODELTRANSLATION = False
+#
+# Controls the ordering and grouping of the admin menu.
+# ADMIN_MENU_ORDER = (
+#     ("Content", ("pages.Page", "blog.BlogPost",
+#        "generic.ThreadedComment", (_("Media Library"), "fb_browse"),)),
+#     ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
+#     ("Users", ("auth.User", "auth.Group",)),
+# )
+
+# A three item sequence, each containing a sequence of template tags
+# DASHBOARD_TAGS = (
+#     ("blog_tags.quick_blog", "mezzanine_tags.app_list"),
+#     ("comment_tags.recent_comments",),
+#     ("mezzanine_tags.recent_actions",),
+# )
+
+# PAGE_MENU_TEMPLATES = (
+#     (1, _("Top navigation bar"), "pages/menus/dropdown.html"),
+#     (2, _("Left-hand tree"), "pages/menus/tree.html"),
+#     (3, _("Footer"), "pages/menus/footer.html"),
+# )
+
+# A sequence of fields that will be injected into Mezzanine's models.
+#
+# EXTRA_MODEL_FIELDS = (
+#     (
+#         # Dotted path to field.
+#         "mezzanine.blog.models.BlogPost.image",
+#         # Dotted path to field class.
+#         "somelib.fields.ImageField",
+#         # Positional args for field class.
+#         (_("Image"),),
+#         # Keyword args for field class.
+#         {"blank": True, "upload_to": "blog"},
+#     ),
+#
+#     # Example of adding a field to *all* of Mezzanine's content types:
+#     (
+#         "mezzanine.pages.models.Page.another_field",
+#         "IntegerField", # 'django.db.models.' is implied if path is omitted.
+#         (_("Another name"),),
+#         {"blank": True, "default": 1},
+#     ),
+# )

@@ -1,75 +1,106 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags cloudinary %}
-
 {% cloudinary_includes %}
 
-{% block meta_title %}
-    {{ user.JOSProfile.get_jos_name }}
-{% endblock %}
-{% block title %}
-    {{ user.JOSProfile.get_jos_name }}
-{% endblock %}
+{% block meta_title %}{{ user.JOSProfile.jos_name }}{% endblock %}
+{% block title %}{{ user.JOSProfile.jos_name }}{% endblock %}
 {# block body_id }account{ endblock #}
 
-{% block breadcrumb_menu %}
-    {{ block.super }}
-    <li class="active">
-        Community Members
-    </li>
-{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}<li class="active">Community</li>{% endblock %}
 
 {% block all_content %}
 
-    <style>
-
-        input {
-            font-size: 20pt;
-            padding: 5px;
-        }
-
-    </style>
-
-    <div class="row" style="margin-top: 50px; padding-left: 50px;">
+<div class="row" style="margin-top: 30px; padding-left: 50px;">
 
 
-            <form class="form-inline" method="post">
+    <div class="josinstructions"><b>Search members:</b><br>
+        Please begin by typing the member's name.<br>
+        - The computer will respond after each letter; press "start over" for a new search.
+    </div>
+    <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px;" type="text" placeholder="Start typing here">
+    <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers_list" %}">
+        Start over
+    </a>
 
-                <label class="josinstructions">
-                    Search members:
-                </label>
-                <input type="text" placeholder="Start typing here">
-                <button class="btn btn-warning" style="margin-top: -4px;" type="submit">
-                    <i class="fa fa-search" style="margin-right: 10px;"></i>Search
-                </button>
+    <script>function startOver() {
+        document.getElementById('member_search_text').value = "Start typing here";
+    }</script>
+</div>
 
-            </form>
+<div class="row" style="margin-top: 15px;">
+
+    <div class="col-xs-12" style="padding-left: 85px;">
+
+        <div id="member_search_results"></div><br><br>
 
     </div>
 
-    <div class="row" style="margin-top: 50px;">
-
-        <div class="col-xs-12" style="padding-left: 30px;">
+</div>
 
 
-            {% for profile in profiles %}
+    <script type='text/javascript'
+            src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+    <script language="javascript">
+        /* Before our JavaScript, the urls need to be set. */
+        var SUBMIT_URL = "{% url 'search_member_list' %}";
+    </script>
 
-                    <a class="joslargelinkbutton" href="{% url "profile" profile.user.id %}">
-                        {% if profile.profile_image_idstr != "noimage1" %}
-                            <img class="img-responsive" style="display: inline; max-height: 35px;"
-                                 src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
-                        {% else %}
-                            <img class="img-responsive" style="display: inline; max-height: 35px;"
-                                 src="/static/img/coming-soon-profile.png">
-                        {% endif %}
-                        <span style="margin-left: 5px;">{{ profile.get_jos_name }}</span>
-                    </a><br><br>
+    <script language="javascript">
+        /** Executes a search for colors containing a substring. */
+        var processSearch = function () {
+            //Get and trim the search text.
+            var searchText = $('#member_search_text').val().trim().toLowerCase();
 
-            {% endfor %}
+            if (searchText.length < 2) {
+                //Too short. Ignore the submission, and erase any current results.
+                $('#member_search_results').html("<i>Keep typing ...</i>");
 
-        </div>
+            } else {
+                // Execute the search.
+                var processServerResponse = function (serverResponse_data,
+                                                      textStatus_ignored,
+                                                      jqXHR_ignored) {
+                    /* alert("SUBMIT_URL=" + SUBMIT_URL +
+                            "; member_search_text=" + searchText +
+                            "; serverResponse_data=" + serverResponse_data +
+                            "; textStatus_ignored=" + textStatus_ignored +
+                            "; jqXHR_ignored=" + jqXHR_ignored
+                    ); */
+                    $('#member_search_results').html(serverResponse_data);
+                }
 
-    </div>
+                var config = {
+                    type: "GET",
+                    url: SUBMIT_URL,
+                    data: {
+                        'member_search_text': searchText,
+                    },
+                    dataType: 'html',
+                    success: processServerResponse,
+                    fail: function () {
+                        alert("Fail")
+                    }
+                };
+                $.ajax(config);
+            }
+        };
 
+    </script>
+
+    <script language="javascript">
+
+        /** The Ajax "main" function. Attaches the listeners to the elements on page load,
+         each of which only take effect every MILLS_TO_IGNORE_LIKES seconds - requires importing underscore-min.js. Noy underscore-min.map */
+
+        var MILLS_TO_IGNORE_SEARCH = 100;
+        var MILLS_TO_IGNORE_LIKES = 500;
+        $(document).ready(function () {
+            /* This attaches a listener. Calling this again would attach a *second* */
+            $('#member_search_text').keyup(_.debounce(processSearch,
+                    MILLS_TO_IGNORE_SEARCH, true));
+        });
+
+    </script>
 
 {% endblock all_content %}
 

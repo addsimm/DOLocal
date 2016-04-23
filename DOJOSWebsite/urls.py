@@ -63,8 +63,8 @@ urlpatterns += patterns('',
     (r'^color_liker/', include('color_liker.urls')),
 
     ### Members
+    (r'^josmembers/', include('josmembers.urls')),
 
-    url("members_list", "josmembers.views.members_list", name="josmembers_list"),
     url("ckrichtextedit/(?P<pk>\d+)$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
     url("ckrichtextedit", "josmembers.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
     url("personaldesk/(?P<pk>\d+)$", "josmembers.views.personaldesk", name="personaldesk"),

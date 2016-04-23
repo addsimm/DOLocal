@@ -4,17 +4,17 @@
 {% cloudinary_includes %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.get_jos_name }}
+    {{ user.JOSProfile.jos_name }}
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.get_jos_name }}
+    {{ user.JOSProfile.jos_name }}
 {% endblock %}
 {# block body_id }account{ endblock #}
 
 {% block breadcrumb_menu %}
     {{ block.super }}
     <li class="active">
-        {{ user.JOSProfile.get_jos_name }}'s Profile
+        {{ user.JOSProfile.jos_name }}'s Profile
     </li>
 {% endblock %}
 

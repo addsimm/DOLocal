@@ -7,11 +7,16 @@ body {
     padding-top: 140px;
 }
 
-a {
+a, a:visited {
     background-color: white;
     color: rgb(112, 154, 109);
     outline: 2px dotted rgb(112, 154, 109);
-    padding: 2px;
+    padding: 3px;
+}
+
+a:hover {
+    color: #f0ad4e;
+    text-decoration: none;
 }
 
 .messages {

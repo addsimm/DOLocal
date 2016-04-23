@@ -4,16 +4,16 @@
 {% cloudinary_includes %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.get_jos_name }}
+    {{ user.JOSProfile.jos_name }}
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.get_jos_name }}
+    {{ user.JOSProfile.jos_name }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
     {{ block.super }}
     <li class="active">
-        {{ user.JOSProfile.get_jos_name }}'s personal desk
+        {{ user.JOSProfile.jos_name }}'s personal desk
     </li>
 {% endblock %}
 
@@ -62,7 +62,7 @@
                     <img class="img-responsive" style="display: inline; max-height: 35px;"
                          src="/static/img/coming-soon-profile.png">
                 {% endif %}
-                <span style="margin-left: 5px;"> My profile</span>
+                <span style="margin-left: 5px; margin-right: 5px;">My profile</span>
             </a>
         </div>
 
@@ -107,7 +107,7 @@
 
             <div class="row" style="margin-top: 50px;">
                 <div class="col-xs-12" style="padding-left: 30px;">
-                    <a href="{% url "josmembers_list" %}">Find fellow members</a>
+                    <a class="joslargelinkbutton" href="{% url "josmembers_list" %}">Find fellow members</a>
                 </div>
             </div>
 
