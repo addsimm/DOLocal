@@ -126,13 +126,15 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
+    "josstaff",
+    "josmembers",
+    'request',
+    'tracking',
     "ckeditor",
     "cloudinary",
     "pybb",
-    "color_liker",
+    # "color_liker",
     # "mezzanine.mobile",
-    "josstaff",
-    "josmembers",
     "josdjoingo",
 )
 
@@ -155,7 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Middleware. Order is important; in the request classes will be applied in order, response in reverse order.
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
-
+    'tracking.middleware.VisitorTrackingMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # Uncomment if using internationalisation or localisation
     # 'django.middleware.locale.LocaleMiddleware',
@@ -179,6 +181,7 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
     'pybb.middleware.PybbMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'request.middleware.RequestMiddleware',
 )
 
 # Store these package names here as they may change in the future.
@@ -197,6 +200,25 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
 )
+
+########################
+# DJANGO DEBUG TOOLBAR #
+########################
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
 
 #########
 # EMAIL #
@@ -221,20 +243,6 @@ ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
 
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
 
 ############
 # CKEDITOR #
@@ -281,6 +289,33 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+##############################
+# DJANGO- TRACKER & REQUEST  #
+##############################
+
+TRACK_AJAX_REQUESTS = True
+TRACK_PAGEVIEWS = True
+TRACK_REFERER = True
+TRACK_QUERY_STRING = True
+
+REQUEST_LOG_IP = False
+REQUEST_TRAFFIC_MODULES = (
+    'request.traffic.UniqueVisitor',
+    'request.traffic.UniqueVisit',
+    'request.traffic.User',
+    'request.traffic.UniqueUser',
+    'request.traffic.Hit',
+    'request.traffic.Ajax',
+    'request.traffic.Error',
+)
+
+REQUEST_PLUGINS = (
+    'request.plugins.ActiveUsers',
+    'request.plugins.TopReferrers',
+    'request.plugins.LatestRequests',
+    'request.plugins.TopPaths',
+    'request.plugins.TopErrorPaths',
+)
 
 ##################
 # LOCAL SETTINGS #
@@ -311,56 +346,3 @@ else:
 ### This is fucked up
 #PYBB_PROFILE_RELATED_NAME = 'JOSProfile'
 
-
-##################################
-# COMMENTS ON MEZZANINE SETTINGS #
-##################################
-
-# The following settings are defined with defaults in mezz ``defaults.py``
-#
-# If True, the django-modeltranslation will be added .
-# USE_MODELTRANSLATION = False
-#
-# Controls the ordering and grouping of the admin menu.
-# ADMIN_MENU_ORDER = (
-#     ("Content", ("pages.Page", "blog.BlogPost",
-#        "generic.ThreadedComment", (_("Media Library"), "fb_browse"),)),
-#     ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
-#     ("Users", ("auth.User", "auth.Group",)),
-# )
-
-# A three item sequence, each containing a sequence of template tags
-# DASHBOARD_TAGS = (
-#     ("blog_tags.quick_blog", "mezzanine_tags.app_list"),
-#     ("comment_tags.recent_comments",),
-#     ("mezzanine_tags.recent_actions",),
-# )
-
-# PAGE_MENU_TEMPLATES = (
-#     (1, _("Top navigation bar"), "pages/menus/dropdown.html"),
-#     (2, _("Left-hand tree"), "pages/menus/tree.html"),
-#     (3, _("Footer"), "pages/menus/footer.html"),
-# )
-
-# A sequence of fields that will be injected into Mezzanine's models.
-#
-# EXTRA_MODEL_FIELDS = (
-#     (
-#         # Dotted path to field.
-#         "mezzanine.blog.models.BlogPost.image",
-#         # Dotted path to field class.
-#         "somelib.fields.ImageField",
-#         # Positional args for field class.
-#         (_("Image"),),
-#         # Keyword args for field class.
-#         {"blank": True, "upload_to": "blog"},
-#     ),
-#
-#     # Example of adding a field to *all* of Mezzanine's content types:
-#     (
-#         "mezzanine.pages.models.Page.another_field",
-#         "IntegerField", # 'django.db.models.' is implied if path is omitted.
-#         (_("Another name"),),
-#         {"blank": True, "default": 1},
-#     ),
-# )

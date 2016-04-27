@@ -7,7 +7,7 @@
      {% for  profile in member_search_results %}
 
         <div class="col-xs-12" style="margin-top: 20px; padding: 0;">
-            <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
+            <a class="joslargelinkbutton" href="{% url "profile" profile.user.id %}">
                 {% if profile.profile_image_idstr != "noimage1" %}
                     <img class="img-responsive" style="display: inline; max-height: 35px;"
                          src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">

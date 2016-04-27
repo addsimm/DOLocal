@@ -81,7 +81,7 @@ footer {
     padding-bottom: 0;
 }
 
-.btn-default {
+.btn-default, .btn-default:visited {
     background-color: rgb(231, 209, 222);
     background-image: none;
     background-repeat: no-repeat;
