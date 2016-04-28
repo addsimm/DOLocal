@@ -9,6 +9,7 @@ from mezzanine.utils.email import send_approve_mail
 
 from .models import JOSStaffMember, JOSStaffHoursEntry
 from .forms import JOSStaffHoursEntryForm
+from request.models import Request
 
 # Create your views here.
 
@@ -43,6 +44,16 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
     context.update({"total_hours": staffmember_total_hours})
 
     return render(request, template, context)
+
+
+@staff_member_required
+def josanal(request, template="josstaff/stats.html", extra_context=None):
+    requests = Request.objects.all()
+    context = {'hello': 'hello',
+               'requests': requests}
+    return render(request, template, context)
+
+
 
 
 

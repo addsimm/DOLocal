@@ -32,6 +32,22 @@
     }
 </style>
 
+
+<h2>{{ hello }}</h2>
+
+
+REQUESTS:
+{% for request in requests %}
+
+    {{ request }}<br>
+
+{% endfor %}
+
+
+
+
+
+
 <h2>Visitors</h2>
 {% if visitor_stats.total %}
 <table>

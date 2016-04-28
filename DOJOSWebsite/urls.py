@@ -75,6 +75,8 @@ urlpatterns += patterns('',
     url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
         "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
 
+    url("^%s%s$" % ("josanal".strip("/"), _slash),
+        "josstaff.views.josanal", name="josanal"),
 
     ### JOS Accounts & Members ###
 
