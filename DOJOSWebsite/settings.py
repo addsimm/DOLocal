@@ -130,6 +130,8 @@ INSTALLED_APPS = (
     "josmembers",
     'request',
     'tracking',
+    'django_messages',
+    "mailer",
     "ckeditor",
     "cloudinary",
     "pybb",
@@ -151,6 +153,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "mezzanine.conf.context_processors.settings",
     "mezzanine.pages.context_processors.page",
     "pybb.context_processors.processor",
+    'django_messages.context_processors.inbox',
 
 )
 
@@ -223,6 +226,8 @@ DEBUG_TOOLBAR_PANELS = [
 #########
 # EMAIL #
 #########
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 # EMAIL_SUBJECT_PREFIX = 'Join Our Story'
 # SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
@@ -340,9 +345,3 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
-
-
-### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-### This is fucked up
-#PYBB_PROFILE_RELATED_NAME = 'JOSProfile'
-

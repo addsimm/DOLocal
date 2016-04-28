@@ -52,51 +52,41 @@ if settings.USE_MODELTRANSLATION:
     )
 
 urlpatterns += patterns('',
-    # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
-
+    # HOMEPAGE AS AN EDITABLE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
-    # ADD URLPATTERNS *ABOVE*; IF ADDED BELOW ``mezzanine.urls`` WILL NEVER BE MATCHED!
-
+    # ADD URLPATTERNS *ABOVE* ``mezzanine.urls``
     url(r'^tracking/', include('tracking.urls')),
 
     ### Members
-    (r'^josmembers/', include('josmembers.urls')),
-
+    url(r'^josmembers/', include('josmembers.urls')),
     url("ckrichtextedit/(?P<pk>\d+)$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
     url("ckrichtextedit", "josmembers.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
     url("personaldesk/(?P<pk>\d+)$", "josmembers.views.personaldesk", name="personaldesk"),
     url("personaldesk", "josmembers.views.personaldesk", {'pk': None}, name="personaldesk"),
 
     ### JOS Staff
-
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
-
     url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
         "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
-
     url("^%s%s$" % ("josanal".strip("/"), _slash),
         "josstaff.views.josanal", name="josanal"),
 
-    ### JOS Accounts & Members ###
-
+    ### JOS Accounts ###
     url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': True}, name="josprofile_edit"),
     url("^%s/(?P<userid>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': False}, name="josprofile"),
     url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
-
     url("^%s%s$" % (LOGIN_URL.strip("/"), _slash),
         "josmembers.views.login", name="login"),
     url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
         "josmembers.views.logout", name="logout"),
-
     url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
         "josmembers.views.signup", name="signup"),
     url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.signup_verify", name="signup_verify"),
-
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         "josmembers.views.password_reset", name="jos_password_reset"),
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
@@ -105,22 +95,19 @@ urlpatterns += patterns('',
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
 
-
     ### DJOINGO ###
-
     url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
-    (r'^forum/', include('pybb.urls', namespace='pybb')),
+    ### Forums, Messaging, Etc. ###
+    url(r'^forum/', include('pybb.urls', namespace='pybb')),
+    url(r'^messages/', include('django_messages.urls')),
     ##################
     # ----------------
     # MEZZANINE'S URLS
-
+    # ----------------
+    ##################
 
     ("^", include("mezzanine.urls")),
-
-    # MOUNTING MEZZANINE UNDER A PREFIX
-    # ---------------------------------
-    # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 )
 

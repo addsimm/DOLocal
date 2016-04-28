@@ -25,6 +25,7 @@ django-infinite-scroll-pagination==0.1.3
 django-mailer==1.1
 django-messages==0.5.1
 django-request==1.4.0
+django-spirit==0.4.7
 django-tracking2==0.3.1
 filebrowser-safe==0.4.3
 future==0.15.2
@@ -41,7 +42,6 @@ pep8==1.7.0
 pluggy==0.3.1
 prettytable==0.7.2
 py==1.4.31
-pybbm
 pycurl==7.19.3
 pyflakes==1.1.0
 pyserial==2.6
