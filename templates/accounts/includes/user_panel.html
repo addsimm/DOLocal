@@ -5,14 +5,17 @@
     <div class="row" style=" ">
         <div class="col-xs-12 text-right" style="padding-right: 0;">
 
-            <a href="/contact" class="btn btn-default">
-                {% trans "Contact Us" %}</a>
+            <a href="/contact" class="btn btn-default">{% trans "Contact Us" %}</a>
 
-            <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-default" style="width: 122px;">
-                Log Out</a>
+            <a class="btn btn-default"
+               style="width: 122px;"
+               href="{% url "logout" %}?next={{ request.path }}">
+                {% trans "Log Out " %}
+            </a>
 
         </div>
     </div>
+
     <div class="row" style="margin-top: 5px;">
         <div class="col-xs-12 text-right" style="padding-right: 0;">
 
@@ -20,7 +23,10 @@
                 {{ user.JOSProfile.jos_name }}
             </span>
 
-            <a href="{% url "personaldesk" %}/{{ request.user.id }}" style="font-size: 10pt; margin-bottom: 5px; margin-right: 2px;">My desk</a>
+            <a style="font-size: 10pt; margin-bottom: 5px; margin-right: 2px;"
+               href="{% url "personaldesk" %}/{{ request.user.id }}">
+                My desk
+            </a>
 
         </div>
     </div>
@@ -28,7 +34,7 @@
 {% else %}
 
     <div class="row" style="background-color: transparent;">
-        <div class="col-md-12  text-right" style="padding-right: 0;">
+        <div class="col-xs-12  text-right" style="padding-right: 0;">
 
            <a href="/contact" class="btn btn-default">
                 {% trans "Contact Us" %}</a>

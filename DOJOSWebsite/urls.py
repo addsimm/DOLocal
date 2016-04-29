@@ -4,32 +4,18 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 
-from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
-
-from mezzanine.accounts import views
-
-ACCOUNT_URL = getattr(settings, "ACCOUNT_URL", "/accounts/")
-SIGNUP_URL = getattr(settings, "SIGNUP_URL",
-                     "/%s/signup/" % ACCOUNT_URL.strip("/"))
-SIGNUP_VERIFY_URL = getattr(settings, "SIGNUP_VERIFY_URL",
-                            "/%s/verify/" % ACCOUNT_URL.strip("/"))
-
-PROFILE_URL = getattr(settings, "PROFILE_URL", "/users/")
-PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL",
-                             "/%s/update/" % ACCOUNT_URL.strip("/"))
-
-PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL",
-                             "/%s/password/reset/" % ACCOUNT_URL.strip("/"))
-
-PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
-                                    "/%s/password/verify/" % ACCOUNT_URL.strip("/"))
-
-JOS_NEW_PASSWORD_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
-                               "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
 
 LOGIN_URL = settings.LOGIN_URL
 LOGOUT_URL = settings.LOGOUT_URL
+ACCOUNT_URL = getattr(settings, "ACCOUNT_URL", "/accounts/")
+SIGNUP_URL = getattr(settings, "SIGNUP_URL", "/%s/signup/" % ACCOUNT_URL.strip("/"))
+SIGNUP_VERIFY_URL = getattr(settings, "SIGNUP_VERIFY_URL", "/%s/verify/" % ACCOUNT_URL.strip("/"))
+PROFILE_URL = getattr(settings, "PROFILE_URL", "/users/")
+PROFILE_UPDATE_URL = getattr(settings, "PROFILE_UPDATE_URL", "/%s/update/" % ACCOUNT_URL.strip("/"))
+PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL", "/%s/password/reset/" % ACCOUNT_URL.strip("/"))
+PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL", "/%s/password/verify/" % ACCOUNT_URL.strip("/"))
+JOS_NEW_PASSWORD_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL", "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
 
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
 _slash = "/" if settings.APPEND_SLASH else ""
@@ -37,12 +23,8 @@ _slash = "/" if settings.APPEND_SLASH else ""
 admin.autodiscover()
 
 # Add the urlpatterns for any custom Django applications here.
-# You can also change the ``home`` view to add your own functionality
-# to the project's homepage.
-
 urlpatterns = i18n_patterns("",
-    # Change the admin prefix here to use an alternate URL for the
-    # admin interface, which would be marginally more secure.
+    ### Admin
     ("^admin/", include(admin.site.urls)),
 )
 
@@ -52,10 +34,11 @@ if settings.USE_MODELTRANSLATION:
     )
 
 urlpatterns += patterns('',
+    # ADD URLPATTERNS *ABOVE* ``mezzanine.urls``
     # HOMEPAGE AS AN EDITABLE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
-    # ADD URLPATTERNS *ABOVE* ``mezzanine.urls``
+    ### Analytics
     url(r'^tracking/', include('tracking.urls')),
 
     ### Members
@@ -101,19 +84,14 @@ urlpatterns += patterns('',
     ### Forums, Messaging, Etc. ###
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
     url(r'^messages/', include('django_messages.urls')),
-    ##################
-    # ----------------
-    # MEZZANINE'S URLS
-    # ----------------
-    ##################
 
+    ### ----------------
+    ### MEZZANINE'S URLS
+    ### ----------------
     ("^", include("mezzanine.urls")),
-
 )
 
 ### DJANGO-DEBUG-TOOLBAR
-
-
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += patterns('',

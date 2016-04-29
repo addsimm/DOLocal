@@ -1,13 +1,72 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load url from future %}
-{% block content %}  
+{% block all_content %}
+{# block sidebar #}
+
+    <style>
+
+        .joslargelinkbutton {
+            font-size: 18pt;
+            margin-left: 30px;
+            padding: 8px;
+            width: 165px;
+        }
+
+    </style>
+
+    <div class="row" style="margin-left: 0; margin-top: 40px;">
+
+        <div class="col-xs-12" style="padding: 0;">
+
+
+
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'messages_inbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-inbox fa-fw" style=" "></i>
+                    {% trans "Inbox" %}
+                </span>
+            </a>
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'messages_outbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    {% trans "Sent Messages" %}
+                </span>
+            </a>
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'messages_trash' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-trash fa-fw" style=" "></i>
+                    {% trans "Trash" %}
+                </span>
+            </a>
+
+            <a class="joslargelinkbutton"
+               style="margin-left: 280px;"
+               href="{% url 'messages_compose' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-pencil-square-o fa-fw" style=" "></i>
+                    {% trans "New Message" %}
+                </span>
+            </a>
+
+        </div>
+    </div>
+
 {% endblock %}
-{% block sidebar %}
-<ul class="subnavilist">
-    <li><a href="{% url 'messages_inbox' %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
-    <li><a href="{% url 'messages_outbox' %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
-    <li><a href="{% url 'messages_compose' %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
-    <li><a href="{% url 'messages_trash' %} ">&raquo;&nbsp;{% trans "Trash" %}</a></li>
-</ul>
-{% endblock %}
+
+
+<a class="joslargelinkbutton" style="margin-left: 30px" href="{% url "messages_redirect" %}">
+
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-envelope fa-fw" style=" "></i>
+                    My mailbox
+                </span>
+</a>

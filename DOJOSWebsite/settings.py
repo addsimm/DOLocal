@@ -1,6 +1,7 @@
-
 from __future__ import absolute_import, unicode_literals
+
 from django.utils.translation import ugettext_lazy as _
+
 import os
 
 ###################
@@ -11,20 +12,13 @@ import os
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118', '*']
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# On Unix systems, a value of None will cause Django to use the same
-# timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
+# Local time zone. Choice codes: wikipedia
 TIME_ZONE = 'America/Los_Angeles'
 
-# If you set this to True, Django will use timezone-aware datetimes.
+# If True, Django will use timezone-aware datetimes.
 USE_TZ = True
 
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
+# Language code
 LANGUAGE_CODE = "en"
 
 # Supported languages
@@ -32,30 +26,26 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-# A boolean that turns on/off debug mode. Should always be set to ``False`` in production. local_settings.py
 DEBUG = False
 
-# Whether a user's session cookie expires when the Web browser is closed.
+# Whether a user's session cookie expires when browser closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
+# If set to False, Django will optimize and not load internationalization.
 USE_I18N = False
 USE_L10N = False
 
 AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 
-# The numeric mode to set newly-uploaded files to. The value should be
-# a mode you'd pass directly to os.chmod.
+# The numeric mode to set newly-uploaded files to.
+# The value should be a mode you'd pass directly to os.chmod.
 FILE_UPLOAD_PERMISSIONS = 0o644
-
 
 #############
 # DATABASES #
 #############
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.",
@@ -77,33 +67,15 @@ PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
 PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
 
-# Every cache key will get prefixed with this value - here we set it to
-# the name of the directory the project is in to try and use something
-# project specific.
+# Every cache key will get prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
 STATIC_URL = "/static/"
-
-# Absolute path to the directory static files should be collected to.
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a trailing slash.
 MEDIA_URL = STATIC_URL + "media/"
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
-
-# Package/module name to import the root urlpatterns from for the project.
 ROOT_URLCONF = "%s.urls" % PROJECT_APP
-
-# Don't forget to use absolute paths, not relative paths.
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
-
-################
-# APPLICATIONS #
-################
 
 INSTALLED_APPS = (
     "django.contrib.admin",
@@ -140,7 +112,6 @@ INSTALLED_APPS = (
     "josdjoingo",
 )
 
-# List of processors used by RequestContext to populate the context.
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
@@ -157,7 +128,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 )
 
-# Middleware. Order is important; in the request classes will be applied in order, response in reverse order.
+# Middleware. Order is important; request classes will be applied in order, response in reverse order.
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
     'tracking.middleware.VisitorTrackingMiddleware',
@@ -193,9 +164,7 @@ PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
 #########################
 # OPTIONAL APPLICATIONS #
-#########################
 
-# These will be added to ``INSTALLED_APPS``, only if available.
 OPTIONAL_APPS = (
     "debug_toolbar",
     "django_extensions",
@@ -207,7 +176,6 @@ OPTIONAL_APPS = (
 ########################
 # DJANGO DEBUG TOOLBAR #
 ########################
-
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -226,21 +194,18 @@ DEBUG_TOOLBAR_PANELS = [
 #########
 # EMAIL #
 #########
-
-EMAIL_BACKEND = "mailer.backend.DbBackend"
-
 # EMAIL_SUBJECT_PREFIX = 'Join Our Story'
 # SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_PASSWORD = '4Primetime!'
 # EMAIL_PORT = 587
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 
 ###########
 # PROFILE #
 ###########
-
 ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
@@ -248,13 +213,9 @@ ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
 
-
 ############
 # CKEDITOR #
 ############
-
-TINYMCE_SETUP_JS = "mezzanine/js/jostinymce_setup.js"
-
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono',
@@ -297,7 +258,6 @@ CKEDITOR_CONFIGS = {
 ##############################
 # DJANGO- TRACKER & REQUEST  #
 ##############################
-
 TRACK_AJAX_REQUESTS = True
 TRACK_PAGEVIEWS = True
 TRACK_REFERER = True
@@ -325,9 +285,7 @@ REQUEST_PLUGINS = (
 ##################
 # LOCAL SETTINGS #
 ##################
-
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
+# Instead of doing "from .local_settings import *", we use exec for full access
 f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
 if os.path.exists(f):
     exec (open(f, "rb").read())
@@ -335,10 +293,7 @@ if os.path.exists(f):
 ####################
 # DYNAMIC SETTINGS #
 ####################
-
-# set_dynamic_settings() will rewrite globals based on what has been
-# defined so far, in order to provide some better defaults where
-# applicable.
+# set_dynamic_settings() rewrites globals based on above to provide some better defaults.
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
