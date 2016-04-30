@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load url from future %}
+
+{% block meta_title %}
+    {{ user.JOSProfile.jos_name }} Mailbox
+{% endblock %}
+{% block title %}
+    {{ user.JOSProfile.jos_name }} Mailbox
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    <li class="active">
+        Mailbox for {{ user.JOSProfile.jos_name }}
+    </li>
+{% endblock %}
+
 {% block all_content %}
-{# block sidebar #}
 
     <style>
 
@@ -15,12 +29,9 @@
 
     </style>
 
-    <div class="row" style="margin-left: 0; margin-top: 40px;">
+    <div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 40px;">
 
         <div class="col-xs-12" style="padding: 0;">
-
-
-
 
             <a class="joslargelinkbutton"
                style=" "
@@ -62,11 +73,3 @@
 
 {% endblock %}
 
-
-<a class="joslargelinkbutton" style="margin-left: 30px" href="{% url "messages_redirect" %}">
-
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-envelope fa-fw" style=" "></i>
-                    My mailbox
-                </span>
-</a>

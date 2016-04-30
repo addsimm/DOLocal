@@ -51,15 +51,15 @@
                 </a>
             </div>
 
-            <div class="hidden-xs col-sm-12 col-md-6" style="background-color: transparent; padding-left: 20px;">
+            <div class="hidden-xs col-sm-12 col-md-6" style="background-color: transparent;">
 
                 {% nevercache %}{% if messages %}<!-- messages -->
-                    <div class="messages">
-                        <div class="row" style="height: 70px; margin: 10px 5px 5px 15px; padding: 12px;">
-                            <div class="col-xs-1">
+                    <div class="">
+                        <div class="row messages" style="height: 75px; margin: 10px -75px 5px 25px; padding-top: 10px">
+                            <div class="col-xs-1" style=" " >
                                 <img src="/static/img/peeky-123115.png" height="40px">
                             </div>
-                            <div class="col-xs-11" style="font-weight: bold; padding: 0 20px;">
+                            <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
                                 {% for message in messages %}
                                     {{ message }}!<br>
                                 {% endfor %}
