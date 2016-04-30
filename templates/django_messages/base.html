@@ -27,6 +27,33 @@
             width: 165px;
         }
 
+        .messages {
+            background-color: transparent;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16pt;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th, td {
+            width: 20%;
+            padding-left: 30px;
+        }
+
+        td {
+            font-weight: normal;
+        }
+
+        tr {
+            height: 55px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(65, 45, 120, .1);
+        }
+
     </style>
 
     <div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 40px;">
@@ -38,7 +65,7 @@
                href="{% url 'messages_inbox' %} ">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-inbox fa-fw" style=" "></i>
-                    {% trans "Inbox" %}
+                    My inbox
                 </span>
             </a>
 
@@ -46,7 +73,8 @@
                style=" "
                href="{% url 'messages_outbox' %} ">
                 <span style="margin-left: 5px; margin-right: 5px;">
-                    {% trans "Sent Messages" %}
+                    <i class="fa fa-paper-plane fa-fw" style=" "></i>
+                    Sent
                 </span>
             </a>
 
@@ -55,7 +83,7 @@
                href="{% url 'messages_trash' %} ">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-trash fa-fw" style=" "></i>
-                    {% trans "Trash" %}
+                    Deleted
                 </span>
             </a>
 
@@ -64,7 +92,7 @@
                href="{% url 'messages_compose' %} ">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-pencil-square-o fa-fw" style=" "></i>
-                    {% trans "New Message" %}
+                    New message
                 </span>
             </a>
 
