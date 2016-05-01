@@ -6,21 +6,69 @@
 
     {{ block.super }}
 
-    <div class="josinstructions">
-        Reading Message:<br>
-    </div>
-    <strong>
-        &nbsp&nbsp&nbsp&nbspFrom:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        {{ message.sender }}
-    </strong><br>
-    &nbsp&nbsp&nbsp&nbspReceived:&nbsp&nbsp&nbsp
-    {{ message.sent_at|date:_("DATETIME_FORMAT") }}<br>
-    &nbsp&nbsp&nbsp&nbspSubject:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-    {{ message.subject }}<br><br>
-    &nbsp&nbsp&nbsp&nbspMessage:<br><br>
-    <div class="josinstructions" style="display: block; margin-left: 80px;">
+    <style xmlns="http://www.w3.org/1999/html">
+
+        table {
+            background-color: transparent;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16pt;
+            margin-left: 60px;
+            width: 40%;
+        }
+
+        th, td {
+            width: auto;
+            padding-left: 0;
+        }
+
+    tr {
+        height: auto;
+    }
+
+    tr:nth-child(even) {
+        background-color: transparent;
+    }
+
+    </style>
+
+    --- BEGIN MESSAGE ---<br><br>
+
+    <table>
+        <tr>
+            <td>
+                From:
+            </td>
+            <td>
+                {{ message.sender.JOSProfile.jos_name }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Received:
+            </td>
+            <td>
+                {{ message.sent_at|date:_("DATETIME_FORMAT") }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Subject:
+            </td>
+            <td>
+                {{ message.subject }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Message:<br><br>
+            <td>
+        </tr>
+    </table>
+    <div class="josinstructions" style="display: block; margin-left: 60px;">
         {{ message.body|linebreaksbr }}
     </div><br>
+    --- END MESSAGE ---<br><br>
+
     <a class="btn btn-default"
        style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
        href="{% url 'messages_inbox' %}">
@@ -39,7 +87,12 @@
 
         <form action="{% url 'messages_reply' message.id %}" method="post">
             {% csrf_token %}
-            {{ reply_form.as_p }}
+            <div style="margin-left: 60px;">
+                Subject:<br>
+                {{ reply_form.subject }}<br><br>
+                Message:<br>
+                {{ reply_form.body }}<br><br>
+            </div>
             <input class="btn btn-default"
                    style="background-color: #5cb85c; border: none; color: white; outline: none; width: 150px;"
                    type="submit" value="Send reply">

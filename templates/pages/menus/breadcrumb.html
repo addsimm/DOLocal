@@ -5,18 +5,19 @@
         padding: 0 5px 0 10px;
     }
 
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
     .breadcrumb > li + li::before {
         color: black;
-        content: ">>> ";
-        margin: 0 7px;
-    }
-
-    *, *::before, *::after {
-        box-sizing: border-box;
-    }
-
-    *, *::before, *::after {
-        box-sizing: border-box;
+        content: "current location: ";
+        font-weight: normal;
+        margin: 0 5px 0 10px;
     }
 
     .breadcrumb > .active {
@@ -40,9 +41,22 @@
         window.history.back();
     }</script>
 
-    <a href="{% url "personaldesk" %}/{{ request.user.id }}" style="margin-left: 30px;">
-        My desk&nbsp
+
+    <a style="margin-left: 15px;"href="{% url "personaldesk" %}/{{ request.user.id }}">
+        <span style="margin-left: 5px; margin-right: 5px;">
+            <i class="fa fa-desktop fa-fw" style=" "></i>
+            My desk&nbsp
+        </span>
     </a>
+
+    <a style="margin-left: 10px" href="{% url "messages_redirect" %}">
+
+        <span style="margin-left: 5px; margin-right: 5px;">
+            <i class="fa fa-envelope fa-fw" style=" "></i>
+            My mailbox
+        </span>
+    </a>
+
 </li>
 
 {% for page in page_branch %}
