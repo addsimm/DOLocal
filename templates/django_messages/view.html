@@ -21,13 +21,13 @@
             padding-left: 0;
         }
 
-    tr {
-        height: auto;
-    }
+        tr {
+            height: auto;
+        }
 
-    tr:nth-child(even) {
-        background-color: transparent;
-    }
+        tr:nth-child(even) {
+            background-color: transparent;
+        }
 
     </style>
 
@@ -81,26 +81,27 @@
         Delete
     </a>
 
-    {% comment %}Example reply_form integration{% endcomment %}
-    {% if reply_form %}
-        <span class="josinstructions">
-            &nbsp&nbsp&nbspor compose reply:
-        </span><br><br>
 
-        <form action="{% url 'messages_reply' message.id %}" method="post">
-            {% csrf_token %}
-            <div style="margin-left: 60px;">
-                Subject:<br>
-                {{ reply_form.subject }}<br><br>
-                Message:<br>
-                {{ reply_form.body }}<br><br>
-            </div>
-            <input class="btn btn-default"
-                    style="background-color: #5cb85c;
-                           border: none; color: white;
-                           outline: none; width: 150px;"
-                    type="submit" value="Send reply">
-        </form>
-    {% endif %}
+    {% if reply_form %}
+    <h1>... Or reply:</h1>
+    <form action="{% url 'messages_reply' message.id %}" method="post">
+        {% csrf_token %}
+
+        <input id="id_recipient" type="hidden" value="{{ request.user.username }}" name="recipient">
+
+        <div style="margin-left: 60px;">
+            Subject:<br>
+            {{ reply_form.subject }}<br><br>
+            Message:<br>
+            {{ reply_form.body }}<br><br>
+        </div>
+
+        <input class="btn btn-default"
+               style="width: 150px;"
+               type="submit" value="Reply">
+    </form>
+{% endif %}
 
 {% endblock all_content %}
+
+

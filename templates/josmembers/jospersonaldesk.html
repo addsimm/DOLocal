@@ -4,17 +4,20 @@
 {% cloudinary_includes %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.jos_name }} Desk
+    {{ user.get_short_name }}'s Desk
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.jos_name }} Desk
+    {{ user.get_short_name }}'s Desk
 {% endblock %}
 
 {% block breadcrumb_menu %}
     {{ block.super }}
-    <li class="active">
-        Desk of {{ user.JOSProfile.jos_name }}
-    </li>
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Desk
+    </span>
+
 {% endblock %}
 
 {% block all_content %}
@@ -57,20 +60,19 @@
 
         <div class="col-xs-12" style="padding: 0;">
 
-            <img style="display: inline; height: 80px;"
-                 src="{% if profile.profile_image_idstr != "noimage1" %}
+
+
+           <a href="{% url "profile" request.user.id %}">
+               <img style="display: inline; height: 65px;"
+                    src="{% if profile.profile_image_idstr != "noimage1" %}
                         http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}
                       {% else %}
                         /static/img/coming-soon-profile.png
                       {% endif %}
                      ">
-
-           <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
-                My profile
-            </a>
-
-            <a class="joslargelinkbutton" href="{% url "josmembers_list" %}">
-                My friends
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    My profile
+               </span>
             </a>
 
         </div>
