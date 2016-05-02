@@ -10,97 +10,126 @@
 
 {% block all_content %}
 
-<div class="row" style="margin-top: 30px; padding-left: 50px;">
+    <style>
+
+        table {
+            background-color: transparent;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16pt;
+            margin-top: 30px;
+            width: 80%;
+        }
+
+        th, td {
+            width: 10%;
+            padding-left: 10px;
+        }
+
+        td {
+            font-weight: normal;
+        }
+
+        tr {
+            height: 120px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(65, 45, 120, .1);
+        }
+
+    </style>
+
+    <div class="row" style="margin-top: 30px; padding-left: 50px;">
 
 
-    <div class="josinstructions"><b>Search members:</b><br>
-        Please begin by typing the member's name.<br>
-        - The computer will respond after each letter; press "start over" for a new search.
+        <div class="josinstructions"><b>Search members:</b><br>
+            Please begin by typing the member's name.<br>
+            - the computer will respond after each letter; press "start over" for a new search.
+        </div>
+        <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px;" type="text" placeholder="Start typing here">
+        <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers_list" %}">
+            Start over
+        </a>
+
+        <script>function startOver() {
+            document.getElementById('member_search_text').value = "Start typing here";
+        }</script>
     </div>
-    <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px;" type="text" placeholder="Start typing here">
-    <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers_list" %}">
-        Start over
-    </a>
 
-    <script>function startOver() {
-        document.getElementById('member_search_text').value = "Start typing here";
-    }</script>
-</div>
+    <div class="row" style="margin-top: 15px;">
 
-<div class="row" style="margin-top: 15px;">
+        <div class="col-xs-12" style="padding-left: 85px;">
 
-    <div class="col-xs-12" style="padding-left: 85px;">
+            <div id="member_search_results"></div><br><br>
 
-        <div id="member_search_results"></div><br><br>
+        </div>
 
     </div>
 
-</div>
 
+        <script type='text/javascript'
+                src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+        <script language="javascript">
+            /* Before our JavaScript, the urls need to be set. */
+            var SUBMIT_URL = "{% url 'search_member_list' %}";
+        </script>
 
-    <script type='text/javascript'
-            src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-    <script language="javascript">
-        /* Before our JavaScript, the urls need to be set. */
-        var SUBMIT_URL = "{% url 'search_member_list' %}";
-    </script>
+        <script language="javascript">
+            /** Executes a search for colors containing a substring. */
+            var processSearch = function () {
+                //Get and trim the search text.
+                var searchText = $('#member_search_text').val().trim().toLowerCase();
 
-    <script language="javascript">
-        /** Executes a search for colors containing a substring. */
-        var processSearch = function () {
-            //Get and trim the search text.
-            var searchText = $('#member_search_text').val().trim().toLowerCase();
+                if (searchText.length < 2) {
+                    //Too short. Ignore the submission, and erase any current results.
+                    $('#member_search_results').html("<i>Keep typing ...</i>");
 
-            if (searchText.length < 2) {
-                //Too short. Ignore the submission, and erase any current results.
-                $('#member_search_results').html("<i>Keep typing ...</i>");
-
-            } else {
-                // Execute the search.
-                var processServerResponse = function (serverResponse_data,
-                                                      textStatus_ignored,
-                                                      jqXHR_ignored) {
-                    /* alert("SUBMIT_URL=" + SUBMIT_URL +
-                            "; member_search_text=" + searchText +
-                            "; serverResponse_data=" + serverResponse_data +
-                            "; textStatus_ignored=" + textStatus_ignored +
-                            "; jqXHR_ignored=" + jqXHR_ignored
-                    ); */
-                    $('#member_search_results').html(serverResponse_data);
-                }
-
-                var config = {
-                    type: "GET",
-                    url: SUBMIT_URL,
-                    data: {
-                        'member_search_text': searchText,
-                    },
-                    dataType: 'html',
-                    success: processServerResponse,
-                    fail: function () {
-                        alert("Fail")
+                } else {
+                    // Execute the search.
+                    var processServerResponse = function (serverResponse_data,
+                                                          textStatus_ignored,
+                                                          jqXHR_ignored) {
+                        /* alert("SUBMIT_URL=" + SUBMIT_URL +
+                                "; member_search_text=" + searchText +
+                                "; serverResponse_data=" + serverResponse_data +
+                                "; textStatus_ignored=" + textStatus_ignored +
+                                "; jqXHR_ignored=" + jqXHR_ignored
+                        ); */
+                        $('#member_search_results').html(serverResponse_data);
                     }
-                };
-                $.ajax(config);
-            }
-        };
 
-    </script>
+                    var config = {
+                        type: "GET",
+                        url: SUBMIT_URL,
+                        data: {
+                            'member_search_text': searchText,
+                        },
+                        dataType: 'html',
+                        success: processServerResponse,
+                        fail: function () {
+                            alert("Fail")
+                        }
+                    };
+                    $.ajax(config);
+                }
+            };
 
-    <script language="javascript">
+        </script>
 
-        /** The Ajax "main" function. Attaches the listeners to the elements on page load,
-         each of which only take effect every MILLS_TO_IGNORE_LIKES seconds - requires importing underscore-min.js. Noy underscore-min.map */
+        <script language="javascript">
 
-        var MILLS_TO_IGNORE_SEARCH = 100;
-        var MILLS_TO_IGNORE_LIKES = 500;
-        $(document).ready(function () {
-            /* This attaches a listener. Calling this again would attach a *second* */
-            $('#member_search_text').keyup(_.debounce(processSearch,
-                    MILLS_TO_IGNORE_SEARCH, true));
-        });
+            /** The Ajax "main" function. Attaches the listeners to the elements on page load,
+             each of which only take effect every MILLS_TO_IGNORE_LIKES seconds - requires importing underscore-min.js. Noy underscore-min.map */
 
-    </script>
+            var MILLS_TO_IGNORE_SEARCH = 100;
+            var MILLS_TO_IGNORE_LIKES = 500;
+            $(document).ready(function () {
+                /* This attaches a listener. Calling this again would attach a *second* */
+                $('#member_search_text').keyup(_.debounce(processSearch,
+                        MILLS_TO_IGNORE_SEARCH, true));
+            });
+
+        </script>
 
 {% endblock all_content %}
 

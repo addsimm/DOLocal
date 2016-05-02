@@ -74,11 +74,13 @@
        href="{% url 'messages_inbox' %}">
         Done
     </a>
+
     <a class="btn btn-default"
        style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px;"
        href="{% url 'messages_delete' message.id %}">
         Delete
     </a>
+
     {% comment %}Example reply_form integration{% endcomment %}
     {% if reply_form %}
         <span class="josinstructions">
@@ -94,8 +96,10 @@
                 {{ reply_form.body }}<br><br>
             </div>
             <input class="btn btn-default"
-                   style="background-color: #5cb85c; border: none; color: white; outline: none; width: 150px;"
-                   type="submit" value="Send reply">
+                    style="background-color: #5cb85c;
+                           border: none; color: white;
+                           outline: none; width: 150px;"
+                    type="submit" value="Send reply">
         </form>
     {% endif %}
 

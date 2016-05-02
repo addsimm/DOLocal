@@ -5,14 +5,26 @@
 
     {{ block.super }}
     <h1>Compose Message</h1>
-    <form action="" method="post">
-        {% csrf_token %}
+    <form action="{% url 'messages_compose' %}" method="post">
+
         <table>
-            {{ form.as_p }}
+            {% csrf_token %}
+
+            <div style="margin-left: 60px;">
+                To:<br>
+                {{ form.subject }}<br><br>
+                Subject:<br>
+                {{ form.subject }}<br><br>
+                Message:<br>
+                {{ form.body }}<br><br>
+            </div>
+            <input class="btn btn-default"
+                   style="background-color: #5cb85c;
+                           border: none; color: white;
+                           outline: none; width: 150px;"
+                   type="submit" value="Send">
         </table>
-        <input class="btn btn-default"
-               style="background-color: #5cb85c; border: none; color: white; outline: none; width: 150px;"
-               type="submit" value="Send message">
+
     </form>
 
 {% endblock %}

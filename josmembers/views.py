@@ -278,8 +278,7 @@ def submit_member_search_from_ajax(request):
         """
         The search form has been submitted. Get the search text - must be GET.
         """
-        member_search_text = request.GET.get("member_search_t"
-                                             "ext", "").strip().lower()
+        member_search_text = request.GET.get("member_search_text", "").strip().lower()
 
     member_search_results = []
 

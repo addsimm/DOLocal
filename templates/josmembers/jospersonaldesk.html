@@ -23,7 +23,8 @@
 
     {# change do super larger link button #}
     .joslargelinkbutton {
-        font-size: 18pt;
+        font-size: 24pt;
+        margin-left: 15px;
         padding: 8px;
     }
 
@@ -52,18 +53,24 @@
 
     </style>
 
-    <div class="row" style="margin-left: 0; margin-top: 40px;">
+    <div class="row" style="margin-left: 0; margin-top: 30px;">
 
         <div class="col-xs-12" style="padding: 0;">
-            <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
-                {% if profile.profile_image_idstr != "noimage1" %}
-                    <img class="img-responsive" style="display: inline; max-height: 35px;"
-                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
-                {% else %}
-                    <img class="img-responsive" style="display: inline; max-height: 35px;"
-                         src="/static/img/coming-soon-profile.png">
-                {% endif %}
-                <span style="margin-left: 5px; margin-right: 5px;">My profile</span>
+
+            <img style="display: inline; height: 80px;"
+                 src="{% if profile.profile_image_idstr != "noimage1" %}
+                        http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}
+                      {% else %}
+                        /static/img/coming-soon-profile.png
+                      {% endif %}
+                     ">
+
+           <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
+                My profile
+            </a>
+
+            <a class="joslargelinkbutton" href="{% url "josmembers_list" %}">
+                My friends
             </a>
 
         </div>
@@ -109,7 +116,7 @@
 
             <div class="row" style="margin-top: 50px;">
                 <div class="col-xs-12" style="padding-left: 30px;">
-                    <a class="joslargelinkbutton" href="{% url "josmembers_list" %}">Find fellow members</a>
+
                 </div>
             </div>
 

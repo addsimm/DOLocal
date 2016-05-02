@@ -1,26 +1,45 @@
 
 <div class= "josinstructions" style="color: #5bc0de;">
-    Searching for "{{ member_search_text }}".<br>
-    &nbsp&nbsp&nbsp&nbspFound {{ member_search_results.count}} members:<br>
+    Searching for "{{ member_search_text }}" - Found {{ member_search_results.count}} members:<br>
 {% if  member_search_results.count > 0 %}
-  <ul>
-     {% for  profile in member_search_results %}
+    <table>
+        <tbody>
+            {% for member in member_search_results %}
+                <tr>
+                    <td>
+                        {% if member.profile_image_idstr != "noimage1" %}
+                            <img class="img-responsive" style="display: inline; max-height: 90px;"
+                                 src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ member.profile_image_idstr }}">
+                        {% else %}
+                            <img class="img-responsive" style="background-color: white; display: inline; max-height: 90px;"
+                                 src="/static/img/coming-soon-profile.png">
+                        {% endif %}
+                    </td>
+                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold;">{{ member.jos_name }}</td>
+                    <td style="width: 35%;">
+                        <a class="btn btn-default"
+                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
+                           href="{% url "profile" member.user.id %}">
+                            Profile
+                        </a>
 
-        <div class="col-xs-12" style="margin-top: 20px; padding: 0;">
-            <a class="joslargelinkbutton" href="{% url "profile" profile.user.id %}">
-                {% if profile.profile_image_idstr != "noimage1" %}
-                    <img class="img-responsive" style="display: inline; max-height: 35px;"
-                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_idstr }}">
-                {% else %}
-                    <img class="img-responsive" style="display: inline; max-height: 35px;"
-                         src="/static/img/coming-soon-profile.png">
-                {% endif %}
-                <span style="margin-left: 5px; margin-right: 5px;">{{ profile.jos_name }}</span>
-            </a>
-        </div>
+                        <a class="btn btn-default"
+                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
+                           href="{% url 'messages_compose' %}?recipient={{ member.jos_name }}">
+                            Message
+                        </a>
 
-     {% endfor %}
-  </ul>
+                        <a class="btn btn-default"
+                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
+                           href=" ">
+                            Favorite
+                        </a>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <i>No results</i>
 {% endif %}
