@@ -13,9 +13,11 @@
 
 {% block breadcrumb_menu %}
     {{ block.super }}
-    <li class="active">
-        {{ user.JOSProfile.jos_name }}'s Profile
-    </li>
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Profile
+    </span>
 {% endblock %}
 
 {% block all_content %}
@@ -113,6 +115,7 @@
                 {% else %}
 
                     <a class="btn btn-default pull-right"
+                       style="background-color: #28a4c9; border: none; color: white; outline: none; width: 100px;"
                        href="{% url "josprofile_edit" request.user.id %}">
                         {% trans "Edit mode" %}
                     </a>
