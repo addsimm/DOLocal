@@ -85,8 +85,8 @@
 
         </div>
 
-        <div class="col-xs-9" style="font-size: 16pt;">
-            <span style="font-weight: bold;">About {{ user.JOSProfile.get_jos_name }}</span>
+        <div class="col-xs-8" style="font-size: 16pt;">
+            <span style="font-weight: bold;">About {{ profile.jos_name }}</span>
 
             {% if edit %}
                 <a class="btn btn-info pull-right" style="margin-right: 17px; outline: none; text-decoration: none;"
@@ -96,12 +96,12 @@
                 </a>
             {% endif %}
 
-            <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} line-height: 1.4; margin-top: 2px; margin-right: 20px; padding: 10px;">
+            <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} line-height: 1.4; margin-top: 5px;">
                 {{ profile.about_me | richtext_filters |safe }}
             </div>
         </div>
 
-        <div class="col-xs-1 side-panel" style="margin-right: 0; margin-top: 30px;">
+        <div class="col-xs-2 side-panel" style="margin-right: 0; margin-top: 30px;">
 
             {% if profile.user == request.user %}
 
@@ -127,7 +127,21 @@
                     <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
                 </p>
 
-             {% endif %}
+            {% else %}
+
+                <a class="btn pull-right btn-default"
+                   style="width: 150px;"
+                   href="{% url 'messages_compose' %}{{ profile.user.id }}">
+                    Send message
+                </a>
+
+                <a class="btn pull-right btn-default"
+                   style="width: 150px; margin-top: 30px;"
+                   href=" ">
+                    Make favorite
+                </a>
+
+            {% endif %}
 
             {% if profile.user == request.user and request.user.is_staff %}
 

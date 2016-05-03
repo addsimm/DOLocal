@@ -171,7 +171,6 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
     return TemplateResponse(request, template, context)
 
 
-
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
     """
     Display a profile.
@@ -305,7 +304,7 @@ def submit_member_search_from_ajax(request):
 
 
 @login_required
-def message_compose(request, recipient=None, form_class=ComposeForm,
+def message_compose(request, id=None, form_class=ComposeForm,
             template_name='django_messages/compose.html', success_url=None, recipient_filter=None):
     """
     Displays and handles the ``form_class`` form to compose new messages.
@@ -318,7 +317,8 @@ def message_compose(request, recipient=None, form_class=ComposeForm,
         ``template_name``: the template to use
         ``success_url``: where to redirect after successfull submission
     """
-    recipients = " "
+
+    recipient= to_user = recipients = None
 
     if request.method == "POST":
         sender = request.user
@@ -333,6 +333,7 @@ def message_compose(request, recipient=None, form_class=ComposeForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class()
+        to_user = User.objects.get(id=id)
         if recipient is not None:
             recipients = [u for u in User.objects.filter(
                 **{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
@@ -340,5 +341,7 @@ def message_compose(request, recipient=None, form_class=ComposeForm,
 
     return render_to_response(template_name, {
         'form': form,
-        'recipient': recipient
+        'recipient': to_user.username,
+        'jos_name': to_user.JOSProfile.jos_name,
+        'id': id
     }, context_instance=RequestContext(request))

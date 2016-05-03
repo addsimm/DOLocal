@@ -28,8 +28,6 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-DEBUG = False
-
 # Whether a user's session cookie expires when browser closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -302,3 +300,16 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+DEBUG = False
+##############################################
+### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
+
+# def show_toolbar(request):
+#     return True
+#
+# DEBUG_TOOLBAR_CONFIG = {
+#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+# }
+#
+# DEBUG = True

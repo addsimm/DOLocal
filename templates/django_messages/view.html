@@ -67,35 +67,29 @@
     </div>
     --- END MESSAGE ---<br><br>
 
+    {% if reply_form %}
+
+        <a class="btn btn-default"
+           style="width: 100px;"
+           href="{% url 'messages_compose' %}{{ message.sender.id }}">
+            Reply
+        </a>
+
+    {% endif %}
+
+
     <a class="btn btn-default"
-       style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px;"
+       style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
        href="{% url 'messages_inbox' %}">
         Go back
     </a>
 
     <a class="btn btn-default"
-       style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px;"
+       style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
        href="{% url 'messages_delete' message.id %}">
         Delete
-    </a>{% if reply_form %}
-    <span class="josinstructions">&nbsp&nbsp... Or reply by typing below and pressing "Send":</span><br><br>
-    <form action="{% url 'messages_reply' message.id %}" method="post">
-        {% csrf_token %}
+    </a>
 
-        <input id="id_recipient" type="hidden" value="{{ message.sender.username }}" name="recipient">
-
-        <div style="margin-left: 60px;">
-            Subject:<br>
-            {{ reply_form.subject }}<br><br>
-            Message:<br>
-            {{ reply_form.body }}<br><br>
-        </div>
-
-        <input class="btn btn-default"
-               style="width: 150px;"
-               type="submit" value="Send">
-    </form>
-{% endif %}
 
 {% endblock all_content %}
 

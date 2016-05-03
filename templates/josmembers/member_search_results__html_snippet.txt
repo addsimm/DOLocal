@@ -27,7 +27,7 @@
 
                         <a class="btn btn-default"
                            style="margin-left: 10px; width: 200px;"
-                           href="{% url 'messages_compose' %}{{ member.user.username }}">
+                           href="{% url 'messages_compose' %}{{ member.user.id }}">
                             Send message
                         </a>
 
