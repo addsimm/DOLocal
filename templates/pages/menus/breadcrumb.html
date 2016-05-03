@@ -1,4 +1,4 @@
-{% load i18n pages_tags %}
+{% load i18n pages_tags inbox %}
 <style>
 
     .breadcrumb > li + li::before {
@@ -37,12 +37,21 @@
 </style>
 
 <li style="margin-left: -7px;">
+
     <a style="margin-left: 0;" href="{% url "messages_redirect" %}">
         <span style="margin-left: 5px; margin-right: 5px;">
             <i class="fa fa-envelope fa-fw" style=" "></i>
             Mailbox
         </span>
+
+        {% inbox_count as my_var %}
+        {% if my_var != 0 %}
+            <span style="color: white; background-color: red; padding-right: 6px; padding-left: 6px;">
+                {{ my_var }}
+            </span>
+        {% endif %}
     </a>
+
 </li>
 <li>
     <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers_list" %}">

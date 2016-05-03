@@ -24,11 +24,11 @@
             font-family: "Open Sans", sans-serif;
             font-size: 16pt;
             margin-top: 30px;
-            width: 80%;
+            width: 85%;
         }
 
         th, td {
-            width: 10%;
+            width: 7%;
             padding-left: 10px;
         }
 
@@ -49,11 +49,15 @@
     <div class="row" style="margin-top: 30px; padding-left: 50px;">
 
 
+        <div class="josinstructions"><b>My favorites:</b></div>
+
+        <div class="josinstructions"><b>My teams:</b></div>
+
         <div class="josinstructions"><b>Search members:</b><br>
-            Please begin by typing the member's name.<br>
-            - the computer will respond after each letter; press "start over" for a new search.
+            Please begin typing a name. The computer will respond after two letters.
         </div>
-        <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px;" type="text" placeholder="Start typing here">
+
+        <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;" type="text" placeholder="Start typing here">
         <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers_list" %}">
             Start over
         </a>

@@ -83,6 +83,8 @@ urlpatterns += patterns('',
 
     ### Forums, Messaging, Etc. ###
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
+    # special JOS compose
+    url(r'^messages/compose/(?P<recipient>[\w.@+-]+)/$', "josmembers.views.message_compose", name='messages_compose'),
     url(r'^messages/', include('django_messages.urls')),
 
     ### ----------------

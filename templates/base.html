@@ -54,18 +54,18 @@
             <div class="hidden-xs col-sm-12 col-md-6" style="background-color: transparent;">
 
                 {% nevercache %}{% if messages %}<!-- messages -->
-                    <div class="">
-                        <div class="row messages" style="height: 75px; margin: 10px -75px 5px 25px; padding-top: 10px">
-                            <div class="col-xs-1" style=" " >
-                                <img src="/static/img/peeky-123115.png" height="40px">
-                            </div>
-                            <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
-                                {% for message in messages %}
-                                    {{ message }}!<br>
-                                {% endfor %}
-                            </div>
+
+                    <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">
+                        <div class="col-xs-1" style=" " >
+                            <img src="/static/img/peeky-123115.png" height="40px">
+                        </div>
+                        <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
+                            {% for message in messages %}
+                                {{ message }}<br>
+                            {% endfor %}
                         </div>
                     </div>
+
 
                 {% else %}
                     <div class="hometext text-center" style="margin-left: 105px; margin-top: 20px;">

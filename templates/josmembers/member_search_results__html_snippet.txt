@@ -15,22 +15,24 @@
                                  src="/static/img/coming-soon-profile.png">
                         {% endif %}
                     </td>
-                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold;">{{ member.jos_name }}</td>
-                    <td style="width: 35%;">
+                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold;">
+                    {{ member.jos_name }}
+                    </td>
+                    <td style="width: 50%;">
                         <a class="btn btn-default"
-                           style="width: 150px;"
+                           style="margin-left: 10px; width: 200px;"
                            href="{% url "profile" member.user.id %}">
                             View profile
                         </a>
 
                         <a class="btn btn-default"
-                           style="width: 150px;"
-                           href="{% url 'messages_compose' %}?recipient={{ member.user.username }}">
+                           style="margin-left: 10px; width: 200px;"
+                           href="{% url 'messages_compose' %}{{ member.user.username }}">
                             Send message
                         </a>
 
                         <a class="btn btn-default"
-                           style="width: 150px;"
+                           style="margin-left: 10px; width: 200px;"
                            href=" ">
                             Make favorite
                         </a>
@@ -41,6 +43,6 @@
         </tbody>
     </table>
 {% else %}
-    <i>No results</i>
+    ---
 {% endif %}
 <br><br><br>
