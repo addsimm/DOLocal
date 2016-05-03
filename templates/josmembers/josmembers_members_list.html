@@ -6,7 +6,14 @@
 {% block title %}{{ user.JOSProfile.jos_name }}{% endblock %}
 {# block body_id }account{ endblock #}
 
-{% block breadcrumb_menu %}{{ block.super }}<li class="active">Community</li>{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Friends
+    </span>
+    {% endblock %}
 
 {% block all_content %}
 

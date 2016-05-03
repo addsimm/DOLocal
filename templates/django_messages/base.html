@@ -11,9 +11,11 @@
 
 {% block breadcrumb_menu %}
     {{ block.super }}
-    <li class="active">
-        Mailbox for {{ user.JOSProfile.jos_name }}
-    </li>
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Mailbox
+    </span>
 {% endblock %}
 
 {% block all_content %}
@@ -85,10 +87,9 @@
             </a>
 
             <a class="joslargelinkbutton"
-               style=" "
+               style="margin-left: 250px;"
                href="{% url 'messages_compose' %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-trash fa-fw" style=" "></i>
                     New Message
                 </span>
             </a>

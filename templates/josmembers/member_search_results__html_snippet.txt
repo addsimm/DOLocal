@@ -18,21 +18,21 @@
                     <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold;">{{ member.jos_name }}</td>
                     <td style="width: 35%;">
                         <a class="btn btn-default"
-                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
+                           style="width: 150px;"
                            href="{% url "profile" member.user.id %}">
-                            Profile
+                            View profile
                         </a>
 
                         <a class="btn btn-default"
-                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
-                           href="{% url 'messages_compose' %}?recipient={{ member.jos_name }}">
-                            Message
+                           style="width: 150px;"
+                           href="{% url 'messages_compose' %}?recipient={{ member.user.username }}">
+                            Send message
                         </a>
 
                         <a class="btn btn-default"
-                           style="background-color: #5bc0de; border: none; color: white; outline: none; width: 100px;"
+                           style="width: 150px;"
                            href=" ">
-                            Favorite
+                            Make favorite
                         </a>
 
                     </td>

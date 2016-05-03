@@ -3,9 +3,7 @@
 
 {% block all_content %}
 
-    {{ block.super }}
-
-    <h1>{% trans "Compose Message" %}</h1>
+    <div class="josinstructions" style="margin-top: 30px;">Send message:</div>
     <form action="" method="post">
         {% csrf_token %}
 
@@ -17,6 +15,12 @@
             Message:<br>
             {{ form.body }}<br><br>
         </div>
+
+        <a class="btn btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px;"
+           href="{% url 'messages_inbox' %}">
+            Go back
+        </a>
 
         <input class="btn btn-default"
                style="width: 150px;"

@@ -11,7 +11,11 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    <li class="active">{{ title }}</li>
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ title }}
+    </span>
 
 {% endblock %}
 
