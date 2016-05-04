@@ -5,20 +5,22 @@ from django.contrib.auth import (login as auth_login, logout as auth_logout, aut
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages import info, error
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
-from django_messages.utils import get_username_field
+
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
 
+from django_messages.utils import format_quote, get_username_field
+from django_messages.models import Message
 from django_messages.forms import ComposeForm
 
 from .models import JOSProfile, CKRichTextHolder
@@ -304,7 +306,7 @@ def submit_member_search_from_ajax(request):
 
 
 @login_required
-def message_compose(request, id=None, form_class=ComposeForm,
+def jos_message_compose(request, id=None, form_class=ComposeForm,
             template_name='django_messages/compose.html', success_url=None, recipient_filter=None):
     """
     Displays and handles the ``form_class`` form to compose new messages.
@@ -344,4 +346,43 @@ def message_compose(request, id=None, form_class=ComposeForm,
         'recipient': to_user.username,
         'jos_name': to_user.JOSProfile.jos_name,
         'id': id
+    }, context_instance=RequestContext(request))
+
+
+@login_required
+def jos_message_reply(request, message_id, form_class=ComposeForm,
+          template_name='django_messages/compose.html', success_url=None,
+          recipient_filter=None, quote_helper=format_quote,
+          subject_template=_(u"Re: %(subject)s"), ):
+    """
+    Prepares the ``form_class`` form for writing a reply to a given message
+    (specified via ``message_id``). Uses the ``format_quote`` helper from
+    ``messages.utils`` to pre-format the quote. To change the quote format
+    assign a different ``quote_helper`` kwarg in your url-conf.
+
+    """
+    parent = get_object_or_404(Message, id=message_id)
+
+    if parent.sender != request.user and parent.recipient != request.user:
+        raise Http404
+
+    if request.method == "POST":
+        sender = request.user
+        form = form_class(request.POST, recipient_filter=recipient_filter)
+        if form.is_valid():
+            form.save(sender=request.user, parent_msg=parent)
+            messages.info(request, _(u"Message successfully sent."))
+            if success_url is None:
+                success_url = reverse('messages_inbox')
+            return HttpResponseRedirect(success_url)
+    else:
+        form = form_class(initial={
+            'body': quote_helper(parent.sender.JOSProfile.jos_name(), parent.body),
+            'subject': subject_template % {'subject': parent.subject},
+            'recipient': [parent.sender, ]
+        })
+    return render_to_response(template_name, {
+        'form': form,
+        'recipient': parent.sender.username,
+        'jos_name': parent.sender.JOSProfile.jos_name
     }, context_instance=RequestContext(request))

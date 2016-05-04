@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     "josmembers",
     'request',
     'tracking',
+    'friendship',
     'django_messages',
     "mailer",
     "ckeditor",
@@ -125,7 +126,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "mezzanine.pages.context_processors.page",
     "pybb.context_processors.processor",
     'django_messages.context_processors.inbox',
-
 )
 
 # Middleware. Order is important; request classes will be applied in order, response in reverse order.

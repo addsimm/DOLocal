@@ -71,7 +71,7 @@
 
         <a class="btn btn-default"
            style="width: 100px;"
-           href="{% url 'messages_compose' %}{{ message.sender.id }}">
+           href="{% url 'messages_reply'  message.id %}">
             Reply
         </a>
 
