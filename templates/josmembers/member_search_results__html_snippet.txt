@@ -1,39 +1,39 @@
 
-<div class= "josinstructions" style="color: #5bc0de;">
+<div class= "josinstructions" style="color: #5bc0de; margin-top: 15px;">
     Searching for "{{ member_search_text }}" - Found {{ member_search_results.count}} members:<br>
 {% if  member_search_results.count > 0 %}
     <table>
         <tbody>
             {% for member in member_search_results %}
                 <tr>
-                    <td>
+                    <td style="width: 15%;">
                         {% if member.profile_image_idstr != "noimage1" %}
-                            <img class="img-responsive" style="display: inline; max-height: 90px;"
+                            <img class="img-responsive" style="display: inline; max-height: 75px;"
                                  src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ member.profile_image_idstr }}">
                         {% else %}
-                            <img class="img-responsive" style="background-color: white; display: inline; max-height: 90px;"
+                            <img class="img-responsive" style="background-color: white; display: inline; max-height: 75px;"
                                  src="/static/img/coming-soon-profile.png">
                         {% endif %}
                     </td>
-                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold;">
+                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
                     {{ member.jos_name }}
                     </td>
-                    <td style="width: 50%;">
+                    <td style="width: 60%;">
                         <a class="btn btn-default"
-                           style="margin-left: 10px; width: 200px;"
+                           style="margin-left: 10px; width: 150px;"
                            href="{% url "profile" member.user.id %}">
                             View profile
                         </a>
 
                         <a class="btn btn-default"
-                           style="margin-left: 10px; width: 200px;"
+                           style="margin-left: 10px; width: 150px;"
                            href="{% url 'messages_compose' %}{{ member.user.id }}">
                             Send message
                         </a>
 
                         <a class="btn btn-default"
-                           style="margin-left: 10px; width: 200px;"
-                           href=" ">
+                           style="margin-left: 10px; width: 150px;"
+                           href="{% url 'josmembers_list' %}/?add_favorite={{ member.user.id }} ">
                             Make favorite
                         </a>
 

@@ -1,18 +1,18 @@
 ### josmembers/views.py
 from __future__ import unicode_literals
 
-from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages import info, error
+from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.core.urlresolvers import reverse
-
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -20,14 +20,16 @@ from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
 
 from django_messages.utils import format_quote, get_username_field
-from django_messages.models import Message
 from django_messages.forms import ComposeForm
+from django_messages.models import Message
+
+from friendship.exceptions import AlreadyExistsError
+from friendship.models import Follow
 
 from .models import JOSProfile, CKRichTextHolder
 from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
 
 User = get_user_model()
-
 
 def login(request, template="accounts/account_login.html",
           form_class=LoginForm, extra_context=None):
@@ -37,7 +39,7 @@ def login(request, template="accounts/account_login.html",
         form = form_class(request.POST or None)
         if request.method == "POST" and form.is_valid():
             authenticated_user = form.save()
-            info(request, _("Successfully logged in"))
+            info(request, _("Successfully logged in!"))
             auth_login(request, authenticated_user)
             pk = str(authenticated_user.id)
             return redirect("/personaldesk/" + pk)
@@ -52,7 +54,7 @@ def logout(request):
     Log the user out.
     """
     auth_logout(request)
-    info(request, _("Successfully logged out - come back soon"))
+    info(request, _("Successfully logged out - come back soon!"))
     return redirect("/")
 
 
@@ -268,8 +270,40 @@ def personaldesk(request, pk, template="josmembers/jospersonaldesk.html", extra_
 @login_required
 def members_list(request, template="josmembers/josmembers_members_list.html", extra_context=None):
 
+    other_user_id = request.GET.get('add_favorite', " ")
+    other_user = " "
+    remove_user_id = request.GET.get('remove_favorite', " ")
+    remove_user = " "
+
+    if other_user_id != " ":
+        try:
+            other_user = User.objects.get(id=other_user_id)
+            # Create request.user follows other_user relationship
+            Follow.objects.add_follower(request.user, other_user)
+            info(request, other_user.JOSProfile.jos_name() + " is now a favorite!")
+        except ValidationError:
+            info(request, "You cannot favorite yourself ...")
+        except AlreadyExistsError:
+            info(request, other_user.JOSProfile.jos_name() + " is already a favorite!")
+
+    if remove_user_id != " ":
+        try:
+            remove_user = User.objects.get(id=remove_user_id)
+            return_variable = Follow.objects.remove_follower(request.user, remove_user)
+            if return_variable:
+                info(request, remove_user.JOSProfile.jos_name() + " is no longer a favorite.")
+            else:
+                info(request, "Sorry, problme removing favortie - please contact us.")
+        except:
+            pass
+
+    # List of who this user is following
+    following = Follow.objects.following(request.user)
+
     profiles = JOSProfile.objects.all()
-    context = {"profiles": profiles}
+    context = {"profiles": profiles,
+               "following": following
+               }
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

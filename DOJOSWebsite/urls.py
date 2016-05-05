@@ -55,7 +55,7 @@ urlpatterns += patterns('',
     url("^%s%s$" % ("josanal".strip("/"), _slash),
         "josstaff.views.josanal", name="josanal"),
 
-    ### JOS Accounts ###
+    ### JOS Members / Accounts ###
     url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
         "josmembers.views.josprofile", {'edit': True}, name="josprofile_edit"),
     url("^%s/(?P<userid>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
