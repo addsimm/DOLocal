@@ -89,6 +89,7 @@ urlpatterns += patterns('',
     url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply",
         name='messages_reply'),
     url(r'^messages/', include('django_messages.urls')),
+    url(r'^calendar/', include('schedule.urls')),
 
     ### ----------------
     ### MEZZANINE'S URLS
