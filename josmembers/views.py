@@ -139,7 +139,7 @@ def password_reset(request, template="accounts/account_password_reset.html",
     if request.method == "POST" and form.is_valid():
         user = form.save()
         send_verification_mail(request, user, "password_reset_verify")
-        info(request, _("Email with password reset link sent"))
+        info(request, _("Email with password reset link sent."))
     context = {"form": form, "title": _("Password Reset")}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
@@ -168,8 +168,8 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
         form = JOSNewPasswordForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            info(request, _("Password Changed"))
-            return redirect("/")
+            info(request, _("Password changed, please login to confirm."))
+            return redirect("login")
 
     context = {"form": form, "title": _("Reset password")}
     return TemplateResponse(request, template, context)

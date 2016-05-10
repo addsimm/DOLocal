@@ -66,16 +66,14 @@ DATABASES = {
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
 PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
-
-# Every cache key will get prefixed with this value
-CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
-
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 MEDIA_URL = STATIC_URL + "media/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
 ROOT_URLCONF = "%s.urls" % PROJECT_APP
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
+# Every cache key will get prefixed with this value
+CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 
 INSTALLED_APPS = (
     "django.contrib.admin",
@@ -104,12 +102,11 @@ INSTALLED_APPS = (
     'tracking',
     'friendship',
     'django_messages',
-    "mailer",
-    'schedule',
+    # NOT IMPLEMENTED "mailer",
+    # NOT IMPLEMENTED 'schedule',
     "ckeditor",
     "cloudinary",
     "pybb",
-    # "color_liker",
     # "mezzanine.mobile",
     "josdjoingo",
 )
@@ -154,6 +151,7 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
+
     'pybb.middleware.PybbMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'request.middleware.RequestMiddleware',
@@ -201,7 +199,7 @@ DEBUG_TOOLBAR_PANELS = [
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_PASSWORD = '4Primetime!'
 # EMAIL_PORT = 587
-EMAIL_BACKEND = "mailer.backend.DbBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 
 ###########
@@ -306,11 +304,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-# }
-#
-# DEBUG = True
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
+DEBUG = True

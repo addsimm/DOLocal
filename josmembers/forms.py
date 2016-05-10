@@ -228,11 +228,8 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
 
     # user_id = forms.HiddenInput()
     # fakeemail = forms.EmailField(label="Change for Account Email:")
-    password1 = forms.CharField(label=_("New Password"),
-                                widget=forms.PasswordInput(render_value=False))
-
-    password2 = forms.CharField(label=_("Confirm New Password"),
-                                widget=forms.PasswordInput(render_value=False))
+    password1 = forms.CharField(label=_("Password"), widget=forms.TextInput())
+    password2 = forms.CharField(label=_("Password (again)"), widget=forms.TextInput())
 
     class Meta:
         model = User

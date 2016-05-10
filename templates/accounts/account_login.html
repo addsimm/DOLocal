@@ -11,9 +11,9 @@
 
     {% else %}
 
-        {% url "signup" as signup_url %}
-        {% url "mezzanine_password_reset" as password_reset_url %}
-        {% url "profile_update" as profile_update_url %}
+        {% url "jossignup" as signup_url %}
+        {% url "jos_password_reset" as password_reset_url %}
+        {% url "home" as home_url %}
 
         {% blocktrans %}
 
@@ -28,12 +28,13 @@
                     </li>
                     <li>
                         have password problems, click here:
-                        <a href="{{ password_reset_url }}?next={{ profile_update_url }}">
+                        <a href="{{ password_reset_url }}">
                             Reset Password
                         </a>
                     </li>
                 </ul>
-                Otherwise, enter the correct info and press "{{ title }}."
+                Otherwise:<br>
+                <b>Please enter your email and password, then press "{{ title }}."</b>
             </div>
 
         {% endblocktrans %}
