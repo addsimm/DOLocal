@@ -40,15 +40,14 @@ urlpatterns += patterns('',
     url("^%s%s%s$" %
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
-    url(r'^josmembers/', include('josmembers.urls')),
+    url(r'^', include('josmembers.urls')),
 
+    ### JOS Projects ###
 
-
-
-    url("ckrichtextedit/(?P<pk>\d+)$", "josmembers.views.ckrichtextedit", name="ckrichtextedit"),
-    url("ckrichtextedit", "josmembers.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
-    url("personaldesk/(?P<pk>\d+)$", "josmembers.views.personaldesk", name="personaldesk"),
-    url("personaldesk", "josmembers.views.personaldesk", {'pk': None}, name="personaldesk"),
+    url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
+    url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
+    url("personaldesk/(?P<pk>\d+)$", "josprojects.views.personaldesk", name="personaldesk"),
+    url("personaldesk", "josprojects.views.personaldesk", {'pk': None}, name="personaldesk"),
 
     ### JOS Staff
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),

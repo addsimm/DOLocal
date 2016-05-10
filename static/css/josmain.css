@@ -20,6 +20,13 @@ a:hover {
     text-decoration: none;
 }
 
+.joslargelinkbutton {
+    font-size: 18pt;
+    margin-left: 20px;
+    padding: 8px;
+    width: 165px;
+}
+
 .messages {
     background-color: lightgreen;
     font-size: 18pt;

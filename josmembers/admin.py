@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from django.contrib import admin
 
-from josmembers.models import JOSProfile, CKRichTextHolder
+from josmembers.models import JOSProfile
 
     # , CKRichTextEditHolder
 
@@ -30,16 +30,3 @@ class JOSProfileAdmin(admin.ModelAdmin):
     # filter_horizontal = ("categories", "related_posts",)
 
 admin.site.register(JOSProfile, JOSProfileAdmin)
-
-
-class CKRichTextHolderAdmin(admin.ModelAdmin):
-    """
-    Admin class for CKRichTextEditHolders.
-    """
-    list_display = ("id", "author", "created", "title", "field_to_edit")
-
-    verbose_name = 'CKEditor Text Holder'
-
-    readonly_fields = ('created', 'updated',)
-
-admin.site.register(CKRichTextHolder, CKRichTextHolderAdmin)

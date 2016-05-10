@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
-from django.views.decorators.csrf import csrf_exempt
+
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -26,8 +26,9 @@ from django_messages.models import Message
 from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
 
-from .models import JOSProfile, CKRichTextHolder
-from .forms import JOSSignupForm, JOSNewPasswordForm, CKRichTextEditForm
+from josprojects.models import CKRichTextHolder
+from .models import JOSProfile
+from .forms import JOSSignupForm, JOSNewPasswordForm
 
 User = get_user_model()
 
@@ -69,7 +70,51 @@ def josprofile_redirect(request):
     return redirect("profile", username=request.user.username)
 
 
-### Signup:
+def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
+    """
+    Display a profile.
+    """
+    user = User.objects.get(id=userid)
+    username = user.username
+    currentProfile = get_object_or_404(JOSProfile, user=user)
+
+    pk = request.GET.get('pk', None)
+    field_to_edit = request.GET.get('field_to_edit', "nofield")
+    new_image = request.GET.get('new_image', False)
+
+    def getPotentialNewProfileImageIdStr():
+        import re
+        oldProfileImageId = currentProfile.profile_image_idstr
+        split = re.split('(\d.*)', oldProfileImageId)
+        newnum = int(split[1]) + 1
+        return username + str(newnum)
+
+    if new_image:
+        currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
+        currentProfile.save()
+
+    if pk != None:
+        ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
+        content = ckrtfholder.content
+        currentProfile.about_me = content
+        currentProfile.save()
+    else:
+        pass
+
+    if field_to_edit != "nofield":
+        content = getattr(currentProfile, field_to_edit)
+        ckrtfholder = CKRichTextHolder.objects.create(author=user, field_to_edit=field_to_edit, content=content)
+        pk = ckrtfholder.pk
+        query_string = "/" + str(pk)
+        return redirect("/ckrichtextedit" + query_string)
+
+    context = {"profile": currentProfile, "edit": edit,
+               "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr()}
+    context.update(extra_context or {})
+    return TemplateResponse(request, template, context)
+
+
+### Signup & Passwords:
 
 def signup(request, template="accounts/account_signup.html", extra_context=None):
     """
@@ -131,10 +176,7 @@ def account_redirect(request):
     return redirect("profile_update")
 
 
-### Passwords:
-
-def password_reset(request, template="accounts/account_password_reset.html",
-                       form_class=PasswordResetForm, extra_context=None):
+def password_reset(request, template="accounts/account_password_reset.html", form_class=PasswordResetForm, extra_context=None):
     form = form_class(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.save()
@@ -175,97 +217,7 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
     return TemplateResponse(request, template, context)
 
 
-def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
-    """
-    Display a profile.
-    """
-    user = User.objects.get(id=userid)
-    username = user.username
-    currentProfile = get_object_or_404(JOSProfile, user=user)
-
-    pk = request.GET.get('pk', None)
-    field_to_edit = request.GET.get('field_to_edit', "nofield")
-    new_image = request.GET.get('new_image', False)
-
-    def getPotentialNewProfileImageIdStr():
-        import re
-        oldProfileImageId = currentProfile.profile_image_idstr
-        split = re.split('(\d.*)', oldProfileImageId)
-        newnum = int(split[1]) + 1
-        return username + str(newnum)
-
-    if new_image:
-        currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
-        currentProfile.save()
-
-    if pk != None:
-        ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
-        content = ckrtfholder.content
-        currentProfile.about_me = content
-        currentProfile.save()
-    else:
-        pass
-
-    if field_to_edit != "nofield":
-        content = getattr(currentProfile, field_to_edit)
-        ckrtfholder = CKRichTextHolder.objects.create(author=user, field_to_edit=field_to_edit, content=content)
-        pk = ckrtfholder.pk
-        query_string = "/" + str(pk)
-        return redirect("/ckrichtextedit" + query_string)
-
-    context = {"profile": currentProfile, "edit": edit, "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr()}
-    context.update(extra_context or {})
-    return TemplateResponse(request, template, context)
-
-
-### Work Utilities
-
-@csrf_exempt
-def ckrichtextedit(request, pk, template="josmembers/ckrichtextedit.html", extra_context=None):
-
-    instance = get_object_or_404(CKRichTextHolder, pk=pk)
-    form = CKRichTextEditForm(instance=instance)
-
-    if request.method == 'POST':
-        content = request.POST['content']
-        instance.content = content
-        instance.save()
-        query_string = "/?pk=" + pk
-
-        return redirect("/users/"+ str(instance.author_id) + query_string)
-
-    context = {'form': form}
-    context.update(extra_context or {})
-
-    return TemplateResponse(request, template, context)
-
-
-@login_required
-def personaldesk(request, pk, template="josmembers/jospersonaldesk.html", extra_context=None):
-    user = get_object_or_404(User, pk=pk)
-    currentProfile = get_object_or_404(JOSProfile, user=user)
-
-    instance = None
-
-    if instance:
-        form = CKRichTextEditForm(instance=instance)
-    else:
-        form = CKRichTextEditForm()
-
-    if request.method == 'POST' and instance:
-        content = request.POST['content']
-        instance.content = content
-        instance.save()
-        username = str(instance.author)
-        query_string = "/?pk=" + pk
-
-        return redirect("/users/" + username + query_string)
-
-    context = {"profile": currentProfile}
-    context.update(extra_context or {})
-
-    return TemplateResponse(request, template, context)
-
+### Members
 
 @login_required
 def members_list(request, template="josmembers/josmembers_members_list.html", extra_context=None):
@@ -338,6 +290,8 @@ def submit_member_search_from_ajax(request):
 
     return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
 
+
+### Messaging
 
 @login_required
 def jos_message_compose(request, id=None, form_class=ComposeForm,

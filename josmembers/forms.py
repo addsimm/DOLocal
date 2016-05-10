@@ -7,16 +7,13 @@ from django.db.models.manager import Manager
 from django import forms
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext, ugettext_lazy as _
-from django.shortcuts import get_object_or_404, render_to_response
 
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
 from mezzanine.conf import settings
-from mezzanine.core.forms import Html5Mixin,TinyMceWidget
+from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
-
-from .models import CKRichTextHolder
 
 User = get_user_model()
 
@@ -281,17 +278,5 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
         user.save()
 
         return user
-
-
-class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
-
-    pk = forms.IntegerField(widget=forms.HiddenInput())
-
-    class Meta:
-        model  = CKRichTextHolder
-        fields = ("content", "author", 'title', 'field_to_edit')
-        widgets = {'author': forms.HiddenInput(),
-                   'title': forms.HiddenInput(),
-                   'field_to_edit': forms.HiddenInput()}
 
 
