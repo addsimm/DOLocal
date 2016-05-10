@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block meta_title %}
+    {{ user.JOSProfile.jos_name }} Calendar
+{% endblock %}
+{% block title %}
+    {{ user.JOSProfile.jos_name }} Calendar
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Calendar
+    </span>
+{% endblock %}
+
+{% block all_content %}
+
+    <style>
+
+        .joslargelinkbutton {
+            font-size: 18pt;
+            margin-left: 20px;
+            padding: 8px;
+            width: 165px;
+        }
+
+    </style >
+
+    <div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 40px;">
+
+        <div class="col-xs-12" style="padding: 0;">
+
+            {% if user.is_authenticated %}
+                <a class="joslargelinkbutton"
+                   style=" "
+                   href="{% url 'messages_inbox' %} ">
+                    <span style="margin-left: 5px; margin-right: 5px;">
+                        Create a Calendar
+                    </span>
+                </a>
+
+                <a class="joslargelinkbutton"
+                   style=" "
+                   href="{% url 'messages_outbox' %} ">
+                    <span style="margin-left: 5px; margin-right: 5px;">
+                        Your Calendars
+                    </span>
+                </a>
+            {% endif %}
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'messages_trash' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    All Calendars
+                </span>
+            </a><br><br>
+
+            <span class="josinstructions" style="margin-left: 15px;">For a new message, use:</span>
+            <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers_list" %}">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-heart fa-fw" style=" "></i>
+                    Friends
+                </span>
+            </a>
+
+        </div>
+    </div>
+
+
+    {% block cal_content %}
+
+        NO CAL_CONTENT
+
+    {% endblock cal_content %}
+
+{% endblock all_content %}
