@@ -3,7 +3,7 @@ from django import forms
 
 from mezzanine.core.forms import Html5Mixin
 
-from .models import CKRichTextHolder
+from .models import CKRichTextHolder, JOSStory
 
 class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
 
@@ -15,3 +15,14 @@ class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
         widgets = {'author': forms.HiddenInput(),
                    'title': forms.HiddenInput(),
                    'field_to_edit': forms.HiddenInput()}
+
+
+class JOSStoryForm(Html5Mixin, forms.ModelForm):
+    pk = forms.IntegerField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = JOSStory
+        fields = ("content", "author", 'title')
+        widgets = {'author': forms.HiddenInput(),
+                   'title': forms.HiddenInput()
+                   }

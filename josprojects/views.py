@@ -10,8 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from josmembers.models import JOSProfile
 
-from .models import CKRichTextHolder
-from .forms import CKRichTextEditForm
+from .models import CKRichTextHolder, JOSStory
+from .forms import CKRichTextEditForm, JOSStoryForm
 
 User = get_user_model()
 
@@ -56,6 +56,20 @@ def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extr
         return redirect("/users/" + str(instance.author_id) + query_string)
 
     context = {'form': form}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+def story(request, pk=0, template="josprojects/story.html", extra_context=None):
+
+    if pk == 0:
+        story = JOSStory(author=request.user)
+    else:
+        story = get_object_or_404(JOSStory, pk=pk)
+
+    context = {'story': story}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
