@@ -44,10 +44,7 @@ urlpatterns += patterns('',
 
     ### JOS Projects ###
 
-    url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
-    url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
-    url("personaldesk/(?P<pk>\d+)$", "josprojects.views.personaldesk", name="personaldesk"),
-    url("personaldesk", "josprojects.views.personaldesk", {'pk': None}, name="personaldesk"),
+    ("^josprojects/", include("josprojects.urls")),
 
     ### JOS Staff
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
@@ -64,7 +61,7 @@ urlpatterns += patterns('',
     ### Forums, Messaging, Etc. ###
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
 
-    # messages implemented to avoid addresses
+    # messages implemented to avoid disclosing addresses
     url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose",
         name='messages_compose'),
     url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply",

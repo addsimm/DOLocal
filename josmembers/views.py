@@ -43,7 +43,7 @@ def login(request, template="accounts/account_login.html",
             info(request, _("Successfully logged in!"))
             auth_login(request, authenticated_user)
             pk = str(authenticated_user.id)
-            return redirect("/personaldesk/" + pk)
+            return redirect("/josprojects/personaldesk/" + pk)
 
         context = {"form": form, "title": _("Log in")}
         context.update(extra_context or {})

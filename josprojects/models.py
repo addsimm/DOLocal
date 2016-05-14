@@ -32,6 +32,7 @@ class JOSStory(TimeStamped, models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=150, default="untitled")
     content = RichTextField()
+    publish = models.BooleanField(default=False)
 
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]

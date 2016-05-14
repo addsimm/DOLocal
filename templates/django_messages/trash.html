@@ -1,4 +1,4 @@
-{% extends "django_messages/base.html" %}
+{% extends "django_messages/mailbase.html" %}
 {% load i18n %}
 {% load url from future %}
 {% block all_content %}
@@ -11,36 +11,39 @@
 
     {% if message_list %}
 
-        <table>
+        <table data-toggle="table">
             <thead>
-            <tr>
-                <th>From:</th>
-                <th>Received:</th>
-                <th>Subject:</th>
-            </tr>
+                <tr>
+                    <th data-sortable="true">Deleted on:</th>
+                    <th data-sortable="true">From:</th>
+                    <th data-sortable="true">Subject:</th>
+                    <th>Action:</th>
+                </tr>
             </thead>
             <tbody>
-            {% for message in message_list %}
+                {% for message in message_list %}
 
-            <tr>
-                <td>
-                    {{ message.sender.JOSProfile.jos_name }}
-                </td>
-                <td style="width: 25%;">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
-                <td>
-                    {{ message.subject }}
-                </td>
-                <td style="width: 35%;">
+                    <tr>
+                        <td>{{ message.recipient_deleted_at|date:_("DATETIME_FORMAT") }}</td>
+                        <td>
+                            {{ message.sender.JOSProfile.jos_name }}
+                        </td>
 
-                    <a class="btn btn-default"
-                       style="width: 150px;"
-                       href="{% url 'messages_undelete' message.id %}">
-                        Move to inbox
-                    </a>
+                        <td>
+                            {{ message.subject }}
+                        </td>
+                        <td>
 
-                </td>
-            </tr>
-            {% endfor %}
+                            <a class="btn btn-default"
+                               style="margin-left: 30px; width: 150px;"
+                               href="{% url 'messages_undelete' message.id %}">
+                                Move to inbox
+                            </a>
+
+                        </td>
+                    </tr>
+
+                {% endfor %}
             </tbody>
 
         </table>

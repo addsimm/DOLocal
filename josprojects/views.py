@@ -62,7 +62,7 @@ def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extr
 
 
 @login_required
-def story(request, pk=0, template="josprojects/story.html", extra_context=None):
+def mystory(request, pk=0, template="josprojects/mystory.html", extra_context=None):
 
     if pk == 0:
         story = JOSStory(author=request.user)
@@ -74,3 +74,13 @@ def story(request, pk=0, template="josprojects/story.html", extra_context=None):
 
     return TemplateResponse(request, template, context)
 
+
+@login_required
+def mystory_list(request, pk=0, template="josprojects/mystory_list.html", extra_context=None):
+
+    stories = JOSStory.objects.filter(author=request.user)
+
+    context = {'stories': stories}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)

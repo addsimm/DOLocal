@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block all_content %}
+
+<div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 40px;">
+
+    <div class="col-xs-12" style="padding: 0;">
+
+        id: {{ story.id }}<br>
+        created: {{ story.created }}<br>
+        updated: {{ story.updated }}<br>
+        author: {{ story.author }}<br>
+        title: {{ story.title }}<br>
+        content: {{ story.content | safe }}<br>
+        publish: {{ story.publish }}<br><br>
+
+    </div>
+
+</div>
+
+{% endblock all_content %}

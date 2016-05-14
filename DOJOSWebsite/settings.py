@@ -191,28 +191,6 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
-#########
-# EMAIL #
-#########
-# EMAIL_SUBJECT_PREFIX = 'Join Our Story'
-# SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_PASSWORD = '4Primetime!'
-# EMAIL_PORT = 587
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
-
-###########
-# PROFILE #
-###########
-ACCOUNTS_NO_USERNAME = True
-ACCOUNTS_PROFILE_VIEWS_ENABLED = True
-AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
-ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
-# ACCOUNTS_VERIFICATION_REQUIRED = False
-# ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
-
 ############
 # CKEDITOR #
 ############
@@ -255,9 +233,19 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-##############################
-# DJANGO- TRACKER & REQUEST  #
-##############################
+###########
+# PROFILE #
+###########
+ACCOUNTS_NO_USERNAME = True
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
+ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
+# ACCOUNTS_VERIFICATION_REQUIRED = False
+# ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
+
+######################
+# TRACKER & REQUEST  #
+######################
 TRACK_AJAX_REQUESTS = True
 TRACK_PAGEVIEWS = True
 TRACK_REFERER = True
@@ -281,6 +269,19 @@ REQUEST_PLUGINS = (
     'request.plugins.TopPaths',
     'request.plugins.TopErrorPaths',
 )
+
+#########
+# EMAIL #
+#########
+# EMAIL_SUBJECT_PREFIX = 'Join Our Story'
+# SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_PASSWORD = '4Primetime!'
+# EMAIL_PORT = 587
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
+DJANGO_MESSAGES_NOTIFY = False
 
 ##################
 # LOCAL SETTINGS #

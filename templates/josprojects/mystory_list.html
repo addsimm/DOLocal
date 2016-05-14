@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block meta_title %}
+    {{ user.get_short_name }}'s Stories
+{% endblock %}
+{% block title %}
+    {{ user.get_short_name }}'s Stories
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black; font-weight: bold;">
+        {{ user.get_short_name }}'s Stories
+    </span>
+{% endblock %}
+
+{% block all_content %}
+
+<style>
+
+    table {
+        font-family: "Open Sans", sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+</style>
+
+
+<div class="row" style="margin-top: 40px;">
+
+    <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
+
+        <div class="row" style="margin-bottom: 30px;">
+            <a class="joslargelinkbutton" href=" ">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    All stories
+               </span>
+            </a>
+            <a class="joslargelinkbutton" href=" ">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    Published stories
+               </span>
+            </a>
+            <a class="joslargelinkbutton" href=" ">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    New story
+               </span>
+            </a>
+        </div>
+
+
+        <table data-toggle="table">
+            <thead>
+                <tr>
+                    <th data-sortable="true">Title</th>
+                    <th data-sortable="true">Created</th>
+                    <th data-sortable="true">Last change</th>
+                    <th data-sortable="true">Published</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in stories %}
+                    <tr>
+                        <td>{{ story.title }}</td>
+                        <td>{{ story.created }}</td>
+                        <td>{{ story.updated }}</td>
+                        <td>
+                            {% if story.publish %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock all_content %}
+
+
+
+
+
+
+

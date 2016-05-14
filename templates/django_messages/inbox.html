@@ -1,4 +1,4 @@
-{% extends "django_messages/base.html" %}
+{% extends "django_messages/mailbase.html" %}
 {% load i18n %}
 {% load url from future %}
 
@@ -6,15 +6,16 @@
 
     {{ block.super }}
 
-    <div class="josinstructions" style="margin-bottom: 20px;">{{ user.JOSProfile.jos_name }} - Inbox:</div>
+    <div class="josinstructions" style="margin-bottom: 20px;">Messages sent to {{ user.JOSProfile.jos_name }} (click on green header to sort):</div>
 
     {% if message_list %}
-        <table>
+        <table data-toggle="table">
             <thead>
                 <tr>
-                    <th>From:</th>
-                    <th>Received:</th>
-                    <th>Subject:</th>
+                    <th data-sortable="true">Received on:</th>
+                    <th data-sortable="true">From:</th>
+                    <th data-sortable="true">Subject:</th>
+                    <th>Action:</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,19 +23,19 @@
                 {% if message.new %}<strong>{% endif %}
                 {% if message.replied %}<em>{% endif %}
                     <tr>
+                        <td style=" ">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
                         <td>{{ message.sender.JOSProfile.jos_name }}</td>
-                        <td style="width: 25%;">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
                         <td>
                             {{ message.subject }}
                         </td>
-                        <td style="width: 35%;">
+                        <td>
                             <a class="btn btn-default"
-                               style="width: 100px;"
+                               style="margin-left: 30px; width: 100px;"
                                href="{{ message.get_absolute_url }}">
                                 Read
                             </a>
                             <a class="btn btn-default"
-                               style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px;"
+                               style="background-color: #d9534f; border: none; color: white; outline: none; margin-left: 10px; width: 100px;"
                                href="{% url 'messages_delete' message.id %}">
                                 Delete
                             </a>

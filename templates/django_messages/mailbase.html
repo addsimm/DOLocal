@@ -23,27 +23,34 @@
     <style>
 
         table {
-            background-color: transparent;
             font-family: "Open Sans", sans-serif;
-            font-size: 16pt;
+            border-collapse: collapse;
             width: 100%;
         }
 
-        th, td {
-            width: 20%;
-            padding-left: 30px;
+        td, th {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 12px;
         }
 
-        td {
-            font-weight: normal;
-        }
-
-        tr {
-            height: 55px;
+        th {
+            text-align: center;
         }
 
         tr:nth-child(even) {
-            background-color: rgba(65, 45, 120, .1);
+            background-color: rgba(65, 45, 120, .2);
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #4CAF50;
+            color: white;
         }
 
     </style>
@@ -77,9 +84,9 @@
                     <i class="fa fa-trash fa-fw" style=" "></i>
                     Deleted
                 </span>
-            </a><br><br>
+            </a>
 
-            <span class="josinstructions" style="margin-left: 15px;">For a new message, use:</span>
+            <span class="josinstructions" style="margin-left: 30px;">To send a new message, use:</span>
             <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers_list" %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-heart fa-fw" style=" "></i>

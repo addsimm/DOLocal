@@ -38,7 +38,18 @@
 
 <li style="margin-left: -7px;">
 
-    <a style="margin-left: 0;" href="{% url "messages_redirect" %}">
+    <a style="margin-left: 0;" href="{% url "personaldesk" %}/{{ request.user.id }}">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                   <i class="fa fa-home fa-fw" style=" "></i>
+                    My desk
+               </span>
+    </a>
+
+</li>
+
+<li>
+
+    <a style="margin-left: 10px;" href="{% url "messages_redirect" %}">
         <span style="margin-left: 5px; margin-right: 5px;">
             <i class="fa fa-envelope fa-fw" style=" "></i>
             Mailbox
