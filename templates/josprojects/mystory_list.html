@@ -59,16 +59,16 @@
     <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
 
         <div class="row" style="margin-bottom: 30px;">
-            <a class="joslargelinkbutton" href=" ">
+            <!-- a class="joslargelinkbutton" href=" ">
                <span style="margin-left: 5px; margin-right: 5px;">
                     All my stories
                </span>
-            </a>
-            <a class="joslargelinkbutton" href=" ">
+            </a -->
+            <!-- a class="joslargelinkbutton" href=" ">
                <span style="margin-left: 5px; margin-right: 5px;">
                     Stories I've published
                </span>
-            </a>
+            </a -->
             <a class="joslargelinkbutton" href=" ">
                <span style="margin-left: 5px; margin-right: 5px;">
                     New story
@@ -90,7 +90,13 @@
             <tbody>
                 {% for story in stories %}
                     <tr>
-                        <td>{{ story.title }}</td>
+                        <td>
+                            <a href="{% url 'mystory' %}/{{ story.id }}">
+                                <span style="margin-left: 5px; margin-right: 5px;">
+                                    {{ story.title }}
+                                </span>
+                            </a>
+                        </td>
                         <td>{{ story.created }}</td>
                         <td>{{ story.updated }}</td>
                         <td>

@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags cloudinary %}
 
-{% cloudinary_includes %}
-
 {% block meta_title %}
     {{ user.JOSProfile.jos_name }}
 {% endblock %}
@@ -101,31 +99,34 @@
             </div>
         </div>
 
-        <div class="col-xs-2 side-panel" style="margin-right: 0; margin-top: 30px;">
+        <div class="col-xs-2 side-panel" style="margin-right: 0;">
+
+            <div class="pull-right" style="text-align: left;">
+                Last edit:<br>
+                <span style="color: green">{{ profile.updated }}</span>
+            </div>
 
             {% if profile.user == request.user %}
 
-                {% if edit %}
-
-                    <a class="btn pull-right btn-default" style="background-color: #28a4c9; border: none; color: white; outline: none; width: 100px;"
+                <a class="btn pull-right btn-default"
+                   style="background-color: #28a4c9; border: none; color: white; outline: none; margin-top: 30px; width: 100px;"
+                   {% if edit %}
                        href="{% url "josprofile" request.user.id %}">
                         {% trans "Hide edit" %}
-                    </a>
-
-                {% else %}
-
-                    <a class="btn btn-default pull-right"
-                       style="background-color: #28a4c9; border: none; color: white; outline: none; width: 100px;"
+                   {% else %}
                        href="{% url "josprofile_edit" request.user.id %}">
-                        {% trans "Edit mode" %}
+                       {% trans "Edit mode" %}
+                   {% endif %}
+                </a>
+
+                {% if profile.user == request.user and request.user.is_staff %}
+
+                    <a class="btn btn-default pull-right" style="margin-top: 30px;"
+                       href="{% url "josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
+                        {% trans "For staff" %}
                     </a>
 
                 {% endif %}
-
-                <p style="font-size: 14pt; margin-top: 50px; text-align: right;">
-                    Last edit:<br>
-                    <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
-                </p>
 
             {% else %}
 
@@ -143,15 +144,8 @@
 
             {% endif %}
 
-            {% if profile.user == request.user and request.user.is_staff %}
-
-                <a class="btn btn-default pull-right" style="margin-top: 30px;"
-                   href="{% url "josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
-                    {% trans "For staff" %}
-                </a>
-
-            {% endif %}
         </div>
+
     </div>
 
 {% endblock %}

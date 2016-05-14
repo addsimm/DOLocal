@@ -1,22 +1,117 @@
 {% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  %}
+
+{% block meta_title %}
+    {{ story.title }}
+{% endblock %}
+{% block title %}
+    {{ story.title }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black;">
+        <b>{{ story.title }}</b> by {{ story.author }}
+    </span>
+{% endblock %}
+
 
 {% block all_content %}
 
-<div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 40px;">
+<div class="row" style="margin-bottom: 50px; margin-top: 50px;">
 
-    <div class="col-xs-12" style="padding: 0;">
+    <div class="col-xs-9">
 
-        id: {{ story.id }}<br>
-        created: {{ story.created }}<br>
-        updated: {{ story.updated }}<br>
-        author: {{ story.author }}<br>
-        title: {{ story.title }}<br>
-        content: {{ story.content | safe }}<br>
-        publish: {{ story.publish }}<br><br>
+        <div class="josinstructions text-center">
+
+            #{{ story.id }} <span style="font-size: larger; font-style: italic;">{{ story.title }}</span><br>
+            by {{ story.author.JOSProfile.jos_name }}<br><br>
+
+        </div>
+
+        {{ story.content | safe }}
+
+    </div>
+
+    <div class="col-xs-2 col-xs-offset-1" style="margin-top: 50px;">
+
+        <div class="pull-right" style="text-align: left;">
+            Last edit:<br>
+            <span style="color: green">{{ story.updated }}</span>
+        </div>
+
+        {% if story.author == request.user %}
+
+            <a class="btn pull-right btn-default"
+               style="background-color: #28a4c9; border: none; color: white; outline: none; margin-top: 30px; width: 100px;"
+                    {% if edit %}
+               href="{% url "josprofile" request.user.id %}">
+                        {% trans "Hide edit" %}
+                    {% else %}
+                        href="{% url "josprofile_edit" request.user.id %}">
+                        {% trans "Edit mode" %}
+                    {% endif %}
+            </a>
+
+            <a class="btn pull-right btn-default"
+               style="{% if story.publish %}background-color: #d9534f;{% else %}background-color: #5cb85c;{% endif %}
+                       border: none; color: white; outline: none; margin-top: 30px; width: 100px;"
+                    {% if story.publish %}
+               href="{% url "josprofile" request.user.id %}">
+                        {% trans "Unpublish" %}
+                    {% else %}
+                        href="{% url "josprofile_edit" request.user.id %}">
+                        {% trans "Publish" %}
+                    {% endif %}
+            </a>
+
+        {% endif %}
 
     </div>
 
 </div>
 
+{% endblock %}
 
-{% endblock all_content %}
+
+
+    {% if edit %}
+        <a class="btn btn-info pull-right" style="margin-right: 5px; outline: none; text-decoration: none;"
+           href="{% url "josprofile_edit" request.user.id %}?field_to_edit=about_me">
+            <span class="glyphicon glyphicon-pencil"></span>
+            <span style="margin-left: 7px;">Edit section</span>
+        </a>
+    {% endif %}
+
+    <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} line-height: normal; margin-top: 7px; padding: 15px;">
+        {{ profile.about_me | richtext_filters |safe }}
+    </div>
+
+
+
+
+    <p style="font-size: 14pt; margin-top: 50px; text-align: right;">
+        Last edit:<br>
+        <span style="color: green">{{ profile.updated | date:'m/d/y' }}</span>
+    </p>
+
+
+    <a class="btn pull-right btn-default"
+       style="width: 150px;"
+       href="{% url 'messages_compose' %}{{ profile.user.id }}">
+        Send message
+    </a>
+
+    <a class="btn pull-right btn-default"
+       style="width: 150px; margin-top: 30px;"
+       href="{% url 'josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
+        Make favorite
+    </a>
+
+
+
+
+
+
