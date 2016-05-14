@@ -6,8 +6,8 @@ from mezzanine.conf import settings
 
 urlpatterns = patterns('',
 
-   url("ckrichtextedit/(?P<pk>\d+)$", ckrichtextedit, name="ckrichtextedit"),
-   url("ckrichtextedit", ckrichtextedit, {'pk': None}, name="ckrichtextedit"),
+   url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
+   url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
 
    url("personaldesk/(?P<pk>\d+)$", personaldesk, name="personaldesk"),
    url("personaldesk", personaldesk, {'pk': None}, name="personaldesk"),
@@ -16,7 +16,6 @@ urlpatterns = patterns('',
 
    url("mystory/(?P<pk>\d+)$", mystory, name="mystory"),
    url("mystory", mystory, {'pk': 0}, name="mystory"),
-
 
 
 )

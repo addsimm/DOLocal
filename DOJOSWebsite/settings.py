@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     "cloudinary",
     "pybb",
     # "mezzanine.mobile",
-    "josdjoingo",
+
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

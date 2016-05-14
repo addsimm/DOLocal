@@ -48,7 +48,13 @@
         <div class="row">
 
             <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
-                <a href="/" class="pull-left" style="outline: none; padding: 0">
+                <a
+                    {% if request.user.id > 0 %}
+                        href="{% url "personaldesk" %}/{{ request.user.id }}"
+                    {% else %}
+                        href="/"
+                    {% endif %}
+                        class="pull-left" style="outline: none; padding: 0">
                     <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
                 </a>
             </div>

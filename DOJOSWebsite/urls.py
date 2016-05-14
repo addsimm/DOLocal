@@ -40,11 +40,11 @@ urlpatterns += patterns('',
     url("^%s%s%s$" %
         (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
         "josmembers.views.password_reset_verify", name="password_reset_verify"),
-    url(r'^', include('josmembers.urls')),
+    ('^', include('josmembers.urls')),
 
     ### JOS Projects ###
 
-    ("^josprojects/", include("josprojects.urls")),
+    ("^", include("josprojects.urls")),
 
     ### JOS Staff
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
@@ -53,10 +53,8 @@ urlpatterns += patterns('',
     url("^%s%s$" % ("josanal".strip("/"), _slash),
         "josstaff.views.josanal", name="josanal"),
 
-
-
     ### DJOINGO ###
-    url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
+    # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
     ### Forums, Messaging, Etc. ###
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
@@ -70,9 +68,9 @@ urlpatterns += patterns('',
 
     # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
 
-    ### ADD URLPATTERNS *ABOVE*
-    ### MEZZANINE'S URLS
+    ### ADD URLPATTERNS *ABOVE* MEZZANINE'S URLS
     ("^", include("mezzanine.urls")),
+
 )
 
 ### DJANGO-DEBUG-TOOLBAR
