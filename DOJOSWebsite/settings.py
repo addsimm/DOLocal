@@ -294,7 +294,7 @@ if os.path.exists(f):
 ####################
 # DYNAMIC SETTINGS #
 ####################
-# set_dynamic_settings() rewrites globals based on above to provide some better defaults.
+# set_dynamic_settings() rewrites globals to provide some better defaults.
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
@@ -303,14 +303,15 @@ else:
     set_dynamic_settings(globals())
 
 DEBUG = False
+
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-# }
-#
-# DEBUG = True
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
+DEBUG = True

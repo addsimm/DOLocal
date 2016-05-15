@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import info
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -62,21 +63,34 @@ def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extr
 
 
 @login_required
-def mystory(request, pk=0, template="josprojects/mystory.html", extra_context=None):
+def josstory(request, pk=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
-    if pk == 0:
+    if pk==0:
         story = JOSStory(author=request.user)
     else:
         story = get_object_or_404(JOSStory, pk=pk)
 
-    context = {'story': story}
+    publish = request.GET.get('pub', None)
+
+    if publish != None:
+        if publish == 'publish':
+            story.publish = True
+            info(request, story.title + " -- has been shared!")
+        elif publish == 'remove':
+            story.publish = False
+            info(request, story.title + " -- is now hidden.")
+        story.save()
+
+    context = {'story': story,
+               'edit': edit,
+               'publish': publish}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
 
 
 @login_required
-def mystory_list(request, pk=0, template="josprojects/mystory_list.html", extra_context=None):
+def mystory_list(request, template="josprojects/mystory_list.html", extra_context=None):
 
     stories = JOSStory.objects.filter(author=request.user)
 
