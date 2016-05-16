@@ -41,7 +41,6 @@
             font-family: 'Source Sans Pro', sans-serif;
             font-size: 16pt;
             padding: 5px;
-
         }
 
     </style >
@@ -58,9 +57,9 @@
             Title:<br>
             Editing:<br>
         </div>
-        <div class="col-xs-6" style="color: green; margin-left: 10px;">
+        <div class="col-xs-10" style="color: green; margin-left: 10px;">
             {{ user.JOSProfile.jos_name }}<br>
-            {{ form.title.value | title }}<br>
+            {{ form.title.value | title | striptags }}<br>
             {{ form.field_to_edit.value | title }}<br><br>
         </div>
 
@@ -89,7 +88,7 @@
                     data-toggle="tooltip"
                     title="This will replace previous text.">
                   Save changes
-              </button>
+            </button>
 
         </form>
 

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from .views import ckrichtextedit, personaldesk, josstory, mystory_list
+from .views import ckrichtextedit, personaldesk, josstory, mystory_list, story_gallery
 
 from mezzanine.conf import settings
 
@@ -17,5 +17,7 @@ urlpatterns = patterns('',
    url("josstory/(?P<storyid>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
    url("josstory/(?P<storyid>\d+)/*$", josstory, {'edit': False}, name="josstory"),
    url("josstory/*$", josstory, {'storyid': 0, 'edit': False}, name="josstory"),
+
+   url("story_gallery", story_gallery, name="story_gallery"),
 
 )

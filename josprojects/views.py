@@ -53,6 +53,16 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
     return TemplateResponse(request, template, context)
 
 
+@login_required
+def story_gallery(request, template="josprojects/story_gallery.html", extra_context=None):
+    stories = JOSStory.objects.filter(publish=True)
+
+    context = {'stories': stories}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
 @csrf_exempt
 def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extra_context=None):
     instance = get_object_or_404(CKRichTextHolder, pk=pk)
@@ -74,10 +84,12 @@ def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extr
 @login_required
 def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
-    if storyid==0:
-        story = JOSStory(author=request.user)
-    else:
+    try:
         story = get_object_or_404(JOSStory, pk=storyid)
+    except:
+        story = JOSStory.objects.create(author=request.user,
+                                        title="Untitled",
+                                        content="Click edit to enter text")
 
     publish = request.GET.get('pub', None)
     if publish != None:
@@ -111,13 +123,15 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
     if pk != None:
         ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
         content = ckrtfholder.content
-        story.content = content
+        if ckrtfholder.field_to_edit != "title":
+            story.content = content
+        else:
+            story.title = content.strip()
         story.save()
-    else:
-        pass
 
     context = {'story': story,
-               'edit': edit}
+               'edit': edit,
+               'field_to_edit': field_to_edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

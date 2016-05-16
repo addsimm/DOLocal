@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block meta_title %}
-    {{ user.get_short_name }}'s Stories
+    Story Gallery
 {% endblock %}
 {% block title %}
-    {{ user.get_short_name }}'s Stories
+    Story Gallery
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -12,7 +12,7 @@
     Currently at:
     &nbsp&nbsp
     <span style="color: black; font-weight: bold;">
-        {{ user.get_short_name }}'s Stories
+        Story Gallery
     </span>
 {% endblock %}
 
@@ -69,28 +69,30 @@
                     Stories I've published
                </span>
             </a -->
-            <a class="joslargelinkbutton"
-               href="{% url 'josstory' %}/0">
-               <span style="margin-left: 5px; margin-right: 5px;">
-                    New story
-               </span>
-            </a><br><br>
-            <span class="josinstructions">Please click a title to view:</span>
+            <br><br>
+            <span class="josinstructions">Please click a title to view (you can also click to view the author's profle):</span>
         </div>
 
 
         <table data-toggle="table">
             <thead>
                 <tr>
+                    <th data-sortable="true">Author</th>
                     <th data-sortable="true">Title</th>
-                    <th data-sortable="true">Created</th>
                     <th data-sortable="true">Last change</th>
-                    <th data-sortable="true">Published</th>
                 </tr>
             </thead>
             <tbody>
                 {% for story in stories %}
                     <tr>
+
+
+                        <td>
+                            <a href="{% url "profile" story.author.id %}">
+                                {{ story.author.JOSProfile.jos_name }}
+                            </a>
+                        </td>
+
                         <td>
                             <a href="{% url 'josstory' %}/{{ story.id }}">
                                 <span style="margin-left: 5px; margin-right: 5px;">
@@ -98,15 +100,9 @@
                                 </span>
                             </a>
                         </td>
-                        <td>{{ story.created }}</td>
+
                         <td>{{ story.updated }}</td>
-                        <td>
-                            {% if story.publish %}
-                                Yes
-                            {% else %}
-                                No
-                            {% endif %}
-                        </td>
+
                     </tr>
                 {% endfor %}
             </tbody>

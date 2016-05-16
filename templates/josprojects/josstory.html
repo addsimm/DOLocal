@@ -2,10 +2,10 @@
 {% load i18n mezzanine_tags accounts_tags  %}
 
 {% block meta_title %}
-    {{ story.title }}
+    {{ story.title | striptags | truncatechars:25 }}
 {% endblock %}
 {% block title %}
-    {{ story.title }}
+    {{ story.title | striptags | truncatechars:25 }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -13,27 +13,43 @@
     Currently at:
     &nbsp&nbsp
     <span style="color: black;">
-        <b>{{ story.title }}</b> by {{ story.author }}
+        <b>{{ story.title  | striptags | truncatechars:25 }}</b> by {{ story.author.JOSProfile.jos_name }}
     </span>
 {% endblock %}
 
 
 {% block all_content %}
 
-<div class="row" style="margin-bottom: 50px; margin-top: 50px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 30px;">
 
-    <div class="col-xs-9">
+    <div class="col-xs-8 col-xs-offset-1">
 
         <div class="josinstructions text-center">
 
-            #{{ story.id }} <span style="font-size: larger; font-style: italic;">{{ story.title }}</span><br>
-            by {{ story.author.JOSProfile.jos_name }}<br><br>
+            <span style="{% if edit %}
+                                outline: 3px dashed #28a4c9;
+                         {% endif %}
+                    font-size: larger;
+                    font-style: italic;
+                    padding: 5px 10px;">
+                {{ story.title | striptags }}
+            </span>
+            {% if edit %}
+                <a class="btn btn-info"
+                   style="margin-right: -93px; margin-top: -43px; outline: none; text-decoration: none;"
+                   href="{% url "josstory_edit" story.id %}/?field_to_edit=title">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span style="margin-left: 7px;">Edit title</span>
+                </a>
+            {% endif %}
+            <br>
+            by&nbsp&nbsp{{ story.author.JOSProfile.jos_name }}<br>
 
         </div>
 
         {% if edit %}
             <a class="btn btn-info pull-right"
-               style="margin-right: -50px; margin-top: -28px; outline: none; text-decoration: none;"
+               style="margin-right: -50px; margin-top: -24px; outline: none; text-decoration: none;"
                href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
                 <span class="glyphicon glyphicon-pencil"></span>
                 <span style="margin-left: 7px;">Edit text</span>
@@ -88,6 +104,13 @@
                style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
                href="{% url "mystory_list" %}">
                         {% trans "My stories" %}
+            </a>
+        {% else %}
+
+            <a class="btn pull-right btn-default"
+               style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+               href="{% url "story_gallery" %}">
+                {% trans "Story gallery" %}
             </a>
 
         {% endif %}
