@@ -34,9 +34,9 @@
         {% if edit %}
             <a class="btn btn-info pull-right"
                style="margin-right: -50px; margin-top: -28px; outline: none; text-decoration: none;"
-               href="{% url "josprofile_edit" request.user.id %}?field_to_edit=content">
+               href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
                 <span class="glyphicon glyphicon-pencil"></span>
-                <span style="margin-left: 7px;">Edit content</span>
+                <span style="margin-left: 7px;">Edit text</span>
             </a>
         {% endif %}
 

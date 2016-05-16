@@ -71,16 +71,9 @@ def josprofile_redirect(request):
 
 
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
-    """
-    Display a profile.
-    """
     user = User.objects.get(id=userid)
     username = user.username
     currentProfile = get_object_or_404(JOSProfile, user=user)
-
-    pk = request.GET.get('pk', None)
-    field_to_edit = request.GET.get('field_to_edit', "nofield")
-    new_image = request.GET.get('new_image', False)
 
     def getPotentialNewProfileImageIdStr():
         import re
@@ -89,10 +82,12 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
         newnum = int(split[1]) + 1
         return username + str(newnum)
 
+    new_image = request.GET.get('new_image', False)
     if new_image:
         currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
         currentProfile.save()
 
+    pk = request.GET.get('pk', None)
     if pk != None:
         ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
         content = ckrtfholder.content
@@ -101,16 +96,29 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
     else:
         pass
 
+    field_to_edit = request.GET.get('field_to_edit', "nofield")
     if field_to_edit != "nofield":
         content = getattr(currentProfile, field_to_edit)
-        ckrtfholder = CKRichTextHolder.objects.create(author=user, field_to_edit=field_to_edit, content=content)
-        pk = ckrtfholder.pk
-        query_string = "/" + str(pk)
+
+        ckrtfholder = CKRichTextHolder.objects.create(
+            author=user,
+            title='Profile',
+            field_to_edit=field_to_edit,
+            content=content)
+
+        nexturl = '/users/' + str(user.id) + '/?pk=' + str(ckrtfholder.pk)
+        ckrtfholder.nextURL = nexturl
+        ckrtfholder.save()
+
+        query_string = "/" + str(ckrtfholder.pk)
+
         return redirect("/ckrichtextedit" + query_string)
 
-    context = {"profile": currentProfile, "edit": edit,
+    context = {"profile": currentProfile,
+               "edit": edit,
                "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr()}
     context.update(extra_context or {})
+
     return TemplateResponse(request, template, context)
 
 

@@ -14,6 +14,7 @@ class CKRichTextHolder(TimeStamped, models.Model):
 
     author = models.ForeignKey(User)
     title = models.CharField(max_length=150, default="untitled")
+    nextURL = models.CharField(max_length=150, default="/")
     field_to_edit = models.CharField(max_length=150, default="nofield")
     content = RichTextField()
 
