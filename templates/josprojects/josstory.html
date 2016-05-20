@@ -20,9 +20,20 @@
 
 {% block all_content %}
 
+<style>
+
+    p {
+
+        margin: 0;
+    }
+
+</style>
+
+
+
 <div class="row" style="margin-bottom: 30px; margin-top: 30px;">
 
-    <div class="col-xs-8 col-xs-offset-1">
+    <div class="col-xs-7 col-xs-offset-1">
 
         <div class="josinstructions text-center">
 
@@ -36,7 +47,7 @@
             </span>
             {% if edit %}
                 <a class="btn btn-info"
-                   style="margin-right: -93px; margin-top: -43px; outline: none; text-decoration: none;"
+                   style="margin-right: -99px; margin-top: -43px; outline: none; text-decoration: none;"
                    href="{% url "josstory_edit" story.id %}/?field_to_edit=title">
                     <span class="glyphicon glyphicon-pencil"></span>
                     <span style="margin-left: 7px;">Edit title</span>

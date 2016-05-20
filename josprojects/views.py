@@ -89,7 +89,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
     except:
         story = JOSStory.objects.create(author=request.user,
                                         title="Untitled",
-                                        content="Click edit to enter text")
+                                        content="Coming soon")
 
     publish = request.GET.get('pub', None)
     if publish != None:

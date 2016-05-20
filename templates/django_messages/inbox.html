@@ -6,13 +6,14 @@
 
     {{ block.super }}
 
-    <div class="josinstructions" style="margin-bottom: 20px;">Messages sent to {{ user.JOSProfile.jos_name }} (click on green header to sort):</div>
+    <div class="josinstructions" style="margin-bottom: 20px;">Messages sent to <span style="color: green;font-weight: bold;">{{ user.JOSProfile.jos_name }}</span> (click on green header bar to sort):</div>
 
     {% if message_list %}
         <table data-toggle="table">
             <thead>
                 <tr>
-                    <th data-sortable="true">Received on:</th>
+                    <th data-sortable="true">New / Replied:</th>
+                    <th data-sortable="true">Received:</th>
                     <th data-sortable="true">From:</th>
                     <th data-sortable="true">Subject:</th>
                     <th>Action:</th>
@@ -20,9 +21,19 @@
             </thead>
             <tbody>
             {% for message in message_list %}
-                {% if message.new %}<strong>{% endif %}
-                {% if message.replied %}<em>{% endif %}
                     <tr>
+                        <td>
+                            {% if message.new %}
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                <i class="fa fa-circle fa-fw" style="color: green;"></i>
+                            {% endif %}
+                            {% if message.replied %}
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                <i class="fa fa-check fa-fw" style="color: black;"></i>
+                            {% endif %}
+                        </td>
                         <td style=" ">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
                         <td>{{ message.sender.JOSProfile.jos_name }}</td>
                         <td>
@@ -41,9 +52,7 @@
                             </a>
                         </td>
                     </tr>
-                {% if message.replied %}</em>{% endif %}
-                {% if message.new %}</strong>{% endif %}
-            {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
     {% else %}
