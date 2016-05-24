@@ -11,19 +11,28 @@ from ckeditor.fields import RichTextField
 class JOSCourse(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'JOS Course'
-        ordering = ("title",)
+        ordering = ("semester",)
 
-    title = models.CharField(max_length=150, default="untitled")
+    course_title = models.CharField(max_length=150, default="untitled")
     description = RichTextField(default="coming soon")
-    semester = models.IntegerField()
-    weeks = models.IntegerField()
     instructor = models.ForeignKey(User)
     location = models.CharField(max_length=150, default="tbd")
-    slot = models.DateTimeField(default=datetime.now())
+
+    semester = models.IntegerField(default=1)
+    weeks = models.IntegerField(default=8)
+
+    start_date = models.DateTimeField(default=datetime.now())
+    repeat_period = models.IntegerField(default=7)
+    end_date = models.DateTimeField(default=datetime.now())
+
     students = models.ManyToManyField(User, through=JOSCourseStudent)
 
 
 class JOSCourseStudent(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'JOS Course-Student'
+        ordering = ("course",)
+
     student = models.ForeignKey(User)
     course = models.ForeignKey(JOSCourse)
 
@@ -32,11 +41,20 @@ class JOSCourseStudent(TimeStamped, models.Model):
 
 
 class JOSCourseWeek(TimeStamped, models.Model):
+    week_title = models.CharField(max_length=150, default="untitled")
     course = models.ForeignKey(JOSCourse)
+    video = models.CharField(default="tbd")
     videoTranscript = RichTextField(default="coming soon")
 
 
 class JOSHandout(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
-    title = models.CharField(max_length=150, default="untitled")
+    handout_title = models.CharField(max_length=150, default="untitled")
     content = RichTextField(default="coming soon")
+
+
+class JOSStoryActivity(TimeStamped, models.Model):
+    courseweek = models.ForeignKey(JOSCourseWeek)
+    activity_title = models.CharField(max_length=150, default="untitled")
+    content = RichTextField(default="coming soon")
+
