@@ -13,10 +13,10 @@
     <script type="text/javascript" src="{% static 'pybb/js/jquery.formset.min.js' %}"></script>
 {% endblock %}
 
-{% block all_content %}
+{% block content %}
     <h1>{% trans "Editing the post" %}</h1>
     {% include "pybb/post_form.html" %}
-{% endblock all_content %}
+{% endblock content %}
 
 {% block breadcrumb %}
     {% with extra_crumb="Edit post" %}

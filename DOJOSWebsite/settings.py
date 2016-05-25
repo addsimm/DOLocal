@@ -96,9 +96,6 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    "josstaff",
-    "josmembers",
-    "josprojects",
     'request',
     'tracking',
     'friendship',
@@ -108,6 +105,10 @@ INSTALLED_APPS = (
     "ckeditor",
     "cloudinary",
     "pybb",
+    "josstaff",
+    "josmembers",
+    "josprojects",
+    "joscourses",
     # "mezzanine.mobile",
 
 )
@@ -283,6 +284,9 @@ REQUEST_PLUGINS = (
 DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 DJANGO_MESSAGES_NOTIFY = False
 
+### PYBB_PROFILE_RELATED_NAME
+
+
 ##################
 # LOCAL SETTINGS #
 ##################
@@ -307,11 +311,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-# }
-#
-# DEBUG = True
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
+DEBUG = True

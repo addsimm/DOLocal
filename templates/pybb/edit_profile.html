@@ -4,7 +4,7 @@
 
 {% block title %}{% trans "Profile editing" %}{% endblock title %}
 
-{% block all_content %}
+{% block content %}
     <h1>{% trans "Profile editing" %}</h1>
     {% include 'pybb/avatar.html' with user=user %}
     <form method="post" enctype="multipart/form-data" class="profile-edit">
@@ -27,4 +27,4 @@
             </li>
         {% endfor %}
     </ul>
-{% endblock all_content %}
+{% endblock content %}

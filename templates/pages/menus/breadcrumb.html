@@ -56,7 +56,7 @@
         </span>
 
         {% inbox_count as my_var %}
-        {% if my_var != 0 %}
+        {% if my_var > 0 %}
             <span style="color: white; background-color: red; padding-right: 6px; padding-left: 6px;">
                 {{ my_var }}
             </span>

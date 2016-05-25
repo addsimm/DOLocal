@@ -8,6 +8,7 @@ from ckeditor.fields import RichTextField
 
 # Create your models here.
 
+
 class JOSCourse(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'JOS Course'
@@ -15,7 +16,7 @@ class JOSCourse(TimeStamped, models.Model):
 
     course_title = models.CharField(max_length=150, default="untitled")
     description = RichTextField(default="coming soon")
-    instructor = models.ForeignKey(User)
+    instructor = models.ForeignKey(User, related_name="instructor_user")
     location = models.CharField(max_length=150, default="tbd")
 
     semester = models.IntegerField(default=1)
@@ -25,25 +26,23 @@ class JOSCourse(TimeStamped, models.Model):
     repeat_period = models.IntegerField(default=7)
     end_date = models.DateTimeField(default=datetime.now())
 
-    students = models.ManyToManyField(User, through=JOSCourseStudent)
+    students = models.ManyToManyField(User, related_name="student_users", through='JOSCourseStudent')
 
 
 class JOSCourseStudent(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Course-Student'
+        verbose_name = 'JOS Course Student'
         ordering = ("course",)
+        unique_together = ('student', 'course')
 
     student = models.ForeignKey(User)
     course = models.ForeignKey(JOSCourse)
-
-    class Meta:
-        unique_together = ('student', 'course')
 
 
 class JOSCourseWeek(TimeStamped, models.Model):
     week_title = models.CharField(max_length=150, default="untitled")
     course = models.ForeignKey(JOSCourse)
-    video = models.CharField(default="tbd")
+    video = models.CharField(max_length=150, default="tbd")
     videoTranscript = RichTextField(default="coming soon")
 
 

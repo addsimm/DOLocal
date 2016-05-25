@@ -12,7 +12,7 @@
     {% trans "All posts created by" %} {{ target_profile.get_display_name }}
 {% endblock %}
 
-{% block all_content %}
+{% block content %}
     {% pybb_get_profile target_user as target_profile %}
     <h1>{% trans "All posts created by" %} <a href="{{ target_profile.get_absolute_url }}">{{ target_profile.get_display_name }}</a></h1>
     <div class="userinfo">
@@ -26,4 +26,4 @@
         {% include "pybb/pagination.html" %}
 
     </div>
-{% endblock all_content %}
+{% endblock %}

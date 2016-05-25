@@ -8,7 +8,7 @@
     {% with extra_crumb="Forum" %}{% include "pybb/breadcrumb.html" %}{% endwith %}
 {% endblock %}
 
-{% block all_content %}
+{% block content %}
     {% if categories %}
         {% for category in categories %}
             {% include 'pybb/category.html' %}
@@ -27,4 +27,4 @@
             </a>
         </div>
     {% endif %}
-{% endblock all_content %}
+{% endblock content %}

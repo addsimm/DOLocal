@@ -7,7 +7,7 @@
     {{ target_profile.get_display_name }}
 {% endblock %}
 
-{% block all_content %}
+{% block content %}
     {% pybb_get_profile target_user as target_profile %}
     <h1>{{ target_profile.get_display_name }}</h1>
     <div class="userinfo">
@@ -48,4 +48,4 @@
         {% endif %}
     </div>
 
-{% endblock all_content %}
+{% endblock %}

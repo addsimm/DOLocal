@@ -5,12 +5,10 @@ from mezzanine.core.models import TimeStamped
 from ckeditor.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin
 
-from pybb.profiles import PybbProfile
-
 # Create your models here.
 
 
-class JOSProfile(AdminThumbMixin, TimeStamped, PybbProfile, models.Model):
+class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
     class Meta:
         verbose_name = 'JOS Member Profile'
         verbose_name_plural = 'JOS Members Profile'
