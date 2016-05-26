@@ -13,7 +13,7 @@
     Currently at:
     &nbsp&nbsp
     <span style="color: black;">
-        <b>Week #{{ week.id }}: {{ week.week_title | striptags | truncatechars:25 }}</b>
+        <b>#{{ week.id }}: {{ week.week_title | striptags | truncatechars:25 }}</b>
     </span>
 {% endblock %}
 
@@ -53,7 +53,21 @@
         </div>
 
         <div class="row" style="margin-top: 30px;">
-                {{ week.videoTranscript | richtext_filters | safe }}
+            <b>Video transcript:</b><br><br>
+            {{ week.videoTranscript | richtext_filters | safe }}
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <b>Handouts:</b><br><br>
+            {% for handout in handouts %}
+                <a class="joslargelinkbutton" href="{% url "handout" %}/{{ handout.id }}">
+                           <span style="margin-left: 5px; margin-right: 5px;">
+                                {{ handout.handout_title }}
+                           </span>
+                </a><br><br><br>
+            {% endfor %}
+
         </div>
 
     </div>
@@ -67,8 +81,8 @@
 
         <a class="btn pull-right btn-default"
            style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
-           href="#{# url "week_gallery" #}">
-            {% trans "All course weeks" %}
+           href="{% url "personaldesk" %}/{{ request.user.id }}">
+            {% trans "List of weeks" %}
         </a>
 
     </div>

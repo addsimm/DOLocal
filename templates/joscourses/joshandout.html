@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  %}
+
+{% block meta_title %}
+    {{ handout.handout_title | striptags | truncatechars:25 }}
+{% endblock %}
+{% block title %}
+    {{ handout.handout_title | striptags | truncatechars:25 }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black;">
+        <b>{{ handout.handout_title }}</b>
+    </span>
+{% endblock %}
+
+
+{% block all_content %}
+
+<style>
+
+    p {
+
+        margin: 0;
+    }
+
+</style>
+
+
+
+<div class="row" style="margin-bottom: 30px; margin-top: 60px;">
+
+    <div class="col-xs-8">
+
+        <div class="josinstructions text-center">
+
+            <span style="font-size: larger;
+                         padding: 5px 10px;">
+                {{ handout.handout_title }}
+            </span>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            {{ handout.content | safe }}
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-3" style="margin-top: 50px;">
+
+        <div class="pull-right" style="text-align: left;">
+            Last update:<br>
+            <span style="color: green">{{ handout.updated }}</span>
+        </div>
+
+        <a class="btn pull-right btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+           href="{% url "course_week" %}/{{ handout.courseweek.id }}">
+            {% trans "Back to week" %}
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
