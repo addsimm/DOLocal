@@ -59,7 +59,7 @@ class JOSCourseWeek(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Week #: ' + str(self.weekno) + ": " + self.week_title
+        return 'Week #' + str(self.weekno) + ": " + self.week_title
 
 
 class JOSHandout(TimeStamped, models.Model):
@@ -70,7 +70,7 @@ class JOSHandout(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Handout #: ' + str(self.handoutno) + ": " + self.handout_title
+        return 'Handout #' + str(self.handoutno) + ": " + self.handout_title
 
 class JOSStoryActivity(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
@@ -80,4 +80,5 @@ class JOSStoryActivity(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Activity #: ' + str(self.activityno) + ": " + self.activity_title
+        return 'Activity #' + str(self.activityno) + ": " + self.activity_title
+
