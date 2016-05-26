@@ -17,6 +17,7 @@ class JOSCourse(TimeStamped, models.Model):
         ordering = ("semester",)
 
     course_title = models.CharField(max_length=150, default="untitled")
+    courseno = models.IntegerField(default=0)
     description = RichTextField(default="coming soon")
     instructor = models.ForeignKey(User, related_name="instructor_user")
     location = models.CharField(max_length=150, default="tbd")
@@ -32,6 +33,9 @@ class JOSCourse(TimeStamped, models.Model):
 
     students = models.ManyToManyField(User, related_name="student_users", through='JOSCourseStudent')
 
+    def __unicode__(self):
+        return 'Course: ' + self.course_title
+
 
 class JOSCourseStudent(TimeStamped, models.Model):
     class Meta:
@@ -42,24 +46,38 @@ class JOSCourseStudent(TimeStamped, models.Model):
     student = models.ForeignKey(User)
     course = models.ForeignKey(JOSCourse)
 
+    def __unicode__(self):
+        return 'Enrollee: ' + self.student.JOSProfile.jos_name()
+
 
 class JOSCourseWeek(TimeStamped, models.Model):
     week_title = models.CharField(max_length=150, default="untitled")
+    weekno = models.IntegerField(default=0)
     course = models.ForeignKey(JOSCourse)
     video = EmbedVideoField()  # same like models.URLField()
     videoTranscript = RichTextField(default="coming soon")
     publish = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return 'Week #: ' + self.weekno + ": " + self.week_title
+
 
 class JOSHandout(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     handout_title = models.CharField(max_length=150, default="untitled")
+    handoutno = models.IntegerField(default=0)
     content = RichTextField(default="coming soon")
     publish = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return 'Handout #: ' + self.handoutno + ": " + self.handout_title
 
 class JOSStoryActivity(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     activity_title = models.CharField(max_length=150, default="untitled")
+    activityno = models.IntegerField(default=0)
     content = RichTextField(default="coming soon")
     publish = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return 'Activity #: ' + self.activityno + ": " + self.activity_title
