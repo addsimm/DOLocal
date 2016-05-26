@@ -33,7 +33,7 @@
 
 <div class="row" style="margin-bottom: 30px; margin-top: 60px;">
 
-    <div class="col-xs-8">
+    <div class="col-xs-9 col-xs-offset-1">
 
         <div class="josinstructions">
 
@@ -52,30 +52,49 @@
             </iframe>
         </div>
 
+
+
+        <div class="row" style="margin-top: 30px;">
+
+            <b>Handouts:</b><br><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number:</th>
+                        <th>Title:</th>
+                        <th>Updated:</th>
+                {% for handout in handouts %}
+
+                    <tr>
+                        <td style="font-size: 14pt; text-align: center;">
+                            {{ handout.handoutno }}
+                        </td>
+                        <td>
+                            <a class="joslargelinkbutton" style="font-size: 14pt;" href="{% url "handout" %}/{{ handout.id }}">
+                                {{ handout.handout_title }}
+                            </a>
+                        </td>
+                        <td style="font-size: 14pt;">
+                            {{ handout.updated }}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+
         <div class="row" style="margin-top: 30px;">
             <b>Video transcript:</b><br><br>
             {{ week.videoTranscript | richtext_filters | safe }}
         </div>
 
-        <div class="row" style="margin-top: 30px;">
-
-            <b>Handouts:</b><br><br>
-            {% for handout in handouts %}
-                <a class="joslargelinkbutton" href="{% url "handout" %}/{{ handout.id }}">
-                           <span style="margin-left: 5px; margin-right: 5px;">
-                                {{ handout.handout_title }}
-                           </span>
-                </a><br><br><br>
-            {% endfor %}
-
-        </div>
-
     </div>
 
-    <div class="col-xs-3" style="margin-top: 50px;">
+    <div class="col-xs-2" style="margin-top: 50px;">
 
         <div class="pull-right" style="text-align: left;">
-            Last update:<br>
+            Updated:<br>
             <span style="color: green">{{ week.updated }}</span>
         </div>
 

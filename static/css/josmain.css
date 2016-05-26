@@ -80,6 +80,37 @@ a:hover {
     border-color: black;
 }
 
+table {
+    font-family: "Open Sans", sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 12px;
+}
+
+th {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(65, 45, 120, .2);
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #4CAF50;
+    color: white;
+}
+
 footer {
     background-color: white;
     border-top: none;

@@ -4,64 +4,22 @@
 
 {% block all_content %}
 
-    <style>
-
-        table {
-            background-color: transparent;
-            font-family: "Open Sans", sans-serif;
-            font-size: 16pt;
-            margin-left: 60px;
-            width: 40%;
-        }
-
-        th, td {
-            width: auto;
-            padding-left: 0;
-        }
-
-        tr {
-            height: auto;
-        }
-
-        tr:nth-child(even) {
-            background-color: transparent;
-        }
-
-    </style>
-
     <br><br>--- BEGIN MESSAGE ---<br><br>
 
-    <table>
-        <tr>
-            <td>
-                From:
-            </td>
-            <td>
-                {{ message.sender.JOSProfile.jos_name }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Received:
-            </td>
-            <td>
-                {{ message.sent_at|date:_("DATETIME_FORMAT") }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Subject:
-            </td>
-            <td>
-                {{ message.subject }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Message:<br><br>
-            <td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-xs-1 col-xs-offset-1">
+            From:<br>
+            Received: <br>
+            Subject: <br>
+            Message:<br><br>
+        </div>
+        <div class="col-xs-7" style="margin-left: 20px;">
+            {{ message.sender.JOSProfile.jos_name }}<br>
+            {{ message.sent_at|date:_("DATETIME_FORMAT") }}<br>
+            {{ message.subject }}<br>
+        </div>
+    </div>
+
     <div style="margin-left: 195px;">
         {{ message.body|linebreaksbr }}<br><br>
     </div>

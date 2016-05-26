@@ -89,13 +89,12 @@
         <div id="enjoy" class="tab-pane fade in active">
             <div class="row" style="margin: 40px 0;">
 
-                <div class="col-xs-3" style=" ">
+                <div class="col-xs-4 col-xs-offset-1" style=" ">
                     <div class="josinstructions">Storytelling Course:</div><br>
-
-
 
                     {% for week in weeks %}
 
+                        Week #{{ week.weekno }}:
                         <a class="joslargelinkbutton" href="{% url "course_week" %}/{{ week.id }}">
                            <span style="margin-left: 5px; margin-right: 5px;">
                                 {{ week.week_title }}
