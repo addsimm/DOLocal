@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from django.utils import timezone
 
 from mezzanine.core.models import TimeStamped
 
 from ckeditor.fields import RichTextField
+from embed_video.fields import EmbedVideoField
+
 
 # Create your models here.
 
@@ -22,9 +24,9 @@ class JOSCourse(TimeStamped, models.Model):
     semester = models.IntegerField(default=1)
     weeks = models.IntegerField(default=8)
 
-    start_date = models.DateTimeField(default=datetime.now())
+    start_date = models.DateTimeField(blank=True)
     repeat_period = models.IntegerField(default=7)
-    end_date = models.DateTimeField(default=datetime.now())
+    end_date = models.DateTimeField(blank=True)
 
     students = models.ManyToManyField(User, related_name="student_users", through='JOSCourseStudent')
 
@@ -42,7 +44,7 @@ class JOSCourseStudent(TimeStamped, models.Model):
 class JOSCourseWeek(TimeStamped, models.Model):
     week_title = models.CharField(max_length=150, default="untitled")
     course = models.ForeignKey(JOSCourse)
-    video = models.CharField(max_length=150, default="tbd")
+    video = EmbedVideoField()  # same like models.URLField()
     videoTranscript = RichTextField(default="coming soon")
 
 
