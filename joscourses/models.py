@@ -28,6 +28,8 @@ class JOSCourse(TimeStamped, models.Model):
     repeat_period = models.IntegerField(default=7)
     end_date = models.DateTimeField(blank=True)
 
+    publish = models.BooleanField(default=False)
+
     students = models.ManyToManyField(User, related_name="student_users", through='JOSCourseStudent')
 
 
@@ -46,16 +48,18 @@ class JOSCourseWeek(TimeStamped, models.Model):
     course = models.ForeignKey(JOSCourse)
     video = EmbedVideoField()  # same like models.URLField()
     videoTranscript = RichTextField(default="coming soon")
+    publish = models.BooleanField(default=False)
 
 
 class JOSHandout(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     handout_title = models.CharField(max_length=150, default="untitled")
     content = RichTextField(default="coming soon")
+    publish = models.BooleanField(default=False)
 
 
 class JOSStoryActivity(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     activity_title = models.CharField(max_length=150, default="untitled")
     content = RichTextField(default="coming soon")
-
+    publish = models.BooleanField(default=False)

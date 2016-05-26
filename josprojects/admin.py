@@ -4,6 +4,7 @@ from .models import CKRichTextHolder, JOSStory
 
 # Register your models here.
 
+
 class CKRichTextHolderAdmin(admin.ModelAdmin):
     """
     Admin class for CKRichTextEditHolders.

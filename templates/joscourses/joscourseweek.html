@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  %}
+
+{% block meta_title %}
+    {{ week.week_title | striptags | truncatechars:25 }}
+{% endblock %}
+{% block title %}
+    {{ week.week_title | striptags | truncatechars:25 }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    Currently at:
+    &nbsp&nbsp
+    <span style="color: black;">
+        <b>Week #{{ week.id }}: {{ week.week_title | striptags | truncatechars:25 }}</b>
+    </span>
+{% endblock %}
+
+
+{% block all_content %}
+
+<style>
+
+    p {
+
+        margin: 0;
+    }
+
+</style>
+
+
+
+<div class="row" style="margin-bottom: 30px; margin-top: 60px;">
+
+    <div class="col-xs-8">
+
+        <div class="josinstructions">
+
+            <span style="font-size: larger;
+                         padding: 5px 10px;">
+                {{ week.week_title | striptags }}
+            </span>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+            <iframe src="{{ week.video }}"
+                    width="640" height="360"
+                    frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+                {{ week.videoTranscript | richtext_filters | safe }}
+        </div>
+
+    </div>
+
+    <div class="col-xs-3" style="margin-top: 50px;">
+
+        <div class="pull-right" style="text-align: left;">
+            Last update:<br>
+            <span style="color: green">{{ week.updated }}</span>
+        </div>
+
+        <a class="btn pull-right btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+           href="#{# url "week_gallery" #}">
+            {% trans "All course weeks" %}
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

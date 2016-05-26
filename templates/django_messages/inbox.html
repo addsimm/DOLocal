@@ -12,7 +12,7 @@
         <table data-toggle="table">
             <thead>
                 <tr>
-                    <th data-sortable="true">New / Replied:</th>
+                    <th data-sortable="true">New / Reply:</th>
                     <th data-sortable="true">Received:</th>
                     <th data-sortable="true">From:</th>
                     <th data-sortable="true">Subject:</th>
@@ -24,14 +24,14 @@
                     <tr>
                         <td>
                             {% if message.new %}
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                <i class="fa fa-circle fa-fw" style="color: green;"></i>
+                                &nbsp&nbsp&nbsp
+                                &nbsp&nbsp&nbsp
+                                <span class=" " style="color: green;">New</span>
                             {% endif %}
                             {% if message.replied %}
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                <i class="fa fa-check fa-fw" style="color: black;"></i>
+                                &nbsp&nbsp&nbsp
+                                &nbsp&nbsp&nbsp
+                                <span class=" " style="color: black;">Reply sent</span>
                             {% endif %}
                         </td>
                         <td style=" ">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>

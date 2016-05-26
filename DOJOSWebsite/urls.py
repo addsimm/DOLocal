@@ -45,6 +45,7 @@ urlpatterns += patterns('',
     ### JOS Projects ###
 
     ("^", include("josprojects.urls")),
+    ("^joscourses/", include("joscourses.urls")),
 
     ### JOS Staff
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
