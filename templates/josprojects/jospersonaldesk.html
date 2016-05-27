@@ -9,12 +9,11 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
+
     {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black; font-weight: bold;">
-        {{ user.get_short_name }}'s Desk
-    </span>
+    {{ user.get_short_name }}'s Desk
+    </div></div>
+
 {% endblock %}
 
 {% block all_content %}
@@ -47,7 +46,7 @@
 
     </style>
 
-    <div class="row" style="margin-left: 0; margin-top: 30px;">
+    <div class="row" style="margin-left: 0; margin-top: 45px;">
         <div class="col-xs-12" style="padding: 0;">
             <img style="display: inline; height: 90px;"
                  src="{% if profile.profile_image_idstr != "noimage1" %}

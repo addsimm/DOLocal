@@ -9,29 +9,20 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black;">
-        <b>#{{ week.id }}: {{ week.week_title | striptags | truncatechars:25 }}</b>
-    </span>
-{% endblock %}
 
+    {{ block.super }}
+    {{ week.course |cut:"Course: " }}: Week #{{ week.weekno }}
+    </div></div>
+
+{% endblock %}
 
 {% block all_content %}
 
 <style>
-
-    p {
-
-        margin: 0;
-    }
-
+    p {margin: 0;}
 </style>
 
-
-
-<div class="row" style="margin-bottom: 30px; margin-top: 60px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 70px;">
 
     <div class="col-xs-9 col-xs-offset-1">
 
@@ -93,15 +84,12 @@
 
     <div class="col-xs-2" style="margin-top: 50px;">
 
-        <div class="pull-right" style="text-align: left;">
-            Updated:<br>
-            <span style="color: green">{{ week.updated }}</span>
-        </div>
+        {% include "updated.html" with myobj=week %}
 
         <a class="btn pull-right btn-default"
-           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px;"
            href="{% url "personaldesk" %}/{{ request.user.id }}">
-            {% trans "List of weeks" %}
+            {% trans "All weeks" %}
         </a>
 
     </div>

@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags pages_tags cloudinary %}
 
-{% cloudinary_includes %}
-{% cloudinary_js_config %}
-
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
 
-{% block breadcrumb_menu %}
+{% block outer_breadcrumb %}
 
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black; font-weight: bold;">
-        {{ title }}
-    </span>
+    <div class="row breadcrumbtitle"
+         style="background-color: rgba(65, 45, 120, .2);
+                border-radius: 0;
+                height: 45px;
+                margin-bottom: 0;
+                margin-right: -15px;
+                margin-top: 10px;">
+        <span style="margin-left: 100px;">{{ title }}</span>
+    </div>
 
 {% endblock %}
 

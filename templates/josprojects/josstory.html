@@ -9,29 +9,20 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black;">
-        <b>{{ story.title  | striptags | truncatechars:25 }}</b> by {{ story.author.JOSProfile.jos_name }}
-    </span>
-{% endblock %}
 
+    {{ block.super }}
+    {{ story.title  | striptags | truncatechars:25 }}
+    </div></div>
+
+{% endblock %}
 
 {% block all_content %}
 
 <style>
-
-    p {
-
-        margin: 0;
-    }
-
+    p {margin: 0;}
 </style>
 
-
-
-<div class="row" style="margin-bottom: 30px; margin-top: 30px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 50px;">
 
     <div class="col-xs-8 col-xs-offset-1">
 
@@ -81,21 +72,18 @@
 
     <div class="col-xs-2" style="margin-top: 50px;">
 
-        <div class="pull-right" style="text-align: left;">
-            Updated:<br>
-            <span style="color: green">{{ story.updated }}</span>
-        </div>
+        {% include "updated.html" with myobj=story %}
 
         {% if story.author == request.user %}
 
             <a class="btn pull-right btn-default"
-               style="background-color: #28a4c9; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+               style="background-color: #28a4c9; border: none; color: white; outline: none; margin-top: 30px;"
                     {% if edit %}
                href="{% url "josstory" story.id %}">
-                        {% trans "Hide edit" %}
+                        {% trans "Edit off" %}
                     {% else %}
                         href="{% url "josstory_edit" story.id %}">
-                        {% trans "Edit mode" %}
+                        {% trans "Edit" %}
                     {% endif %}
             </a>
 

@@ -33,6 +33,14 @@ a:hover {
     font-weight: bold;
 }
 
+.breadcrumbtitle {
+    color: black;
+    font-size: 28pt;
+    font-weight: bold;
+    line-height: normal;
+    margin-right: 10px;
+}
+
 .joscursive {
     font-family: 'Stalemate', cursive;
     font-size: 32pt;
@@ -49,6 +57,13 @@ a:hover {
 
 .josinstructions li {
     margin-top: 15px;
+}
+
+.interior-text {
+    line-height: normal;
+    margin-top: 6px;
+    text-align: justify;
+    padding: 10px 20px;
 }
 
 .homehead {
@@ -120,17 +135,35 @@ footer {
     padding-bottom: 0;
 }
 
-.btn-default, .btn-default:visited {
-    background-color: rgb(231, 209, 222);
+.btn, .btn:visited {
     background-image: none;
     background-repeat: no-repeat;
-    border-color: rgb(65, 25, 140);
     box-shadow: none;
-    color: rgb(65, 25, 140);
+    color: white;
     font-size: 14pt;
     outline: none;
     text-decoration: none;
     text-shadow: none;
+    width: 100px;
+}
+
+.btn-default:visited,
+.btn-primary:visited,
+.btn-success:visited,
+.btn-info:visited,
+.btn-warning:visited,
+.btn-danger:visited {
+    background-color: inherit;
+    opacity: 1;
+}
+
+.btn-default, .btn-default:visited {
+    background-color: rgb(231, 209, 222);
+    border-color: rgb(65, 25, 140);
+    color: rgb(65, 25, 140);
+
+
+
 
 }
 

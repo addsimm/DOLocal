@@ -10,12 +10,12 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
+
     {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black; font-weight: bold;">
-        {{ user.get_short_name }}'s Mailbox
-    </span>
+    <div class="col-xs-5 breadcrumbtitle">
+        {{ user.get_short_name }}'s Mail
+    </div></div>
+
 {% endblock %}
 
 {% block all_content %}

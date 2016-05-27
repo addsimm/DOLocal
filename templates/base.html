@@ -44,87 +44,88 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
-    <div class="container" style="background-color: white; margin-left: 20px; position: fixed; top:0; z-index: 100;">
-        <div class="row">
+<div class="container" style="background-color: white; margin-left: 20px; position: fixed; top:0; z-index: 100;">
 
-            <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
-                <a
-                    {% if request.user.id > 0 %}
-                        href="{% url "personaldesk" %}/{{ request.user.id }}"
-                    {% else %}
-                        href="/"
-                    {% endif %}
-                        class="pull-left" style="outline: none; padding: 0">
-                    <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
+    <div class="row">
+        <!-- JOS LOGO -->
+        <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
+            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
+                {% else %}href="/"{% endif %} class="pull-left" style="outline: none; padding: 0">
+                <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
+            </a>
+        </div>
+
+        <div class="hidden-xs col-sm-12 col-md-6">
+            {% nevercache %}{% if messages %}
+                <!-- MESSAGES -->
+                <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">
+                    <div class="col-xs-1" style=" " >
+                        <img src="/static/img/peeky-123115.png" height="40px">
+                    </div>
+                    <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
+                        {% for message in messages %}
+                            {{ message | striptags }}<br>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <!-- SLOGAN -->
+                <div class="hometext text-center" style="margin-left: 105px; margin-top: 22px;">
+                    A storytelling community for<br>happier souls and healthier minds.
+                </div>
+            {% endif %}{% endnevercache %}
+        </div>
+
+        <!-- USER PANEL -->
+        <div class="col-sm-12 col-md-4" style="background-color: transparent; margin-top: 10px;">
+            {% include "accounts/includes/user_panel.html" %}
+        </div>
+    </div>
+
+    <!-- BREADCRUMB -->
+    {% block outer_breadcrumb %}
+        {% block breadcrumb_menu %}
+            {% include "pages/menus/breadcrumb.html" %}
+        {% endblock %}
+    {% endblock outer_breadcrumb %}
+</div>
+
+<!-- ALL CONTENT -->
+<div class="container" style="margin-left: 20px;">
+    {% block all_content %}
+
+        <br><br>
+        MISSING BLOCK  -
+        <button class="btn btn-warning btn-xs pull-right"
+                style="margin-right: -10px; margin-top: -3px; width: 80px;"
+                onclick="goBack()">
+            Go back
+        </button>
+        <script>function goBack() {
+            window.history.back();
+        }</script> or contact us for help.
+
+    {% endblock all_content %}
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container" style="margin-left: 20px; margin-top: 45px; padding: 0;">
+        <div class="text-right" style="color: #d9534f; margin-bottom: 5px; margin-right: 5px;">For immediate attention, call (213) 465-0885</div>
+        {% page_menu "pages/menus/footer.html" %}
+
+        <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+            Join Our Story is a California Benefit Corporation &copy 2014
+
+            {% ifinstalled mezzanine.mobile %}
+                <span class="separator">|</span>
+                <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
+                    {% trans "View Mobile Site" %}
                 </a>
-            </div>
-
-            <div class="hidden-xs col-sm-12 col-md-6" style="background-color: transparent;">
-
-                {% nevercache %}{% if messages %}<!-- messages -->
-
-                    <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">
-                        <div class="col-xs-1" style=" " >
-                            <img src="/static/img/peeky-123115.png" height="40px">
-                        </div>
-                        <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
-                            {% for message in messages %}
-                                {{ message | striptags }}<br>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-
-                {% else %}
-                    <div class="hometext text-center" style="margin-left: 105px; margin-top: 20px;">
-                        A storytelling community for<br>happier souls and healthier minds.
-                    </div>
-
-                {% endif %}{% endnevercache %}
-            </div>
-
-            <div class="col-sm-12 col-md-4" style="background-color: transparent; margin-top: 10px;">
-                {% include "accounts/includes/user_panel.html" %}
-            </div>
-
-        </div>
-
-        {% block outer_breadcrumb %}
-            <div class="row" style="background-color: white;">
-                <ul class="breadcrumb" style="background-color: rgba(65, 45, 120, .2); border-radius: 0;
-                                              height: 45px; margin-bottom: 0; padding-left: 13px; padding-top: 12px;">
-                    {% spaceless %}
-                        {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-                    {% endspaceless %}
-                </ul>
-            </div>
-        {% endblock outer_breadcrumb %}
+            {% endifinstalled %}
+        </p>
     </div>
-
-    <div class="container" style="background-color: transparent; margin-left: 20px;"><!-- CENTER -->
-        {% block all_content %}
-            <br>MISSING ALL_CONTENT BLOCK  - Please press "Go Back" or contact us for help.
-        {% endblock all_content %}
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container" style="margin-left: 20px; margin-top: 45px; padding: 0;">
-            <div class="text-right" style="color: #d9534f; margin-bottom: 5px; margin-right: 5px;">For immediate attention, call (213) 465-0885</div>
-            {% page_menu "pages/menus/footer.html" %}
-
-            <p class="text-left" style="font-size: 8pt; margin-top: 0;">
-                Join Our Story is a California Benefit Corporation &copy 2014
-
-                {% ifinstalled mezzanine.mobile %}
-                    <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
-                        {% trans "View Mobile Site" %}
-                    </a>
-                {% endifinstalled %}
-            </p>
-        </div>
-        {% include "includes/footer_scripts.html" %}
-    </footer>
+    {% include "includes/footer_scripts.html" %}
+</footer>
 </body>
 </html>

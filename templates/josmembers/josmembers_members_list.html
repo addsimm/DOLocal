@@ -7,17 +7,16 @@
 {# block body_id }account{ endblock #}
 
 {% block breadcrumb_menu %}
+
     {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black; font-weight: bold;">
-        {{ user.get_short_name }}'s Friends
-    </span>
-    {% endblock %}
+    {{ user.get_short_name }}'s Friends
+    </div></div>
+
+{% endblock %}
 
 {% block all_content %}
 
-    <div class="josinstructions" style="margin-top: 15px;"><b>My favorites:</b></div>
+    <div class="josinstructions" style="margin-top: 30px;"><b>My favorites:</b></div>
 
     <div class="row">
         <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
@@ -71,7 +70,7 @@
         </div>
     </div>
 
-    <div class="josinstructions" style="margin-top: 15px;"><b>My teams:</b></div>
+    <div class="josinstructions" style="margin-top: 30px;"><b>My teams:</b></div>
 
     <div class="row">
         <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
@@ -81,7 +80,7 @@
         </div>
     </div>
 
-    <div class="josinstructions" style="margin-top: 15px;"><b>Search members:</b></div>
+    <div class="josinstructions" style="margin-top: 30px;"><b>Search members:</b></div>
 
     <div class="row" style="margin-top: 15px;">
 

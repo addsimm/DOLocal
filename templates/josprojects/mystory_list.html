@@ -8,17 +8,17 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
+
     {{ block.super }}
-    Currently at:
-    &nbsp&nbsp
-    <span style="color: black; font-weight: bold;">
-        {{ user.get_short_name }}'s Stories
-    </span>
+    {{ user.get_short_name }}'s Stories
+    </div></div>
+
 {% endblock %}
+
 
 {% block all_content %}
 
-<div class="row" style="margin-top: 40px;">
+<div class="row" style="margin-top: 60px;">
 
     <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
 
