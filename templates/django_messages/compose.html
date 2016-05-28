@@ -3,36 +3,45 @@
 
 {% block all_content %}
 
-    <div class="josinstructions" style="margin-top: 30px;">Send message to {{ jos_name }}:</div>
-    <br>
-    <form action="" method="post">
-        {% csrf_token %}
+    <div class="row">
 
-        <div style="margin-left: 60px;">
+        <div class="col-xs-10 col-xs-offset-1">
 
-            {# recipient #}
+            <br><br>
+            <div class="josinstructions" style="margin-top: 30px;">Send message to {{ jos_name }}:</div>
+            <br>
+            <form action="" method="post">
+                {% csrf_token %}
 
-            <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+                <div style="margin-left: 60px;">
 
-            Subject:<br>
-            {{ form.subject }}<br><br>
-            Message:<br>
-            {{ form.body }}<br><br>
+                    {# recipient #}
+
+                    <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+
+                    Subject:<br>
+                    {{ form.subject }}<br><br>
+                    Message:<br>
+                    {{ form.body }}<br><br><br>
+
+                </div>
+
+                <button class="btn btn-warning"
+                        style=" "
+                        onclick="goBack()">Go back
+                </button>
+
+                <script>function goBack() {
+                    window.history.back();
+                }</script>
+
+                <input class="btn btn-default"
+                       style="width: 100px;"
+                       type="submit" value="Send">
+            </form>
 
         </div>
 
-        <button class="btn btn-default"
-                style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px;"
-                onclick="goBack()">Go back
-        </button>
-
-        <script>function goBack() {
-            window.history.back();
-        }</script>
-
-        <input class="btn btn-default"
-               style="width: 100px;"
-               type="submit" value="Send">
-    </form>
+    </div>
 
 {% endblock %}

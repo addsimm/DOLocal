@@ -11,7 +11,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    Week #{{ handout.courseweek.weekno }}: Handout #{{ handout.handoutno }}
+    {{ handout.courseweek.week_title }} - #{{ handout.handoutno }}
     </div></div>
 
 {% endblock %}
@@ -23,16 +23,13 @@
     p {margin: 0;}
 </style>
 
-<div class="row" style="margin-left:30px; margin-bottom: 30px; margin-top: 60px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 60px;">
 
-    <div class="col-xs-9">
+    <div class="col-xs-9 col-xs-offset-1">
 
         <div class="josinstructions text-center">
 
-            <span style="font-size: larger;
-                         padding: 5px 10px;">
-                {{ handout.handout_title }}
-            </span>
+            {{ handout.handout_title }}
 
         </div>
 
@@ -44,12 +41,12 @@
 
     </div>
 
-    <div class="col-xs-2  col-xs-offset-1" style="margin-top: 50px;">
+    <div class="col-xs-2" style="margin-top: 50px;">
 
         {% include "updated.html" with myobj=handout %}
 
-        <a class="btn pull-right btn-default"
-           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+        <a class="btn pull-right btn-warning"
+           style="margin-top: 30px;"
            href="{% url "course_week" %}/{{ handout.courseweek.id }}">
             {% trans "Week" %}
         </a>

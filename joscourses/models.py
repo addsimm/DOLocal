@@ -54,8 +54,7 @@ class JOSCourseWeek(TimeStamped, models.Model):
     week_title = models.CharField(max_length=150, default="untitled")
     weekno = models.IntegerField(default=0)
     course = models.ForeignKey(JOSCourse)
-    video = EmbedVideoField()  # same like models.URLField()
-    videoTranscript = RichTextField(default="coming soon")
+    video = EmbedVideoField(blank=True)  # same like models.URLField()
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):

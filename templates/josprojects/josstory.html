@@ -22,50 +22,51 @@
     p {margin: 0;}
 </style>
 
-<div class="row" style="margin-bottom: 30px; margin-top: 50px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 60px;">
 
-    <div class="col-xs-8 col-xs-offset-1">
+    <div class="col-xs-9 col-xs-offset-1">
 
-        <div class="josinstructions text-center">
-
-            <span style="{% if edit %}
-                                outline: 3px dashed #28a4c9;
-                         {% endif %}
-                    font-size: larger;
-                    font-style: italic;
-                    padding: 5px 10px;">
-                {{ story.title | striptags }}
-            </span>
+        <div class="row" style="height: 35px; margin-left: 10%; width: 80%;">
             {% if edit %}
-                <a class="btn btn-info"
-                   style="margin-right: -99px; margin-top: -43px; outline: none; text-decoration: none;"
+                <a class="btn btn-info btn-xs pull-right"
+                   style="width: 80px"
                    href="{% url "josstory_edit" story.id %}/?field_to_edit=title">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    <span style="margin-left: 7px;">Edit title</span>
+                    <i class="fa fa-pencil"></i>
+                    <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
                 </a>
             {% endif %}
-            <br>
-            by&nbsp&nbsp{{ story.author.JOSProfile.jos_name }}<br>
+        </div>
+
+        <div class="row text-center" style=" margin-left: 10%; width: 80%;">
+
+            <div class="homehead text-center" style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}">
+                {{ story.title | striptags }}<br>
+            </div>
+
+            <div class="joscursive text-center">
+                {{ story.author.JOSProfile.jos_name }}<br>
+            </div>
 
         </div>
 
-        {% if edit %}
-            <a class="btn btn-info pull-right"
-               style="margin-right: -50px; margin-top: -24px; outline: none; text-decoration: none;"
-               href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
-                <span class="glyphicon glyphicon-pencil"></span>
-                <span style="margin-left: 7px;">Edit text</span>
-            </a>
-        {% endif %}
+        <div class="row" style="height: 30px;">
+            {% if edit %}
+                <a class="btn btn-info btn-xs pull-right"
+                   style="width: 80px"
+                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
+                    <i class="fa fa-pencil"></i>
+                    <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
+                </a>
+            {% endif %}
 
-        <div style="{% if edit %}
-                         outline: 3px dashed #28a4c9;
-                    {% endif %}
-                         line-height: normal;
-                         margin-right: -50px;
-                         margin-top: 7px;
-                         padding: 15px;">
-            {{ story.content | richtext_filters | safe }}
+        </div>
+
+        <div class="row">
+
+            <div class="interior-text" style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}">
+                {{ story.content | richtext_filters | safe }}
+            </div>
+
         </div>
 
     </div>
@@ -76,20 +77,19 @@
 
         {% if story.author == request.user %}
 
-            <a class="btn pull-right btn-default"
-               style="background-color: #28a4c9; border: none; color: white; outline: none; margin-top: 30px;"
+            <a class="btn pull-right btn-info"
+               style="margin-top: 30px;"
                     {% if edit %}
                href="{% url "josstory" story.id %}">
-                        {% trans "Edit off" %}
+                        {% trans "Hide edit" %}
                     {% else %}
                         href="{% url "josstory_edit" story.id %}">
                         {% trans "Edit" %}
                     {% endif %}
             </a>
 
-            <a class="btn pull-right btn-default"
-               style="{% if story.publish %}background-color: #d9534f;{% else %}background-color: #5cb85c;{% endif %}
-                       border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+            <a class="btn pull-right {% if story.publish %}btn-danger{% else %}btn-success{% endif %}"
+               style="margin-top: 30px;"
                     {% if story.publish %}
                         href="{% url "josstory" story.id %}/?pub=remove">
                             {% trans "Unpublish" %}
@@ -99,17 +99,17 @@
                     {% endif %}
             </a>
 
-            <a class="btn pull-right btn-default"
-               style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+            <a class="btn pull-right btn-warning"
+               style="margin-top: 30px;"
                href="{% url "mystory_list" %}">
                         {% trans "My stories" %}
             </a>
         {% else %}
 
-            <a class="btn pull-right btn-default"
-               style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px; width: 150px;"
+            <a class="btn pull-right btn-warning"
+               style="margin-top: 30px;"
                href="{% url "story_gallery" %}">
-                {% trans "Story gallery" %}
+                {% trans "Gallery" %}
             </a>
 
         {% endif %}
@@ -119,16 +119,4 @@
 </div>
 
 {% endblock %}
-
-
-INSERT:
-
-NEW STORY
-
-<a class="btn btn-info pull-right"
-   style="margin-right: -50px; outline: none; text-decoration: none;"
-   href="{% url "josprofile_edit" request.user.id %}?field_to_edit=about_me">
-    <span class="glyphicon glyphicon-pencil"></span>
-    <span style="margin-left: 7px;">Edit section</span>
-</a>
 

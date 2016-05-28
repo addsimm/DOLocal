@@ -12,8 +12,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    <div class="col-xs-5 breadcrumbtitle">
-        {{ user.get_short_name }}'s Mail
+    {{ user.get_short_name }}'s Mailbox
     </div></div>
 
 {% endblock %}
@@ -51,7 +50,7 @@
                 </span>
             </a>
 
-            <span class="josinstructions" style="margin-left: 30px;">To send a new message, use:</span>
+            <span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>
             <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers_list" %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-heart fa-fw" style=" "></i>

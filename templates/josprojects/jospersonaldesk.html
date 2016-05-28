@@ -88,7 +88,7 @@
         <div id="enjoy" class="tab-pane fade in active">
             <div class="row" style="margin: 40px 0;">
 
-                <div class="col-xs-4 col-xs-offset-1" style=" ">
+                <div class="col-xs-5" style=" ">
                     <div class="josinstructions">Storytelling Course:</div><br>
 
                     {% for week in weeks %}
@@ -103,8 +103,7 @@
                     {% endfor %}
 
                 </div>
-                <div class="col-xs-5" style=" ">
-                    <div class="josinstructions">Stories:</div><br>
+                <div class="col-xs-4" style="margin-top: 70px;">
                     <a class="joslargelinkbutton" href="{% url "mystory_list" %}">
                        <span style="margin-left: 5px; margin-right: 5px;">
                             My stories
@@ -117,6 +116,10 @@
                             New story
                        </span>
                     </a><br><br><br>
+
+                </div>
+
+                <div class="col-xs-3" style="margin-top: 70px;">
 
                     <a class="joslargelinkbutton" href="{% url "story_gallery" %}">
                        <span style="margin-left: 5px; margin-right: 5px;">
