@@ -40,7 +40,7 @@
         <div class="row text-center" style=" margin-left: 10%; width: 80%;">
 
             <div class="homehead text-center" style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}">
-                {{ story.title | striptags }}<br>
+                {{ story.title | striptags }}<br><br>
             </div>
 
             <div class="joscursive text-center">
@@ -71,9 +71,9 @@
 
     </div>
 
-    <div class="col-xs-2" style="position: fixed; top: 230px; left: 990px;">
+    <div style="position: fixed; margin-left: 1050px; margin-top: 0">
 
-        {% include "updated.html" with myobj=story %}
+        {% include "updated.html" with myobj=story %}<br>
 
         {% if story.author == request.user %}
 
@@ -86,31 +86,31 @@
                         href="{% url "josstory_edit" story.id %}">
                         {% trans "Edit" %}
                     {% endif %}
-            </a>
+            </a><br>
 
             <a class="btn pull-right {% if story.publish %}btn-danger{% else %}btn-success{% endif %}"
                style="margin-top: 30px;"
                     {% if story.publish %}
                         href="{% url "josstory" story.id %}/?pub=remove">
-                            {% trans "Unpublish" %}
+                            {% trans "Hide" %}
                     {% else %}
                         href="{% url "josstory" story.id %}/?pub=publish">
                             {% trans "Publish" %}
                     {% endif %}
-            </a>
+            </a><br>
 
             <a class="btn pull-right btn-warning"
                style="margin-top: 30px;"
                href="{% url "mystory_list" %}">
                         {% trans "My stories" %}
             </a>
-        {% else %}
+        {% else %}<br>
 
             <a class="btn pull-right btn-warning"
                style="margin-top: 30px;"
                href="{% url "story_gallery" %}">
                 {% trans "Gallery" %}
-            </a>
+            </a><br>
 
         {% endif %}
 
