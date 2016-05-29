@@ -7,25 +7,25 @@
                          margin-top: 10px;">
 
     <button class="btn btn-warning btn-xs pull-left"
-            style="border-radius: 0; height: 45px; font-size: 14pt; width: 80px;"
+            style="border-radius: 20px; height: 45px; font-size: 16pt; width: 65px;"
             onclick="goBack()">
-        Go back
+        Back
     </button>
 
     <div class="col-xs-4"
-         style="background-color: transparent; height: 45px; padding-top: 11px;">
+         style="height: 45px; padding-left: 7px; padding-top: 11px;">
 
         <a style="margin-left: 0;"
            href="{% url "personaldesk" %}/{{ request.user.id }}">
-           <span style="margin: 0 5px;">
+           <span style="margin: 0 4px;">
                <i class="fa fa-home fa-fw"></i>
                 Desk
            </span>
         </a>
 
-        <a style="margin-left: 7px;"
+        <a style="margin-left: 4px;"
            href="{% url "messages_redirect" %}">
-            <span style="margin: 0 5px;">
+            <span style="margin: 0 4px;">
                 <i class="fa fa-envelope fa-fw"></i>
                 Mail
             </span>
@@ -42,9 +42,9 @@
             {% endif %}
         </a>
 
-        <a style="margin-left: 7px;"
+        <a style="margin-left: 4px;"
            href="{% url "josmembers_list" %}">
-            <span style="margin: 0 5px;">
+            <span style="margin: 0 4px;">
                 <i class="fa fa-heart  fa-fw"></i>
                 Friends
             </span>

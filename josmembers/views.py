@@ -20,7 +20,6 @@ from mezzanine.utils.email import send_verification_mail, send_approve_mail
 from mezzanine.utils.urls import login_redirect, next_url
 
 from django_messages.utils import format_quote, get_username_field
-from django_messages.forms import ComposeForm
 from django_messages.models import Message
 
 from friendship.exceptions import AlreadyExistsError
@@ -28,7 +27,7 @@ from friendship.models import Follow
 
 from josprojects.models import CKRichTextHolder
 from .models import JOSProfile
-from .forms import JOSSignupForm, JOSNewPasswordForm
+from .forms import JOSSignupForm, JOSNewPasswordForm, JOSComposeForm
 
 User = get_user_model()
 
@@ -302,7 +301,7 @@ def submit_member_search_from_ajax(request):
 ### Messaging
 
 @login_required
-def jos_message_compose(request, id=None, form_class=ComposeForm,
+def jos_message_compose(request, id=None, form_class=JOSComposeForm,
             template_name='django_messages/compose.html', success_url=None, recipient_filter=None):
     """
     Displays and handles the ``form_class`` form to compose new messages.
@@ -346,7 +345,7 @@ def jos_message_compose(request, id=None, form_class=ComposeForm,
 
 
 @login_required
-def jos_message_reply(request, message_id, form_class=ComposeForm,
+def jos_message_reply(request, message_id, form_class=JOSComposeForm,
           template_name='django_messages/compose.html', success_url=None,
           recipient_filter=None, quote_helper=format_quote,
           subject_template=_(u"Re: %(subject)s"), ):

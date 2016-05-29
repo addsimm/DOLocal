@@ -1,13 +1,14 @@
 ### josmembers/forms.py
 from __future__ import unicode_literals
 
+import datetime
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.manager import Manager
 from django import forms
+
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext, ugettext_lazy as _
-
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
@@ -15,7 +16,15 @@ from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
 
+from django_messages.models import Message
+from django_messages.fields import CommaSeparatedUserField
+
 User = get_user_model()
+
+if "notification" in settings.INSTALLED_APPS:
+    from notification import models as notification
+else:
+    notification = None
 
 _exclude_fields = tuple(getattr(settings, "ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS", ()))
 
@@ -280,3 +289,49 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
         return user
 
 
+class JOSComposeForm(forms.Form):
+    """
+    A simple default form for private messages.
+    """
+    recipient = CommaSeparatedUserField(label=_(u"Recipient"))
+    subject = forms.CharField(label=_(u"Subject"), max_length=120)
+    body = forms.CharField(label=_(u"Body"),
+                           widget=forms.Textarea(attrs={'rows': '15', 'cols': '65'}))
+
+    def __init__(self, *args, **kwargs):
+        recipient_filter = kwargs.pop('recipient_filter', None)
+        super(JOSComposeForm, self).__init__(*args, **kwargs)
+        if recipient_filter is not None:
+            self.fields['recipient']._recipient_filter = recipient_filter
+
+        ### PROBLEM
+
+        self.fields['subject'].required = True
+        self.fields['body'].required = True
+
+    def save(self, sender, parent_msg=None):
+        recipients = self.cleaned_data['recipient']
+        subject = self.cleaned_data['subject']
+        body = self.cleaned_data['body']
+        message_list = []
+        for r in recipients:
+            msg = Message(
+                sender=sender,
+                recipient=r,
+                subject=subject,
+                body=body,
+            )
+            if parent_msg is not None:
+                msg.parent_msg = parent_msg
+                parent_msg.replied_at = datetime.datetime.now()
+                parent_msg.save()
+            msg.save()
+            message_list.append(msg)
+            if notification:
+                if parent_msg is not None:
+                    notification.send([sender], "messages_replied", {'message': msg,})
+                    notification.send([r], "messages_reply_received", {'message': msg,})
+                else:
+                    notification.send([sender], "messages_sent", {'message': msg,})
+                    notification.send([r], "messages_received", {'message': msg,})
+        return message_list

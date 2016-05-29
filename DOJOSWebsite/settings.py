@@ -102,8 +102,9 @@ INSTALLED_APPS = (
     'tracking',
     'friendship',
     'django_messages',
-    # NOT IMPLEMENTED "mailer",
-    # NOT IMPLEMENTED 'schedule',
+    ### NOT IMPLEMENTED "mailer",
+    ### NOT IMPLEMENTED 'schedule',
+    ### NOT IMPLEMENTED 'notification',
     "ckeditor",
     "cloudinary",
     "pybb",
@@ -172,7 +173,7 @@ PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 OPTIONAL_APPS = (
     "debug_toolbar",
     "django_extensions",
-    "compressor",
+    ### Not working: "compressor",
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
 )
@@ -289,7 +290,6 @@ DJANGO_MESSAGES_NOTIFY = False
 
 ### PYBB_PROFILE_RELATED_NAME
 
-
 ##################
 # LOCAL SETTINGS #
 ##################
@@ -320,5 +320,5 @@ DEBUG = False
 # DEBUG_TOOLBAR_CONFIG = {
 #     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
 # }
-#
+
 # DEBUG = True
