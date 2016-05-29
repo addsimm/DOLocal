@@ -20,6 +20,18 @@ def staffgallery(request, template="josstaff/staffgallery.html", extra_context= 
     return render(request, template, context)
 
 
+def legals(request, template="josstaff/legals.html", extra_context=None):
+    staff = JOSStaffMember.objects.all()
+    context = {}
+    return render(request, template, context)
+
+
+def community_rules(request, template="josstaff/community_rules.html", extra_context=None):
+    staff = JOSStaffMember.objects.all()
+    context = {}
+    return render(request, template, context)
+
+
 @staff_member_required
 def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_context=None):
 

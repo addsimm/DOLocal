@@ -49,6 +49,9 @@ urlpatterns += patterns('',
 
     ### JOS Staff
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
+    url("legals/$", "josstaff.views.legals", name="legals"),
+    url("community-rules/$", "josstaff.views.community_rules", name="community_rules"),
+
     url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
         "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
     url("^%s%s$" % ("josanal".strip("/"), _slash),

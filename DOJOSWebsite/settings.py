@@ -222,7 +222,7 @@ CKEDITOR_CONFIGS = {
         'contentsCss': ['/static/ckeditor/ckeditor/contents.css'],
         'toolbar': 'JOSSimpleToolbarConfig',  # put selected toolbar config here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        'height': 600,
+        'height': 350,
         'width': 920,
         'disableNativeSpellChecker': False,
         # 'filebrowserWindowHeight': 725,

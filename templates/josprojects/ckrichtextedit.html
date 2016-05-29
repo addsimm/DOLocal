@@ -49,23 +49,37 @@
 
 <body style="padding-top: 10px;">
 
-<div class="container" style="background-color: aliceblue; border: 3px dashed #28a4c9; margin-left:15px; margin-top:15px; width: 960px;">
-    <div class="row" style="font-size: 18pt; line-height: 1.4; margin-bottom: 10px; margin-left: 20px;margin-top: 20px;">
-        <span style="font-weight: bold;">Join Our Story Editor</span><br>
+<div class="container" style="background-color: aliceblue;
+                              border: 3px dashed #28a4c9;
+                              margin: 15px;
+                              width: 960px;">
+    <div class="row text-center"
+         style="font-size: 18pt;
+         line-height: 1.7;
+         margin: 15px;">
+        <b>Join Our Story Editor</b><br>
+        <span style="font-size: 14pt;">
+            Note: drag the small bottom right triangle to change editor height.
+        </span><br>
+    </div>
+    <div class="row" style="font-size: 18pt; line-height: 1.6;">
         <div class="col-xs-1">
-            Author:<br>
             Title:<br>
+            Author:<br>
             Editing:<br>
         </div>
+
         <div class="col-xs-10" style="color: green; margin-left: 10px;">
-            {{ user.JOSProfile.jos_name }}<br>
             {{ form.title.value | title | striptags }}<br>
+            {{ user.JOSProfile.jos_name }}<br>
             {{ form.field_to_edit.value | title }}<br><br>
         </div>
 
     </div>
 
-    <form id='ckrichtextedit_form' method="post" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    <form id='ckrichtextedit_form'
+          method="post"
+          {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
 
         {% csrf_token %}
 
