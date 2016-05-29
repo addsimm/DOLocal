@@ -94,16 +94,20 @@
 <div class="container" style="margin-left: 20px;">
     {% block all_content %}
 
-        <br><br>
-        MISSING BLOCK  -
-        <button class="btn btn-warning btn-xs pull-right"
-                style="margin-right: -10px; margin-top: -3px; width: 80px;"
-                onclick="goBack()">
-            Go back
-        </button>
-        <script>function goBack() {
-            window.history.back();
-        }</script> or contact us for help.
+        <div class="row" style="margin-top: 150px;">
+            <div class="col-xs-5 col-xs-offset-1">
+                Sorry, there is a "MISSING ALL CONTENT BLOCK" - <br>
+                Click:
+                <button class="btn btn-warning btn "
+                        style="border-radius: 15px; margin: 20px 10px;width: 80px;"
+                        onclick="goBack()">
+                    Back
+                </button>
+                <script>function goBack() {
+                    window.history.back();
+                }</script> or contact us for help.
+            </div>
+        </div>
 
     {% endblock all_content %}
 </div>

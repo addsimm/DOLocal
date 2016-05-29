@@ -304,10 +304,10 @@ class JOSComposeForm(forms.Form):
         if recipient_filter is not None:
             self.fields['recipient']._recipient_filter = recipient_filter
 
-        ### PROBLEM
-
+        self.fields['recipient'].requred = False
         self.fields['subject'].required = True
         self.fields['body'].required = True
+        self.fields['body'].label = "Message"
 
     def save(self, sender, parent_msg=None):
         recipients = self.cleaned_data['recipient']
