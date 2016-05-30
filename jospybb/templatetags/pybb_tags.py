@@ -22,9 +22,9 @@ try:
 except ImportError:
     pytils_enabled = False
 
-from pybb.models import TopicReadTracker, ForumReadTracker, PollAnswerUser, Topic, Post
-from pybb.permissions import perms
-from pybb import defaults, util, compat
+from jospybb.models import TopicReadTracker, ForumReadTracker, PollAnswerUser, Topic, Post
+from jospybb.permissions import perms
+from jospybb import defaults, util, compat
 
 
 register = template.Library()
@@ -36,7 +36,7 @@ def pybb_time(parser, token):
     try:
         tag, context_time = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError('pybb_time requires single argument')
+        raise template.TemplateSyntaxError('jospybb_time requires single argument')
     else:
         return PybbTimeNode(context_time)
 
@@ -256,9 +256,9 @@ def load_perms_filters():
         if inspect.ismethod(method[1]) and inspect.getargspec(method[1]).args[0] == 'self' and\
                 (method[0].startswith('may') or method[0].startswith('filter')):
             if len(inspect.getargspec(method[1]).args) == 3:
-                register.filter('%s%s' % ('pybb_', method[0]), partial(method[0], perms))
+                register.filter('%s%s' % ('jospybb_', method[0]), partial(method[0], perms))
             elif len(inspect.getargspec(method[1]).args) == 2: # only user should be passed to permission method
-                register.filter('%s%s' % ('pybb_', method[0]), partial_no_param(method[0], perms))
+                register.filter('%s%s' % ('jospybb_', method[0]), partial_no_param(method[0], perms))
 load_perms_filters()
 
 

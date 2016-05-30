@@ -6,9 +6,9 @@ try:
 except ImportError:
     from django.conf.urls.defaults import patterns, include, url
 
-from pybb.defaults import PYBB_NICE_URL
-from pybb.feeds import LastPosts, LastTopics
-from pybb.views import IndexView, CategoryView, ForumView, TopicView,\
+from jospybb.defaults import PYBB_NICE_URL
+from jospybb.feeds import LastPosts, LastTopics
+from jospybb.views import IndexView, CategoryView, ForumView, TopicView,\
     AddPostView, EditPostView, UserView, PostView, ProfileEditView,\
     DeletePostView, StickTopicView, UnstickTopicView, CloseTopicView,\
     OpenTopicView, ModeratePost, TopicPollVoteView, LatestTopicsView,\
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
                        url('^feeds/topics/$', LastTopics(), name='feed_topics'),
                        )
 
-urlpatterns += patterns('pybb.views',
+urlpatterns += patterns('jospybb.views',
                         # Index, Category, Forum
                         url('^$', IndexView.as_view(), name='index'),
                         url('^category/(?P<pk>\d+)/$', CategoryView.as_view(), name='category'),
@@ -74,7 +74,7 @@ urlpatterns += patterns('pybb.views',
                         )
 
 if PYBB_NICE_URL:
-    urlpatterns += patterns('pybb.views',
+    urlpatterns += patterns('jospybb.views',
                             url(r'^c/(?P<slug>[\w-]+)/$', CategoryView.as_view(), name='category'),
                             url(r'^c/(?P<category_slug>[\w-]+)/(?P<slug>[\w-]+)/$', ForumView.as_view(),
                                 name='forum'),

@@ -5,7 +5,7 @@ from bbcode import Parser
 from django.forms import Textarea
 from django.template import Context
 from django.template.loader import get_template
-from pybb.markup.base import smile_it, BaseParser
+from jospybb.markup.base import smile_it, BaseParser
 
 
 class BBCodeWidget(Textarea):
@@ -20,11 +20,11 @@ class BBCodeWidget(Textarea):
             'markitup/ajax_csrf.js',
             'markitup/jquery.markitup.js',
             'markitup/sets/bbcode/set.js',
-            'pybb/js/markitup.js',
+            'jospybb/js/markitup.js',
         )
 
     def render(self, *args, **kwargs):
-        tpl = get_template('pybb/markup/bbcode_widget.html')
+        tpl = get_template('jospybb/markup/bbcode_widget.html')
         ctx = Context({'widget_output': super(BBCodeWidget, self).render(*args, **kwargs)})
         return tpl.render(ctx)
 

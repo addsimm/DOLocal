@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from django.utils import translation
 from django.db.models import ObjectDoesNotExist
-from pybb import util
+from jospybb import util
 
 class PybbMiddleware(object):
     def process_request(self, request):
@@ -11,14 +11,14 @@ class PybbMiddleware(object):
             try:
                 # Here we try to load profile, but can get error
                 # if user created during syncdb but profile model
-                # under south control. (Like pybb.Profile).
+                # under south control. (Like jospybb.Profile).
                 profile = util.get_pybb_profile(request.user)
             except ObjectDoesNotExist:
                 # Ok, we should create new profile for this user
                 # and grant permissions for add posts
                 # It should be caused rarely, so we move import signal here
                 # to prevent circular import
-                from pybb.signals import user_saved
+                from jospybb.signals import user_saved
                 user_saved(request.user, created=True)
                 profile = util.get_pybb_profile(request.user)
 

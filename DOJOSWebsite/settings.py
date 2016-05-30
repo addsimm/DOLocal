@@ -104,16 +104,17 @@ INSTALLED_APPS = (
     'django_messages',
     ### NOT IMPLEMENTED "mailer",
     ### NOT IMPLEMENTED 'schedule',
-    ### NOT IMPLEMENTED 'notification',
+    'notification',
     "ckeditor",
     "cloudinary",
-    "pybb",
+    ### PROBLEM "jospybb",
+    "jospybb",
     "embed_video",
     "josstaff",
     "josmembers",
     "josprojects",
     "joscourses",
-    # "mezzanine.mobile",
+    ### NOT IMPLEMENTED "mezzanine.mobile",
 
 )
 
@@ -128,7 +129,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
     "mezzanine.pages.context_processors.page",
-    "pybb.context_processors.processor",
+    "jospybb.context_processors.processor",
     'django_messages.context_processors.inbox',
 )
 
@@ -158,7 +159,7 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 
-    'pybb.middleware.PybbMiddleware',
+    'jospybb.middleware.PybbMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'request.middleware.RequestMiddleware',
 )
@@ -288,8 +289,6 @@ REQUEST_PLUGINS = (
 DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
 DJANGO_MESSAGES_NOTIFY = False
 
-### PYBB_PROFILE_RELATED_NAME
-
 ##################
 # LOCAL SETTINGS #
 ##################
@@ -314,11 +313,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-# }
+def show_toolbar(request):
+    return True
 
-# DEBUG = True
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
+DEBUG = True

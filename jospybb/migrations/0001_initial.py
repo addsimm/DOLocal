@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
-from pybb.compat import get_image_field_class
-import pybb.util
+from jospybb.compat import get_image_field_class
+import jospybb.util
 import annoying.fields
 
 
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('size', models.IntegerField(verbose_name='Size')),
-                ('file', models.FileField(upload_to=pybb.util.FilePathGenerator(to='pybb_upload/attachments'), verbose_name='File')),
+                ('file', models.FileField(upload_to=jospybb.util.FilePathGenerator(to='jospybb_upload/attachments'), verbose_name='File')),
             ],
             options={
                 'verbose_name': 'Attachment',
@@ -55,9 +55,9 @@ class Migration(migrations.Migration):
                 ('topic_count', models.IntegerField(default=0, verbose_name='Topic count', blank=True)),
                 ('hidden', models.BooleanField(default=False, verbose_name='Hidden')),
                 ('headline', models.TextField(null=True, verbose_name='Headline', blank=True)),
-                ('category', models.ForeignKey(related_name='forums', verbose_name='Category', to='pybb.Category')),
+                ('category', models.ForeignKey(related_name='forums', verbose_name='Category', to='jospybb.Category')),
                 ('moderators', models.ManyToManyField(to=settings.AUTH_USER_MODEL, null=True, verbose_name='Moderators', blank=True)),
-                ('parent', models.ForeignKey(related_name='child_forums', verbose_name='Parent forum', blank=True, to='pybb.Forum', null=True)),
+                ('parent', models.ForeignKey(related_name='child_forums', verbose_name='Parent forum', blank=True, to='jospybb.Forum', null=True)),
             ],
             options={
                 'ordering': ['position'],
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('time_stamp', models.DateTimeField(auto_now=True)),
-                ('forum', models.ForeignKey(blank=True, to='pybb.Forum', null=True)),
+                ('forum', models.ForeignKey(blank=True, to='jospybb.Forum', null=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('poll_answer', models.ForeignKey(related_name='users', verbose_name='Poll answer', to='pybb.PollAnswer')),
+                ('poll_answer', models.ForeignKey(related_name='users', verbose_name='Poll answer', to='jospybb.PollAnswer')),
                 ('user', models.ForeignKey(related_name='poll_answers', verbose_name='User', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -135,7 +135,7 @@ class Migration(migrations.Migration):
                 ('language', models.CharField(default='en-us', max_length=10, verbose_name='Language', blank=True, choices=[(b'af', b'Afrikaans'), (b'ar', b'Arabic'), (b'ast', b'Asturian'), (b'az', b'Azerbaijani'), (b'bg', b'Bulgarian'), (b'be', b'Belarusian'), (b'bn', b'Bengali'), (b'br', b'Breton'), (b'bs', b'Bosnian'), (b'ca', b'Catalan'), (b'cs', b'Czech'), (b'cy', b'Welsh'), (b'da', b'Danish'), (b'de', b'German'), (b'el', b'Greek'), (b'en', b'English'), (b'en-au', b'Australian English'), (b'en-gb', b'British English'), (b'eo', b'Esperanto'), (b'es', b'Spanish'), (b'es-ar', b'Argentinian Spanish'), (b'es-mx', b'Mexican Spanish'), (b'es-ni', b'Nicaraguan Spanish'), (b'es-ve', b'Venezuelan Spanish'), (b'et', b'Estonian'), (b'eu', b'Basque'), (b'fa', b'Persian'), (b'fi', b'Finnish'), (b'fr', b'French'), (b'fy', b'Frisian'), (b'ga', b'Irish'), (b'gl', b'Galician'), (b'he', b'Hebrew'), (b'hi', b'Hindi'), (b'hr', b'Croatian'), (b'hu', b'Hungarian'), (b'ia', b'Interlingua'), (b'id', b'Indonesian'), (b'io', b'Ido'), (b'is', b'Icelandic'), (b'it', b'Italian'), (b'ja', b'Japanese'), (b'ka', b'Georgian'), (b'kk', b'Kazakh'), (b'km', b'Khmer'), (b'kn', b'Kannada'), (b'ko', b'Korean'), (b'lb', b'Luxembourgish'), (b'lt', b'Lithuanian'), (b'lv', b'Latvian'), (b'mk', b'Macedonian'), (b'ml', b'Malayalam'), (b'mn', b'Mongolian'), (b'mr', b'Marathi'), (b'my', b'Burmese'), (b'nb', b'Norwegian Bokmal'), (b'ne', b'Nepali'), (b'nl', b'Dutch'), (b'nn', b'Norwegian Nynorsk'), (b'os', b'Ossetic'), (b'pa', b'Punjabi'), (b'pl', b'Polish'), (b'pt', b'Portuguese'), (b'pt-br', b'Brazilian Portuguese'), (b'ro', b'Romanian'), (b'ru', b'Russian'), (b'sk', b'Slovak'), (b'sl', b'Slovenian'), (b'sq', b'Albanian'), (b'sr', b'Serbian'), (b'sr-latn', b'Serbian Latin'), (b'sv', b'Swedish'), (b'sw', b'Swahili'), (b'ta', b'Tamil'), (b'te', b'Telugu'), (b'th', b'Thai'), (b'tr', b'Turkish'), (b'tt', b'Tatar'), (b'udm', b'Udmurt'), (b'uk', b'Ukrainian'), (b'ur', b'Urdu'), (b'vi', b'Vietnamese'), (b'zh-cn', b'Simplified Chinese'), (b'zh-hans', b'Simplified Chinese'), (b'zh-hant', b'Traditional Chinese'), (b'zh-tw', b'Traditional Chinese')])),
                 ('show_signatures', models.BooleanField(default=True, verbose_name='Show signatures')),
                 ('post_count', models.IntegerField(default=0, verbose_name='Post count', blank=True)),
-                ('avatar', get_image_field_class()(upload_to=pybb.util.FilePathGenerator(to=b'pybb/avatar'), null=True, verbose_name='Avatar', blank=True)),
+                ('avatar', get_image_field_class()(upload_to=jospybb.util.FilePathGenerator(to=b'jospybb/avatar'), null=True, verbose_name='Avatar', blank=True)),
                 ('autosubscribe', models.BooleanField(default=True, help_text='Automatically subscribe to topics that you answer', verbose_name='Automatically subscribe')),
                 ('user', annoying.fields.AutoOneToOneField(related_name='pybb_profile', verbose_name='User', to=settings.AUTH_USER_MODEL)),
             ],
@@ -159,7 +159,7 @@ class Migration(migrations.Migration):
                 ('on_moderation', models.BooleanField(default=False, verbose_name='On moderation')),
                 ('poll_type', models.IntegerField(default=0, verbose_name='Poll type', choices=[(0, 'None'), (1, 'Single answer'), (2, 'Multiple answers')])),
                 ('poll_question', models.TextField(null=True, verbose_name='Poll question', blank=True)),
-                ('forum', models.ForeignKey(related_name='topics', verbose_name='Forum', to='pybb.Forum')),
+                ('forum', models.ForeignKey(related_name='topics', verbose_name='Forum', to='jospybb.Forum')),
             ],
             options={
                 'ordering': ['-created'],
@@ -173,7 +173,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('time_stamp', models.DateTimeField(auto_now=True)),
-                ('topic', models.ForeignKey(blank=True, to='pybb.Topic', null=True)),
+                ('topic', models.ForeignKey(blank=True, to='jospybb.Topic', null=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -189,7 +189,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='topic',
             name='readed_by',
-            field=models.ManyToManyField(related_name='readed_topics', through='pybb.TopicReadTracker', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='readed_topics', through='jospybb.TopicReadTracker', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -207,7 +207,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='topic',
-            field=models.ForeignKey(related_name='posts', verbose_name='Topic', to='pybb.Topic'),
+            field=models.ForeignKey(related_name='posts', verbose_name='Topic', to='jospybb.Topic'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -223,7 +223,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pollanswer',
             name='topic',
-            field=models.ForeignKey(related_name='poll_answers', verbose_name='Topic', to='pybb.Topic'),
+            field=models.ForeignKey(related_name='poll_answers', verbose_name='Topic', to='jospybb.Topic'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -233,13 +233,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='forum',
             name='readed_by',
-            field=models.ManyToManyField(related_name='readed_forums', through='pybb.ForumReadTracker', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='readed_forums', through='jospybb.ForumReadTracker', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachment',
             name='post',
-            field=models.ForeignKey(related_name='attachments', verbose_name='Post', to='pybb.Post'),
+            field=models.ForeignKey(related_name='attachments', verbose_name='Post', to='jospybb.Post'),
             preserve_default=True,
         ),
     ]

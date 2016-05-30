@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.utils import translation
 from django.contrib.sites.models import Site
 
-from pybb import defaults, util, compat
+from jospybb import defaults, util, compat
 
 if defaults.PYBB_USE_DJANGO_MAILER:
     try:
@@ -25,11 +25,11 @@ def notify_topic_subscribers(post):
         old_lang = translation.get_language()
 
         # Define constants for templates rendering
-        delete_url = reverse('pybb:delete_subscription', args=[post.topic.id])
+        delete_url = reverse('jospybb:delete_subscription', args=[post.topic.id])
         current_site = Site.objects.get_current()
         from_email = settings.DEFAULT_FROM_EMAIL
 
-        subject = render_to_string('pybb/mail_templates/subscription_email_subject.html',
+        subject = render_to_string('jospybb/mail_templates/subscription_email_subject.html',
                                    {'site': current_site,
                                     'post': post})
         # Email subject *must not* contain newlines
@@ -49,7 +49,7 @@ def notify_topic_subscribers(post):
             lang = util.get_pybb_profile(user).language or settings.LANGUAGE_CODE
             translation.activate(lang)
 
-            message = render_to_string('pybb/mail_templates/subscription_email_body.html',
+            message = render_to_string('jospybb/mail_templates/subscription_email_body.html',
                                        {'site': current_site,
                                         'post': post,
                                         'delete_url': delete_url,

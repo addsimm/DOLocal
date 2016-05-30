@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import re
 from django.conf import settings
 from django.utils.html import escape
-from pybb.defaults import PYBB_SMILES, PYBB_SMILES_PREFIX
+from jospybb.defaults import PYBB_SMILES, PYBB_SMILES_PREFIX
 from django.forms import Textarea
 
 

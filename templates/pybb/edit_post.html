@@ -1,4 +1,4 @@
-{% extends 'pybb/base.html' %}
+{% extends 'jospybb/base.html' %}
 {% load pybb_tags i18n staticfiles %}
 
 {% block title %}{% trans "Editing the post" %}{% endblock title %}
@@ -10,17 +10,17 @@
 {% block extra_script %}
     {{ block.super }}
     {{ form.media.js }}
-    <script type="text/javascript" src="{% static 'pybb/js/jquery.formset.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jospybb/js/jquery.formset.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <h1>{% trans "Editing the post" %}</h1>
-    {% include "pybb/post_form.html" %}
+    {% include  "jospybb/post_form.html" %}
 {% endblock content %}
 
 {% block breadcrumb %}
     {% with extra_crumb="Edit post" %}
-        {% include "pybb/breadcrumb.html" %}
+        {% include  "jospybb/breadcrumb.html" %}
     {% endwith %}
     
 {% endblock %}

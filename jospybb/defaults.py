@@ -21,14 +21,14 @@ PYBB_FREEZE_FIRST_POST = getattr(settings, 'PYBB_FREEZE_FIRST_POST', False)
 
 PYBB_ATTACHMENT_SIZE_LIMIT = getattr(settings, 'PYBB_ATTACHMENT_SIZE_LIMIT', 1024 * 1024)
 PYBB_ATTACHMENT_ENABLE = getattr(settings, 'PYBB_ATTACHMENT_ENABLE', False)
-PYBB_ATTACHMENT_UPLOAD_TO = getattr(settings, 'PYBB_ATTACHMENT_UPLOAD_TO', os.path.join('pybb_upload', 'attachments'))
+PYBB_ATTACHMENT_UPLOAD_TO = getattr(settings, 'PYBB_ATTACHMENT_UPLOAD_TO', os.path.join('jospybb_upload', 'attachments'))
 
 PYBB_DEFAULT_AVATAR_URL = getattr(settings, 'PYBB_DEFAULT_AVATAR_URL',
-                                  getattr(settings, 'STATIC_URL', '') + 'pybb/img/default_avatar.jpg')
+                                  getattr(settings, 'STATIC_URL', '') + 'jospybb/img/default_avatar.jpg')
 
 PYBB_DEFAULT_TITLE = getattr(settings, 'PYBB_DEFAULT_TITLE', 'PYBB Powered Forum')
 
-PYBB_SMILES_PREFIX = getattr(settings, 'PYBB_SMILES_PREFIX', 'pybb/emoticons/')
+PYBB_SMILES_PREFIX = getattr(settings, 'PYBB_SMILES_PREFIX', 'jospybb/emoticons/')
 
 PYBB_SMILES = getattr(settings, 'PYBB_SMILES', {
     '&gt;_&lt;': 'angry.png',
@@ -72,8 +72,8 @@ def getsetting_with_deprecation_check(all_settings, setting_name):
 
 
 if not hasattr(settings, 'PYBB_MARKUP_ENGINES_PATHS'):
-    PYBB_MARKUP_ENGINES_PATHS = {'bbcode': 'pybb.markup.bbcode.BBCodeParser',
-                                 'markdown': 'pybb.markup.markdown.MarkdownParser'}
+    PYBB_MARKUP_ENGINES_PATHS = {'bbcode': 'jospybb.markup.bbcode.BBCodeParser',
+                                 'markdown': 'jospybb.markup.markdown.MarkdownParser'}
 else:
     PYBB_MARKUP_ENGINES_PATHS = getattr(settings, 'PYBB_MARKUP_ENGINES_PATHS')
 
@@ -94,7 +94,7 @@ PYBB_MARKUP = getattr(settings, 'PYBB_MARKUP', None)
 if not PYBB_MARKUP or PYBB_MARKUP not in PYBB_MARKUP_ENGINES:
     if not PYBB_MARKUP_ENGINES:
         warnings.warn('There is no markup engines defined in your settings. '
-                      'Default pybb.base.BaseParser will be used.'
+                      'Defaultjospybb.base.BaseParser will be used.'
                       'Please set correct PYBB_MARKUP_ENGINES_PATHS and PYBB_MARKUP settings.',
                       DeprecationWarning)
         PYBB_MARKUP = None
@@ -116,7 +116,7 @@ PYBB_DISABLE_NOTIFICATIONS = getattr(settings, 'PYBB_DISABLE_NOTIFICATIONS', Fal
 PYBB_PREMODERATION = getattr(settings, 'PYBB_PREMODERATION', False)
 
 if not hasattr(settings, 'PYBB_BODY_CLEANERS'):
-    PYBB_BODY_CLEANERS = ['pybb.markup.base.rstrip_str', 'pybb.markup.base.filter_blanks']
+    PYBB_BODY_CLEANERS = ['jospybb.markup.base.rstrip_str', 'jospybb.markup.base.filter_blanks']
 else:
     PYBB_BODY_CLEANERS = getsetting_with_deprecation_check(settings, 'PYBB_BODY_CLEANERS')
 
@@ -128,7 +128,7 @@ PYBB_AUTO_USER_PERMISSIONS = getattr(settings, 'PYBB_AUTO_USER_PERMISSIONS', Tru
 
 PYBB_USE_DJANGO_MAILER = getattr(settings, 'PYBB_USE_DJANGO_MAILER', False)
 
-PYBB_PERMISSION_HANDLER = getattr(settings, 'PYBB_PERMISSION_HANDLER', 'pybb.permissions.DefaultPermissionHandler')
+PYBB_PERMISSION_HANDLER = getattr(settings, 'PYBB_PERMISSION_HANDLER', 'jospybb.permissions.DefaultPermissionHandler')
 
 PYBB_PROFILE_RELATED_NAME = getattr(settings, 'PYBB_PROFILE_RELATED_NAME', 'pybb_profile')
 
@@ -140,11 +140,11 @@ PYBB_INITIAL_CUSTOM_USER_MIGRATION = getattr(settings, 'PYBB_INITIAL_CUSTOM_USER
 def bbcode(s):
     warnings.warn(
         bad_function_warning % {
-            'bad': 'pybb.defaults.bbcode',
-            'good': 'pybb.markup.bbcode.BBCodeParser',
+            'bad': 'jospybb.defaults.bbcode',
+            'good': 'jospybb.markup.bbcode.BBCodeParser',
         },
         DeprecationWarning)
-    from pybb.markup.bbcode import BBCodeParser
+    from jospybb.markup.bbcode import BBCodeParser
 
     return BBCodeParser().format(s)
 
@@ -152,20 +152,20 @@ def bbcode(s):
 def markdown(s):
     warnings.warn(
         bad_function_warning % {
-            'bad': 'pybb.defaults.markdown',
-            'good': 'pybb.markup.markdown.MarkdownParser',
+            'bad': 'jospybb.defaults.markdown',
+            'good': 'jospybb.markup.markdown.MarkdownParser',
         },
         DeprecationWarning)
-    from pybb.markup.markdown import MarkdownParser
+    from jospybb.markup.markdown import MarkdownParser
 
     return MarkdownParser().format(s)
 
 
 def _render_quote(name, value, options, parent, context):
-    warnings.warn('pybb.defaults._render_quote function is deprecated. '
-                  'This function is internal of new pybb.markup.bbcode.BBCodeParser class.',
+    warnings.warn('jospybb.defaults._render_quote function is deprecated. '
+                  'This function is internal of newjospybb.markup.bbcode.BBCodeParser class.',
                   DeprecationWarning)
-    from pybb.markup.bbcode import BBCodeParser
+    from jospybb.markup.bbcode import BBCodeParser
 
     return BBCodeParser()._render_quote(name, value, options, parent, context)
 
@@ -173,10 +173,10 @@ def _render_quote(name, value, options, parent, context):
 def smile_it(s):
     warnings.warn(
         bad_function_warning % {
-            'bad': 'pybb.defaults.smile_it',
-            'good': 'pybb.markup.base.smile_it',
+            'bad': 'jospybb.defaults.smile_it',
+            'good': 'jospybb.markup.base.smile_it',
         },
         DeprecationWarning)
-    from pybb.markup.base import smile_it as real_smile_it
+    from jospybb.markup.base import smile_it as real_smile_it
 
     return real_smile_it(s)

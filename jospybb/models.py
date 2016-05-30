@@ -10,10 +10,10 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now as tznow
 
-from pybb.compat import get_user_model_path, get_username_field, get_atomic_func, slugify
-from pybb import defaults
-from pybb.profiles import PybbProfile
-from pybb.util import unescape, FilePathGenerator, _get_markup_formatter
+from jospybb.compat import get_user_model_path, get_username_field, get_atomic_func, slugify
+from jospybb import defaults
+from jospybb.profiles import PybbProfile
+from jospybb.util import unescape, FilePathGenerator, _get_markup_formatter
 
 from annoying.fields import AutoOneToOneField
 
@@ -47,8 +47,8 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         if defaults.PYBB_NICE_URL:
-            return reverse('pybb:category', kwargs={'slug': self.slug, })
-        return reverse('pybb:category', kwargs={'pk': self.id})
+            return reverse('jospybb:category', kwargs={'slug': self.slug, })
+        return reverse('jospybb:category', kwargs={'pk': self.id})
 
     @property
     def topics(self):
@@ -102,8 +102,8 @@ class Forum(models.Model):
 
     def get_absolute_url(self):
         if defaults.PYBB_NICE_URL:
-            return reverse('pybb:forum', kwargs={'slug': self.slug, 'category_slug': self.category.slug})
-        return reverse('pybb:forum', kwargs={'pk': self.id})
+            return reverse('jospybb:forum', kwargs={'slug': self.slug, 'category_slug': self.category.slug})
+        return reverse('jospybb:forum', kwargs={'pk': self.id})
 
     @property
     def posts(self):
@@ -182,8 +182,8 @@ class Topic(models.Model):
 
     def get_absolute_url(self):
         if defaults.PYBB_NICE_URL:
-            return reverse('pybb:topic', kwargs={'slug': self.slug, 'forum_slug': self.forum.slug, 'category_slug': self.forum.category.slug})
-        return reverse('pybb:topic', kwargs={'pk': self.id})
+            return reverse('jospybb:topic', kwargs={'slug': self.slug, 'forum_slug': self.forum.slug, 'category_slug': self.forum.category.slug})
+        return reverse('jospybb:topic', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
         if self.id is None:
@@ -301,7 +301,7 @@ class Post(RenderableItem):
             old_post.topic.forum.update_counters()
 
     def get_absolute_url(self):
-        return reverse('pybb:post', kwargs={'pk': self.id})
+        return reverse('jospybb:post', kwargs={'pk': self.id})
 
     def delete(self, *args, **kwargs):
         self_id = self.id
@@ -333,7 +333,7 @@ class Profile(PybbProfile):
         verbose_name_plural = _('Profiles')
 
     def get_absolute_url(self):
-        return reverse('pybb:user', kwargs={'username': getattr(self.user, get_username_field())})
+        return reverse('jospybb:user', kwargs={'username': getattr(self.user, get_username_field())})
 
     def get_display_name(self):
         return self.user.get_username()

@@ -10,8 +10,8 @@ from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.utils.translation import ugettext, ugettext_lazy
 from django.utils.timezone import now as tznow
 
-from pybb import compat, defaults, util
-from pybb.models import Topic, Post, Attachment, PollAnswer
+from jospybb import compat, defaults, util
+from jospybb.models import Topic, Post, Attachment, PollAnswer
 
 
 User = compat.get_user_model()

@@ -5,9 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class PybbConfig(AppConfig):
-    name = 'pybb'
+    name = 'jospybb'
     verbose_name = _('Pybbm forum solution')
 
     def ready(self):
-        from pybb import signals
+        from jospybb import signals
         signals.setup()

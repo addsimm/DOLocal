@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 from django.core.management.base import BaseCommand, CommandError
-from pybb import compat
+from jospybb import compat
 
-from pybb.models import Forum
+from jospybb.models import Forum
 
 
 class Command(BaseCommand):

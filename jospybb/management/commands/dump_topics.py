@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 __author__ = 'zeus'
 
 from django.core.management.base import BaseCommand
-from pybb.models import Topic, Post
+from jospybb.models import Topic, Post
 from django.core import serializers
 
 

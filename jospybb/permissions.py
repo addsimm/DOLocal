@@ -6,7 +6,7 @@ Extensible permission system for pybbm
 from __future__ import unicode_literals
 from django.db.models import Q
 
-from pybb import defaults, util
+from jospybb import defaults, util
 
 
 class DefaultPermissionHandler(object):
@@ -45,7 +45,7 @@ class DefaultPermissionHandler(object):
 
     def may_create_topic(self, user, forum):
         """ return True if `user` is allowed to create a new topic in `forum` """
-        return user.has_perm('pybb.add_post')
+        return user.has_perm('jospybb.add_post')
 
     #
     # permission checks on topics
@@ -108,8 +108,8 @@ class DefaultPermissionHandler(object):
             # if topic is closed, only staff may post
             return False
 
-        # only user which have 'pybb.add_post' permission may post
-        return defaults.PYBB_ENABLE_ANONYMOUS_POST or user.has_perm('pybb.add_post')
+        # only user which have 'jospybb.add_post' permission may post
+        return defaults.PYBB_ENABLE_ANONYMOUS_POST or user.has_perm('jospybb.add_post')
 
     def may_post_as_admin(self, user):
         """ return True if `user` may post as admin """
@@ -163,7 +163,7 @@ class DefaultPermissionHandler(object):
     #
     def may_block_user(self, user, user_to_block):
         """ return True if `user` may block `user_to_block` """
-        return user.has_perm('pybb.block_users')
+        return user.has_perm('jospybb.block_users')
 
     def may_attach_files(self, user):
         """

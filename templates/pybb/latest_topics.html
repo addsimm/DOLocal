@@ -1,4 +1,4 @@
-{% extends 'pybb/base.html' %}
+{% extends 'jospybb/base.html' %}
 
 {% load pybb_tags i18n %}
 
@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     {% with extra_crumb=_("Last updates in topics") %}
-        {% include "pybb/breadcrumb.html" %}
+        {% include  "jospybb/breadcrumb.html" %}
     {% endwith %}
 {% endblock %}
 
@@ -19,15 +19,15 @@
             </div>
         {% endif %}
 
-        {% include "pybb/pagination.html" %}
+        {% include  "jospybb/pagination.html" %}
 
-        {% include "pybb/topic_list.html" %}
+        {% include  "jospybb/topic_list.html" %}
 
-        {% include "pybb/pagination.html" %}
+        {% include  "jospybb/pagination.html" %}
 
         {% if user.is_authenticated %}
             <div id='mark-all-as-read'>
-                <a href='{% url 'pybb:mark_all_as_read' %}'>
+                <a href='{% url 'jospybb:mark_all_as_read' %}'>
                     {% trans "Mark all topics as read" %}
                 </a>
             </div>

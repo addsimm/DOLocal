@@ -4,9 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
-from pybb.models import Category, Forum, Topic, Post, Profile, Attachment, PollAnswer
+from jospybb.models import Category, Forum, Topic, Post, Profile, Attachment, PollAnswer
 
-from pybb import compat, util
+from jospybb import compat, util
 username_field = compat.get_username_field()
 
 

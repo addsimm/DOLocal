@@ -19,12 +19,12 @@ from django.views.decorators.http import require_POST
 from django.views.generic.edit import ModelFormMixin
 from django.views.decorators.csrf import csrf_protect
 from django.views import generic
-from pybb import compat, defaults, util
-from pybb.compat import get_atomic_func
-from pybb.forms import PostForm, AdminPostForm, AttachmentFormSet, PollAnswerFormSet, PollForm
-from pybb.models import Category, Forum, Topic, Post, TopicReadTracker, ForumReadTracker, PollAnswerUser
-from pybb.permissions import perms
-from pybb.templatetags.pybb_tags import pybb_topic_poll_not_voted
+from jospybb import compat, defaults, util
+from jospybb.compat import get_atomic_func
+from jospybb.forms import PostForm, AdminPostForm, AttachmentFormSet, PollAnswerFormSet, PollForm
+from jospybb.models import Category, Forum, Topic, Post, TopicReadTracker, ForumReadTracker, PollAnswerUser
+from jospybb.permissions import perms
+from jospybb.templatetags.pybb_tags import pybb_topic_poll_not_voted
 
 
 User = compat.get_user_model()
@@ -62,7 +62,7 @@ class RedirectToLoginMixin(object):
 
 class IndexView(generic.ListView):
 
-    template_name = 'pybb/index.html'
+    template_name = 'jospybb/index.html'
     context_object_name = 'categories'
 
     def get_context_data(self, **kwargs):
@@ -79,7 +79,7 @@ class IndexView(generic.ListView):
 
 class CategoryView(RedirectToLoginMixin, generic.DetailView):
 
-    template_name = 'pybb/index.html'
+    template_name = 'jospybb/index.html'
     context_object_name = 'category'
 
     def get_login_redirect_url(self):
@@ -112,7 +112,7 @@ class ForumView(RedirectToLoginMixin, PaginatorMixin, generic.ListView):
 
     paginate_by = defaults.PYBB_FORUM_PAGE_SIZE
     context_object_name = 'topic_list'
-    template_name = 'pybb/forum.html'
+    template_name = 'jospybb/forum.html'
 
     def dispatch(self, request, *args, **kwargs):
         self.forum = self.get_forum(**kwargs)
@@ -154,7 +154,7 @@ class LatestTopicsView(PaginatorMixin, generic.ListView):
 
     paginate_by = defaults.PYBB_FORUM_PAGE_SIZE
     context_object_name = 'topic_list'
-    template_name = 'pybb/latest_topics.html'
+    template_name = 'jospybb/latest_topics.html'
 
     def get_queryset(self):
         qs = Topic.objects.all().select_related()
@@ -189,7 +189,7 @@ class PybbFormsMixin(object):
 class TopicView(RedirectToLoginMixin, PaginatorMixin, PybbFormsMixin, generic.ListView):
     paginate_by = defaults.PYBB_TOPIC_PAGE_SIZE
     template_object_name = 'post_list'
-    template_name = 'pybb/topic.html'
+    template_name = 'jospybb/topic.html'
 
     def get_login_redirect_url(self):
         return self.topic.get_absolute_url()
@@ -218,7 +218,7 @@ class TopicView(RedirectToLoginMixin, PaginatorMixin, PybbFormsMixin, generic.Li
                         first_unread_topic = self.topic.last_post
                 else:
                     first_unread_topic = self.topic.head
-                return HttpResponseRedirect(reverse('pybb:post', kwargs={'pk': first_unread_topic.id}))
+                return HttpResponseRedirect(reverse('jospybb:post', kwargs={'pk': first_unread_topic.id}))
 
         return super(TopicView, self).dispatch(request, *args, **kwargs)
 
@@ -404,7 +404,7 @@ class PostEditMixin(PybbFormsMixin):
 
 class AddPostView(PostEditMixin, generic.CreateView):
 
-    template_name = 'pybb/add_post.html'
+    template_name = 'jospybb/add_post.html'
 
     @method_decorator(csrf_protect)
     def dispatch(self, request, *args, **kwargs):
@@ -466,7 +466,7 @@ class AddPostView(PostEditMixin, generic.CreateView):
 
     def get_success_url(self):
         if (not self.request.user.is_authenticated()) and defaults.PYBB_PREMODERATION:
-            return reverse('pybb:index')
+            return reverse('jospybb:index')
         return self.object.get_absolute_url()
 
 
@@ -475,7 +475,7 @@ class EditPostView(PostEditMixin, generic.UpdateView):
     model = Post
 
     context_object_name = 'post'
-    template_name = 'pybb/edit_post.html'
+    template_name = 'jospybb/edit_post.html'
 
     @method_decorator(login_required)
     @method_decorator(csrf_protect)
@@ -496,7 +496,7 @@ class EditPostView(PostEditMixin, generic.UpdateView):
 
 class UserView(generic.DetailView):
     model = User
-    template_name = 'pybb/user.html'
+    template_name = 'jospybb/user.html'
     context_object_name = 'target_user'
 
     def get_object(self, queryset=None):
@@ -513,7 +513,7 @@ class UserView(generic.DetailView):
 class UserPosts(PaginatorMixin, generic.ListView):
     model = Post
     paginate_by = defaults.PYBB_TOPIC_PAGE_SIZE
-    template_name = 'pybb/user_posts.html'
+    template_name = 'jospybb/user_posts.html'
 
     def dispatch(self, request, *args, **kwargs):
         username = kwargs.pop('username')
@@ -536,7 +536,7 @@ class UserPosts(PaginatorMixin, generic.ListView):
 class UserTopics(PaginatorMixin, generic.ListView):
     model = Topic
     paginate_by = defaults.PYBB_FORUM_PAGE_SIZE
-    template_name = 'pybb/user_topics.html'
+    template_name = 'jospybb/user_topics.html'
 
     def dispatch(self, request, *args, **kwargs):
         username = kwargs.pop('username')
@@ -593,14 +593,14 @@ class ModeratePost(generic.RedirectView):
 
 class ProfileEditView(generic.UpdateView):
 
-    template_name = 'pybb/edit_profile.html'
+    template_name = 'jospybb/edit_profile.html'
 
     def get_object(self, queryset=None):
         return util.get_pybb_profile(self.request.user)
 
     def get_form_class(self):
         if not self.form_class:
-            from pybb.forms import EditProfileForm
+            from jospybb.forms import EditProfileForm
             return EditProfileForm
         else:
             return super(ProfileEditView, self).get_form_class()
@@ -611,12 +611,12 @@ class ProfileEditView(generic.UpdateView):
         return super(ProfileEditView, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('pybb:edit_profile')
+        return reverse('jospybb:edit_profile')
 
 
 class DeletePostView(generic.DeleteView):
 
-    template_name = 'pybb/delete_post.html'
+    template_name = 'jospybb/delete_post.html'
     context_object_name = 'post'
 
     def get_object(self, queryset=None):
@@ -762,7 +762,7 @@ def add_subscription(request, topic_id):
 def post_ajax_preview(request):
     content = request.POST.get('data')
     html = util._get_markup_formatter()(content)
-    return render(request, 'pybb/_markitup_preview.html', {'html': html})
+    return render(request, 'jospybb/_markitup_preview.html', {'html': html})
 
 
 @login_required
@@ -773,7 +773,7 @@ def mark_all_as_read(request):
     TopicReadTracker.objects.filter(user=request.user).delete()
     msg = _('All forums marked as read')
     messages.success(request, msg, fail_silently=True)
-    return redirect(reverse('pybb:index'))
+    return redirect(reverse('jospybb:index'))
 
 
 @login_required
@@ -806,7 +806,7 @@ def block_user(request, username):
 
     msg = _('User successfuly blocked')
     messages.success(request, msg, fail_silently=True)
-    return redirect('pybb:index')
+    return redirect('jospybb:index')
 
 
 @login_required
@@ -819,4 +819,4 @@ def unblock_user(request, username):
     user.save()
     msg = _('User successfuly unblocked')
     messages.success(request, msg, fail_silently=True)
-    return redirect('pybb:index')
+    return redirect('jospybb:index')

@@ -22,59 +22,48 @@ urlpatterns = i18n_patterns("",
     ("^admin/", include(admin.site.urls)),
 )
 
-if settings.USE_MODELTRANSLATION:
-    urlpatterns += patterns('',
-        url('^i18n/$', 'django.views.i18n.set_language', name='set_language'),
-    )
+# if settings.USE_MODELTRANSLATION:
+#     urlpatterns += patterns('',
+#         url('^i18n/$', 'django.views.i18n.set_language', name='set_language'),
+#     )
 
 urlpatterns += patterns('',
-    # HOMEPAGE AS AN EDITABLE
+    # EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
-    ### Analytics
+    ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
 
     ### JOS Members / Accounts ###
-    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash),
-        "josmembers.views.jos_new_password", name="jos_new_password"),
-    url("^%s%s%s$" %
-        (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
-        "josmembers.views.password_reset_verify", name="password_reset_verify"),
+    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),
+    url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash), "josmembers.views.password_reset_verify",name="password_reset_verify"),
     ('^', include('josmembers.urls')),
 
-    ### JOS Projects ###
-
+    ### JOS Projects / Courses ###
     ("^", include("josprojects.urls")),
     ("^joscourses/", include("joscourses.urls")),
 
-    ### JOS Staff
+    ### JOS Staff ###
     url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
     url("legals/$", "josstaff.views.legals", name="legals"),
     url("community-rules/$", "josstaff.views.community_rules", name="community_rules"),
-
-    url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash),
-        "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
-    url("^%s%s$" % ("josanal".strip("/"), _slash),
-        "josstaff.views.josanal", name="josanal"),
+    url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash), "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
+    url("^%s%s$" % ("josanal".strip("/"), _slash), "josstaff.views.josanal", name="josanal"),
 
     ### DJOINGO ###
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
     ### Forums, Messaging, Etc. ###
-    url(r'^forum/', include('pybb.urls', namespace='pybb')),
-
+    url(r'^forum/', include('jospybb.urls', namespace='jospybb')),
     # messages implemented to avoid disclosing addresses
-    url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose",
-        name='messages_compose'),
-    url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply",
-        name='messages_reply'),
+    url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose", name='messages_compose'),
+    url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply", name='messages_reply'),
     url(r'^messages/', include('django_messages.urls')),
 
     # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
 
     ### ADD URLPATTERNS *ABOVE* MEZZANINE'S URLS
     ("^", include("mezzanine.urls")),
-
 )
 
 ### DJANGO-DEBUG-TOOLBAR

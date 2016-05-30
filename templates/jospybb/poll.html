@@ -16,9 +16,9 @@
       {% if user|pybb_may_vote_in_topic:topic and topic|pybb_topic_poll_not_voted:request.user %}
         <tr class="poll-answer-choice">
           <td>
-            <form class="poll-form" action="{% url 'pybb:topic_poll_vote' topic.pk %}" method="post">
-              {% include "pybb/form.html" with form=poll_form %}
-              <p class="submit">{% include "pybb/_button_submit.html" %}</p>
+            <form class="poll-form" action="{% url 'jospybb:topic_poll_vote' topic.pk %}" method="post">
+              {% include  "jospybb/form.html" with form=poll_form %}
+              <p class="submit">{% include  "jospybb/_button_submit.html" %}</p>
             </form>
           </td>
         </tr>
@@ -32,9 +32,9 @@
         {% if user|pybb_may_vote_in_topic:topic %}
         <tr>
           <td colspan="2">
-            <form action="{% url 'pybb:topic_cancel_poll_vote' pk=topic.pk %}" method="post">{% csrf_token %}
+            <form action="{% url 'jospybb:topic_cancel_poll_vote' pk=topic.pk %}" method="post">{% csrf_token %}
               {% with submit_text=_('Cancel my poll vote') %}
-                {% include "pybb/_button_submit.html" %}
+                {% include  "jospybb/_button_submit.html" %}
               {% endwith %}
             </form>
           </td>

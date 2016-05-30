@@ -3,13 +3,13 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import pybb.util
+import jospybb.util
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pybb', '0004_slugs_required'),
+        ('jospybb', '0004_slugs_required'),
     ]
 
     operations = [
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='avatar',
-            field=models.ImageField(blank=True, null=True, upload_to=pybb.util.FilePathGenerator(to='pybb/avatar'), verbose_name='Avatar'),
+            field=models.ImageField(blank=True, null=True, upload_to=jospybb.util.FilePathGenerator(to='jospybb/avatar'), verbose_name='Avatar'),
         ),
         migrations.AlterField(
             model_name='profile',

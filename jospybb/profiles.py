@@ -3,8 +3,8 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from pybb import defaults, util
-from pybb.compat import get_image_field_class, get_username_field
+from jospybb import defaults, util
+from jospybb.compat import get_image_field_class, get_username_field
 
 
 TZ_CHOICES = [(float(x[0]), x[1]) for x in (
@@ -39,7 +39,7 @@ class PybbProfile(models.Model):
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=True)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     avatar = get_image_field_class()(_('Avatar'), blank=True, null=True,
-                                     upload_to=util.FilePathGenerator(to='pybb/avatar'))
+                                     upload_to=util.FilePathGenerator(to='jospybb/avatar'))
     autosubscribe = models.BooleanField(_('Automatically subscribe'),
                                         help_text=_('Automatically subscribe to topics that you answer'),
                                         default=defaults.PYBB_DEFAULT_AUTOSUBSCRIBE)

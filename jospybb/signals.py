@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save, post_delete, pre_save
-from pybb.models import Post, Category, Topic, Forum, create_or_check_slug
-from pybb.subscription import notify_topic_subscribers
-from pybb import util, defaults, compat
-from pybb.permissions import perms
+from jospybb.models import Post, Category, Topic, Forum, create_or_check_slug
+from jospybb.subscription import notify_topic_subscribers
+from jospybb import util, defaults, compat
+from jospybb.permissions import perms
 
 
 def post_saved(instance, **kwargs):
@@ -41,8 +41,8 @@ def user_saved(instance, created, **kwargs):
         return
 
     try:
-        add_post_permission = Permission.objects.get_by_natural_key('add_post', 'pybb', 'post')
-        add_topic_permission = Permission.objects.get_by_natural_key('add_topic', 'pybb', 'topic')
+        add_post_permission = Permission.objects.get_by_natural_key('add_post', 'jospybb', 'post')
+        add_topic_permission = Permission.objects.get_by_natural_key('add_topic', 'jospybb', 'topic')
     except (Permission.DoesNotExist, ContentType.DoesNotExist):
         return
     instance.user_permissions.add(add_post_permission, add_topic_permission)

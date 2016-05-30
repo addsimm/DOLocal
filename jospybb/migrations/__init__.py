@@ -9,7 +9,7 @@ SOUTH_ERROR_MESSAGE = """\n
 For South support, customize the SOUTH_MIGRATION_MODULES setting like so:
 
     SOUTH_MIGRATION_MODULES = {
-        'pybb': 'pybb.south_migrations',
+        'jospybb': 'jospybb.south_migrations',
     }
 """
 

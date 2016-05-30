@@ -8,14 +8,14 @@ import uuid
 from importlib import import_module
 from django.utils.six import string_types
 from django.utils.translation import ugettext as _
-from pybb import compat
+from jospybb import compat
 
-from pybb.compat import get_username_field, get_user_model
-from pybb.defaults import (
+from jospybb.compat import get_username_field, get_user_model
+from jospybb.defaults import (
     PYBB_MARKUP, PYBB_MARKUP_ENGINES_PATHS,
     PYBB_MARKUP_ENGINES, PYBB_QUOTE_ENGINES
 )
-from pybb.markup.base import BaseParser
+from jospybb.markup.base import BaseParser
 
 # TODO in the next major release : delete _MARKUP_ENGINES_FORMATTERS and _MARKUP_ENGINES_QUOTERS
 _MARKUP_ENGINES = {}
@@ -131,7 +131,7 @@ def unescape(text):
 
 
 def get_pybb_profile(user):
-    from pybb import defaults
+    from jospybb import defaults
 
     if not user.is_authenticated():
         if defaults.PYBB_ENABLE_ANONYMOUS_POST:
@@ -146,7 +146,7 @@ def get_pybb_profile(user):
 
 
 def get_pybb_profile_model():
-    from pybb import defaults
+    from jospybb import defaults
 
     if defaults.PYBB_PROFILE_RELATED_NAME:
         return compat.get_related_model_class(get_user_model(), defaults.PYBB_PROFILE_RELATED_NAME)
@@ -171,7 +171,7 @@ class FilePathGenerator(object):
         self.to = to
 
     def deconstruct(self, *args, **kwargs):
-        return 'pybb.util.FilePathGenerator', [], {'to': self.to}
+        return 'jospybb.util.FilePathGenerator', [], {'to': self.to}
 
     def __call__(self, instance, filename):
         """

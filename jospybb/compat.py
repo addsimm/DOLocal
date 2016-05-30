@@ -59,7 +59,7 @@ def get_user_frozen_models(user_model):
         except NoMigrations:
             extra_model = freeze_apps(user_app)
         else:
-            from pybb import defaults
+            from jospybb import defaults
             migration_name = defaults.PYBB_INITIAL_CUSTOM_USER_MIGRATION or '0001_initial.py'
             initial_user_migration = user_migrations.migration(migration_name)
             extra_model = initial_user_migration.migration_class().models

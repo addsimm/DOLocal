@@ -2,13 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from pybb.models import create_or_check_slug
+from jospybb.models import create_or_check_slug
 
 
 def fill_slugs(apps, schema_editor):
-    Category = apps.get_model("pybb", "Category")
-    Forum = apps.get_model("pybb", "Forum")
-    Topic = apps.get_model("pybb", "Topic")
+    Category = apps.get_model("jospybb", "Category")
+    Forum = apps.get_model("jospybb", "Forum")
+    Topic = apps.get_model("jospybb", "Topic")
     for category in Category.objects.all():
         category.slug = create_or_check_slug(instance=category, model=Category)
         category.save()
@@ -25,9 +25,9 @@ def fill_slugs(apps, schema_editor):
 
 
 def clear_slugs(apps, schema_editor):
-    Category = apps.get_model("pybb", "Category")
-    Forum = apps.get_model("pybb", "Forum")
-    Topic = apps.get_model("pybb", "Topic")
+    Category = apps.get_model("jospybb", "Category")
+    Forum = apps.get_model("jospybb", "Forum")
+    Topic = apps.get_model("jospybb", "Topic")
 
     Category.objects.all().update(slug='')
     Forum.objects.all().update(slug='')
@@ -37,7 +37,7 @@ def clear_slugs(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pybb', '0002_slugs_optional'),
+        ('jospybb', '0002_slugs_optional'),
     ]
 
     operations = [

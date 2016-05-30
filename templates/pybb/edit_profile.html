@@ -1,4 +1,4 @@
-{% extends 'pybb/base.html' %}
+{% extends 'jospybb/base.html' %}
 
 {% load i18n pybb_tags %}
 
@@ -6,13 +6,13 @@
 
 {% block content %}
     <h1>{% trans "Profile editing" %}</h1>
-    {% include 'pybb/avatar.html' with user=user %}
+    {% include 'jospybb/avatar.html' with user=user %}
     <form method="post" enctype="multipart/form-data" class="profile-edit">
         {% csrf_token %}
         <fieldset>
             <legend>{% trans "Profile editing" %}</legend>
-            {% include "pybb/form.html" %}
-            <p>{% include "pybb/_button_save.html" %}</p>
+            {% include  "jospybb/form.html" %}
+            <p>{% include  "jospybb/_button_save.html" %}</p>
         </fieldset>
     </form>
     <h1>{% trans "Subscriptions on topics" %}</h1>
@@ -22,7 +22,7 @@
                 {% pybb_link sub %}
                 &mdash;
                 <strong>
-                    <a href="{% url 'pybb:delete_subscription' sub.id %}">{% trans "delete" %}</a>
+                    <a href="{% url 'jospybb:delete_subscription' sub.id %}">{% trans "delete" %}</a>
                 </strong>
             </li>
         {% endfor %}

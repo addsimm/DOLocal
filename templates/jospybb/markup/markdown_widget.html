@@ -10,7 +10,7 @@ if(!window.pybb){
 if(!window.pybb.get_markitup_settings){
     window.pybb.get_markitup_settings = function() {
         var mySettings = new Array();
-        mySettings['previewParserPath'] = '{% url "pybb:post_ajax_preview" %}';
+        mySettings['previewParserPath'] = '{% url  "jospybb:post_ajax_preview" %}';
         mySettings['previewPosition'] = 'before';
         mySettings['resizeHandle'] = true;
         mySettings['markupSet'] = [
