@@ -107,8 +107,6 @@ INSTALLED_APPS = (
     'notification',
     "ckeditor",
     "cloudinary",
-    ### PROBLEM "jospybb",
-    "jospybb",
     "embed_video",
     "josstaff",
     "josmembers",
@@ -129,7 +127,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
     "mezzanine.pages.context_processors.page",
-    "jospybb.context_processors.processor",
     'django_messages.context_processors.inbox',
 )
 
@@ -158,8 +155,6 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
-
-    'jospybb.middleware.PybbMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'request.middleware.RequestMiddleware',
 )

@@ -54,7 +54,6 @@ urlpatterns += patterns('',
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
     ### Forums, Messaging, Etc. ###
-    url(r'^forum/', include('jospybb.urls', namespace='jospybb')),
     # messages implemented to avoid disclosing addresses
     url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose", name='messages_compose'),
     url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply", name='messages_reply'),
