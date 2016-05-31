@@ -54,6 +54,7 @@ urlpatterns += patterns('',
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
     ### Forums, Messaging, Etc. ###
+    url(r'^', include('spirit.urls', namespace="spirit", app_name="spirit")),
     # messages implemented to avoid disclosing addresses
     url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose", name='messages_compose'),
     url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply", name='messages_reply'),
