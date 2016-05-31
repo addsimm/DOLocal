@@ -1,30 +1,50 @@
 {% extends 'jospybb/base.html' %}
+{% load i18n jospybb_tags  mezzanine_tags accounts_tags %}
 
-{% load i18n %}
+{% block meta_title %}
+    Join Our Story Forums
+{% endblock %}
+{% block title %}
+    Join Our Story Forums
+{% endblock %}
 
-{% block title %}{{ PYBB_DEFAULT_TITLE }}{% endblock title %}
+{% block breadcrumb_menu %}
 
-{% block breadcrumb %}
-    {% with extra_crumb="Forum" %}{% include  "jospybb/breadcrumb.html" %}{% endwith %}
+    {{ block.super }}
+    Join Our Story Forums
+    </div></div>
+
 {% endblock %}
 
 {% block content %}
+
     {% if categories %}
+
         {% for category in categories %}
+
             {% include 'jospybb/category.html' %}
+
         {% endfor %}
+
     {% else %}
+
         <h2>{% trans "Forum categories are not created" %}</h2>
-        <a href="{% url 'admin:jospybb_category_add' %}">{% trans "Add a category now" %}</a>
+
+        <a href="{% url 'admin:jospybb_category_add' %}">{% trans "Add category now" %}</a>
+
     {% endif %}
+
     {% if user.is_authenticated %}
+
         <div id='mark-all-as-read'>
             <a href='{% url 'jospybb:topic_latest' %}'>
                 {% trans "Last updates in topics" %}
             </a>
+
             <a href='{% url 'jospybb:mark_all_as_read' %}'>
                 {% trans "Mark all forums as read" %}
             </a>
         </div>
     {% endif %}
+
 {% endblock content %}
