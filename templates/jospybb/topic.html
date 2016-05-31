@@ -1,6 +1,6 @@
 {% extends 'jospybb/base.html' %}
 
-{% load pybb_tags i18n staticfiles %}
+{% load jospybb_tags i18n staticfiles %}
 
 {% block title %}{{ topic }}{% endblock %}
 
@@ -63,7 +63,7 @@
                             <a href="{% url 'jospybb:close_topic' topic.id %}">{% trans "Close topic" %}</a> /
                         {% endif %}
                         {% if perms.pybb.change_topic and user.is_staff %}
-                            <a href="{% url 'admin:pybb_topic_change' topic.id %}">{% trans 'Admin' %}</a> /
+                            <a href="{% url 'admin:jospybb_topic_change' topic.id %}">{% trans 'Admin' %}</a> /
                         {% endif %}
                         {% comment %}
                             <a href="{% url 'jospybb:merge_topics' %}?topic={{ topic.id }}">{% trans 'Merge topics' %}</a> /

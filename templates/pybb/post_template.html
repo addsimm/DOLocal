@@ -1,4 +1,4 @@
-{% load i18n pybb_tags staticfiles %}
+{% load i18n jospybb_tags staticfiles %}
 
 {% pybb_get_profile user=post.user as post_user_profile %}
 {% pybb_get_profile user=user as user_profile %}
@@ -50,7 +50,7 @@
                 {% endif %}
 
                 {% if perms.pybb.change_post and user.is_staff %}
-                    <a href="{% url 'admin:pybb_post_change' post.id %}">{% trans 'Admin' %}</a>
+                    <a href="{% url 'admin:jospybb_post_change' post.id %}">{% trans 'Admin' %}</a>
                 {% endif %}
 
             </div>

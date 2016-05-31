@@ -15,7 +15,7 @@
         {% endfor %}
     {% else %}
         <h2>{% trans "Forum categories are not created" %}</h2>
-        <a href="{% url 'admin:pybb_category_add' %}">{% trans "Add a category now" %}</a>
+        <a href="{% url 'admin:jospybb_category_add' %}">{% trans "Add a category now" %}</a>
     {% endif %}
     {% if user.is_authenticated %}
         <div id='mark-all-as-read'>

@@ -24,7 +24,7 @@ from jospybb.compat import get_atomic_func
 from jospybb.forms import PostForm, AdminPostForm, AttachmentFormSet, PollAnswerFormSet, PollForm
 from jospybb.models import Category, Forum, Topic, Post, TopicReadTracker, ForumReadTracker, PollAnswerUser
 from jospybb.permissions import perms
-from jospybb.templatetags.pybb_tags import pybb_topic_poll_not_voted
+from jospybb.templatetags.jospybb_tags import pybb_topic_poll_not_voted
 
 
 User = compat.get_user_model()

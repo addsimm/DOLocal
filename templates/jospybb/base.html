@@ -1,8 +1,8 @@
-{% extends PYBB_TEMPLATE|default:"base.html" %}
+{% extends "base.html" %}
 
-{% load i18n pybb_tags %}
+{% load i18n jospybb_tags %}
 
-{% block title %}{{ PYBB_DEFAULT_TITLE }}{% endblock title %}
+{% block title %}Forum{% endblock title %}
 
 {% block extra_head %}
     {{ block.super }}
@@ -15,5 +15,11 @@
     {% include  "jospybb/breadcrumb.html" %}
 {% endblock %}
 
-{% block content %}{% endblock content %}
+{% block all_content %}
+
+    {% block content %}
+
+    {% endblock content %}
+
+{% endblock all_content %}
 

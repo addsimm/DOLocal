@@ -16,7 +16,7 @@ from django.test.client import Client
 from django.test.utils import override_settings
 from django.utils import timezone
 from jospybb import permissions, views as pybb_views
-from jospybb.templatetags.pybb_tags import pybb_is_topic_unread, pybb_topic_unread, pybb_forum_unread, \
+from jospybb.templatetags.jospybb_tags import pybb_is_topic_unread, pybb_topic_unread, pybb_forum_unread, \
     pybb_get_latest_topics, pybb_get_latest_posts
 
 from jospybb import compat, util

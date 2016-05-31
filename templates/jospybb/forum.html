@@ -1,5 +1,5 @@
 {% extends 'jospybb/base.html' %}
-{% load pybb_tags i18n %}
+{% load i18n %}
 
 {% block title %}{{ forum.name }}{% endblock title %}
 
@@ -9,7 +9,26 @@
     {% endwith %}
 {% endblock %}
 
+
+{% load i18n jospybb_tags  mezzanine_tags accounts_tags %}
+
+{% block meta_title %}
+    Forum
+{% endblock %}
+{% block title %}
+    Forum
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    Join Our Story Forum
+    </div></div>
+
+{% endblock %}
+
 {% block content %}
+
     <div class="forum">
         <h1>{{ forum.name }}</h1>
         {% if forum.headline %}
@@ -32,4 +51,5 @@
             </div>
         {% endif %}
     </div>
+
 {% endblock content %}

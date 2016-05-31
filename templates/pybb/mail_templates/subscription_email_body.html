@@ -1,4 +1,4 @@
-{% load i18n pybb_tags %}
+{% load i18n jospybb_tags %}
 {% pybb_get_profile user=post.user as profile %}
 
 {% trans "User" %} {{ profile.get_display_name }} {% trans "replied in topic to which you are subscribed." %} ({{ post.topic.name }})

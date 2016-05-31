@@ -134,7 +134,7 @@ class AttachmentAdmin(admin.ModelAdmin):
     admin_view_post.short_description = _('View post')
 
     def admin_edit_post(self, obj):
-        return '<a href="%s">edit</a>' % reverse('admin:pybb_post_change', args=[obj.post.pk])
+        return '<a href="%s">edit</a>' % reverse('admin:jospybb_post_change', args=[obj.post.pk])
     admin_edit_post.allow_tags = True
     admin_edit_post.short_description = _('Edit post')
 
