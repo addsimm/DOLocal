@@ -22,15 +22,15 @@
 
         {% for category in categories %}
 
-            {% include 'jospybb/category.html' %}
+            {% include 'jospybb/category.html' %}<br><br>
 
         {% endfor %}
 
     {% else %}
 
-        <h2>{% trans "Forum categories are not created" %}</h2>
+        {% trans "Forum categories are not created" %}<br><br>
 
-        <a href="{% url 'admin:jospybb_category_add' %}">{% trans "Add category now" %}</a>
+        <a href="{% url 'admin:jospybb_category_add' %}">{% trans "Add category now" %}</a><br><br>
 
     {% endif %}
 
@@ -39,11 +39,11 @@
         <div id='mark-all-as-read'>
             <a href='{% url 'jospybb:topic_latest' %}'>
                 {% trans "Last updates in topics" %}
-            </a>
+            </a><br><br>
 
             <a href='{% url 'jospybb:mark_all_as_read' %}'>
                 {% trans "Mark all forums as read" %}
-            </a>
+            </a><br><br>
         </div>
     {% endif %}
 
