@@ -101,34 +101,34 @@ INSTALLED_APPS = (
     ### NOT IMPLEMENTED 'mezzanine.mobile',
 
     'djconfig',
-    # 'spirit',
-    # 'spirit.core',
-    # 'spirit.admin',
-    # 'spirit.search',
-    # 'spirit.user',
-    # 'spirit.user.admin',
-    # 'spirit.user.auth',
-    # 'spirit.category',
-    # 'spirit.category.admin',
-    # 'spirit.topic',
-    # 'spirit.topic.admin',
-    # 'spirit.topic.favorite',
-    # 'spirit.topic.moderate',
-    # 'spirit.topic.notification',
-    # 'spirit.topic.poll',  # todo: remove in Spirit v0.5
-    # 'spirit.topic.private',
-    # 'spirit.topic.unread',
-    # 'spirit.comment',
-    # 'spirit.comment.bookmark',
-    # 'spirit.comment.flag',
-    # 'spirit.comment.flag.admin',
-    # 'spirit.comment.history',
-    # 'spirit.comment.like',
-    # 'spirit.comment.poll',
-    # # 'spirit.core.tests'
+    'spirit',
+    'spirit.core',
+    'spirit.admin',
+    'spirit.search',
+    'spirit.user',
+    'spirit.user.admin',
+    'spirit.user.auth',
+    'spirit.category',
+    'spirit.category.admin',
+    'spirit.topic',
+    'spirit.topic.admin',
+    'spirit.topic.favorite',
+    'spirit.topic.moderate',
+    'spirit.topic.notification',
+    'spirit.topic.poll',  # todo: remove in Spirit v0.5
+    'spirit.topic.private',
+    'spirit.topic.unread',
+    'spirit.comment',
+    'spirit.comment.bookmark',
+    'spirit.comment.flag',
+    'spirit.comment.flag.admin',
+    'spirit.comment.history',
+    'spirit.comment.like',
+    'spirit.comment.poll',
+    # 'spirit.core.tests'
 
     'request',
-    #'haystack',
+    'haystack',
     'tracking',
     'friendship',
     'django_messages',
@@ -187,12 +187,12 @@ MIDDLEWARE_CLASSES = (
     # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
 
     'djconfig.middleware.DjConfigMiddleware',
-    # 'spirit.core.middleware.PrivateForumMiddleware',
-    # 'spirit.user.middleware.ActiveUserMiddleware',
-    # 'spirit.user.middleware.LastIPMiddleware',
-    # 'spirit.user.middleware.LastSeenMiddleware',
-    # 'spirit.user.middleware.TimezoneMiddleware',
-    # # 'spirit.core.middleware.XForwardedForMiddleware',
+    'spirit.core.middleware.PrivateForumMiddleware',
+    'spirit.user.middleware.ActiveUserMiddleware',
+    'spirit.user.middleware.LastIPMiddleware',
+    'spirit.user.middleware.LastSeenMiddleware',
+    'spirit.user.middleware.TimezoneMiddleware',
+    # 'spirit.core.middleware.XForwardedForMiddleware',
 
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'tracking.middleware.VisitorTrackingMiddleware',
@@ -331,12 +331,12 @@ from spirit.settings import *
 ##########
 # SEARCH #
 ##########
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-#         'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
-#     },
-# }
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
+    },
+}
 
 ##################
 # LOCAL SETTINGS #
@@ -362,11 +362,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-# }
-#
-# DEBUG = True
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+}
+
+DEBUG = True
