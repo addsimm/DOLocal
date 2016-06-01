@@ -67,30 +67,5 @@ ST_BASE_DIR = os.path.dirname(__file__)
 
 
 
-# Third-party apps settings defined below...
-# django-djconfig
 
-### INSTALLED_APPS += [
-#     'djconfig',
-# ]
-#
-# MIDDLEWARE_CLASSES += [
-#     'djconfig.middleware.DjConfigMiddleware',
-# ]
-#
-# TEMPLATES[0]['OPTIONS']['context_processors'] += [
-#     'djconfig.context_processors.config',
-# ]
-#
-# # django-haystack
-#
-# INSTALLED_APPS += [
-#     'haystack',
-# ]
-#
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-#         'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
-#     },
-# }
+
