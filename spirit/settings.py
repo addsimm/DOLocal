@@ -39,136 +39,58 @@ ST_CASE_INSENSITIVE_EMAILS = True
 
 ST_BASE_DIR = os.path.dirname(__file__)
 
+
+
+### python manage.py createcachetable
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'spirit_cache',
+#     },
+# }
 #
-# Django & Spirit settings defined below...
+# CACHES.update({
+#     'st_rate_limit': {
+#         'BACKEND': CACHES['default']['BACKEND'],
+#         'LOCATION': 'spirit_rl_cache',
+#         'TIMEOUT': None
+#     }
+# })
 #
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'spirit.core',
-    'spirit.admin',
-    'spirit.search',
-
-    'spirit.user',
-    'spirit.user.admin',
-    'spirit.user.auth',
-
-    'spirit.category',
-    'spirit.category.admin',
-
-    'spirit.topic',
-    'spirit.topic.admin',
-    'spirit.topic.favorite',
-    'spirit.topic.moderate',
-    'spirit.topic.notification',
-    'spirit.topic.poll',  # todo: remove in Spirit v0.5
-    'spirit.topic.private',
-    'spirit.topic.unread',
-
-    'spirit.comment',
-    'spirit.comment.bookmark',
-    'spirit.comment.flag',
-    'spirit.comment.flag.admin',
-    'spirit.comment.history',
-    'spirit.comment.like',
-    'spirit.comment.poll',
-
-    # 'spirit.core.tests'
-]
-
-# python manage.py createcachetable
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'spirit_cache',
-    },
-}
-
-CACHES.update({
-    'st_rate_limit': {
-        'BACKEND': CACHES['default']['BACKEND'],
-        'LOCATION': 'spirit_rl_cache',
-        'TIMEOUT': None
-    }
-})
-
-AUTHENTICATION_BACKENDS = [
-    'spirit.user.auth.backends.UsernameAuthBackend',
-    'spirit.user.auth.backends.EmailAuthBackend',
-]
-
-LOGIN_URL = 'spirit:user:auth:login'
-LOGIN_REDIRECT_URL = 'spirit:user:update'
-
-MIDDLEWARE_CLASSES = [
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'spirit.core.middleware.XForwardedForMiddleware',
-    'spirit.user.middleware.TimezoneMiddleware',
-    'spirit.user.middleware.LastIPMiddleware',
-    'spirit.user.middleware.LastSeenMiddleware',
-    'spirit.user.middleware.ActiveUserMiddleware',
-    'spirit.core.middleware.PrivateForumMiddleware',
-]
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.template.context_processors.request',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-
+# AUTHENTICATION_BACKENDS = [
+#     'spirit.user.auth.backends.UsernameAuthBackend',
+#     'spirit.user.auth.backends.EmailAuthBackend',
+# ]
 #
+# LOGIN_URL = 'spirit:user:auth:login'
+# LOGIN_REDIRECT_URL = 'spirit:user:update'
+
+
+
 # Third-party apps settings defined below...
-#
-
 # django-djconfig
 
-INSTALLED_APPS += [
-    'djconfig',
-]
-
-MIDDLEWARE_CLASSES += [
-    'djconfig.middleware.DjConfigMiddleware',
-]
-
-TEMPLATES[0]['OPTIONS']['context_processors'] += [
-    'djconfig.context_processors.config',
-]
-
-# django-haystack
-
-INSTALLED_APPS += [
-    'haystack',
-]
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
-    },
-}
+### INSTALLED_APPS += [
+#     'djconfig',
+# ]
+#
+# MIDDLEWARE_CLASSES += [
+#     'djconfig.middleware.DjConfigMiddleware',
+# ]
+#
+# TEMPLATES[0]['OPTIONS']['context_processors'] += [
+#     'djconfig.context_processors.config',
+# ]
+#
+# # django-haystack
+#
+# INSTALLED_APPS += [
+#     'haystack',
+# ]
+#
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+#         'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
+#     },
+# }

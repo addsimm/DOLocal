@@ -9,12 +9,11 @@ import os
 ###################
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118', '*']
 
-DATEFORMAT = "M d"
-TIMEFORMAT = "D, f A"
-DATETIME_FORMAT = "D, M d f A"
+DATEFORMAT = 'M d'
+TIMEFORMAT = 'D, f A'
+DATETIME_FORMAT = 'D, M d f A'
 
 # Local time zone. Choice codes: wikipedia
 TIME_ZONE = 'America/Los_Angeles'
@@ -23,7 +22,7 @@ TIME_ZONE = 'America/Los_Angeles'
 USE_TZ = True
 
 # Language code
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = 'en'
 
 # Supported languages
 LANGUAGES = (
@@ -39,7 +38,7 @@ SITE_ID = 1
 USE_I18N = False
 USE_L10N = False
 
-AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
+AUTHENTICATION_BACKENDS = ('mezzanine.core.auth_backends.MezzanineBackend',)
 
 # The numeric mode to set newly-uploaded files to.
 # The value should be a mode you'd pass directly to os.chmod.
@@ -49,128 +48,163 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 # DATABASES #
 #############
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.",
-        "NAME": "",
-        "USER": "",
-        "PASSWORD": "",
+    'default': {
+        'ENGINE': 'django.db.backends.',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         # Set to empty string for localhost.
-        "HOST": "",
-        "PORT": "",
+        'HOST': '',
+        'PORT': '',
     }
 }
 
 #########
 # PATHS #
 #########
-
 # Full filesystem path to the project.
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
 PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
-MEDIA_URL = STATIC_URL + "media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
-ROOT_URLCONF = "%s.urls" % PROJECT_APP
-TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip('/'))
+MEDIA_URL = STATIC_URL + 'media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip('/').split('/'))
+ROOT_URLCONF = '%s.urls' % PROJECT_APP
+TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 # Every cache key will get prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 
 INSTALLED_APPS = (
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.postgres",
-    "django.contrib.humanize",
-    "django.contrib.redirects",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.sitemaps",
-    "django.contrib.staticfiles",
-    "mezzanine.boot",
-    "mezzanine.conf",
-    "mezzanine.core",
-    "mezzanine.generic",
-    "mezzanine.pages",
-    "mezzanine.blog",
-    "mezzanine.forms",
-    "mezzanine.galleries",
-    "mezzanine.twitter",
-    "mezzanine.accounts",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.messages',
+    'django.contrib.postgres',
+    'django.contrib.redirects',
+    'django.contrib.sessions',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
+
+    'mezzanine.boot',
+    'mezzanine.conf',
+    'mezzanine.core',
+    'mezzanine.generic',
+    'mezzanine.pages',
+    'mezzanine.blog',
+    'mezzanine.forms',
+    'mezzanine.galleries',
+    'mezzanine.twitter',
+    'mezzanine.accounts',
+    ### NOT IMPLEMENTED 'mezzanine.mobile',
+
+    # 'spirit.core',
+    # 'spirit.admin',
+    # 'spirit.search',
+    # 'spirit.user',
+    # 'spirit.user.admin',
+    # 'spirit.user.auth',
+    # 'spirit.category',
+    # 'spirit.category.admin',
+    # 'spirit.topic',
+    # 'spirit.topic.admin',
+    # 'spirit.topic.favorite',
+    # 'spirit.topic.moderate',
+    # 'spirit.topic.notification',
+    # 'spirit.topic.poll',  # todo: remove in Spirit v0.5
+    # 'spirit.topic.private',
+    # 'spirit.topic.unread',
+    # 'spirit.comment',
+    # 'spirit.comment.bookmark',
+    # 'spirit.comment.flag',
+    # 'spirit.comment.flag.admin',
+    # 'spirit.comment.history',
+    # 'spirit.comment.like',
+    # 'spirit.comment.poll',
+    # # 'spirit.core.tests'
+
     'request',
     'tracking',
     'friendship',
     'django_messages',
-    'notification',
-    "ckeditor",
-    "cloudinary",
-    "embed_video",
-    "spirit",
-    ### NOT IMPLEMENTED "mailer",
+    'ckeditor',
+    'cloudinary',
+    'embed_video',
+    'spirit',
+    ### NOT IMPLEMENTED 'notification',
+    ### NOT IMPLEMENTED 'mailer',
     ### NOT IMPLEMENTED 'schedule',
-    "josstaff",
-    "josmembers",
-    "josprojects",
-    "joscourses",
-    ### NOT IMPLEMENTED "mezzanine.mobile",
 
+    'josstaff',
+    'josmembers',
+    'josprojects',
+    'joscourses',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.static",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.core.context_processors.tz",
-    "mezzanine.conf.context_processors.settings",
-    "mezzanine.pages.context_processors.page",
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.static',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django.core.context_processors.tz',
+
+    'mezzanine.conf.context_processors.settings',
+    'mezzanine.pages.context_processors.page',
+
     'django_messages.context_processors.inbox',
 )
 
 # Middleware. Order is important; request classes will be applied in order, response in reverse order.
 MIDDLEWARE_CLASSES = (
-    "mezzanine.core.middleware.UpdateCacheMiddleware",
-    'tracking.middleware.VisitorTrackingMiddleware',
+    'request.middleware.RequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # Uncomment if using internationalisation or localisation
-    # 'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # If using localisation: 'django.middleware.locale.LocaleMiddleware',
 
-    "mezzanine.core.request.CurrentRequestMiddleware",
-    "mezzanine.core.middleware.RedirectFallbackMiddleware",
-    "mezzanine.core.middleware.TemplateForDeviceMiddleware",
-    "mezzanine.core.middleware.TemplateForHostMiddleware",
-    "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
-    "mezzanine.core.middleware.SitePermissionMiddleware",
-    # Uncomment the following if using any of the SSL settings:
-    # "mezzanine.core.middleware.SSLRedirectMiddleware",
-    "mezzanine.pages.middleware.PageMiddleware",
-    "mezzanine.core.middleware.FetchFromCacheMiddleware",
+    'mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware',
+    'mezzanine.core.middleware.FetchFromCacheMiddleware',
+    'mezzanine.core.middleware.RedirectFallbackMiddleware',
+    'mezzanine.core.middleware.SitePermissionMiddleware',
+    'mezzanine.core.middleware.TemplateForDeviceMiddleware',
+    'mezzanine.core.middleware.TemplateForHostMiddleware',
+    'mezzanine.core.middleware.UpdateCacheMiddleware',
+    'mezzanine.core.request.CurrentRequestMiddleware',
+    'mezzanine.pages.middleware.PageMiddleware',
+    # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
+
+    # 'spirit.core.middleware.PrivateForumMiddleware',
+    # 'spirit.user.middleware.ActiveUserMiddleware',
+    # 'spirit.user.middleware.LastIPMiddleware',
+    # 'spirit.user.middleware.LastSeenMiddleware',
+    # 'spirit.user.middleware.TimezoneMiddleware',
+    # # 'spirit.core.middleware.XForwardedForMiddleware',
+
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'request.middleware.RequestMiddleware',
+    'tracking.middleware.VisitorTrackingMiddleware',
 )
 
 # Store these package names here as they may change in the future.
-PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
-PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
+PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
+PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
 
 #########################
 # OPTIONAL APPLICATIONS #
 
 OPTIONAL_APPS = (
-    "debug_toolbar",
-    "django_extensions",
-    ### Not working: "compressor",
+    'debug_toolbar',
+    'django_extensions',
+    ### Not working: 'compressor',
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
 )
@@ -240,8 +274,8 @@ CKEDITOR_CONFIGS = {
 ###########
 ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
-AUTH_PROFILE_MODULE = "josmembers.JOSProfile"
-ACCOUNTS_PROFILE_FORM_CLASS = "josmembers.forms.JOSProfileForm"
+AUTH_PROFILE_MODULE = 'josmembers.JOSProfile'
+ACCOUNTS_PROFILE_FORM_CLASS = 'josmembers.forms.JOSProfileForm'
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
 
@@ -282,16 +316,22 @@ REQUEST_PLUGINS = (
 # EMAIL_HOST_PASSWORD = '4Primetime!'
 # EMAIL_PORT = 587
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = "joinus@joinourstory.com"
+DEFAULT_FROM_EMAIL = 'joinus@joinourstory.com'
 DJANGO_MESSAGES_NOTIFY = False
+
+#########
+# FORUM #
+#########
+from spirit.settings import *
+
 
 ##################
 # LOCAL SETTINGS #
 ##################
-# Instead of doing "from .local_settings import *", we use exec for full access
-f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
+# Instead of doing 'from .local_settings import *', we use exec for full access
+f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
 if os.path.exists(f):
-    exec (open(f, "rb").read())
+    exec (open(f, 'rb').read())
 
 ####################
 # DYNAMIC SETTINGS #
@@ -313,7 +353,7 @@ def show_toolbar(request):
     return True
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 }
 
 DEBUG = True
