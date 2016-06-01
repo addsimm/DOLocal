@@ -75,6 +75,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 # Every cache key will get prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -135,7 +136,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'cloudinary',
     'embed_video',
-    ### NOT IMPLEMENTED 'notification',
+    'notification',
     ### NOT IMPLEMENTED 'mailer',
     ### NOT IMPLEMENTED 'schedule',
 
@@ -144,6 +145,33 @@ INSTALLED_APPS = (
     'josprojects',
     'joscourses',
 )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.static',
+                'django.core.context_processors.media',
+                'django.core.context_processors.request',
+                'django.core.context_processors.tz',
+
+                'mezzanine.conf.context_processors.settings',
+                'mezzanine.pages.context_processors.page',
+
+                'djconfig.context_processors.config',
+                'django_messages.context_processors.inbox',
+            ]
+        },
+    },
+]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
