@@ -100,6 +100,8 @@ INSTALLED_APPS = (
     'mezzanine.accounts',
     ### NOT IMPLEMENTED 'mezzanine.mobile',
 
+    'djconfig',
+    # 'spirit',
     # 'spirit.core',
     # 'spirit.admin',
     # 'spirit.search',
@@ -132,7 +134,6 @@ INSTALLED_APPS = (
     'ckeditor',
     'cloudinary',
     'embed_video',
-    'spirit',
     ### NOT IMPLEMENTED 'notification',
     ### NOT IMPLEMENTED 'mailer',
     ### NOT IMPLEMENTED 'schedule',
@@ -156,6 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mezzanine.conf.context_processors.settings',
     'mezzanine.pages.context_processors.page',
 
+    'djconfig.context_processors.config',
     'django_messages.context_processors.inbox',
 )
 
@@ -183,6 +185,7 @@ MIDDLEWARE_CLASSES = (
     'mezzanine.pages.middleware.PageMiddleware',
     # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
 
+    'djconfig.middleware.DjConfigMiddleware',
     # 'spirit.core.middleware.PrivateForumMiddleware',
     # 'spirit.user.middleware.ActiveUserMiddleware',
     # 'spirit.user.middleware.LastIPMiddleware',
