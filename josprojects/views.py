@@ -43,6 +43,9 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 
 @login_required
 def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
+
+    user = request.user
+
     try:
         story = get_object_or_404(JOSStory, pk=storyid)
     except:
@@ -50,12 +53,12 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
                                         title="Untitled",
                                         content="Coming soon")
 
-    publish = request.GET.get('pub', None)
-    if publish != None:
-        if publish == 'publish':
+    publish_story= request.GET.get('pub', None)
+    if publish_story != None:
+        if publish_story == 'publish':
             story.publish = True
             info(request, story.title + " -- has been shared!")
-        elif publish == 'remove':
+        elif publish_story == 'remove':
             story.publish = False
             info(request, story.title + " -- is now hidden.")
         story.save()

@@ -104,15 +104,21 @@
                href="{% url "mystory_list" %}">
                         {% trans "My stories" %}
             </a>
-        {% else %}<br>
+        {% endif %}<br>
 
-            <a class="btn pull-right btn-warning"
-               style="margin-top: 30px;"
-               href="{% url "story_gallery" %}">
-                {% trans "Gallery" %}
-            </a><br>
+        <a class="btn pull-right btn-warning"
+           style="margin-top: 30px;"
+           href="{% url "story_gallery" %}">
+            {% trans "Gallery" %}
+        </a><br>
 
-        {% endif %}
+        {# adding comment #}
+
+        <a class="btn pull-right btn-default"
+           style="margin-top: 90px;"
+           href="{% url "spirit:topic:publish" 3 %}">
+            {% trans "Comment" %}
+        </a><br>
 
     </div>
 
