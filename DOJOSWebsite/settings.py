@@ -273,9 +273,9 @@ CKEDITOR_CONFIGS = {
             ### {'name': 'document', 'items': ['Preview', 'Print', '-', 'Templates']},
             {'name': 'styles', 'items': ['Font', 'FontSize']},
             {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-            ### {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            ### {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule',  'SpecialChar', 'PageBreak', 'Iframe']},
             ### '/',  # put this to force next toolbar on new line
-            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike']},
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Smiley']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             ### {'name': 'smiley', 'items': ['Smiley']},
             {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList',
@@ -389,12 +389,12 @@ DEBUG = False
 
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
-
-def show_toolbar(request):
-    return True
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-}
-
-DEBUG = True
+#
+# def show_toolbar(request):
+#     return True
+#
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+# }
+#
+# DEBUG = True

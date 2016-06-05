@@ -22,7 +22,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
     user = get_object_or_404(User, pk=pk)
     currentProfile = get_object_or_404(JOSProfile, user=user)
 
-    weeks = JOSCourseWeek.objects.all() # retrives all weeks available
+    weeks = JOSCourseWeek.objects.order_by('weekno') # retrives all weeks available
 
     context = {"profile": currentProfile,
                "weeks": weeks}

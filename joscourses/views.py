@@ -19,7 +19,7 @@ from josprojects.forms import CKRichTextEditForm
 
 @login_required
 def course_week_list(request, template="###", extra_context=None):
-    weeks = JOSCourseWeek.objects.filter(publish=True)
+    weeks = JOSCourseWeek.objects.order_by('weekno')
 
     context = {'weeks': weeks}
     context.update(extra_context or {})
