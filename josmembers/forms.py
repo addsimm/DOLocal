@@ -16,8 +16,8 @@ from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
 
-from django_messages.models import Message
-from django_messages.fields import CommaSeparatedUserField
+from josmessages.models import Message
+from josmessages.fields import CommaSeparatedUserField
 
 User = get_user_model()
 

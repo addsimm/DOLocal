@@ -61,7 +61,7 @@ urlpatterns += patterns('',
     # messages implemented to avoid disclosing addresses
     url(r'^messages/compose/(?P<id>\d+)/$', "josmembers.views.jos_message_compose", name='messages_compose'),
     url(r'^messages/reply/(?P<message_id>[\d]+)/$', "josmembers.views.jos_message_reply", name='messages_reply'),
-    url(r'^messages/', include('django_messages.urls')),
+    url(r'^messages/', include('josmessages.urls')),
 
     # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
 

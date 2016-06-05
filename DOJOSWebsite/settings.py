@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'haystack',
     'tracking',
     'friendship',
-    'django_messages',
+    'josmessages',
     'ckeditor',
     'cloudinary',
     'embed_video',
@@ -167,7 +167,7 @@ TEMPLATES = [
                 'mezzanine.pages.context_processors.page',
 
                 'djconfig.context_processors.config',
-                'django_messages.context_processors.inbox',
+                'josmessages.context_processors.inbox',
             ]
         },
     },
@@ -187,7 +187,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mezzanine.pages.context_processors.page',
 
     'djconfig.context_processors.config',
-    'django_messages.context_processors.inbox',
+    'josmessages.context_processors.inbox',
 )
 
 # Middleware. Order is important; request classes will be applied in order, response in reverse order.
@@ -349,7 +349,6 @@ REQUEST_PLUGINS = (
 # EMAIL_PORT = 587
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = 'joinus@joinourstory.com'
-DJANGO_MESSAGES_NOTIFY = False
 
 #########
 # FORUM #
@@ -389,12 +388,12 @@ DEBUG = False
 
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
-#
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-# }
-#
-# DEBUG = True
+
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+}
+
+DEBUG = True
