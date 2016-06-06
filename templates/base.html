@@ -50,10 +50,12 @@
     <div class="row">
         <!-- JOS LOGO -->
         <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
-            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-                {% else %}href="/"{% endif %} class="pull-left" style="outline: none; padding: 0">
-                <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
-            </a>
+            {% block joslogo %}
+                <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
+                    {% else %}href="/"{% endif %} class="pull-left" style="outline: none; padding: 0">
+                    <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
+                </a>
+            {% endblock joslogo %}
         </div>
 
         <div class="hidden-xs col-sm-12 col-md-6">
@@ -71,9 +73,11 @@
                 </div>
             {% else %}
                 <!-- SLOGAN -->
-                <div class="hometext text-center" style="margin-left: 105px; margin-top: 22px;">
-                    A storytelling community for<br>happier souls and healthier minds.
-                </div>
+                {% block slogan %}
+                    <div class="hometext text-center" style="margin-left: 105px; margin-top: 22px;">
+                        A storytelling community for<br>happier souls and healthier minds.
+                    </div>
+                {% endblock slogan %}
             {% endif %}{% endnevercache %}
         </div>
 
@@ -92,7 +96,7 @@
 </div>
 
 <!-- ALL CONTENT -->
-<div class="container" style="margin-left: 20px; min-height: 640px;">
+<div class="container" style="background-color: transparent; margin-left: 20px; min-height: 640px;">
     {% block all_content %}
 
         <div class="row" style="margin-top: 150px;">
