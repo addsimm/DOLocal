@@ -32,16 +32,16 @@
 
 <div id="landing_page" style="margin-left: 150px;">
 
-    <div class="row" style="margin-top: -30px; margin-left: -90px; margin-right: -30px; background-color: transparent;">
+    <div class="row" style="margin-top: 0; margin-left: -90px; margin-right: -30px; background-color: transparent;">
 
         <div class="col-xs-5" style="margin-top: 35px; background-color: transparent;">
             <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
                {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">
                 <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">
-                <div class="text-center" style="font-size: 18pt; margin-left: -25px;">
-                    A storytelling community for<br>happier souls and healthier minds.
-                </div>
             </a>
+            <div class="text-center" style="font-size: 18pt; margin-left: -25px;">
+                A storytelling community for<br>happier souls and healthier minds.
+            </div>
 
         </div>
 

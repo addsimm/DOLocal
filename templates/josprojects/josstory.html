@@ -40,7 +40,7 @@
         <div class="row text-center" style=" margin-left: 10%; width: 80%;">
 
             <div class="homehead text-center" style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}">
-                {{ story.title | striptags }}<br><br>
+                {{ story.title | striptags }}<br>
             </div>
 
             <div class="joscursive text-center">
@@ -53,7 +53,8 @@
             {% if edit %}
                 <a class="btn btn-info btn-xs pull-right"
                    style="width: 80px"
-                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
+                   onclick="startCKEdit()">
+{#                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">#}
                     <i class="fa fa-pencil"></i>
                     <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
                 </a>
@@ -61,40 +62,48 @@
 
         </div>
 
+{# set up as toggle if, then integrate editor and save fucntion #}
+
+        <script>function startCKEdit() {
+
+            window.alert('hello');
+            $('#editor1').attr('contenteditable', 'true');
+
+        }</script>
+
         <div class="row">
 
-
-
-
-
-            <div id='editor1' class="interior-text" style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}"0>
+            <div id='editor1'
+                 class ="interior-text"
+                 style ="{% if edit %}outline: 3px dashed #28a4c9;{% endif %}"
+                 contenteditable = "false">
 
                 {{ story.content | richtext_filters | safe }}
 
             </div>
 
-            <script>
-
-                // Turn off automatic editor creation first.
-
-                CKEDITOR.replace('editor1', {
-                    toolbar: [
-                        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                        {'name': 'styles', 'items': ['Font', 'FontSize']},
-                        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
-                        {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList', ]},
-                        {'name': 'insert', 'items': ['Image', 'Smiley']
-                        },
-                        {'name': 'editing', 'items': ['SelectAll', 'Find']}
-                    ],
-                    contentsCss: '/static/ckeditor/ckeditor/contents.css',
-                    disableNativeSpellChecker: false,
-                    tabSpaces: 4,
-                    extraPlugins: 'colorbutton',
-                    removePlugins: 'elementspath, liststyle, tabletools, scayt, menubutton'
-                });
-
-            </script>
+{#            <script>#}
+{##}
+{#                // Turn off automatic editor creation first.#}
+{#                CKEDITOR.disableAutoInline = true;#}
+{#                CKEDITOR.inline('editor1', {#}
+{#                    toolbar: [#}
+{#                        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},#}
+{#                        {'name': 'styles', 'items': ['Font', 'FontSize']},#}
+{#                        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},#}
+{#                        {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList', ]},#}
+{#                        {'name': 'insert', 'items': ['Image', 'Smiley']#}
+{#                        },#}
+{#                        {'name': 'editing', 'items': ['SelectAll', 'Find']}#}
+{#                    ],#}
+{#                    contentsCss: '/static/ckeditor/ckeditor/contents.css',#}
+{#                    disableNativeSpellChecker: false,#}
+{#                    height: 600,#}
+{#                    tabSpaces: 4,#}
+{#                    extraPlugins: 'colorbutton'#}
+{#                });#}
+{##}
+{#            </script>#}
 
         </div>
 

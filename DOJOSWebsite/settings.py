@@ -259,48 +259,6 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
-############
-# CKEDITOR #
-############
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'skin': 'moono',
-#         # 'skin': 'office2013',
-#         'toolbar_Basic': [
-#             ['Source', '-', 'Bold', 'Italic']
-#         ],
-#         'toolbar_JOSSimpleToolbarConfig': [
-#             ### {'name': 'document', 'items': ['Preview', 'Print', '-', 'Templates']},
-#             {'name': 'styles', 'items': ['Font', 'FontSize']},
-#             {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-#             ### {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule',  'SpecialChar', 'PageBreak', 'Iframe']},
-#             ### '/',  # put this to force next toolbar on new line
-#             {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Smiley']},
-#             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-#             ### {'name': 'smiley', 'items': ['Smiley']},
-#             {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList',
-#                                             '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
-#             {'name': 'editing', 'items': ['Find']},
-#         ],
-#         'contentsCss': ['/static/ckeditor/ckeditor/contents.css'],
-#         'toolbar': 'JOSSimpleToolbarConfig',  # put selected toolbar config here
-#         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-#         'height': 350,
-#         'width': 920,
-#         'disableNativeSpellChecker': False,
-#         # 'filebrowserWindowHeight': 725,
-#         # 'filebrowserWindowWidth': 940,
-#         # 'toolbarCanCollapse': True,
-#         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
-#         'tabSpaces': 4,
-#         'removePlugins': 'elementspath, liststyle,tabletools,scayt,menubutton,contextmenu',
-#         'extraPlugins': ','.join(
-#             [
-#                 # you extra plugins here
-#             ]),
-#     }
-# }
-
 ###########
 # PROFILE #
 ###########
@@ -389,11 +347,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-def show_toolbar(request):
-    return True
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-}
-
-DEBUG = True
+# def show_toolbar(request):
+#     return True
+#
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+# }
+#
+# DEBUG = True
