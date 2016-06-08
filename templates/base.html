@@ -93,10 +93,15 @@
             {% include "pages/menus/breadcrumb.html" %}
         {% endblock %}
     {% endblock outer_breadcrumb %}
+
+    {% block right_side_panel %}{% endblock %}
+
 </div>
 
+{% block center_content %}{% endblock %}
+
 <!-- ALL CONTENT -->
-<div class="container" style="background-color: transparent; margin-left: 20px; min-height: 640px;">
+<div class="container" style="background-color: transparent; margin-left: 20px; min-height: 640px; z-index: 50;">
     {% block all_content %}
 
         <div class="row" style="margin-top: 150px;">
