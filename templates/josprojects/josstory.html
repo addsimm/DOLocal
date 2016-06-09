@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags accounts_tags  %}
+{% load i18n mezzanine_tags accounts_tags  static %}
 
 {% block meta_title %}
     {{ story.title | striptags | truncatechars:25 }}
@@ -16,6 +16,15 @@
     </div></div>
 
 {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static "js/jquery-confirm.js" %}"></script>
+{% endblock %}
+
 
 {% block all_content %}
 
@@ -60,6 +69,19 @@
 </style>
 
 
+
+<script>
+
+    $.alert({
+        title: 'Alert!',
+        content: 'Simple alert!',
+        confirm: function(){
+            $.alert('Confirmed!'); // shorthand.
+        }
+    });
+
+</script>
+
 <div class="row" style="margin-top: 50px;">
 
     <!-- Center Panel -->
@@ -69,72 +91,70 @@
         <div class="row" style=" ">
             <div class="col-xs-12">
 
-                    <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
+                <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
 
-                        <!-- Edit Buttons -->
-                        <div class="col-xs-12">
+                    <!-- Edit Buttons -->
+                    <div class="col-xs-12">
 
-                            {% if edit %}
-
-                                <button
-                                    id="edit_title"
-                                    class="btn btn-info btn-xs pull-right"
-                                    style="margin-left: 5px; width: 80px;"
-                                    onclick="manageCKEdit(this)"
-                                    data-toggle="tooltip"
-                                    title="Activates the word processor."
-                                    data-placement="bottom"
-                                >
-                                    <span style="font-size: 14pt;">Edit</span>
-                                </button>
-
-
-                                <button
-                                    id="save_title"
-                                    class="btn btn-success btn-xs pull-right"
-                                    style="display: none; margin-left: 5px; width: 80px;"
-                                    onclick="manageCKEdit(this)"
-                                    data-toggle="tooltip"
-                                    title="Will replace previous text."
-                                    data-placement="bottom"
-                                >
-                                    <span style="font-size: 14pt;">Save</span>
-                                </button>
-
-                                <button
-                                    id="discard_title"
-                                    class="btn btn-danger btn-xs pull-right"
-                                    style="display: none; width: 80px;"
-                                    onclick="manageCKEdit(this)"
-                                    data-toggle="tooltip"
-                                    title="Will NOT save changes!"
-                                    data-placement="bottom"
-                                >
-                                    <span style="font-size: 14pt;">Discard</span>
-                                </button>
-
-                            {% endif %}
-
-                        </div>
+                        {% if edit %}
+                            <span id="hint" style="display: none; font-size: 10pt; ">
+                                Hint: Bottom right triangle resizes editor <i class="fa fa-hand-o-down"></i></span>
+                            <button
+                                id="edit_title"
+                                class="btn btn-info btn-xs pull-right"
+                                style="margin-left: 5px; width: 80px;"
+                                onclick="manageCKEdit(this)"
+                                data-toggle="tooltip"
+                                title="Activates the word processor."
+                                data-placement="bottom"
+                            >
+                                <span style="font-size: 14pt;">Edit</span>
+                            </button>
 
 
-                        <div class="row">
-                            <form id='story_title_form'
-                                  method="post"
-                                  {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+                            <button
+                                id="save_title"
+                                class="btn btn-success btn-xs pull-right"
+                                style="display: none; margin-left: 5px; width: 80px;"
+                                onclick="manageCKEdit(this)"
+                                data-toggle="tooltip"
+                                title="Will replace previous text."
+                                data-placement="bottom"
+                            >
+                                <span style="font-size: 14pt;">Save</span>
+                            </button>
 
-                                {% csrf_token %}
-                                <div id='title' class="col-xs-12 homehead text-center">
-                                    {{ story.title | striptags }}<br>
-                                </div>
-                            </form>
-                        </div>
+                            <button
+                                id="discard_title"
+                                class="btn btn-danger btn-xs pull-right"
+                                style="display: none; width: 80px;"
+                                onclick="manageCKEdit(this)"
+                                data-toggle="tooltip"
+                                title="Will NOT save changes!"
+                                data-placement="bottom"
+                            >
+                                <span style="font-size: 14pt;">Discard</span>
+                            </button>
 
+                        {% endif %}
 
                     </div>
 
-{#<br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>#}
 
+                    <div class="row">
+                        <form id='story_title_form'
+                              method="post"
+                              {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+
+                            {% csrf_token %}
+                            <div id='title' class="col-xs-12 homehead text-center">
+                                {{ story.title | striptags }}<br>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+{#<br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>#}
 
                 <div class="joscursive text-center">
                     {{ story.author.JOSProfile.jos_name }}<br>
@@ -192,7 +212,9 @@
     <div class="col-xs-2 fixed" style=" ">
 
         <div style="font-size: 10pt; margin-bottom: 50px;">
-            <i class="fa fa-arrow-left"></i> This column scrolls.
+            {% if not edit %}
+                Hint:<br><i class="fa fa-hand-o-left"></i> The story scrolls
+            {% endif %}
         </div>
         {% include "updated.html" with myobj=story %}<br>
 
@@ -246,11 +268,18 @@
     </div>
 </div>
 
+
+
+
+
 <script>
 
     $(document).ready(function () {
         CKEDITOR.disableAutoInline = true;
+
         $('[data-toggle="tooltip"]').tooltip();
+
+
     });
 
     function manageCKEdit(el) {
@@ -263,6 +292,7 @@
         switch (acttxt) {
             case "Edit":
                 $('#edit_' + actsection).hide();
+                $('#hint').show();
                 $('#save_' + actsection).show();
                 $('#discard_' + actsection).show();
                 $(bordertxt).removeClass('edit_border').addClass('edit_border_active');
@@ -275,7 +305,15 @@
                 break;
 
             case "Discard":
-                alert("Discard");
+
+                //confirm dialog
+
+                CKEDITOR.instances.title.destroy();
+                $('#edit_' + actsection).show();
+                $('#hint').hide();
+                $('#save_' + actsection).hide();
+                $('#discard_' + actsection).hide();
+                $(bordertxt).addClass('edit_border').removeClass('edit_border_active');
                 break;
         }
     }
