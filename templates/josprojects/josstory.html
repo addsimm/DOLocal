@@ -19,211 +19,261 @@
 
 {% block all_content %}
 
-    <style>
+<style>
 
-        p {
-            margin: 0;
-        }
+    p {
+        margin: 0;
+    }
 
-        .fixed {
-            height: 600px;
-            overflow: hidden;
-        }
+    .fixed {
+        height: 600px;
+        overflow: hidden;
+    }
 
-        .scrollit {
-            height: 900px;
-            overflow-y: scroll;
-        }
+    .scrollit {
+        height: 900px;
+        overflow-y: scroll;
+    }
 
-    </style>
+    .edit_border {
+        border: 3px dashed #28a4c9;
+    }
+
+    .edit_border_active {
+        border: 10px solid #28a4c9;
+    }
+
+   .cke {
+        margin-left: 25px;
+    }
 
 
-    <div class="row" style="margin-top: 50px;">
+</style>
 
-        <!-- Center Panel -->
-        <div class="col-xs-10 scrollit" style=" ">
 
-            <!-- Title -->
-            <div class="row" style=" ">
+<div class="row" style="margin-top: 50px;">
 
-                <div class="col-xs-12">
+    <!-- Center Panel -->
+    <div class="col-xs-10 scrollit" style=" ">
 
-                    <div style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
-                        <div class="row" style="height:40px;">
-                            <div class="col-xs-12">
-                                <!-- Edit Button -->
-                                {% if edit %}
-                                    <a
-                                       class="start_editor_button btn btn-info btn-xs pull-right"
-                                       style="width: 80px"
-                                       onclick="startCKEdit()"
-                                       {# href="{% url "josstory_edit" story.id %}/?field_to_edit=title" #}
-                                    >
-                                        <i class="fa fa-pencil"></i>
-                                        <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
+        <!-- Title -->
+        <div class="row" style=" ">
+            <div class="col-xs-12">
+                <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
+                    <div class="row" style="height:40px;">
+                        <div class="col-xs-12">
+                            <!-- Edit Button -->
+                            {% if edit %}
 
-                        <div class="row">
-                            <div class="col-xs-12 homehead text-center">
-                                {{ story.title | striptags }}<br>
-                            </div>
+                                <a
+                                    id="edit_title"
+                                    class="btn btn-info btn-xs pull-right"
+                                    style="margin-left: 5px; width: 80px"
+                                    onclick="manageCKEdit(this)"
+                                >
+                                    <span style="font-size: 14pt;">Edit</span>
+                                </a>
+
+
+                                <a
+                                    id="save_title"
+                                    class="btn btn-success btn-xs pull-right hidden"
+                                    style="margin-left: 5px; width: 80px"
+                                    onclick="manageCKEdit(this)"
+                                >
+                                    <span style="font-size: 14pt;">Save</span>
+                                </a>
+
+                                <a
+                                    id="discard_title"
+                                    class="btn btn-danger btn-xs pull-right hidden"
+                                    style="width: 80px"
+                                    onclick="manageCKEdit(this)"
+                                >
+                                    <span style="font-size: 14pt;">Discard</span>
+                                </a>
+
+                            {% endif %}
                         </div>
                     </div>
 
-                    <div class="joscursive text-center">
-                        {{ story.author.JOSProfile.jos_name }}<br>
+                    <div class="row">
+                        <div id='title' class="col-xs-12 homehead text-center">
+                            {{ story.title | striptags }}<br>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-
-            <!-- Content -->
-            <div class="row" style=" ">
-
-                <div class="col-xs-12">
-
-                    <div style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
-                        <div class="row" style="height:40px;">
-                            <div class="col-xs-12">
-                                <!-- Edit Button -->
-                                {% if edit %}
-                                    <a class="start_editor_button btn btn-info btn-xs pull-right"
-                                       style="width: 80px"
-                                       href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
-                                        <i class="fa fa-pencil"></i>
-                                        <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-12" style="padding: 0 25px;">
-                                <div id='editor1' contenteditable="false">
-
-                                    {{ story.content | richtext_filters | safe }}
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" style="height:30px;">
-                            <div class="col-xs-12">
-                                <!-- Edit Button -->
-                                {% if edit %}
-                                    <a class="btn btn-info btn-xs pull-right"
-                                       style="width: 80px"
-                                       href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
-                                        <i class="fa fa-pencil"></i>
-                                        <span style="font-size: 14pt; margin-left: 3px;">Edit</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
+                <div class="joscursive text-center">
+                    {{ story.author.JOSProfile.jos_name }}<br>
                 </div>
             </div>
         </div>
 
-        <!-- Side Panel -->
-        <div class="col-xs-2 fixed" style=" ">
+        <!-- Content -->
+        <div class="row" style=" ">
 
-            <div style="font-size: 10pt; margin-bottom: 50px;">
-                <i class="fa fa-arrow-left"></i> This column scrolls.
+            <div class="col-xs-12">
+
+                <div style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
+                    <div class="row" style="height:40px;">
+                        <div class="col-xs-12">
+                            <!-- Edit Button -->
+                            {% if edit %}
+                                <a class="start_editor_button btn btn-info btn-xs pull-right"
+                                   style="width: 80px"
+                                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
+                                    <span style="font-size: 14pt;">Edit</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12" style="padding: 0 25px;">
+                            <div id='editor1' contenteditable="false">
+
+                                {{ story.content | richtext_filters | safe }}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="height:30px;">
+                        <div class="col-xs-12">
+                            <!-- Edit Button -->
+                            {% if edit %}
+                                <a class="btn btn-info btn-xs pull-right"
+                                   style="width: 80px"
+                                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
+                                    <span style="font-size: 14pt;">Edit</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% include "updated.html" with myobj=story %}<br>
-
-            {% if story.author == request.user %}
-
-                <a class="btn pull-right btn-info"
-                   style="margin-top: 30px;"
-                        {% if edit %}
-                   href="{% url "josstory" story.id %}">
-                            {% trans "Hide edit" %}
-                        {% else %}
-                            href="{% url "josstory_edit" story.id %}">
-                            {% trans "Edit" %}
-                        {% endif %}
-                </a><br>
-
-                <a class="btn pull-right {% if story.publish %}btn-danger{% else %}btn-success{% endif %}"
-                   style="margin-top: 30px;"
-                        {% if story.publish %}
-                   href="{% url "josstory" story.id %}/?pub=remove">
-                            {% trans "Hide" %}
-                        {% else %}
-                            href="{% url "josstory" story.id %}/?pub=publish">
-                            {% trans "Publish" %}
-                        {% endif %}
-                </a><br>
-
-                <a class="btn pull-right btn-warning"
-                   style="margin-top: 30px;"
-                   href="{% url "mystory_list" %}">
-                    {% trans "My stories" %}
-                </a>
-            {% endif %}<br>
-
-            <a class="btn pull-right btn-warning"
-               style="margin-top: 30px;"
-               href="{% url "story_gallery" %}">
-                {% trans "Gallery" %}
-            </a><br>
-
-            {# comment #}
-            <a class="btn pull-right btn-default"
-               style="margin-top: 90px;"
-               href="{% url "spirit:topic:publish" 3 %}">
-                {% trans "Comment" %}
-            </a><br>
-
         </div>
     </div>
 
-    <script>
+    <!-- Side Panel -->
+    <div class="col-xs-2 fixed" style=" ">
 
-        function startCKEdit() {
+        <div style="font-size: 10pt; margin-bottom: 50px;">
+            <i class="fa fa-arrow-left"></i> This column scrolls.
+        </div>
+        {% include "updated.html" with myobj=story %}<br>
 
-            $('.start_editor_button')
-                    .toggleClass('btn-info btn-success');
+        {% if story.author == request.user %}
 
+            <a class="btn pull-right btn-info"
+               style="margin-top: 30px;"
+                    {% if edit %}
+               href="{% url "josstory" story.id %}">
+                        {% trans "Hide edit" %}
+                    {% else %}
+                        href="{% url "josstory_edit" story.id %}">
+                        {% trans "Edit" %}
+                    {% endif %}
+            </a><br>
 
+            <a class="btn pull-right {% if story.publish %}btn-danger{% else %}btn-success{% endif %}"
+               style="margin-top: 30px;"
+                    {% if story.publish %}
+               href="{% url "josstory" story.id %}/?pub=remove">
+                        {% trans "Hide" %}
+                    {% else %}
+                        href="{% url "josstory" story.id %}/?pub=publish">
+                        {% trans "Publish" %}
+                    {% endif %}
+            </a><br>
+
+            <a class="btn pull-right btn-warning"
+               style="margin-top: 30px;"
+               href="{% url "mystory_list" %}">
+                {% trans "My stories" %}
+            </a>
+        {% endif %}<br>
+
+        <a class="btn pull-right btn-warning"
+           style="margin-top: 30px;"
+           href="{% url "story_gallery" %}">
+            {% trans "Gallery" %}
+        </a><br>
+
+        {# comment #}
+        <a class="btn pull-right btn-default"
+           style="margin-top: 90px;"
+           href="{% url "spirit:topic:publish" 3 %}">
+            {% trans "Comment" %}
+        </a><br>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        CKEDITOR.disableAutoInline = true;
+    });
+
+    function manageCKEdit(el) {
+
+        var elstrid = '#' + el.id;
+        var strpos = elstrid.search("_");
+        var actsection = elstrid.slice(strpos + 1);
+        var acttxt = $(elstrid).text().trim();
+        var bordertxt = '#' + actsection + '_border'
+
+        switch (acttxt) {
+            case "Edit":
+                $('#edit_' + actsection).addClass('hidden');
+                $('#save_' + actsection).removeClass('hidden');
+                $('#discard_' + actsection).removeClass('hidden');
+                $(bordertxt).removeClass('edit_border').addClass('edit_border_active');
+                activateCKEdit(actsection);
+                break;
+
+            case "Save":
+                alert("Save");
+                break;
+
+            case "Discard":
+                alert("Discard");
+                break;
         }
+    }
 
-    </script>
+    function activateCKEdit(section) {
 
+        CKEDITOR.replace(section, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'styles', 'items': ['Font', 'FontSize']},
+                {
+                    'name': 'basicstyles',
+                    'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
+                },
+                {
+                    'name': 'paragraph',
+                    'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList',]
+                },
+                {
+                    'name': 'insert', 'items': ['Image', 'Smiley']
+                },
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: '95%',
+            tabSpaces: 4,
+            extraPlugins: 'colorbutton'
+        });
+    }
 
-
-
-
-
-
-
-
-    {#            <script>#}
-    {##}
-    {#                // Turn off automatic editor creation first.#}
-    {#                CKEDITOR.disableAutoInline = true;#}
-    {#                CKEDITOR.inline('editor1', {#}
-    {#                    toolbar: [#}
-    {#                        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},#}
-    {#                        {'name': 'styles', 'items': ['Font', 'FontSize']},#}
-    {#                        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},#}
-    {#                        {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList', ]},#}
-    {#                        {'name': 'insert', 'items': ['Image', 'Smiley']#}
-    {#                        },#}
-    {#                        {'name': 'editing', 'items': ['SelectAll', 'Find']}#}
-    {#                    ],#}
-    {#                    contentsCss: '/static/ckeditor/ckeditor/contents.css',#}
-    {#                    disableNativeSpellChecker: false,#}
-    {#                    height: 600,#}
-    {#                    tabSpaces: 4,#}
-    {#                    extraPlugins: 'colorbutton'#}
-    {#                });#}
-    {##}
-{#                </script>#}
+</script>
 
 {% endblock %}
+
+
 
