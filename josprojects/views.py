@@ -53,6 +53,15 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
                                         title="Untitled",
                                         content="Coming soon")
 
+    if request.method == 'POST':
+        nutitle = request.POST['nucontent']
+        story.title = nutitle
+        story.save()
+
+        return redirect('/josstory/' + str(story.id))
+
+
+
     publish_story= request.GET.get('pub', None)
     if publish_story != None:
         if publish_story == 'publish':

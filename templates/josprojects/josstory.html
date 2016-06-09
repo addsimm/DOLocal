@@ -68,11 +68,7 @@
         <!-- Title -->
         <div class="row" style=" ">
             <div class="col-xs-12">
-                <form id='story_title_form'
-                      method="post"
-                      {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
-                    {% csrf_token %}
                     <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
 
                         <!-- Edit Buttons -->
@@ -80,60 +76,66 @@
 
                             {% if edit %}
 
-                                <a
+                                <button
                                     id="edit_title"
                                     class="btn btn-info btn-xs pull-right"
-                                    style="margin-left: 5px; width: 80px"
+                                    style="margin-left: 5px; width: 80px;"
                                     onclick="manageCKEdit(this)"
                                     data-toggle="tooltip"
                                     title="Activates the word processor."
                                     data-placement="bottom"
                                 >
                                     <span style="font-size: 14pt;">Edit</span>
-                                </a>
+                                </button>
 
 
-                                <a
+                                <button
                                     id="save_title"
-                                    class="btn btn-success btn-xs pull-right hidden"
-                                    style="margin-left: 5px; width: 80px"
+                                    class="btn btn-success btn-xs pull-right"
+                                    style="display: none; margin-left: 5px; width: 80px;"
                                     onclick="manageCKEdit(this)"
                                     data-toggle="tooltip"
                                     title="Will replace previous text."
                                     data-placement="bottom"
-                                    type="submit"
                                 >
                                     <span style="font-size: 14pt;">Save</span>
-                                </a>
+                                </button>
 
-                                <a
+                                <button
                                     id="discard_title"
-                                    class="btn btn-danger btn-xs pull-right hidden"
-                                    style="width: 80px"
+                                    class="btn btn-danger btn-xs pull-right"
+                                    style="display: none; width: 80px;"
                                     onclick="manageCKEdit(this)"
                                     data-toggle="tooltip"
                                     title="Will NOT save changes!"
                                     data-placement="bottom"
                                 >
                                     <span style="font-size: 14pt;">Discard</span>
-                                </a>
+                                </button>
 
                             {% endif %}
+
                         </div>
 
 
                         <div class="row">
-                            <div id='title' class="col-xs-12 homehead text-center">
-                                {{ story.title | striptags }}<br>
-                            </div>
+                            <form id='story_title_form'
+                                  method="post"
+                                  {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+
+                                {% csrf_token %}
+                                <div id='title' class="col-xs-12 homehead text-center">
+                                    {{ story.title | striptags }}<br>
+                                </div>
+                            </form>
                         </div>
 
 
                     </div>
 
-                    <br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>
+{#<br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>#}
 
-                </form>
+
                 <div class="joscursive text-center">
                     {{ story.author.JOSProfile.jos_name }}<br>
                 </div>
@@ -252,7 +254,6 @@
     });
 
     function manageCKEdit(el) {
-
         var elstrid = '#' + el.id;
         var strpos = elstrid.search("_");
         var actsection = elstrid.slice(strpos + 1);
@@ -261,14 +262,15 @@
 
         switch (acttxt) {
             case "Edit":
-                $('#edit_' + actsection).addClass('hidden');
-                $('#save_' + actsection).removeClass('hidden');
-                $('#discard_' + actsection).removeClass('hidden');
+                $('#edit_' + actsection).hide();
+                $('#save_' + actsection).show();
+                $('#discard_' + actsection).show();
                 $(bordertxt).removeClass('edit_border').addClass('edit_border_active');
                 activateCKEdit(actsection);
                 break;
 
             case "Save":
+
                 alert("Save");
                 break;
 
