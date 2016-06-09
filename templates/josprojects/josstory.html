@@ -47,6 +47,15 @@
         margin-left: 25px;
     }
 
+    .tooltip-inner {
+        background: lightyellow;
+        border: solid 2px rgb(65, 45, 120);
+        color: rgb(65, 45, 120);
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 12pt;
+        padding: 5px;
+    }
+
 
 </style>
 
@@ -59,10 +68,16 @@
         <!-- Title -->
         <div class="row" style=" ">
             <div class="col-xs-12">
-                <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
-                    <div class="row" style="height:40px;">
+                <form id='story_title_form'
+                      method="post"
+                      {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+
+                    {% csrf_token %}
+                    <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
+
+                        <!-- Edit Buttons -->
                         <div class="col-xs-12">
-                            <!-- Edit Button -->
+
                             {% if edit %}
 
                                 <a
@@ -70,6 +85,9 @@
                                     class="btn btn-info btn-xs pull-right"
                                     style="margin-left: 5px; width: 80px"
                                     onclick="manageCKEdit(this)"
+                                    data-toggle="tooltip"
+                                    title="This activates the word processor."
+                                    data-placement="bottom"
                                 >
                                     <span style="font-size: 14pt;">Edit</span>
                                 </a>
@@ -80,6 +98,10 @@
                                     class="btn btn-success btn-xs pull-right hidden"
                                     style="margin-left: 5px; width: 80px"
                                     onclick="manageCKEdit(this)"
+                                    data-toggle="tooltip"
+                                    title="This will replace previous text."
+                                    data-placement="bottom"
+                                    type="submit"
                                 >
                                     <span style="font-size: 14pt;">Save</span>
                                 </a>
@@ -89,21 +111,29 @@
                                     class="btn btn-danger btn-xs pull-right hidden"
                                     style="width: 80px"
                                     onclick="manageCKEdit(this)"
+                                    data-toggle="tooltip"
+                                    title="This will NOT save changes."
+                                    data-placement="bottom"
                                 >
                                     <span style="font-size: 14pt;">Discard</span>
                                 </a>
 
                             {% endif %}
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div id='title' class="col-xs-12 homehead text-center">
-                            {{ story.title | striptags }}<br>
+
+                        <div class="row">
+                            <div id='title' class="col-xs-12 homehead text-center">
+                                {{ story.title | striptags }}<br>
+                            </div>
                         </div>
+
+
                     </div>
 
-                </div>
+                    <br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>
+
+                </form>
                 <div class="joscursive text-center">
                     {{ story.author.JOSProfile.jos_name }}<br>
                 </div>
@@ -167,9 +197,12 @@
         {% if story.author == request.user %}
 
             <a class="btn pull-right btn-info"
+               data-toggle="tooltip"
+               title="This turns editing on or off."
+               data-placement="top"
                style="margin-top: 30px;"
                     {% if edit %}
-               href="{% url "josstory" story.id %}">
+                        href="{% url "josstory" story.id %}">
                         {% trans "Hide edit" %}
                     {% else %}
                         href="{% url "josstory_edit" story.id %}">
@@ -215,6 +248,7 @@
 
     $(document).ready(function () {
         CKEDITOR.disableAutoInline = true;
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
     function manageCKEdit(el) {
@@ -223,7 +257,7 @@
         var strpos = elstrid.search("_");
         var actsection = elstrid.slice(strpos + 1);
         var acttxt = $(elstrid).text().trim();
-        var bordertxt = '#' + actsection + '_border'
+        var bordertxt = '#' + actsection + '_border';
 
         switch (acttxt) {
             case "Edit":
