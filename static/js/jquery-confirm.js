@@ -554,7 +554,6 @@ var jconfirm, Jconfirm;
 
     jconfirm.pluginDefaults = {
         template: '<div class="jconfirm"><div class="jconfirm-bg"></div><div class="jconfirm-scrollpane"><div class="container"><div class="row"><div class="jconfirm-box-container"><div class="jconfirm-box" role="dialog" aria-labelledby="labelled" tabindex="-1"><div class="closeIcon">&times;</div><div class="title-c"><span class="icon-c"></span><span class="title"></span></div><div class="content-pane"><div class="content"></div></div><div class="buttons"></div><div class="jquery-clear"></div></div></div></div></div></div></div>',
-        title: 'Hello',
         content: 'Are you sure to continue?',
         contentLoaded: function () {
         },
@@ -565,11 +564,10 @@ var jconfirm, Jconfirm;
         confirmButtonClass: 'btn-default',
         cancelButtonClass: 'btn-default',
         theme: 'white',
-        animation: 'zoom',
+        animation: 'scale',
         closeAnimation: 'scale',
-        animationSpeed: 500,
+        animationSpeed: 0,
         animationBounce: 1.2,
-        keyboardEnabled: false,
         rtl: false,
         confirmKeys: [13], // ENTER key
         cancelKeys: [27], // ESC key
@@ -580,10 +578,12 @@ var jconfirm, Jconfirm;
         },
         backgroundDismiss: false,
         autoClose: false,
-        closeIcon: null,
         closeIconClass: false,
         watchInterval: 100,
-        columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+        title: false,
+        closeIcon: false,
+        keyboardEnabled: false,
+        columnClass: 'col-xs-11',
         onOpen: function () {
         },
         onClose: function () {

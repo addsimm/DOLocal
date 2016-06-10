@@ -68,21 +68,7 @@
 
 </style>
 
-
-
-<script>
-
-    $.alert({
-        title: 'Alert!',
-        content: 'Simple alert!',
-        confirm: function(){
-            $.alert('Confirmed!'); // shorthand.
-        }
-    });
-
-</script>
-
-<div class="row" style="margin-top: 50px;">
+<div class="row" style="margin-top: 60px;">
 
     <!-- Center Panel -->
     <div class="col-xs-10 scrollit" style=" ">
@@ -150,11 +136,16 @@
                             <div id='title' class="col-xs-12 homehead text-center">
                                 {{ story.title | striptags }}<br>
                             </div>
+
+                            <br><br><br><br><br><br>Temporary:
+                            <input id="title_holder" type="text" name="nucontent" value="{{ story.title }}">
+                            <br>
+
                         </form>
                     </div>
                 </div>
 
-{#<br>Temporary:<input id="your_name" type="text" name="nucontent" value="{{ story.title }}"><br>#}
+
 
                 <div class="joscursive text-center">
                     {{ story.author.JOSProfile.jos_name }}<br>
@@ -301,22 +292,63 @@
 
             case "Save":
 
-                alert("Save");
+
+                var data = CKEDITOR.instances.title.getData();
+                alert(data);
+                $('#title_holder').val(data);
+                $("#story_title_form").submit();
+{#                var jc = $.confirm({#}
+{#                    cancelButton: 'Save changes',#}
+{#                    cancelButtonClass: 'btn-default',#}
+{#                    confirmButton: 'Cancel',#}
+{#                    confirmButtonClass: 'btn-warning',#}
+{#                    content: 'Do you want to save recent changes?',#}
+{#                    confirm: function () {#}
+{#                        jc.close()#}
+{#                    },#}
+{#                    cancel: function () {#}
+{#                        var data = CKEDITOR.instances.editor1.getData();#}
+{#                        alert(data);#}
+{#                        destroyCKEdit(actsection);#}
+{#                        jc.close();#}
+{#            #}
+{#                    }#}
+{#                });#}
                 break;
 
             case "Discard":
 
-                //confirm dialog
+                var jc = $.confirm({
+                    cancelButton:       'Discard changes',
+                    cancelButtonClass:  'btn-default',
+                    confirmButton:      'Cancel',
+                    confirmButtonClass: 'btn-warning',
+                    content:            'Do you want to discard recent changes?',
+                    confirm: function () {
+                        jc.close()
+                    },
+                    cancel: function () {
+                        destroyCKEdit(actsection);
+                        jc.close();
 
-                CKEDITOR.instances.title.destroy();
-                $('#edit_' + actsection).show();
-                $('#hint').hide();
-                $('#save_' + actsection).hide();
-                $('#discard_' + actsection).hide();
-                $(bordertxt).addClass('edit_border').removeClass('edit_border_active');
+                    }
+                });
                 break;
+
+
         }
     }
+
+    function destroyCKEdit(section) {
+        CKEDITOR.instances.title.destroy();
+        $('#edit_' + section).show();
+        $('#hint').hide();
+        $('#save_' + section).hide();
+        $('#discard_' + section).hide();
+        bordertxt = '#' + section + '_border';
+        $(bordertxt).addClass('edit_border').removeClass('edit_border_active');
+    }
+
 
     function activateCKEdit(section) {
 
