@@ -1,13 +1,13 @@
 from django.conf.urls import patterns, include, url
 
-from .views import ckrichtextedit, personaldesk, josstory, mystory_list, story_gallery
+from .views import personaldesk, josstory, mystory_list, story_gallery
 
 from mezzanine.conf import settings
 
 urlpatterns = patterns('',
 
-   url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
-   url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
+   # url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
+   # url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
 
    url("personaldesk/(?P<pk>\d+)$", personaldesk, name="personaldesk"),
    url("personaldesk", personaldesk, {'pk': None}, name="personaldesk"),

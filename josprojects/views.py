@@ -2,18 +2,21 @@ from django.shortcuts import render
 
 # Create your views here.
 
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.contrib.messages import info
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from mezzanine.core.forms import Html5Mixin
+
 from josmembers.models import JOSProfile
 from joscourses.models import JOSCourseWeek
 
 from .models import CKRichTextHolder, JOSStory
-from .forms import CKRichTextEditForm
 
 User = get_user_model()
 
@@ -42,6 +45,7 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 
 
 @login_required
+@csrf_exempt
 def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
     user = request.user
@@ -49,20 +53,11 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
     try:
         story = get_object_or_404(JOSStory, pk=storyid)
     except:
-        story = JOSStory.objects.create(author=request.user,
+        story = JOSStory.objects.create(author=user,
                                         title="Untitled",
                                         content="Coming soon")
 
-    if request.method == 'POST':
-        nutitle = request.POST['nucontent']
-        story.title = nutitle
-        story.save()
-
-        return redirect('/josstory/' + str(story.id))
-
-
-
-    publish_story= request.GET.get('pub', None)
+    publish_story = request.GET.get('pub', None)
     if publish_story != None:
         if publish_story == 'publish':
             story.publish = True
@@ -72,37 +67,37 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
             info(request, story.title + " -- is now hidden.")
         story.save()
 
+    if request.method == 'POST':
+        nucontent = request.POST['nucontent']
+        field_to_edit = request.POST['field_to_edit']
+        setattr(story, field_to_edit, nucontent)
+        info(request, "Changes saved!")
+        story.save()
+
+        context = {'story': story, 'edit': 'false'}
+        context.update(extra_context or {})
+
+        #return TemplateResponse(request, template, context)
+        redirect("/")
+
+    form = None
+
+    ckrtfholder = None
+    pk4ckeditor = 0
     field_to_edit = request.GET.get('field_to_edit', "nofield")
     if field_to_edit != "nofield":
         content = getattr(story, field_to_edit)
-
         ckrtfholder = CKRichTextHolder.objects.create(
             author=request.user,
-            title=story.title,
+            class_to_edit = 'story',
+            id_to_edit = story.id,
             field_to_edit=field_to_edit,
-            content=content)
-
-        nexturl = '/josstory/' + str(story.id) + '/?pk=' + str(ckrtfholder.pk)
-        ckrtfholder.nextURL = nexturl
+            content=content
+        )
+        pk4ckeditor = ckrtfholder.pk4ckeditor = ckrtfholder.id
         ckrtfholder.save()
 
-        query_string = "/" + str(ckrtfholder.pk)
-
-        return redirect("/ckrichtextedit" + query_string)
-
-    pk = request.GET.get('pk', None)
-    if pk != None:
-        ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
-        content = ckrtfholder.content
-        if ckrtfholder.field_to_edit != "title":
-            story.content = content
-        else:
-            story.title = content.strip()
-        story.save()
-
-    context = {'story': story,
-               'edit': edit,
-               'field_to_edit': field_to_edit}
+    context = {'story': story, 'edit': edit, 'field_to_edit': field_to_edit, 'pk4ckeditor': pk4ckeditor}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -118,21 +113,21 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-@csrf_exempt
-def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extra_context=None):
-    instance = get_object_or_404(CKRichTextHolder, pk=pk)
-    form = CKRichTextEditForm(instance=instance)
-
-    if request.method == 'POST':
-        content = request.POST['content']
-        instance.content = content
-        instance.save()
-
-        return redirect(instance.nextURL)
-
-    context = {'form': form}
-    context.update(extra_context or {})
-
-    return TemplateResponse(request, template, context)
+# @csrf_exempt
+# def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extra_context=None):
+#     instance = get_object_or_404(CKRichTextHolder, pk=pk)
+#     form = CKRichTextEditForm(instance=instance)
+#
+#     if request.method == 'POST':
+#         content = request.POST['content']
+#         instance.content = content
+#         instance.save()
+#
+#         return redirect(instance.nextURL)
+#
+#     context = {'form': form}
+#     context.update(extra_context or {})
+#
+#     return TemplateResponse(request, template, context)
 
 

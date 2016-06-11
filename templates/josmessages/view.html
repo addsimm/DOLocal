@@ -33,7 +33,7 @@
 
                 <a class="btn btn-default"
                    style="width: 100px;"
-                   href="{% url 'messages_reply'  message.id %}">
+                   href="{% url 'josmessages:messages_reply'  message.id %}">
                     Reply
                 </a>
 
@@ -42,13 +42,13 @@
 
             <a class="btn btn-default"
                style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-               href="{% url 'messages_inbox' %}">
+               href="{% url 'josmessages:messages_inbox' %}">
                 Go back
             </a>
 
             <a class="btn btn-default"
                style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-               href="{% url 'messages_delete' message.id %}">
+               href="{% url 'josmessages:messages_delete' message.id %}">
                 Delete
             </a>
 

@@ -13,7 +13,7 @@ from joscourses.models import JOSCourseWeek
 from .models import JOSCourseWeek, JOSHandout
 
 from josprojects.models import CKRichTextHolder
-from josprojects.forms import CKRichTextEditForm
+# from josprojects.forms import CKRichTextEditForm
 
 # Create your views here.
 

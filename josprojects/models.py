@@ -13,9 +13,10 @@ class CKRichTextHolder(TimeStamped, models.Model):
         verbose_name = 'CK Rich Text Holder'
 
     author = models.ForeignKey(User)
-    title = models.CharField(max_length=150, default="untitled")
-    nextURL = models.CharField(max_length=150, default="/")
-    field_to_edit = models.CharField(max_length=150, default="nofield")
+    class_to_edit = models.CharField(max_length=150, default="no_object")
+    id_to_edit = models.IntegerField(default=0)
+    field_to_edit = models.CharField(max_length=150, default="no_field")
+    pk4ckeditor = models.IntegerField(default=0)
     content = RichTextField()
 
     def get_jos_name(author):

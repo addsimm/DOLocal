@@ -1,30 +1,13 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags  static %}
 
-{% block meta_title %}
-    {{ story.title | striptags | truncatechars:25 }}
-{% endblock %}
-{% block title %}
-    {{ story.title | striptags | truncatechars:25 }}
-{% endblock %}
-
-{% block breadcrumb_menu %}
-
-    {{ block.super }}
+{% block meta_title %}{{ story.title | striptags | truncatechars:25 }}{% endblock %}
+{% block title %}{{ story.title | striptags | truncatechars:25 }}{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}
     <span style="font-size: 16pt; font-weight: normal">Story:</span>
-    {{ story.title  | striptags | truncatechars:25 }}
-    </div></div>
-
-{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static "js/jquery-confirm.js" %}"></script>
-{% endblock %}
-
+    {{ story.title  | striptags | truncatechars:25 }}</div></div>{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">{% endblock %}
+{% block extra_js %}<script src="{% static "js/jquery-confirm.js" %}"></script>{% endblock %}
 
 {% block all_content %}
 
@@ -69,6 +52,10 @@
 </style>
 
 <div class="row" style="margin-top: 60px;">
+    <br>
+    <br>field_to_edit: {{ field_to_edit }}
+    <br>pk4ckeditor: {{ pk4ckeditor }}
+    <br>
 
     <!-- Center Panel -->
     <div class="col-xs-10 scrollit" style=" ">
@@ -83,19 +70,21 @@
                     <div class="col-xs-12">
 
                         {% if edit %}
+
                             <span id="hint" style="display: none; font-size: 10pt; ">
-                                Hint: Bottom right triangle resizes editor <i class="fa fa-hand-o-down"></i></span>
-                            <button
+                                Hint: Drag to change editor height
+                            </span>
+                            <a
                                 id="edit_title"
                                 class="btn btn-info btn-xs pull-right"
                                 style="margin-left: 5px; width: 80px;"
-                                onclick="manageCKEdit(this)"
+                                href="{% url "josstory_edit" story.id %}/?field_to_edit=title"
                                 data-toggle="tooltip"
                                 title="Activates the word processor."
                                 data-placement="bottom"
                             >
                                 <span style="font-size: 14pt;">Edit</span>
-                            </button>
+                            </a>
 
 
                             <button
@@ -126,26 +115,26 @@
 
                     </div>
 
-
                     <div class="row">
-                        <form id='story_title_form'
+                        <form id='title_form'
                               method="post"
                               {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-
                             {% csrf_token %}
                             <div id='title' class="col-xs-12 homehead text-center">
                                 {{ story.title | striptags }}<br>
                             </div>
 
-                            <br><br><br><br><br><br>Temporary:
-                            <input id="title_holder" type="text" name="nucontent" value="{{ story.title }}">
-                            <br>
-
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+                            <input type="hidden" name='nucontent' value = " ">
+                            <button type=submit style="margin-top: 100px;">saDEQWFEWQGFEWRGVWERGWEQRGEWRT</button>
+                            <button type = submit
+                                    class="btn btn-success btn-lg"
+                                    style="margin-top: 100px; display: none; margin-left: 5px; width: 80px;">
+                                    Submit
+                            </button>
                         </form>
                     </div>
                 </div>
-
-
 
                 <div class="joscursive text-center">
                     {{ story.author.JOSProfile.jos_name }}<br>
@@ -212,9 +201,6 @@
         {% if story.author == request.user %}
 
             <a class="btn pull-right btn-info"
-               data-toggle="tooltip"
-               title="Turns editing on / off."
-               data-placement="top"
                style="margin-top: 30px;"
                     {% if edit %}
                         href="{% url "josstory" story.id %}">
@@ -259,77 +245,99 @@
     </div>
 </div>
 
-
-
-
-
 <script>
 
     $(document).ready(function () {
         CKEDITOR.disableAutoInline = true;
-
         $('[data-toggle="tooltip"]').tooltip();
+        var ckrtfid = {{ pk4ckeditor }};
+        if ( ckrtfid > 0 ) {
+            var ckrtfholderf2e = '{{ field_to_edit }}';
+            startCKEdit(ckrtfholderf2e);
+        }
 
+        function startCKEdit(section) {
+            $('#edit_' + section).hide();
+            $('#hint').show();
+            $('#save_' + section).show();
+            $('#discard_' + section).show();
+            $('#' + section + '_border').removeClass('edit_border').addClass('edit_border_active');
+            activateCKEdit(section);
+        }
+
+        function activateCKEdit(section) {
+
+            CKEDITOR.replace(section, {
+                toolbar: [
+                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                    {'name': 'styles', 'items': ['Font', 'FontSize']},
+                    {
+                        'name': 'basicstyles',
+                        'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
+                    },
+                    {
+                        'name': 'paragraph',
+                        'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList',]
+                    },
+                    {
+                        'name': 'insert', 'items': ['Image', 'Smiley']
+                    },
+                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
+                ],
+                contentsCss: '/static/ckeditor/ckeditor/contents.css',
+                disableNativeSpellChecker: false,
+                width: '95%',
+                tabSpaces: 4,
+                extraPlugins: 'colorbutton'
+            });
+        }
 
     });
 
     function manageCKEdit(el) {
         var elstrid = '#' + el.id;
-        var strpos = elstrid.search("_");
-        var actsection = elstrid.slice(strpos + 1);
         var acttxt = $(elstrid).text().trim();
-        var bordertxt = '#' + actsection + '_border';
 
         switch (acttxt) {
-            case "Edit":
-                $('#edit_' + actsection).hide();
-                $('#hint').show();
-                $('#save_' + actsection).show();
-                $('#discard_' + actsection).show();
-                $(bordertxt).removeClass('edit_border').addClass('edit_border_active');
-                activateCKEdit(actsection);
-                break;
 
             case "Save":
-
-
                 var data = CKEDITOR.instances.title.getData();
-                alert(data);
                 $('#title_holder').val(data);
-                $("#story_title_form").submit();
-{#                var jc = $.confirm({#}
-{#                    cancelButton: 'Save changes',#}
-{#                    cancelButtonClass: 'btn-default',#}
-{#                    confirmButton: 'Cancel',#}
-{#                    confirmButtonClass: 'btn-warning',#}
-{#                    content: 'Do you want to save recent changes?',#}
-{#                    confirm: function () {#}
-{#                        jc.close()#}
-{#                    },#}
-{#                    cancel: function () {#}
-{#                        var data = CKEDITOR.instances.editor1.getData();#}
-{#                        alert(data);#}
-{#                        destroyCKEdit(actsection);#}
-{#                        jc.close();#}
-{#            #}
-{#                    }#}
-{#                });#}
+                    alert(data);
+                var jc = $.confirm({
+                    cancelButton: 'Save changes',
+                    cancelButtonClass: 'btn-default',
+                    confirmButton: 'Cancel',
+                    confirmButtonClass: 'btn-warning',
+                    content: 'Do you want to save recent changes?',
+                    confirm: function () {
+                        jc.close()
+                    },
+                    cancel: function () {
+                        $("#title_form").submit();
+                        CKEDITOR.instances.title.destroy();
+                        jc.close();
+                        window.location.href = "{% url "josstory" story.id %}";
+                    }
+                });
+
                 break;
 
             case "Discard":
 
                 var jc = $.confirm({
-                    cancelButton:       'Discard changes',
-                    cancelButtonClass:  'btn-default',
-                    confirmButton:      'Cancel',
+                    cancelButton: 'Discard changes',
+                    cancelButtonClass: 'btn-default',
+                    confirmButton: 'Cancel',
                     confirmButtonClass: 'btn-warning',
-                    content:            'Do you want to discard recent changes?',
+                    content: 'Do you want to discard recent changes?',
                     confirm: function () {
                         jc.close()
                     },
                     cancel: function () {
-                        destroyCKEdit(actsection);
+                        CKEDITOR.instances.title.destroy();
                         jc.close();
+                        location.reload();
 
                     }
                 });
@@ -339,43 +347,6 @@
         }
     }
 
-    function destroyCKEdit(section) {
-        CKEDITOR.instances.title.destroy();
-        $('#edit_' + section).show();
-        $('#hint').hide();
-        $('#save_' + section).hide();
-        $('#discard_' + section).hide();
-        bordertxt = '#' + section + '_border';
-        $(bordertxt).addClass('edit_border').removeClass('edit_border_active');
-    }
-
-
-    function activateCKEdit(section) {
-
-        CKEDITOR.replace(section, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'styles', 'items': ['Font', 'FontSize']},
-                {
-                    'name': 'basicstyles',
-                    'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
-                },
-                {
-                    'name': 'paragraph',
-                    'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList',]
-                },
-                {
-                    'name': 'insert', 'items': ['Image', 'Smiley']
-                },
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: '95%',
-            tabSpaces: 4,
-            extraPlugins: 'colorbutton'
-        });
-    }
 
 </script>
 

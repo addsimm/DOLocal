@@ -131,13 +131,13 @@
 
             <a class="btn pull-right btn-default"
                style="margin-top: 30px;"
-               href="{% url 'messages_compose' %}{{ profile.user.id }}">
+               href="{% url 'josmessages:messages_compose' %}{{ profile.user.id }}">
                 Message
             </a>
 
             <a class="btn pull-right btn-default"
                style="margin-top: 30px;"
-               href="{% url 'josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
+               href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
                 Favorite
             </a>
 

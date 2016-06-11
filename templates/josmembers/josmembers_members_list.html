@@ -49,13 +49,13 @@
 
                                 <a class="btn btn-default"
                                    style="margin-left: 10px; width: 150px;"
-                                   href="{% url 'messages_compose' %}{{ favorite.id }}">
+                                   href="{% url 'josmessages:messages_compose' %}{{ favorite.id }}">
                                     Send message
                                 </a>
 
                                 <a class="btn btn-default"
                                    style="margin-left: 10px; width: 150px;"
-                                   href="{% url 'josmembers_list' %}/?remove_favorite={{ favorite.id }} ">
+                                   href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">
                                     Unfavorite
                                 </a>
 
@@ -89,7 +89,7 @@
 
 
             <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;" type="text" placeholder="Start typing here">
-            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers_list" %}">
+            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers:josmembers_list" %}">
                 Start over
             </a>
 
@@ -106,7 +106,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script language="javascript">
         /* Before our JavaScript, the urls need to be set. */
-        var SUBMIT_URL = "{% url 'search_member_list' %}";
+        var SUBMIT_URL = "{% url 'josmembers:search_member_list' %}";
     </script>
 
     <script language="javascript">

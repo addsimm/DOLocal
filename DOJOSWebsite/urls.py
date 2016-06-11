@@ -39,7 +39,7 @@ urlpatterns += patterns('',
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),
     url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash), "josmembers.views.password_reset_verify",name="password_reset_verify"),
-    ('^', include('josmembers.urls')),
+    ('^', include('josmembers.urls', namespace='josmembers')),
 
     ### JOS Projects / Courses ###
     ("^", include("josprojects.urls")),
@@ -58,7 +58,7 @@ urlpatterns += patterns('',
     ### Forums, Messaging, Etc. ###
     url(r'^spirit/', include(spirit.urls)),
     #url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
-    url(r'^messages/', include('josmessages.urls')),
+    url(r'^messages/', include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
 
     # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
 
