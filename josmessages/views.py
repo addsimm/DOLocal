@@ -112,6 +112,8 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
 
     if request.method == "POST":
         sender = request.user
+        recipient = request.POST['recipient']
+        to_user = get_object_or_404(User, username = recipient)
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user)
@@ -131,10 +133,11 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
 
     return render_to_response(template_name, {
         'form': form,
-        'recipient': to_user.username,
-        'jos_name': to_user.JOSProfile.jos_name,
+        'recipient': to_user,
+        'jos_name': to_user.JOSProfile.jos_name(),
         'id': id
     }, context_instance=RequestContext(request))
+
 
 
 @login_required

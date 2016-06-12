@@ -4,7 +4,6 @@ from django.utils import timezone
 
 from mezzanine.core.models import TimeStamped
 
-from ckeditor.fields import RichTextField
 from embed_video.fields import EmbedVideoField
 
 
@@ -18,7 +17,7 @@ class JOSCourse(TimeStamped, models.Model):
 
     course_title = models.CharField(max_length=150, default="untitled")
     courseno = models.IntegerField(default=0)
-    description = RichTextField(default="coming soon")
+    description = models.TextField(default="coming soon")
     instructor = models.ForeignKey(User, related_name="instructor_user")
     location = models.CharField(max_length=150, default="tbd")
 
@@ -65,7 +64,7 @@ class JOSHandout(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     handout_title = models.CharField(max_length=150, default="untitled")
     handoutno = models.IntegerField(default=0)
-    content = RichTextField(default="coming soon")
+    content = models.TextField(default="coming soon")
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -75,7 +74,7 @@ class JOSStoryActivity(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
     activity_title = models.CharField(max_length=150, default="untitled")
     activityno = models.IntegerField(default=0)
-    content = RichTextField(default="coming soon")
+    content = models.TextField(default="coming soon")
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):

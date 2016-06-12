@@ -84,7 +84,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
 
         edit = False
 
-    context = {'story': story, 'edit': edit}
+    context = {'story': story, 'content': story.content, 'title_content': story.title, 'edit': edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

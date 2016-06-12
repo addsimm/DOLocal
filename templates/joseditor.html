@@ -1,0 +1,56 @@
+<div id='border_{{ section_to_edit }}' class='{% if edit %}edit_border{% endif %}' style='padding: 3px;'>
+
+    <!-- Edit Buttons -->
+    <div class='col-xs-12' style='margin-top: 10px; margin-bottom: 10px;'>
+
+        {% if edit %}
+
+            <span id='hint' class='joshint'
+                  style='display: none; margin-left: 15px;'
+                  data-toggle='tooltip'
+                  title='Dragging bottom right triangle changes the editor's height'
+                  data-placement='bottom'>
+                                Hint: Drag to change editor height
+                            </span>
+
+            <a
+                    id='{{ section_to_edit }}'
+                    class='btn btn-info btn-xs pull-right'
+                    style='margin-left: 5px; width: 120px;'
+                    onclick='manageCKEdit(this)'
+                    data-toggle='tooltip'
+                    title='Activates the word processor'
+                    data-placement='bottom'
+            >
+                <span style='font-size: 14pt;'>Edit Section</span>
+            </a>
+
+
+            <button
+                    id='save_{{ section_to_edit }}'
+                    class='btn btn-success btn-xs pull-right'
+                    style='display: none; margin-left: 5px; width: 80px;'
+                    onclick='manageCKEdit(this)'
+                    data-toggle='tooltip'
+                    title='Will replace previous text'
+                    data-placement='bottom'
+            >
+                <span style='font-size: 14pt;'>Save</span>
+            </button>
+
+            <button
+                    id='discard_{{ section_to_edit }}'
+                    class='btn btn-danger btn-xs pull-right'
+                    style='display: none; width: 80px;'
+                    onclick='manageCKEdit(this)'
+                    data-toggle='tooltip'
+                    title='Will NOT save changes!'
+                    data-placement='bottom'
+            >
+                <span style='font-size: 14pt;'>Discard</span>
+            </button>
+
+        {% endif %}
+
+    </div>
+

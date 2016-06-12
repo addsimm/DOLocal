@@ -37,8 +37,12 @@
         border: 10px solid #28a4c9;
     }
 
-   .cke {
+    .cke {
         margin-left: 25px;
+    }
+
+    .joshint {
+       font-size: 10pt;
     }
 
     .tooltip-inner {
@@ -46,7 +50,7 @@
         border: solid 2px rgb(65, 45, 120);
         color: rgb(65, 45, 120);
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 12pt;
+        font-size: 16pt;
         padding: 5px;
     }
 
@@ -56,49 +60,58 @@
 <div class="row" style="margin-top: 60px;">
 
     <!-- Center Panel -->
-    <div class="col-xs-10 scrollit" style=" ">
+    <div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
 
         <!-- Title -->
         <div class="row" style=" ">
             <div class="col-xs-12">
 
-                <div id='title_border' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
+
+                <div id='border_title' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
 
                     <!-- Edit Buttons -->
                     <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px;">
 
+                        {% with section='title' %}
                         {% if edit %}
 
-                            <span id="hint" style="display: none; font-size: 10pt; margin-left: 30px;">
+
+
+                            <span id="hint" class="joshint"
+                                 style="display: none; margin-left: 15px;"
+                                 data-toggle="tooltip"
+                                 title="Dragging bottom right triangle changes the editor's height"
+                                 data-placement="bottom">
                                 Hint: Drag to change editor height
                             </span>
+
                             <a
-                                id="edit_title"
+                                id="edit_{{ section }}"
                                 class="btn btn-info btn-xs pull-right"
-                                style="margin-left: 5px; width: 80px;"
+                                style="margin-left: 5px; width: 120px;"
                                 onclick="manageCKEdit(this)"
                                 data-toggle="tooltip"
-                                title="Activates the word processor."
+                                title="Activates the word processor"
                                 data-placement="bottom"
                             >
-                                <span style="font-size: 14pt;">Edit</span>
+                                <span style="font-size: 14pt;">Edit Section</span>
                             </a>
 
 
                             <button
-                                id="save_title"
+                                id="save_{{ section }}"
                                 class="btn btn-success btn-xs pull-right"
                                 style="display: none; margin-left: 5px; width: 80px;"
                                 onclick="manageCKEdit(this)"
                                 data-toggle="tooltip"
-                                title="Will replace previous text."
+                                title="Will replace previous text"
                                 data-placement="bottom"
                             >
                                 <span style="font-size: 14pt;">Save</span>
                             </button>
 
                             <button
-                                id="discard_title"
+                                id="discard_{{ section }}"
                                 class="btn btn-danger btn-xs pull-right"
                                 style="display: none; width: 80px;"
                                 onclick="manageCKEdit(this)"
@@ -112,6 +125,7 @@
                         {% endif %}
 
                     </div>
+                    {% endwith %}
 
                     <div class="row">
                         <form id='title_form'
@@ -119,11 +133,11 @@
                               {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
                             <div id='title' class="col-xs-12 homehead text-center">
-                                {{ story.title | striptags }}<br>
+                                {{ title_content | striptags }}<br>
                             </div>
 
                             <input id="title_holder" type="hidden" name='nucontent' value = " ">
-                            <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value = "title">
+                            <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value = " ">
 
                         </form>
                     </div>
@@ -182,13 +196,18 @@
     </div>
 
     <!-- Side Panel -->
-    <div class="col-xs-2 fixed" style=" ">
+    <div class="col-xs-2 fixed">
 
-        <div style="font-size: 10pt; margin-bottom: 50px;">
+        <div class="joshint"
+             style="height: 70px;"
+             data-toggle="tooltip"
+             title="The story scrolls"
+             data-placement="bottom">
             {% if not edit %}
                 Hint:<br><i class="fa fa-hand-o-left"></i> The story scrolls
             {% endif %}
         </div>
+
         {% include "updated.html" with myobj=story %}<br>
 
         {% if story.author == request.user %}
@@ -222,11 +241,15 @@
             </a>
         {% endif %}<br>
 
-        <a class="btn pull-right btn-warning"
-           style="margin-top: 30px;"
-           href="{% url "story_gallery" %}">
-            {% trans "Gallery" %}
-        </a><br>
+        {% if story.author != request.user %}
+
+            <a class="btn pull-right btn-warning"
+               style="margin-top: 30px;"
+               href="{% url "story_gallery" %}">
+                {% trans "Gallery" %}
+            </a><br>
+
+        {% endif %}
 
         {# comment #}
         <a class="btn pull-right btn-default"
@@ -273,59 +296,59 @@
 
         switch (acttxt) {
 
-            case "Edit":
+            case "Edit Section":
                 $('#edit_' + section).hide();
                 $('#hint').show();
                 $('#save_' + section).show();
                 $('#discard_' + section).show();
-                $('#' + section + '_border').removeClass('edit_border').addClass('edit_border_active');
+                $('#border_' + section).removeClass('edit_border').addClass('edit_border_active');
                 activateCKEdit(section);
                 break;
 
             case "Save":
-                var data = CKEDITOR.instances.title.getData();
-                $('#title_holder').val(data);
-                $("#field_to_edit_holder").val('title');
-                var jc = $.confirm({
+                var CKEDITOR = window.parent.CKEDITOR;
+                for (var i in CKEDITOR.instances) {
+                    var currentInstance = i;
+                    break;
+                }
+                var data = CKEDITOR.instances[currentInstance].getData();
+                $('#' + section + '_holder').val(data);
+                $("#field_to_edit_holder").val(section);
+                var save_confirm = $.confirm({
                     cancelButton: 'Save changes',
                     cancelButtonClass: 'btn-default',
                     confirmButton: 'Cancel',
                     confirmButtonClass: 'btn-warning',
                     content: 'Do you want to save recent changes?',
                     confirm: function () {
-                        jc.close()
+                        save_confirm.close()
                     },
                     cancel: function () {
-                        jc.close();
-                        $("#title_form").submit();
+                        $('#' + section + '_form').submit();
                     }
                 });
                 break;
 
             case "Discard":
 
-                var jc = $.confirm({
+                var discard_confirm = $.confirm({
                     cancelButton: 'Discard changes',
                     cancelButtonClass: 'btn-default',
                     confirmButton: 'Cancel',
                     confirmButtonClass: 'btn-warning',
                     content: 'Do you want to discard recent changes?',
                     confirm: function () {
-                        jc.close()
+                        discard_confirm.close()
                     },
                     cancel: function () {
-                        CKEDITOR.instances.title.destroy();
-                        jc.close();
                         location.reload();
 
                     }
                 });
                 break;
 
-
         }
     }
-
 
 </script>
 

@@ -107,16 +107,16 @@
 
         {% if profile.user == request.user %}
 
-            <a class="btn btn-info pull-right"
-               style="margin-top: 30px;"
-               {% if edit %}
-                   href="{% url "josprofile" request.user.id %}">
-                    {% trans "Hide edit" %}
-               {% else %}
-                   href="{% url "josprofile_edit" request.user.id %}">
-                   {% trans "Edit" %}
-               {% endif %}
-            </a>
+{#            <a class="btn btn-info pull-right"#}
+{#               style="margin-top: 30px;"#}
+{#               {% if edit %}#}
+{#                   href="{% url "josprofile" %}/{{ request.user.id }}">#}
+{#                    {% trans "Hide edit" %}#}
+{#               {% else %}#}
+{#                   href="{% url "josprofile_edit" %}{{ request.user.id }}">#}
+{#                   {% trans "Edit" %}#}
+{#               {% endif %}#}
+{#            </a>#}
 
             {% if profile.user == request.user and request.user.is_staff %}
 

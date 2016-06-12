@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from mezzanine.core.models import TimeStamped
-from ckeditor.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin
 
 # Create your models here.
@@ -18,7 +17,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     date_of_birth = models.DateField(blank=True, null=True)
 
-    about_me = RichTextField(default="Coming Soon!", null=True)
+    about_me = models.TextField(default="Coming Soon!", null=True)
 
     profile_image_idstr = models.CharField(max_length=150, default="noimage1")
 
