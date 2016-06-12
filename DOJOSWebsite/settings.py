@@ -133,7 +133,7 @@ INSTALLED_APPS = (
     'tracking',
     'friendship',
     'josmessages',
-    'ckeditor',
+    ### 2 Remove'ckeditor',
     'cloudinary',
     'embed_video',
     'notification',

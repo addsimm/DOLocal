@@ -3,21 +3,17 @@ from django.db import models
 
 from mezzanine.core.models import TimeStamped
 
-from ckeditor.fields import RichTextField
-
 # Create your models here.
-
 
 class CKRichTextHolder(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'CK Rich Text Holder'
+        verbose_name = 'JOS CKE Holder'
 
     author = models.ForeignKey(User)
-    class_to_edit = models.CharField(max_length=150, default="no_object")
-    id_to_edit = models.IntegerField(default=0)
-    field_to_edit = models.CharField(max_length=150, default="no_field")
-    pk4ckeditor = models.IntegerField(default=0)
-    content = RichTextField()
+    parent_class = models.CharField(max_length=150, default="no_object")
+    parent_id = models.IntegerField(default=0)
+    field_edited = models.CharField(max_length=150, default="no_field")
+    content = models.TextField()
 
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]
@@ -33,7 +29,7 @@ class JOSStory(TimeStamped, models.Model):
 
     author = models.ForeignKey(User)
     title = models.CharField(max_length=150, default="untitled")
-    content = RichTextField()
+    content = models.TextField()
     publish = models.BooleanField(default=False)
 
     def get_jos_name(author):

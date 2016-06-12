@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,7 +10,6 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from mezzanine.core.forms import Html5Mixin
 
 from josmembers.models import JOSProfile
 from joscourses.models import JOSCourseWeek
@@ -70,34 +68,23 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
     if request.method == 'POST':
         nucontent = request.POST['nucontent']
         field_to_edit = request.POST['field_to_edit']
+
+        ckrtfholder = CKRichTextHolder.objects.create(
+            author = request.user,
+            parent_class = 'JOSStory',
+            parent_id = story.id,
+            field_edited = field_to_edit,
+            content = getattr(story, field_to_edit)
+        )
+        ckrtfholder.save()
+
         setattr(story, field_to_edit, nucontent)
         info(request, "Changes saved!")
         story.save()
 
-        context = {'story': story, 'edit': 'false'}
-        context.update(extra_context or {})
+        edit = False
 
-        #return TemplateResponse(request, template, context)
-        redirect("/")
-
-    form = None
-
-    ckrtfholder = None
-    pk4ckeditor = 0
-    field_to_edit = request.GET.get('field_to_edit', "nofield")
-    if field_to_edit != "nofield":
-        content = getattr(story, field_to_edit)
-        ckrtfholder = CKRichTextHolder.objects.create(
-            author=request.user,
-            class_to_edit = 'story',
-            id_to_edit = story.id,
-            field_to_edit=field_to_edit,
-            content=content
-        )
-        pk4ckeditor = ckrtfholder.pk4ckeditor = ckrtfholder.id
-        ckrtfholder.save()
-
-    context = {'story': story, 'edit': edit, 'field_to_edit': field_to_edit, 'pk4ckeditor': pk4ckeditor}
+    context = {'story': story, 'edit': edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

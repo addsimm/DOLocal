@@ -9,9 +9,9 @@ class CKRichTextHolderAdmin(admin.ModelAdmin):
     """
     Admin class for CKRichTextEditHolders.
     """
-    list_display = ("id", "author", "created", "class_to_edit", "id_to_edit", "field_to_edit")
+    list_display = ("id", "author", "created", "parent_class", "parent_id", "field_edited")
 
-    verbose_name = 'CKEditor Text Holder'
+    verbose_name = 'JOS CKE Holder'
 
     readonly_fields = ('created', 'updated',)
 
