@@ -28,7 +28,7 @@ class JOSStory(TimeStamped, models.Model):
         verbose_name_plural = 'JOS Stories'
 
     author = models.ForeignKey(User)
-    title = models.CharField(max_length=150, default="untitled")
+    title = models.TextField(default="untitled")
     content = models.TextField()
     publish = models.BooleanField(default=False)
 
