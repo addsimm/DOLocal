@@ -7,6 +7,10 @@ body {
     padding-top: 140px;
 }
 
+p {
+    margin: 0;
+}
+
 a, a:visited {
     background-color: white;
     color: rgb(112, 154, 109);
@@ -156,11 +160,44 @@ footer {
     background-color: rgb(231, 209, 222);
     border-color: rgb(65, 25, 140);
     color: rgb(65, 25, 140);
-
-
-
-
 }
+
+.fixed {
+    height: 600px;
+    overflow: hidden;
+}
+
+.scrollit {
+    height: 900px;
+    overflow-y: scroll;
+}
+
+.edit_border {
+    background-color: white;
+    border: 3px dashed #28a4c9;
+}
+
+.edit_border_active {
+    background-color: #28a4c9;
+    border: 10px solid #28a4c9;
+}
+
+.joshint {
+    font-size: 10pt;
+}
+
+.tooltip-inner {
+    background: lightyellow;
+    border: solid 2px rgb(65, 45, 120);
+    color: rgb(65, 45, 120);
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16pt;
+    padding: 5px;
+}
+
+
+
+
 
 
 

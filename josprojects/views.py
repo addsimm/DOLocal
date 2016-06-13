@@ -84,7 +84,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
 
         edit = False
 
-    context = {'story': story, 'content': story.content, 'title_content': story.title, 'edit': edit}
+    context = {'story': story, 'edit': edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -98,23 +98,5 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
-
-
-# @csrf_exempt
-# def ckrichtextedit(request, pk, template="josprojects/ckrichtextedit.html", extra_context=None):
-#     instance = get_object_or_404(CKRichTextHolder, pk=pk)
-#     form = CKRichTextEditForm(instance=instance)
-#
-#     if request.method == 'POST':
-#         content = request.POST['content']
-#         instance.content = content
-#         instance.save()
-#
-#         return redirect(instance.nextURL)
-#
-#     context = {'form': form}
-#     context.update(extra_context or {})
-#
-#     return TemplateResponse(request, template, context)
 
 

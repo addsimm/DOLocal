@@ -13,119 +13,37 @@
 
 <style>
 
-    p {
-        margin: 0;
-    }
-
-    .fixed {
-        height: 600px;
-        overflow: hidden;
-    }
-
-    .scrollit {
-        height: 900px;
-        overflow-y: scroll;
-    }
-
-    .edit_border {
-        background-color: white;
-        border: 3px dashed #28a4c9;
-    }
-
-    .edit_border_active {
-        background-color: #28a4c9;
-        border: 10px solid #28a4c9;
-    }
-
     .cke {
         margin-left: 25px;
     }
 
-    .joshint {
-       font-size: 10pt;
-    }
-
-    .tooltip-inner {
-        background: lightyellow;
-        border: solid 2px rgb(65, 45, 120);
-        color: rgb(65, 45, 120);
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 16pt;
-        padding: 5px;
-    }
-
-
 </style>
 
-<div class="row" style="margin-top: 60px;">
+<div class="row" style="margin-top: 40px;">
 
-    <!-- Center Panel -->
+    <!-- Main Panel -->
     <div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
 
         <!-- Title -->
         <div class="row" style=" ">
             <div class="col-xs-12">
 
+                <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
+                    <span class="joshint"
+                          style="display: none;"
+                          data-toggle="tooltip"
+                          title="Dragging bottom right triangle changes the editor's height"
+                          data-placement="bottom">
+                    Hint: Drag to change editor height
+                    </span>
+                </div>
 
-                <div id='border_title' class="{% if edit %}edit_border{% endif %}" style="padding: 3px;">
+                <div id='border_title'
+                     class="{% if edit %}edit_border{% endif %} edit_border_class"
+                     style="padding: 3px;">
 
-                    <!-- Edit Buttons -->
-                    <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px;">
-
-                        {% with section='title' %}
-                        {% if edit %}
-
-
-
-                            <span id="hint" class="joshint"
-                                 style="display: none; margin-left: 15px;"
-                                 data-toggle="tooltip"
-                                 title="Dragging bottom right triangle changes the editor's height"
-                                 data-placement="bottom">
-                                Hint: Drag to change editor height
-                            </span>
-
-                            <a
-                                id="edit_{{ section }}"
-                                class="btn btn-info btn-xs pull-right"
-                                style="margin-left: 5px; width: 120px;"
-                                onclick="manageCKEdit(this)"
-                                data-toggle="tooltip"
-                                title="Activates the word processor"
-                                data-placement="bottom"
-                            >
-                                <span style="font-size: 14pt;">Edit Section</span>
-                            </a>
-
-
-                            <button
-                                id="save_{{ section }}"
-                                class="btn btn-success btn-xs pull-right"
-                                style="display: none; margin-left: 5px; width: 80px;"
-                                onclick="manageCKEdit(this)"
-                                data-toggle="tooltip"
-                                title="Will replace previous text"
-                                data-placement="bottom"
-                            >
-                                <span style="font-size: 14pt;">Save</span>
-                            </button>
-
-                            <button
-                                id="discard_{{ section }}"
-                                class="btn btn-danger btn-xs pull-right"
-                                style="display: none; width: 80px;"
-                                onclick="manageCKEdit(this)"
-                                data-toggle="tooltip"
-                                title="Will NOT save changes!"
-                                data-placement="bottom"
-                            >
-                                <span style="font-size: 14pt;">Discard</span>
-                            </button>
-
-                        {% endif %}
-
-                    </div>
-                    {% endwith %}
+                    <!-- Title Edit Buttons -->
+                    {% include "jos_editor.html" with section='title' %}
 
                     <div class="row">
                         <form id='title_form'
@@ -133,11 +51,11 @@
                               {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
                             <div id='title' class="col-xs-12 homehead text-center">
-                                {{ title_content | striptags }}<br>
+                                {{ story.title | striptags }}<br>
                             </div>
 
                             <input id="title_holder" type="hidden" name='nucontent' value = " ">
-                            <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value = " ">
+                            <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value = "title">
 
                         </form>
                     </div>
@@ -154,41 +72,26 @@
 
             <div class="col-xs-12">
 
-                <div style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
-                    <div class="row" style="height:40px;">
-                        <div class="col-xs-12">
-                            <!-- Edit Button -->
-                            {% if edit %}
-                                <a class="start_editor_button btn btn-info btn-xs pull-right"
-                                   style="width: 80px"
-                                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
-                                    <span style="font-size: 14pt;">Edit</span>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
+                <div id='border_content'
+                     class="{% if edit %}edit_border{% endif %} edit_border_class"
+                     style="padding: 3px;">
+
+                    <!-- Content Edit Buttons -->
+                    {% include "jos_editor.html" with section='content' %}
 
                     <div class="row">
-                        <div class="col-xs-12" style="padding: 0 25px;">
-                            <div id='editor1' contenteditable="false">
+                        <form id='content_form'
+                              method="post"
+                              {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
-                                {{ story.content | richtext_filters | safe }}
-
+                            <div id='content' class="col-xs-12">
+                                {{ story.content | richtext_filters | safe }}<br>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="row" style="height:30px;">
-                        <div class="col-xs-12">
-                            <!-- Edit Button -->
-                            {% if edit %}
-                                <a class="btn btn-info btn-xs pull-right"
-                                   style="width: 80px"
-                                   href="{% url "josstory_edit" story.id %}/?field_to_edit=content">
-                                    <span style="font-size: 14pt;">Edit</span>
-                                </a>
-                            {% endif %}
-                        </div>
+                            <input id="content_holder" type="hidden" name='nucontent' value=" ">
+                            <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="content">
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -196,15 +99,23 @@
     </div>
 
     <!-- Side Panel -->
-    <div class="col-xs-2 fixed">
 
-        <div class="joshint"
-             style="height: 70px;"
-             data-toggle="tooltip"
-             title="The story scrolls"
-             data-placement="bottom">
+    <div id="editing_side_panel_hint"
+         class="col-xs-2 fixed josinstructions hidden"
+         style="margin-top: 70px;">
+        Please choose "Discard" or "Save" to exit editing mode.
+    </div>
+
+    <div id="editing_side_panel" class="col-xs-2 fixed">
+
+        <div style="height: 70px; text-align: center;">
             {% if not edit %}
-                Hint:<br><i class="fa fa-hand-o-left"></i> The story scrolls
+                <span class="joshint"
+                      data-toggle="tooltip"
+                      title="The story column scrolls"
+                      data-placement="bottom">
+                    Hint: The story scrolls
+                </span>
             {% endif %}
         </div>
 
@@ -212,7 +123,7 @@
 
         {% if story.author == request.user %}
 
-            <a class="btn pull-right btn-info"
+            <a id="edit_mode_button" class="btn pull-right btn-info"
                style="margin-top: 30px;"
                     {% if edit %}
                         href="{% url "josstory" story.id %}">
@@ -267,88 +178,6 @@
         CKEDITOR.disableAutoInline = true;
         $('[data-toggle="tooltip"]').tooltip();
        });
-
-    function activateCKEdit(section) {
-
-        CKEDITOR.replace(section, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'styles', 'items': ['Font', 'FontSize']},
-                {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
-                {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']},
-                {'name': 'insert', 'items': ['Image', 'Smiley']},
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: '95%',
-            tabSpaces: 4,
-            extraPlugins: 'colorbutton'
-        });
-
-    }
-
-    function manageCKEdit(el) {
-        var elstrid = '#' + el.id;
-        var pos = elstrid.search("_");
-        var section = elstrid.slice(pos + 1);
-        var acttxt = $(elstrid).text().trim();
-
-        switch (acttxt) {
-
-            case "Edit Section":
-                $('#edit_' + section).hide();
-                $('#hint').show();
-                $('#save_' + section).show();
-                $('#discard_' + section).show();
-                $('#border_' + section).removeClass('edit_border').addClass('edit_border_active');
-                activateCKEdit(section);
-                break;
-
-            case "Save":
-                var CKEDITOR = window.parent.CKEDITOR;
-                for (var i in CKEDITOR.instances) {
-                    var currentInstance = i;
-                    break;
-                }
-                var data = CKEDITOR.instances[currentInstance].getData();
-                $('#' + section + '_holder').val(data);
-                $("#field_to_edit_holder").val(section);
-                var save_confirm = $.confirm({
-                    cancelButton: 'Save changes',
-                    cancelButtonClass: 'btn-default',
-                    confirmButton: 'Cancel',
-                    confirmButtonClass: 'btn-warning',
-                    content: 'Do you want to save recent changes?',
-                    confirm: function () {
-                        save_confirm.close()
-                    },
-                    cancel: function () {
-                        $('#' + section + '_form').submit();
-                    }
-                });
-                break;
-
-            case "Discard":
-
-                var discard_confirm = $.confirm({
-                    cancelButton: 'Discard changes',
-                    cancelButtonClass: 'btn-default',
-                    confirmButton: 'Cancel',
-                    confirmButtonClass: 'btn-warning',
-                    content: 'Do you want to discard recent changes?',
-                    confirm: function () {
-                        discard_confirm.close()
-                    },
-                    cancel: function () {
-                        location.reload();
-
-                    }
-                });
-                break;
-
-        }
-    }
 
 </script>
 
