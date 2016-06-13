@@ -62,7 +62,7 @@
                         </td>
                         <td>
                             <a class="joslargelinkbutton" style="font-size: 14pt;" href="{% url "handout" %}/{{ handout.id }}">
-                                {{ handout.handout_title }}
+                                {{ handout.title | striptags }}
                             </a>
                         </td>
                         <td style="font-size: 14pt;">

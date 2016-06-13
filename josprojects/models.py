@@ -28,8 +28,8 @@ class JOSStory(TimeStamped, models.Model):
         verbose_name_plural = 'JOS Stories'
 
     author = models.ForeignKey(User)
-    title = models.TextField(default="untitled")
-    content = models.TextField()
+    title = models.TextField(default="Untitled")
+    content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)
 
     def get_jos_name(author):

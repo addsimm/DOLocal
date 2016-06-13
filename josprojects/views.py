@@ -1,20 +1,16 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.messages import info
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
-
 
 from josmembers.models import JOSProfile
 from joscourses.models import JOSCourseWeek
 
 from .models import CKRichTextHolder, JOSStory
+
+# Create your views here.
 
 User = get_user_model()
 
@@ -22,15 +18,12 @@ User = get_user_model()
 def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra_context=None):
     user = get_object_or_404(User, pk=pk)
     currentProfile = get_object_or_404(JOSProfile, user=user)
-
     weeks = JOSCourseWeek.objects.order_by('weekno') # retrives all weeks available
 
-    context = {"profile": currentProfile,
-               "weeks": weeks}
+    context = {"profile": currentProfile, "weeks": weeks}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
-
 
 @login_required
 def mystory_list(request, template="josprojects/mystory_list.html", extra_context=None):
@@ -41,13 +34,11 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 
     return TemplateResponse(request, template, context)
 
-
 @login_required
 @csrf_exempt
 def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
     user = request.user
-
     try:
         story = get_object_or_404(JOSStory, pk=storyid)
     except:

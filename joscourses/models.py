@@ -1,14 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 from mezzanine.core.models import TimeStamped
 
 from embed_video.fields import EmbedVideoField
 
-
 # Create your models here.
-
 
 class JOSCourse(TimeStamped, models.Model):
     class Meta:
@@ -61,14 +58,18 @@ class JOSCourseWeek(TimeStamped, models.Model):
 
 
 class JOSHandout(TimeStamped, models.Model):
-    courseweek = models.ForeignKey(JOSCourseWeek)
-    handout_title = models.CharField(max_length=150, default="untitled")
+    class Meta:
+        verbose_name = 'JOS Handout'
+
     handoutno = models.IntegerField(default=0)
-    content = models.TextField(default="coming soon")
+    courseweek = models.ForeignKey(JOSCourseWeek)
+    title = models.TextField(default="Untitled")
+    content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Handout #' + str(self.handoutno) + ": " + self.handout_title
+        return 'Handout #'+str(self.handoutno)+": "+self.handout_title
+
 
 class JOSStoryActivity(TimeStamped, models.Model):
     courseweek = models.ForeignKey(JOSCourseWeek)
