@@ -68,7 +68,7 @@ class JOSHandout(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Handout #'+str(self.handoutno)+": "+self.handout_title
+        return 'Handout #'+str(self.handoutno)+": "+self.title
 
 
 class JOSStoryActivity(TimeStamped, models.Model):

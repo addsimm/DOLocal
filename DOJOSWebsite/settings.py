@@ -133,7 +133,6 @@ INSTALLED_APPS = (
     'tracking',
     'friendship',
     'josmessages',
-    ### 2 Remove'ckeditor',
     'cloudinary',
     'embed_video',
     'notification',
@@ -347,11 +346,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-def show_toolbar(request):
-    return True
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-}
-
-DEBUG = True
+# def show_toolbar(request):
+#     return True
+#
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+# }
+#
+# DEBUG = True
