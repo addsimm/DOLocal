@@ -18,7 +18,7 @@ User = get_user_model()
 def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra_context=None):
     user = get_object_or_404(User, pk=pk)
     currentProfile = get_object_or_404(JOSProfile, user=user)
-    weeks = JOSCourseWeek.objects.order_by('weekno') # retrives all weeks available
+    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('weekno') # retrives all weeks available
 
     context = {"profile": currentProfile, "weeks": weeks}
     context.update(extra_context or {})

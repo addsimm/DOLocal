@@ -101,20 +101,22 @@ a:hover {
 
 table {
     font-family: "Open Sans", sans-serif;
+    font-size: 16pt;
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th {
+td {
     border: 1px solid #ddd;
     text-align: left;
-    padding: 12px;
+    padding: 20px 10px;
 }
 
 th {
     background-color: rgb(112, 154, 109);
     text-align: center;
     color: white;
+    padding: 10px;
 }
 
 tr:nth-child(even) {

@@ -12,7 +12,7 @@ if "notification" in settings.INSTALLED_APPS and getattr(settings, 'DJANGO_MESSA
 else:
     notification = None
     
-from josmessages.models import Message
+from josmessages.models import Message, JOSMessageThread
 
 class MessageAdminForm(forms.ModelForm):
     """
@@ -110,3 +110,13 @@ class MessageAdmin(admin.ModelAdmin):
                 notification.send([user], recipients_label, {'message' : obj,})
             
 admin.site.register(Message, MessageAdmin)
+
+
+class JOSMessageThreadAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSMessageThread.
+    """
+    verbose_name = 'JOS Message Thread'
+    readonly_fields = ('created', 'updated',)
+
+admin.site.register(JOSMessageThread, JOSMessageThreadAdmin)

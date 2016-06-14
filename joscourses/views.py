@@ -21,7 +21,7 @@ def course_week_list(request, template="###", extra_context=None):
 @login_required
 def course_week(request, weekid=0, template="joscourses/joscourseweek.html", extra_context=None):
     week = get_object_or_404(JOSCourseWeek, pk=weekid)
-    handouts = JOSHandout.objects.filter(courseweek=week).order_by('handoutno')
+    handouts = JOSHandout.objects.filter(courseweek=week, publish=True).order_by('handoutno')
     context = {'week': week, 'handouts': handouts}
     context.update(extra_context or {})
 

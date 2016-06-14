@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>80047</introspection-state-number>
-        <introspection-timestamp>2016-06-05.10:02:52.832</introspection-timestamp>
+        <introspection-state-number>106754</introspection-state-number>
+        <introspection-timestamp>2016-06-14.15:18:07.586</introspection-timestamp>
       </schema>
       <schema id="3" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -493,7 +493,7 @@
       </table>
       <table id="122" parent="2" name="joscourses_joshandout">
         <object-id>19345</object-id>
-        <state-number>49093</state-number>
+        <state-number>106752</state-number>
       </table>
       <table id="123" parent="2" name="joscourses_josstoryactivity">
         <object-id>19356</object-id>
@@ -513,7 +513,7 @@
       </table>
       <table id="127" parent="2" name="josprojects_ckrichtextholder">
         <object-id>19086</object-id>
-        <state-number>33034</state-number>
+        <state-number>97391</state-number>
       </table>
       <table id="128" parent="2" name="josprojects_josstory">
         <object-id>19111</object-id>
@@ -21853,30 +21853,30 @@ course_id</columns>
         <state-number>45368</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="3955" parent="122" name="handout_title">
-        <state-number>45368</state-number>
-        <mandatory>1</mandatory>
-        <data-type>varchar(150)</data-type>
-      </column>
-      <column id="3956" parent="122" name="content">
-        <state-number>45368</state-number>
+      <column id="3955" parent="122" name="content">
+        <state-number>106752</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="3957" parent="122" name="courseweek_id">
+      <column id="3956" parent="122" name="courseweek_id">
         <state-number>45368</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="3958" parent="122" name="publish">
+      <column id="3957" parent="122" name="publish">
         <state-number>48092</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <column id="3959" parent="122" name="handoutno">
+      <column id="3958" parent="122" name="handoutno">
         <state-number>49093</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
+      </column>
+      <column id="3959" parent="122" name="title">
+        <state-number>106752</state-number>
+        <mandatory>1</mandatory>
+        <data-type>text</data-type>
       </column>
       <index id="3960" parent="122" name="joscourses_joshandout_pkey">
         <object-id>19352</object-id>
@@ -21886,7 +21886,7 @@ course_id</columns>
       </index>
       <index id="3961" parent="122" name="joscourses_joshandout_41c4d410">
         <object-id>19396</object-id>
-        <columns>courseweek_id</columns>
+        <columns>publish</columns>
         <desc-columns></desc-columns>
       </index>
       <key id="3962" parent="122" name="joscourses_joshandout_pkey">
@@ -21895,7 +21895,7 @@ course_id</columns>
         <primary>1</primary>
       </key>
       <foreign-key id="3963" parent="122" name="j_courseweek_id_638d6beb8e30b63e_fk_joscourses_joscourseweek_id">
-        <columns>courseweek_id</columns>
+        <columns>publish</columns>
         <ref-key>~.joscourses_joscourseweek.joscourses_joscourseweek_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
@@ -22169,30 +22169,30 @@ course_id</columns>
         <state-number>25637</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4019" parent="127" name="title">
-        <state-number>26391</state-number>
-        <mandatory>1</mandatory>
-        <data-type>varchar(150)</data-type>
-      </column>
-      <column id="4020" parent="127" name="field_to_edit">
-        <state-number>25637</state-number>
-        <mandatory>1</mandatory>
-        <data-type>varchar(150)</data-type>
-      </column>
-      <column id="4021" parent="127" name="content">
+      <column id="4019" parent="127" name="content">
         <state-number>25637</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4022" parent="127" name="author_id">
+      <column id="4020" parent="127" name="author_id">
         <state-number>25637</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4023" parent="127" name="nextURL">
-        <state-number>33034</state-number>
+      <column id="4021" parent="127" name="field_edited">
+        <state-number>101562</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(150)</data-type>
+      </column>
+      <column id="4022" parent="127" name="parent_class">
+        <state-number>101562</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(150)</data-type>
+      </column>
+      <column id="4023" parent="127" name="parent_id">
+        <state-number>101562</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
       </column>
       <index id="4024" parent="127" name="josprojects_ckrichtextholder_pkey">
         <object-id>19093</object-id>
@@ -22202,7 +22202,7 @@ course_id</columns>
       </index>
       <index id="4025" parent="127" name="josprojects_ckrichtextholder_4f331e2f">
         <object-id>19100</object-id>
-        <columns>author_id</columns>
+        <columns>parent_class</columns>
         <desc-columns></desc-columns>
       </index>
       <key id="4026" parent="127" name="josprojects_ckrichtextholder_pkey">
@@ -22211,7 +22211,8 @@ course_id</columns>
         <primary>1</primary>
       </key>
       <foreign-key id="4027" parent="127" name="josprojects_ckrichtex_author_id_7616b3e3105b51b_fk_auth_user_id">
-        <columns>author_id</columns>
+        <columns>parent_class</columns>
+        <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
@@ -22230,12 +22231,12 @@ course_id</columns>
         <data-type>timestamp with time zone</data-type>
       </column>
       <column id="4031" parent="128" name="title">
-        <state-number>26391</state-number>
+        <state-number>106754</state-number>
         <mandatory>1</mandatory>
-        <data-type>varchar(150)</data-type>
+        <data-type>text</data-type>
       </column>
       <column id="4032" parent="128" name="content">
-        <state-number>26391</state-number>
+        <state-number>106754</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
