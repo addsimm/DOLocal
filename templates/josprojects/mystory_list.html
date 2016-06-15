@@ -33,51 +33,56 @@
                     Stories I've published
                </span>
             </a -->
-            <a class="joslargelinkbutton"
+            <a class="btn btn-default" style="width: 200px;"
                href="{% url 'josstory' %}/0">
-               <span style="margin-left: 5px; margin-right: 5px;">
-                    New story
-               </span>
+                    Create new story
             </a><br><br>
-            <span class="josinstructions">Please click a title to view:</span>
+
         </div>
 
+        {% if stories.count > 0 %}
+            <span class="josinstructions">Please click a title to view:<br>&nbsp&nbsp&nbsp&nbsp- or create a new story!</span><br><br>
 
-        <table data-toggle="table">
-            <thead>
-                <tr>
-                    <th data-sortable="true">Title</th>
-                    <th data-sortable="true">Created</th>
-                    <th data-sortable="true">Last change</th>
-                    <th data-sortable="true">Published</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for story in stories %}
+            <table data-toggle="table">
+                <thead>
                     <tr>
-                        <td>
-                            <a href="{% url 'josstory' %}/{{ story.id }}">
-                                <span style="margin-left: 5px; margin-right: 5px;">
-                                    {{ story.title | striptags | truncatechars:25 }}
-                                </span>
-                            </a>
-                        </td>
-                        <td>{{ story.created }}</td>
-                        <td>{{ story.updated }}</td>
-                        <td>
-                            {% if story.publish %}
-                                &nbsp&nbsp&nbsp&nbsp&nbsp
-                                &nbsp&nbsp&nbsp&nbsp&nbsp
-                                <i class="fa fa-circle fa-fw" style="color: green;"></i>
-                            {% endif %}
-                        </td>
+                        <th data-sortable="true">Title</th>
+                        <th data-sortable="true">Created</th>
+                        <th data-sortable="true">Last change</th>
+                        <th data-sortable="true">Published</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for story in stories %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'josstory' %}/{{ story.id }}">
+                                    <span style="margin-left: 5px; margin-right: 5px;">
+                                        {{ story.title | striptags | truncatechars:25 }}
+                                    </span>
+                                </a>
+                            </td>
+                            <td>{{ story.created }}</td>
+                            <td>{{ story.updated }}</td>
+                            <td>
+                                {% if story.publish %}
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                    <i class="fa fa-circle fa-fw" style="color: green;"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+
+            <span style="font-size: 36pt;">Click "Create new story" to get started!</span>
+
+        {% endif %}
 
     </div>
-
 </div>
 
 {% endblock all_content %}

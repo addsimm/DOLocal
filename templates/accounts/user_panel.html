@@ -3,14 +3,25 @@
 {% if request.user.is_authenticated %}
 
     <div class="row" style=" ">
+
         <div class="col-xs-12 text-right" style="padding-right: 0;">
 
 {#            <a href="/contact" class="btn btn-default" style="width: 115px;">#}
 {#                {% trans "Contact Us" %}#}
 {#            </a>#}
 
+            <button class="btn btn-warning"
+                    style="width: 85px;"
+                    onclick="goBack()">
+                Back
+            </button>
+
+            <script>function goBack() {
+                window.history.back();
+            }</script>
+
             <a class="btn btn-default"
-               style="width: 150px;"
+               style="margin-left: 10px; width: 150px;"
                href="{% url "logout" %}?next={{ request.path }}">
                 {% trans "Log Out " %}
             </a>
