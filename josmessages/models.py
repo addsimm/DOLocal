@@ -80,13 +80,13 @@ class Message(models.Model):
     sender = models.ForeignKey(AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
     sender_deleted_at = models.DateTimeField(_("Sender deleted at"), null=True, blank=True)
     sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
-    subject = models.CharField(_("Subject"), max_length=120)
+    subject = models.CharField(_("Subject"), max_length=120, blank=True)
 
     # NEW
 
     is_removed = models.BooleanField(default=False)
     likes_count = models.PositiveIntegerField(_("likes count"), default=0)
-    josmessagethread = models.ForeignKey('JOSMessageThread', null=True)
+    josmessagethread = models.ForeignKey('JOSMessageThread', related_name='comments', null=True)
 
     @property
     def like(self):

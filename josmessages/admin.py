@@ -41,6 +41,7 @@ class MessageAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'sender',
+                ('is_removed', 'likes_count', 'josmessagethread'),
                 ('recipient', 'group'),
             ),
         }),
@@ -59,9 +60,9 @@ class MessageAdmin(admin.ModelAdmin):
             'classes': ('collapse', 'wide'),
         }),
     )
-    list_display = ('subject', 'sender', 'recipient', 'sent_at', 'read_at')
-    list_filter = ('sent_at', 'sender', 'recipient')
-    search_fields = ('subject', 'body')
+    list_display = ('sender', 'subject', 'josmessagethread', 'recipient', 'sent_at', 'read_at')
+    list_filter = ('sent_at', 'sender', 'recipient', 'josmessagethread')
+    search_fields = ('subject', 'body', 'josmessagethread')
     raw_id_fields = ('sender', 'recipient', 'parent_msg')
 
     def save_model(self, request, obj, form, change):
