@@ -55,7 +55,7 @@ class JOSMessageThread(TimeStamped, models.Model):
     message_count = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.subject + self.id
+        return self.title + '_' + str(self.id)
 
     class Meta:
         ordering = ['-updated']

@@ -3,11 +3,13 @@ from django.db import models
 
 from mezzanine.core.models import TimeStamped
 
+from josmessages.models import JOSMessageThread
+
 # Create your models here.
 
 class CKRichTextHolder(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS CKE Holder'
+        verbose_name = 'CKE Holder'
 
     author = models.ForeignKey(User)
     parent_class = models.CharField(max_length=150, default="no_object")
@@ -24,9 +26,10 @@ class CKRichTextHolder(TimeStamped, models.Model):
 
 class JOSStory(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Story'
-        verbose_name_plural = 'JOS Stories'
+        verbose_name = 'Story'
+        verbose_name_plural = 'Stories'
 
+    message_thread = models.ForeignKey(JOSMessageThread, null=True)
     author = models.ForeignKey(User)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")

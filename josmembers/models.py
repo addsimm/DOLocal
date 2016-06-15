@@ -9,8 +9,8 @@ from mezzanine.utils.models import AdminThumbMixin
 
 class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Member Profile'
-        verbose_name_plural = 'JOS Members Profile'
+        verbose_name = 'Member Profile'
+        verbose_name_plural = 'Member Profiles'
         ordering = ("user",)
 
     user = models.OneToOneField(User, related_name='JOSProfile', on_delete=models.CASCADE)
