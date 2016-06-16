@@ -171,7 +171,7 @@ footer {
 }
 
 .scrollit {
-    height: 900px;
+    min-height: 400px;
     overflow-y: scroll;
 }
 

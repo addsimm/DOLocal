@@ -29,14 +29,14 @@ function manageCKEdit(el) {
     var elstrid = '#' + el.id;
     var pos = elstrid.search("_");
     var section = elstrid.slice(pos + 1);
-    var acttxt = $(elstrid).text().trim();
+    var acttxt = elstrid.slice(1, pos);
 
     switch (acttxt) {
 
-        case "Edit Section":
+        case "edit":
             $("#editing_side_panel").addClass('hidden');
             $("#editing_side_panel_hint").removeClass('hidden');
-            $('.edit_section_button').hide();
+            $(elstrid).hide();
             $('.joshint').show();
             $('#save_' + section).show();
             $('#discard_' + section).show();
@@ -45,7 +45,7 @@ function manageCKEdit(el) {
             activateCKEdit(section);
             break;
 
-        case "Save":
+        case "save":
             var CKEDITOR = window.parent.CKEDITOR;
             for (var i in CKEDITOR.instances) {
                 var currentInstance = i;
@@ -69,7 +69,7 @@ function manageCKEdit(el) {
             });
             break;
 
-        case "Discard":
+        case "discard":
 
             var discard_confirm = $.confirm({
                 cancelButton: 'Discard changes',

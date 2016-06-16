@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
@@ -70,18 +72,28 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         nucontent = request.POST['nucontent']
         field_to_edit = request.POST['field_to_edit']
 
-        ckrtfholder = CKRichTextHolder.objects.create(
-            author = request.user,
-            parent_class = 'JOSStory',
-            parent_id = story.id,
-            field_edited = field_to_edit,
-            content = getattr(story, field_to_edit)
-        )
-        ckrtfholder.save()
+        if field_to_edit == "comment":
+            message = Message.objects.create(
+                body = nucontent,
+                sender = user,
+                sent_at = datetime.datetime.now().time(),
+                josmessagethread = comment_thread)
+            info(request, "Great thought!")
+            message.save()
 
-        setattr(story, field_to_edit, nucontent)
-        info(request, "Changes saved!")
-        story.save()
+        else:
+            ckrtfholder = CKRichTextHolder.objects.create(
+                author = request.user,
+                parent_class = 'JOSStory',
+                parent_id = story.id,
+                field_edited = field_to_edit,
+                content = getattr(story, field_to_edit)
+            )
+            ckrtfholder.save()
+
+            setattr(story, field_to_edit, nucontent)
+            info(request, "Changes saved!")
+            story.save()
 
         edit = False
 
