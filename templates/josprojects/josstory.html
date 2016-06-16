@@ -54,8 +54,15 @@
                 </div>
             </div>
 
-            <div class="joscursive text-center">
-                {{ story.author.JOSProfile.jos_name }}<br>
+            <div class="text-center" style="margin-top: 20px;">
+
+                <a class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
+                   style=" padding: 10px 10px 0 10px;">
+                    <span style="font-size: 48pt; margin-left: 5px; margin-right: 5px;">
+                        {{ story.author.JOSProfile.jos_name }}
+                    </span>
+                </a>
+
             </div>
         </div>
     </div>
@@ -94,31 +101,73 @@
     </div>
 
     <div class="row" style="">
-        <div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
+        <div class="col-xs-11 col-xs-offset-1" style="margin-top: 20px;">
 
             {% for comment in comments %}
 
-                <div class="row" style="border-bottom: 1px dashed rgb(65, 45, 120); margin-top: 20px;  padding: 5px 5px 5px 0;">
-                    <div class="col-xs-1">
-                        <img style="display: inline; height: 60px;" src="
-                            {% if profile.profile_image_idstr != "noimage1" %}
-        http://res-4.cloudinary.com/desg88u7l/image/upload/{{ comment.sender.JOSProfile.profile_image_idstr }}
-                            {% else %}
-                                /static/img/coming-soon-profile.png
-                            {% endif %}">
+                {% if comment.sender != story.author %}
+
+                    <div class="row"
+                         style=" ">
+
+
+                        <div class="row" style=" margin-top: 10px;">
+                            <a href="{% url "profile" comment.sender.id %}" style="margin-left: 15px; margin-right: 10px;">
+                                    <span style="font-size: 20pt; margin: 0 0 0 5px;">
+                                        {{ comment.sender.JOSProfile.jos_name }}
+                                    </span>
+                            </a> said:
+                        </div>
+
+                        <div class="row"
+                             style="border-bottom: 1px dashed rgb(65, 45, 120); margin-top: 20px; padding-bottom: 10px;">
+
+                        <div class="col-xs-1">
+
+                            <img style="display: inline; height: 60px;" src="
+                                {% if profile.profile_image_idstr != "noimage1" %}
+            http://res-4.cloudinary.com/desg88u7l/image/upload/{{ comment.sender.JOSProfile.profile_image_idstr }}
+                                {% else %}
+                                    /static/img/coming-soon-profile.png
+                                {% endif %}">
+
+                        </div>
+
+                        <div class="col-xs-10"
+                             style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
+
+                            "{{ comment.body | striptags | safe }}"
+
+                        </div>
+
                     </div>
 
-                    <div class="col-xs-3" style=" ">
-                        <a class=" " href="{% url "profile" comment.sender.id %}" style="margin-left: -5px; margin-right: 10px;">
-                            <span style="font-size: 20pt; margin: 0 0 0 5px;">{{ comment.sender.JOSProfile.jos_name }}</span>
-                        </a> said:<br>
+                {% else %}
+
+
+                    <div class="row"
+                         style="border-bottom: 1px dashed rgb(65, 45, 120); margin-top: 20px; padding-bottom: 10px;">
+
+                        <div class="col-xs-9 col-xs-offset-2"
+                             style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
+                            "{{ comment.body | striptags | safe }}"
+                        </div>
+
+
+                        <div class="col-xs-1">
+                            <img style="display: inline; height: 60px;" src="
+                                {% if profile.profile_image_idstr != "noimage1" %}
+            http://res-4.cloudinary.com/desg88u7l/image/upload/{{ comment.sender.JOSProfile.profile_image_idstr }}
+                                {% else %}
+                                    /static/img/coming-soon-profile.png
+                                {% endif %}">
+                        </div>
+
                     </div>
 
-                    <div class="col-xs-8" style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px; margin-left: -35px;">
-                        "{{ comment.body | striptags }}"
-                    </div>
 
-                </div>
+
+                {% endif %}
 
             {% endfor %}
         </div>
