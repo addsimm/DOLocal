@@ -2,10 +2,10 @@
 {% load i18n mezzanine_tags accounts_tags  %}
 
 {% block meta_title %}
-    {{ week.week_title | striptags | truncatechars:25 }}
+    {{ week.week_title | safe | truncatechars:25 }}
 {% endblock %}
 {% block title %}
-    {{ week.week_title | striptags | truncatechars:25 }}
+    {{ week.week_title | safe | truncatechars:25 }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -43,8 +43,6 @@
             </iframe>
         </div>
 
-
-
         <div class="row" style="margin-top: 30px;">
 
             <b>Handouts:</b><br><br>
@@ -57,7 +55,7 @@
                 {% for handout in handouts %}
 
                     <tr>
-                        <td style="font-size: 14pt; text-align: center;">
+                        <td style="text-align: right;">
                             {{ handout.handoutno }}
                         </td>
                         <td>
@@ -65,7 +63,7 @@
                                 {{ handout.title | striptags }}
                             </a>
                         </td>
-                        <td style="font-size: 14pt;">
+                        <td style=" ">
                             {{ handout.updated }}
                         </td>
                     </tr>

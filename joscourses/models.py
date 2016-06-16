@@ -9,7 +9,7 @@ from embed_video.fields import EmbedVideoField
 
 class JOSCourse(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Course'
+        verbose_name = 'Course'
         ordering = ("semester",)
 
     course_title = models.CharField(max_length=150, default="untitled")
@@ -35,7 +35,7 @@ class JOSCourse(TimeStamped, models.Model):
 
 class JOSCourseStudent(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Course Student'
+        verbose_name = 'Course Student'
         ordering = ("course",)
         unique_together = ('student', 'course')
 
@@ -47,6 +47,10 @@ class JOSCourseStudent(TimeStamped, models.Model):
 
 
 class JOSCourseWeek(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Courseweek'
+        ordering = ("course", "weekno")
+
     week_title = models.CharField(max_length=150, default="untitled")
     weekno = models.IntegerField(default=0)
     course = models.ForeignKey(JOSCourse)
@@ -59,7 +63,7 @@ class JOSCourseWeek(TimeStamped, models.Model):
 
 class JOSHandout(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOS Handout'
+        verbose_name = 'Handout'
 
     handoutno = models.IntegerField(default=0)
     courseweek = models.ForeignKey(JOSCourseWeek)
@@ -68,7 +72,7 @@ class JOSHandout(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Handout #'+str(self.handoutno)+": "+self.handout_title
+        return 'Handout #'+str(self.handoutno)+": "+self.title
 
 
 class JOSStoryActivity(TimeStamped, models.Model):

@@ -6,16 +6,10 @@
                          margin-bottom: 0;
                          margin-top: 10px;">
 
-    <button class="btn btn-warning btn-xs pull-left"
-            style="border-radius: 20px; height: 45px; font-size: 16pt; width: 65px;"
-            onclick="goBack()">
-        Back
-    </button>
 
-    <script>function goBack() {window.history.back();}</script>
 
-    <div class="col-xs-5"
-         style="height: 45px; padding-left: 7px; padding-top: 11px;">
+    <div class="col-xs-4"
+         style="height: 45px; padding-left: 7px; padding-top: 12px;">
 
         <a style="margin-left: 0;"
            href="{% url "personaldesk" %}/{{ request.user.id }}">
@@ -54,6 +48,6 @@
 
     </div>
 
-    <div class="col-xs-6 breadcrumbtitle" style="margin-top: 5px; margin-left: -65px;">
-
+    <div class="col-xs-7 breadcrumbtitle" style="padding-top: 6px; margin-left: -45px;">
+        <span style="font-size: 12pt; margin-right: 10px;">page: </span>
     <!-- closing divs on pages -->

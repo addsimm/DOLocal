@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags static %}
 
-{% block meta_title %}{{ handout.title | striptags | truncatechars:25 }}{% endblock %}
-{% block title %}{{ handout.title | striptags | truncatechars:25 }}{% endblock %}
+{% block meta_title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
+{% block title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
 {% block breadcrumb_menu %}{{ block.super }}
-    {{ handout.title  | striptags | truncatechars:35 }}
+    {{ handout.title  | safe | truncatechars:35 }}
     </div></div>
 {% endblock %}
 {% block extra_css %}
@@ -49,7 +49,7 @@
                           {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
                         <div id='title' class="col-xs-12 homehead text-center">
-                            {{ handout.title | striptags }}<br>
+                            {{ handout.title | safe }}<br>
                         </div>
 
                         <input id="title_holder" type="hidden" name='nucontent' value=" ">
@@ -58,15 +58,11 @@
                     </form>
                 </div>
             </div>
-
-            <div class="joscursive text-center">
-                {{ handout.author.JOSProfile.jos_name }}<br>
-            </div>
         </div>
     </div>
 
     <!-- Content -->
-    <div class="row" style=" ">
+    <div class="row" style="margin-top: 10px;">
 
         <div class="col-xs-12">
 
@@ -86,6 +82,7 @@
 
                         <input id="content_holder" type="hidden" name='nucontent' value=" ">
                         <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="content">
+
 
                     </form>
                 </div>
@@ -142,7 +139,7 @@
 
         <a class="btn pull-right btn-warning"
            style="margin-top: 30px;"
-           href="{% url "course_week" %}/{{ handout.JOSCourseweek.id }}">
+           href="{% url "course_week" %}/{{ handout.courseweek.id }}">
             {% trans "Week" %}
         </a>
     {% endif %}<br>

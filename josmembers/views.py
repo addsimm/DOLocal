@@ -141,9 +141,9 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
                                 "a link for activating your account."))
             return redirect(next_url(request) or "/")
         else:
-            info(request, _("Successfully signed up"))
+            info(request, _("Successfully signed up - this is your personal desk:"))
             auth_login(request, new_user)
-            return login_redirect(request)
+            return redirect("http://www.joinourstory.com/personaldesk/" + str(new_user.id))
 
     context = {"form": form, "title": _("Sign up")}
     context.update ({"remote_address": remote_address})
@@ -164,8 +164,8 @@ def signup_verify(request, uidb36=None, token=None):
         user.is_active = True
         user.save()
         auth_login(request, user)
-        info(request, _("Successfully signed up"))
-        return login_redirect(request)
+        info(request, _("Successfully signed up - this is your personal desk:"))
+        return redirect("http://www.joinourstory.com/personaldesk/" + str(user.id))
     else:
         error(request, _("The link you clicked is no longer valid."))
         return redirect("/")
@@ -174,8 +174,7 @@ def signup_verify(request, uidb36=None, token=None):
 @login_required
 def account_redirect(request):
     """
-    Just gives the URL prefix for accounts an action - redirect
-    to the profile update form.
+    Just gives the URL prefix for accounts an action - redirect to the profile update form.
     """
     return redirect("profile_update")
 
@@ -199,7 +198,7 @@ def password_reset_verify(request, uidb36=None, token=None):
         return redirect('jos_new_password')
 
     else:
-        error(request, _("This link has expired. Please enter your email address again"))
+        error(request, _("Sorry, the link has expired. Please enter your email address again"))
         return redirect("jos_password_reset")
 
 

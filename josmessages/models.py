@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import signals
+from django.db.models import signals, F
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+
+from mezzanine.core.models import TimeStamped
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -45,22 +47,71 @@ class MessageManager(models.Manager):
 
 
 @python_2_unicode_compatible
+class JOSMessageThread(TimeStamped, models.Model):
+    """
+    A holder for messages in a thread
+    """
+    title = models.CharField(_("title"), max_length=255, blank=True)
+    message_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title + '_' + str(self.id)
+
+    class Meta:
+        ordering = ['-updated']
+        verbose_name = _("Message Thread")
+        verbose_name_plural = _("Message Threads")
+
+
+@python_2_unicode_compatible
 class Message(models.Model):
     """
-    A private message from user to user
+    A message / comment
     """
-    subject = models.CharField(_("Subject"), max_length=120)
-    body = models.TextField(_("Body"))
-    sender = models.ForeignKey(AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
-    recipient = models.ForeignKey(AUTH_USER_MODEL, related_name='received_messages', null=True, blank=True, verbose_name=_("Recipient"))
-    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name=_("Parent message"))
-    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
-    read_at = models.DateTimeField(_("read at"), null=True, blank=True)
-    replied_at = models.DateTimeField(_("replied at"), null=True, blank=True)
-    sender_deleted_at = models.DateTimeField(_("Sender deleted at"), null=True, blank=True)
-    recipient_deleted_at = models.DateTimeField(_("Recipient deleted at"), null=True, blank=True)
 
     objects = MessageManager()
+
+    body = models.TextField(_("Body"))
+    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name=_("Parent message"))
+    read_at = models.DateTimeField(_("read at"), null=True, blank=True)
+    recipient = models.ForeignKey(AUTH_USER_MODEL, related_name='received_messages', null=True, blank=True, verbose_name=_("Recipient"))
+    recipient_deleted_at = models.DateTimeField(_("Recipient deleted at"), null=True, blank=True)
+    replied_at = models.DateTimeField(_("replied at"), null=True, blank=True)
+    sender = models.ForeignKey(AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
+    sender_deleted_at = models.DateTimeField(_("Sender deleted at"), null=True, blank=True)
+    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
+    subject = models.CharField(_("Subject"), max_length=120, blank=True)
+
+    # NEW
+
+    is_removed = models.BooleanField(default=False)
+    likes_count = models.PositiveIntegerField(_("likes count"), default=0)
+    josmessagethread = models.ForeignKey('JOSMessageThread', related_name='comments', null=True)
+
+    @property
+    def like(self):
+        # *likes* is dynamically created by manager.with_likes()
+        try:
+            assert len(self.likes) <= 1, "Panic, too many likes"
+            return self.likes[0]
+        except (AttributeError, IndexError):
+            return
+
+
+    def increase_likes_count(self):
+        Message.objects \
+            .filter(pk=self.pk) \
+            .update(likes_count=F('likes_count') + 1)
+
+
+    @classmethod
+    def get_last_for_topic(cls, topic_id):
+        return (cls.objects
+                .filter(topic_id=topic_id)
+                .order_by('pk')
+                .last())
+
+    # OLD
 
     def new(self):
         """returns whether the recipient has read the message or not"""
@@ -103,3 +154,5 @@ def inbox_count_for(user):
 if "notification" not in settings.INSTALLED_APPS and getattr(settings, 'JOSMESSAGES_NOTIFY', True):
     from josmessages.utils import new_message_email
     signals.post_save.connect(new_message_email, sender=Message)
+
+

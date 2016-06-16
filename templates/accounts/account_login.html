@@ -5,7 +5,7 @@
 
     {% if request.user.is_authenticated %}
 
-        <div class="josinstructions">
+        <div class="josinstructions" style="margin-top: 100px;">
             {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out." %}
         </div>
 
@@ -15,33 +15,33 @@
         {% url "jos_password_reset" as password_reset_url %}
         {% url "home" as home_url %}
 
-        {% blocktrans %}
 
-            <div class="josinstructions" style="margin-bottom: 30px; margin-top: 30px;">
-                If you:
-                <ul>
-                    <li>
-                        haven't signed up yet, please click here:
-                        <a href="{{ signup_url }}?next={{ next }}">
-                            Sign Up
-                        </a>
-                    </li>
-                    <li>
-                        have password problems, click here:
-                        <a href="{{ password_reset_url }}">
-                            Reset Password
-                        </a>
-                    </li>
-                </ul>
-                Otherwise:<br>
-                <b>Please enter your email and password, then press "{{ title }}."</b>
-            </div>
+        <div class="josinstructions" style="margin-bottom: 30px; margin-top: 30px;">
+            If you:
+            <ul>
+                <li>
+                    haven't signed up yet, please click here:
+                    <a href="{% url "josmembers:jossignup" %}">
+                        Sign Up
+                    </a>
+                </li>
+                <li>
+                    have password problems, click here:
+                    <a href="{% url "josmembers:jos_password_reset" %}">
+                        Reset Password
+                    </a>
+                </li>
+            </ul>
+            Otherwise:<br>
+            <b>Please enter your email and password, then press "{{ title }}."</b>
+        </div>
 
-        {% endblocktrans %}
+
+        {{ block.super }}
 
     {% endif %}
 
-    {{ block.super }}
+
 
 {% endblock accounts_content %}
 

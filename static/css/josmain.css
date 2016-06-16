@@ -101,20 +101,22 @@ a:hover {
 
 table {
     font-family: "Open Sans", sans-serif;
+    font-size: 16pt;
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th {
+td {
     border: 1px solid #ddd;
     text-align: left;
-    padding: 12px;
+    padding: 20px 10px;
 }
 
 th {
     background-color: rgb(112, 154, 109);
     text-align: center;
     color: white;
+    padding: 10px;
 }
 
 tr:nth-child(even) {
@@ -139,7 +141,7 @@ footer {
     background-repeat: no-repeat;
     box-shadow: none;
     color: white;
-    font-size: 14pt;
+    font-size: 16pt;
     outline: none;
     text-decoration: none;
     text-shadow: none;
@@ -160,6 +162,7 @@ footer {
     background-color: rgb(231, 209, 222);
     border-color: rgb(65, 25, 140);
     color: rgb(65, 25, 140);
+    font-weight: bold;
 }
 
 .fixed {
@@ -168,7 +171,7 @@ footer {
 }
 
 .scrollit {
-    height: 900px;
+    min-height: 400px;
     overflow-y: scroll;
 }
 

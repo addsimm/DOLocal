@@ -1,12 +1,16 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.html import strip_tags
 
-from josmembers.models import JOSProfile
 from joscourses.models import JOSCourseWeek
+from josmembers.models import JOSProfile
+from josmessages.models import Message, JOSMessageThread
 
 from .models import CKRichTextHolder, JOSStory
 
@@ -18,7 +22,7 @@ User = get_user_model()
 def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra_context=None):
     user = get_object_or_404(User, pk=pk)
     currentProfile = get_object_or_404(JOSProfile, user=user)
-    weeks = JOSCourseWeek.objects.order_by('weekno') # retrives all weeks available
+    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('weekno') # retrives all weeks available
 
     context = {"profile": currentProfile, "weeks": weeks}
     context.update(extra_context or {})
@@ -46,6 +50,14 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
                                         title="Untitled",
                                         content="Coming soon")
 
+    try:
+        comment_thread = get_object_or_404(JOSMessageThread, id=story.id)
+    except:
+        comment_thread = JOSMessageThread.objects.create(id=story.id,
+                                                         title='Comments: ' + strip_tags(story.title))
+
+    comments = comment_thread.comments.order_by('sent_at')
+
     publish_story = request.GET.get('pub', None)
     if publish_story != None:
         if publish_story == 'publish':
@@ -60,22 +72,32 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         nucontent = request.POST['nucontent']
         field_to_edit = request.POST['field_to_edit']
 
-        ckrtfholder = CKRichTextHolder.objects.create(
-            author = request.user,
-            parent_class = 'JOSStory',
-            parent_id = story.id,
-            field_edited = field_to_edit,
-            content = getattr(story, field_to_edit)
-        )
-        ckrtfholder.save()
+        if field_to_edit == "comment":
+            message = Message.objects.create(
+                body = nucontent,
+                sender = user,
+                sent_at = datetime.datetime.now().time(),
+                josmessagethread = comment_thread)
+            info(request, "Great thought!")
+            message.save()
 
-        setattr(story, field_to_edit, nucontent)
-        info(request, "Changes saved!")
-        story.save()
+        else:
+            ckrtfholder = CKRichTextHolder.objects.create(
+                author = request.user,
+                parent_class = 'JOSStory',
+                parent_id = story.id,
+                field_edited = field_to_edit,
+                content = getattr(story, field_to_edit)
+            )
+            ckrtfholder.save()
+
+            setattr(story, field_to_edit, nucontent)
+            info(request, "Changes saved!")
+            story.save()
 
         edit = False
 
-    context = {'story': story, 'edit': edit}
+    context = {'story': story, 'edit': edit, "comments": comments}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

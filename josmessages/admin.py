@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 from josmessages.utils import get_user_model
+from josmessages.models import Message, JOSMessageThread
 User = get_user_model()
 
 if "notification" in settings.INSTALLED_APPS and getattr(settings, 'DJANGO_MESSAGES_NOTIFY', True):
@@ -12,8 +13,6 @@ if "notification" in settings.INSTALLED_APPS and getattr(settings, 'DJANGO_MESSA
 else:
     notification = None
     
-from josmessages.models import Message
-
 class MessageAdminForm(forms.ModelForm):
     """
     Custom AdminForm to enable messages to groups and all users.
@@ -42,6 +41,7 @@ class MessageAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'sender',
+                ('is_removed', 'likes_count', 'josmessagethread'),
                 ('recipient', 'group'),
             ),
         }),
@@ -60,9 +60,9 @@ class MessageAdmin(admin.ModelAdmin):
             'classes': ('collapse', 'wide'),
         }),
     )
-    list_display = ('subject', 'sender', 'recipient', 'sent_at', 'read_at')
-    list_filter = ('sent_at', 'sender', 'recipient')
-    search_fields = ('subject', 'body')
+    list_display = ('sender', 'subject', 'josmessagethread', 'recipient', 'sent_at', 'read_at')
+    list_filter = ('sent_at', 'sender', 'recipient', 'josmessagethread')
+    search_fields = ('subject', 'body', 'josmessagethread')
     raw_id_fields = ('sender', 'recipient', 'parent_msg')
 
     def save_model(self, request, obj, form, change):
@@ -107,6 +107,18 @@ class MessageAdmin(admin.ModelAdmin):
 
             if notification:
                 # Notification for the recipient.
-                notification.send([user], recipients_label, {'message' : obj,})
+                # notification.send([user], recipients_label, {'message' : obj,})
+                pass
             
 admin.site.register(Message, MessageAdmin)
+
+
+class JOSMessageThreadAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSMessageThread.
+    """
+    verbose_name = 'JOS Message Thread'
+    readonly_fields = ('created', 'updated',)
+    list_display = ("id", "title", "created", "updated", "message_count")
+
+admin.site.register(JOSMessageThread, JOSMessageThreadAdmin)
