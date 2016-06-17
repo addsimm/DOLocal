@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
 
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
@@ -66,6 +67,7 @@ def josprofile_redirect(request):
     return redirect("profile", username=request.user.username)
 
 
+@csrf_exempt
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
     user = User.objects.get(id=userid)
     username = user.username
@@ -83,32 +85,25 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
         currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
         currentProfile.save()
 
-    pk = request.GET.get('pk', None)
-    if pk != None:
-        ckrtfholder = get_object_or_404(CKRichTextHolder, pk=pk)
-        content = ckrtfholder.content
-        currentProfile.about_me = content
-        currentProfile.save()
-    else:
-        pass
-
-    field_to_edit = request.GET.get('field_to_edit', "nofield")
-    if field_to_edit != "nofield":
-        content = getattr(currentProfile, field_to_edit)
+    if request.method == 'POST':
+        nucontent = request.POST['nucontent']
+        field_to_edit = request.POST['field_to_edit']
 
         ckrtfholder = CKRichTextHolder.objects.create(
-            author=user,
-            title='Profile',
-            field_to_edit=field_to_edit,
-            content=content)
+            author=request.user,
+            parent_class='JOSStory',
+            parent_id=currentProfile.id,
+            field_edited=field_to_edit,
+            content=getattr(currentProfile, field_to_edit)
+        )
 
-        nexturl = '/users/' + str(user.id) + '/?pk=' + str(ckrtfholder.pk)
-        ckrtfholder.nextURL = nexturl
         ckrtfholder.save()
 
-        query_string = "/" + str(ckrtfholder.pk)
+        setattr(currentProfile, field_to_edit, nucontent)
+        info(request, "Changes saved!")
+        currentProfile.save()
 
-        return redirect("/ckrichtextedit" + query_string)
+        edit = False
 
     context = {"profile": currentProfile,
                "edit": edit,

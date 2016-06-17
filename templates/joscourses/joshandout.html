@@ -7,11 +7,6 @@
     {{ handout.title  | safe | truncatechars:35 }}
     </div></div>
 {% endblock %}
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">{% endblock %}
-{% block extra_js %}
-    <script src="{% static "js/jquery-confirm.js" %}"></script>{% endblock %}
-
 
 {% block all_content %}
 

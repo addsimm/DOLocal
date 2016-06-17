@@ -30,6 +30,7 @@ function manageCKEdit(el) {
     var pos = elstrid.search("_");
     var section = elstrid.slice(pos + 1);
     var acttxt = elstrid.slice(1, pos);
+    // alert(section);
 
     switch (acttxt) {
 
@@ -52,6 +53,7 @@ function manageCKEdit(el) {
                 break;
             }
             var data = CKEDITOR.instances[currentInstance].getData();
+            // alert(data);
             $('#' + section + '_holder').val(data);
             var save_confirm = $.confirm({
                 cancelButton: 'Save changes',

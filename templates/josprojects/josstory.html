@@ -6,8 +6,6 @@
 {% block breadcrumb_menu %}{{ block.super }}
     {{ story.title  | striptags | truncatechars:20 }} <span style="font-size: 18pt; font-style: italic; margin-left: 5px;"> by {{ story.author.JOSProfile.jos_name }}</span></div></div>
 {% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">{% endblock %}
-{% block extra_js %}<script src="{% static "js/jquery-confirm.js" %}"></script>{% endblock %}
 
 {% block all_content %}
 <style> .cke { margin-left: 25px;}</style>
