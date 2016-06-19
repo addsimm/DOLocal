@@ -80,7 +80,7 @@ class Message(models.Model):
     sender = models.ForeignKey(AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
     sender_deleted_at = models.DateTimeField(_("Sender deleted at"), null=True, blank=True)
     sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
-    subject = models.CharField(_("Subject"), max_length=120, blank=True)
+    subject = models.CharField(_("Subject"), max_length=120, blank=True, null=True)
 
     # NEW
 

@@ -3,72 +3,120 @@
 
 {% block all_content %}
 
-    <div class="row">
+<div class="row">
 
-        <div class="col-xs-10 col-xs-offset-1">
+<div class="col-xs-10 col-xs-offset-1">
 
-            <br><br>
-            <div class="josinstructions" style="margin-top: 30px;">Send message to {{ jos_name }}:</div>
-            <br>
-            <form action="" method="post">
-                {% csrf_token %}
+    <br><br>
+    <div class="josinstructions" style="margin-top: 30px;">Send new message to<br>
 
-                <div style="margin-left: 60px;">
-
-                    {% for field in form %}
-                        {% if field.label == "Recipient" %}
-                            {{ field.as_hidden }}
-                            <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+        <img style="display: inline; height: 60px;" src="
+                        {% if profile.profile_image_idstr != "noimage1" %}
+http://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profile_image_idstr }}
                         {% else %}
-                            <div class="form-group input_{{ field.id_for_label }}
-                                                                 {{ field.field.type }}
-                                                                 {% if field.errors %}
-                                                                    has-error
-                                                                 {% endif %}">
-                                {# field.name #}
-                                {% if field.label %}
-                                    <label class="control-label"
-                                           for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                                {% endif %}
+                            /static/img/coming-soon-profile.png
+                        {% endif %}">
 
-                                {{ field }}
+        <a href="{% url "profile" recipient.id %}"
+           style="margin-left: 15px; margin-right: 10px;">
+                    <span style="font-size: 20pt; margin: 0 0 0 5px;">
+                        {{ recipient.JOSProfile.jos_name }}
+                    </span>
+        </a> -
 
-                                {% if field.errors %}
-                                    <p class="help-block">
-                                        {% for e in field.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
+    </div>
 
-                                {% elif field.help_text %}
-                                    <p class="help-block">
-                                        {{ field.help_text }}
-                                    </p>
-                                {% endif %}
+    <br>
+    <form action="" method="post">
+        {% csrf_token %}
 
-                            </div>
+        recipient: {{ recipient.id }}
+
+            <div style="margin-left: 60px;">
+
+            {% for field in form %}
+                {% if field.label == "Recipient" %}
+                    {{ field.as_hidden }}
+                    <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+                {% else %}
+                    <div class="form-group input_{{ field.id_for_label }}
+                                                         {{ field.field.type }}
+                                                         {% if field.errors %}
+                                                            has-error
+                                                         {% endif %}">
+                        {# field.name #}
+                        {% if field.label %}
+                            <label class="control-label"
+                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
                         {% endif %}
-                    {% endfor %}
 
-                    <button class="btn btn-warning"
-                            style=" "
-                            onclick="goBack()">Go back
-                    </button>
+                        {{ field }}
 
-                    <script>function goBack() {
-                        window.history.back();
-                    }</script>
+                        {% if field.errors %}
+                            <p class="help-block">
+                                {% for e in field.errors %}
+                                    {% if not forloop.first %} / {% endif %}{{ e }}
+                                {% endfor %}
+                            </p>
 
-                    <input class="btn btn-default"
-                           style="width: 100px;"
-                           type="submit" value="Send">
+                        {% elif field.help_text %}
+                            <p class="help-block">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
 
-                </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
 
-            </form>
+            <button class="btn btn-warning"
+                    style=" "
+                    onclick="goBack()">Go back
+            </button>
+
+            <script>function goBack() {
+                window.history.back();
+            }</script>
+
+            <input class="btn btn-default"
+                   style="width: 100px;"
+                   type="submit" value="Send">
 
         </div>
 
-    </div>
+    </form>
+
+</div>
+
+</div>
+
+
+<script>
+
+        $(document).ready(function() {
+            CKEDITOR.replace(id_body, {
+                toolbar: [
+                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                    {'name': 'styles', 'items': ['Font', 'FontSize']},
+                    {
+                        'name': 'basicstyles',
+                        'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
+                    },
+                    {
+                        'name': 'paragraph',
+                        'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']
+                    },
+                    {'name': 'insert', 'items': ['Image', 'Smiley']},
+                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
+                ],
+                contentsCss: '/static/ckeditor/ckeditor/contents.css',
+                disableNativeSpellChecker: false,
+                width: '95%',
+                tabSpaces: 4,
+                extraPlugins: 'colorbutton'
+            });
+        });
+
+</script>
 
 {% endblock %}

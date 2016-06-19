@@ -4,58 +4,151 @@
 
 {% block all_content %}
 
+<div class="row">
+
+<div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
+
+{#{% for message in message %}#}
+
+{% if message.sender != request.user %}
+
     <div class="row">
+        <span class="josinstructions">Message:</span><br>
+        <span class="homehead">{{ message.subject }}</span><br><br>
 
-        <div class="col-xs-10 col-xs-offset-1">
-
-            <br><br>--- BEGIN MESSAGE ---<br><br>
-
-            <div class="row">
-                <div class="col-xs-1 col-xs-offset-1">
-                    From:<br>
-                    Received: <br>
-                    Subject: <br>
-                    Message:<br><br>
-                </div>
-                <div class="col-xs-7" style="margin-left: 20px;">
-                    {{ message.sender.JOSProfile.jos_name }}<br>
-                    {{ message.sent_at|date:_("DATETIME_FORMAT") }}<br>
-                    {{ message.subject }}<br>
-                </div>
-            </div>
-
-            <div style="margin-left: 195px;">
-                {{ message.body|linebreaksbr }}<br><br>
-            </div>
-            --- END MESSAGE ---<br><br>
-
-            {% if reply_form %}
-
-                <a class="btn btn-default"
-                   style="width: 100px;"
-                   href="{% url 'josmessages:messages_reply'  message.id %}">
-                    Reply
-                </a>
-
-            {% endif %}
-
-
-            <a class="btn btn-default"
-               style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-               href="{% url 'josmessages:messages_inbox' %}">
-                Go back
-            </a>
-
-            <a class="btn btn-default"
-               style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-               href="{% url 'josmessages:messages_delete' message.id %}">
-                Delete
-            </a>
-
+        <div class="row" style=" margin-top: 10px;">
+            At<span style="font-size: 20pt; margin-left: 7px;">{{ message.sent_at | date:_("DATETIME_FORMAT") }}</span>
+            <a href="{% url "profile" message.sender.id %}"
+               style="margin-left: 15px; margin-right: 10px;">
+                    <span style="font-size: 20pt; margin: 0 0 0 5px;">
+                        {{ message.sender.JOSProfile.jos_name }}
+                    </span>
+            </a>said:
         </div>
 
+        <div class="row"
+             style="border-bottom: 1px dashed rgb(65, 45, 120);
+                        margin-top: 20px;
+                        padding-bottom: 10px;">
+
+            <div class="col-xs-1">
+
+                <img style="display: inline; height: 60px;" src="
+                        {% if profile.profile_image_idstr != "noimage1" %}
+http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.profile_image_idstr }}
+                        {% else %}
+                            /static/img/coming-soon-profile.png
+                        {% endif %}">
+
+            </div>
+
+            <div class="col-xs-10"
+                 style="border: 1px solid rgb(65, 45, 120);
+                     font-size: 20pt;
+                     padding: 15px;">
+
+                "{{ message.body | safe }}"
+
+            </div>
+        </div>
     </div>
 
+{% else %}
+
+    <div class="row"
+         style="border-bottom: 1px dashed rgb(65, 45, 120);
+             margin-top: 20px; padding-bottom: 10px;">
+
+        <div class="col-xs-9 col-xs-offset-2"
+             style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
+            "{{ message.body | safe }}"
+        </div>
+
+
+        <div class="col-xs-1">
+            <img style="display: inline; height: 60px;" src="
+                    {% if profile.profile_image_idstr != "noimage1" %}
+http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.profile_image_idstr }}
+                    {% else %}
+                        /static/img/coming-soon-profile.png
+                    {% endif %}">
+        </div>
+    </div>
+
+{% endif %}
+
+{#{% endfor %}#}
+</div>
+</div>
+
+
+<div class="row" style="margin-top: 30px;">
+
+    <form id='reply_body' method="post"
+          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+
+        <div id='reply' class="col-xs-12">
+            {{ reply.body | striptags }}<br>
+        </div>
+
+    </form>
+
+    <div class="col-xs-12">
+
+        {% if reply_form %}
+
+            <a class="btn btn-default"
+               style="width: 100px;"
+               href="{% url 'josmessages:messages_reply'  message.id %}">
+                Reply
+            </a>
+
+        {% endif %}
+
+
+        <a class="btn btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
+           href="{% url 'josmessages:messages_inbox' %}">
+            Go back
+        </a>
+
+        <a class="btn btn-default"
+           style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
+           href="{% url 'josmessages:messages_delete' message.id %}">
+            Delete
+        </a>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        alert("true");
+        CKEDITOR.replace(id_body, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'styles', 'items': ['Font', 'FontSize']},
+                {
+                    'name': 'basicstyles',
+                    'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
+                },
+                {
+                    'name': 'paragraph',
+                    'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']
+                },
+                {'name': 'insert', 'items': ['Image', 'Smiley']},
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: '95%',
+            tabSpaces: 4,
+            extraPlugins: 'colorbutton'
+        });
+    });
+
+</script>
 
 {% endblock all_content %}
 

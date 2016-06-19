@@ -21,15 +21,15 @@ class ComposeForm(forms.Form):
     subject = forms.CharField(label=_(u"Subject"), max_length=120)
     body = forms.CharField(label=_(u"Body"),
         widget=forms.Textarea(attrs={'rows': '12', 'cols':'55'}))
-    
-        
+
+
     def __init__(self, *args, **kwargs):
         recipient_filter = kwargs.pop('recipient_filter', None)
         super(ComposeForm, self).__init__(*args, **kwargs)
         if recipient_filter is not None:
             self.fields['recipient']._recipient_filter = recipient_filter
-    
-                
+
+
     def save(self, sender, parent_msg=None):
         recipients = self.cleaned_data['recipient']
         subject = self.cleaned_data['subject']
@@ -60,7 +60,7 @@ class ComposeForm(forms.Form):
 
 class JOSComposeForm(forms.Form):
     """
-    A simple default form for private messages.
+    A jos message form that hides sender.
     """
     recipient = CommaSeparatedUserField(label=_(u"Recipient"))
     subject = forms.CharField(label=_(u"Subject"), max_length=120)
@@ -78,7 +78,7 @@ class JOSComposeForm(forms.Form):
         self.fields['body'].required = True
         self.fields['body'].label = "Message"
 
-    def save(self, sender, parent_msg=None):
+    def save(self, sender, message_thread=None):
         recipients = self.cleaned_data['recipient']
         subject = self.cleaned_data['subject']
         body = self.cleaned_data['body']
@@ -90,17 +90,11 @@ class JOSComposeForm(forms.Form):
                 subject=subject,
                 body=body,
             )
-            if parent_msg is not None:
-                msg.parent_msg = parent_msg
-                parent_msg.replied_at = datetime.datetime.now()
-                parent_msg.save()
+            if message_thread is not None:
+                msg.josmessagethread = message_thread
             msg.save()
             message_list.append(msg)
             if notification:
-                if parent_msg is not None:
-                    notification.send([sender], "messages_replied", {'message': msg,})
-                    notification.send([r], "messages_reply_received", {'message': msg,})
-                else:
-                    notification.send([sender], "messages_sent", {'message': msg,})
-                    notification.send([r], "messages_received", {'message': msg,})
+                notification.send([sender], "messages_sent", {'message': msg,})
+                notification.send([r], "messages_received", {'message': msg,})
         return message_list

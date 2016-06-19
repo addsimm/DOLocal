@@ -16,22 +16,22 @@
         {% url "home" as home_url %}
 
 
-        <div class="josinstructions" style="margin-bottom: 30px; margin-top: 30px;">
-            If you:
+        <div class="josinstructions" style="margin-bottom: 30px; margin-top: 50px;">
+            <b>If you:</b>
             <ul>
                 <li>
-                    haven't signed up yet, please click here:
+                    haven't signed up yet, please click here:&nbsp&nbsp&nbsp
                     <a href="{% url "josmembers:jossignup" %}">
-                        Sign Up
+                        <span style="margin: 0 5px;">Sign Up</span>
                     </a>
                 </li>
                 <li>
-                    have password problems, click here:
+                    have password problems, click here:&nbsp&nbsp&nbsp
                     <a href="{% url "josmembers:jos_password_reset" %}">
-                        Reset Password
+                        <span style="margin: 0 5px;">Reset Password</span>
                     </a>
                 </li>
-            </ul>
+            </ul><br>
             Otherwise:<br>
             <b>Please enter your email and password, then press "{{ title }}."</b>
         </div>

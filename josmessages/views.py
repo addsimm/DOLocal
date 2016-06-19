@@ -8,9 +8,9 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from josmessages.models import Message
+from josmessages.models import Message, JOSMessageThread
 from josmessages.forms import JOSComposeForm, ComposeForm
-from josmessages.utils import format_quote, get_user_model, get_username_field
+from josmessages.utils import format_quote, get_user_model
 
 User = get_user_model()
 
@@ -57,45 +57,12 @@ def trash(request, template_name='josmessages/trash.html'):
         'message_list': message_list,
     }, context_instance=RequestContext(request))
 
-@login_required
-def compose(request, recipient=None, form_class=ComposeForm,
-        template_name='josmessages/compose.html', success_url=None, recipient_filter=None):
-    """
-    Displays and handles the ``form_class`` form to compose new messages.
-    Required Arguments: None
-    Optional Arguments:
-        ``recipient``: username of a `django.contrib.auth` User, who should
-                       receive the message, optionally multiple usernames
-                       could be separated by a '+'
-        ``form_class``: the form-class to use
-        ``template_name``: the template to use
-        ``success_url``: where to redirect after successfull submission
-    """
-    if request.method == "POST":
-        sender = request.user
-        form = form_class(request.POST, recipient_filter=recipient_filter)
-        if form.is_valid():
-            form.save(sender=request.user)
-            messages.info(request, _(u"Message successfully sent."))
-            if success_url is None:
-                success_url = reverse('josmessages:messages_inbox')
-            if 'next' in request.GET:
-                success_url = request.GET['next']
-            return HttpResponseRedirect(success_url)
-    else:
-        form = form_class()
-        if recipient is not None:
-            recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
-            form.fields['recipient'].initial = recipients
-    return render_to_response(template_name, {
-        'form': form,
-    }, context_instance=RequestContext(request))
-
 
 ### JOS Messaging
 @login_required
 def jos_message_compose(request, id=None, form_class=JOSComposeForm,
-                        template_name='josmessages/compose.html', success_url=None, recipient_filter=None):
+                        template_name='josmessages/compose.html',
+                        recipient_filter=None):
     """
     Displays and handles the ``form_class`` form to compose new messages.
     Required Arguments: None
@@ -108,36 +75,27 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
         ``success_url``: where to redirect after successfull submission
     """
 
-    recipient = to_user = recipients = None
-
+    recipient =  None
     if request.method == "POST":
-        sender = request.user
         recipient = request.POST['recipient']
-        to_user = get_object_or_404(User, username = recipient)
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
-            form.save(sender=request.user)
+            mt = JOSMessageThread.objects.create(
+                title = request.POST['subject'],
+                message_count = 1)
+            form.save(sender=request.user,
+                      message_thread=mt)
             messages.info(request, _(u"Message successfully sent."))
-            if success_url is None:
-                success_url = reverse('josmessages:messages_inbox')
-            if 'next' in request.GET:
-                success_url = request.GET['next']
-            return HttpResponseRedirect(success_url)
+
+            return HttpResponseRedirect(reverse('josmessages:messages_inbox'))
     else:
         form = form_class()
-        to_user = User.objects.get(id=id)
-        if recipient is not None:
-            recipients = [u for u in User.objects.filter(
-                **{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
-            form.fields['recipient'].initial = recipients
+        recipient = User.objects.get(id=id)
 
     return render_to_response(template_name, {
         'form': form,
-        'recipient': to_user,
-        'jos_name': to_user.JOSProfile.jos_name(),
-        'id': id
+        'recipient': recipient
     }, context_instance=RequestContext(request))
-
 
 
 @login_required
@@ -152,6 +110,10 @@ def jos_message_reply(request, message_id, form_class=JOSComposeForm,
     assign a different ``quote_helper`` kwarg in your url-conf.
 
     """
+
+    ######### fix recipient id
+
+
     parent = get_object_or_404(Message, id=message_id)
 
     if parent.sender != request.user and parent.recipient != request.user:
@@ -168,51 +130,14 @@ def jos_message_reply(request, message_id, form_class=JOSComposeForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class(initial={
-            'body': quote_helper(parent.sender.JOSProfile.jos_name(), parent.body),
-            'subject': subject_template % {'subject': parent.subject},
+            'body': " ",
+            'subject': parent.subject,
             'recipient': [parent.sender, ]
         })
     return render_to_response(template_name, {
         'form': form,
         'recipient': parent.sender.username,
         'jos_name': parent.sender.JOSProfile.jos_name
-    }, context_instance=RequestContext(request))
-
-
-@login_required
-def reply(request, message_id, form_class=ComposeForm,
-        template_name='josmessages/compose.html', success_url=None,
-        recipient_filter=None, quote_helper=format_quote,
-        subject_template=_(u"Re: %(subject)s"),):
-    """
-    Prepares the ``form_class`` form for writing a reply to a given message
-    (specified via ``message_id``). Uses the ``format_quote`` helper from
-    ``messages.utils`` to pre-format the quote. To change the quote format
-    assign a different ``quote_helper`` kwarg in your url-conf.
-
-    """
-    parent = get_object_or_404(Message, id=message_id)
-
-    if parent.sender != request.user and parent.recipient != request.user:
-        raise Http404
-
-    if request.method == "POST":
-        sender = request.user
-        form = form_class(request.POST, recipient_filter=recipient_filter)
-        if form.is_valid():
-            form.save(sender=request.user, parent_msg=parent)
-            messages.info(request, _(u"Message successfully sent."))
-            if success_url is None:
-                success_url = reverse('josmessages:messages_inbox')
-            return HttpResponseRedirect(success_url)
-    else:
-        form = form_class(initial={
-            'body': quote_helper(parent.sender, parent.body),
-            'subject': subject_template % {'subject': parent.subject},
-            'recipient': [parent.sender,]
-            })
-    return render_to_response(template_name, {
-        'form': form,
     }, context_instance=RequestContext(request))
 
 
@@ -294,6 +219,11 @@ def view(request, message_id, form_class=ComposeForm, quote_helper=format_quote,
     If the user is the recipient a reply form will be added to the
     tenplate context, otherwise 'reply_form' will be None.
     """
+
+
+    ######### message_thread id
+
+
     user = request.user
     now = timezone.now()
     message = get_object_or_404(Message, id=message_id)
