@@ -24,9 +24,12 @@ a:hover {
     text-decoration: none;
 }
 
-.joslargelinkbutton {
+.joslargelinkbutton, .joslargelinkbutton:visited {
+    background-color: rgb(112, 154, 109);
+    color: white;
     font-size: 18pt;
     margin-left: 20px;
+    outline: none;
     padding: 8px;
     width: 165px;
 }

@@ -5,8 +5,8 @@
 
     {% if request.user.is_authenticated %}
 
-        <div class="josinstructions" style="margin-top: 100px;">
-            {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out." %}
+        <div class="josinstructions" style="margin-top: 50px;">
+            {% trans "You're are already signed in; please log out to sign in as a different user." %}
         </div>
 
     {% else %}
@@ -16,24 +16,24 @@
         {% url "home" as home_url %}
 
 
-        <div class="josinstructions" style="margin-bottom: 30px; margin-top: 50px;">
+        <div class="josinstructions" style="margin-bottom: 30px;">
             <b>If you:</b>
             <ul>
                 <li>
-                    haven't signed up yet, please click here:&nbsp&nbsp&nbsp
-                    <a href="{% url "josmembers:jossignup" %}">
+                    haven't signed up yet, please click here:
+                    <a class="joslargelinkbutton" href="{% url "josmembers:jossignup" %}">
                         <span style="margin: 0 5px;">Sign Up</span>
                     </a>
                 </li>
                 <li>
-                    have password problems, click here:&nbsp&nbsp&nbsp
-                    <a href="{% url "josmembers:jos_password_reset" %}">
+                    have password problems, click here:
+                    <a class="joslargelinkbutton" href="{% url "josmembers:jos_password_reset" %}">
                         <span style="margin: 0 5px;">Reset Password</span>
                     </a>
                 </li>
-            </ul><br>
-            Otherwise:<br>
-            <b>Please enter your email and password, then press "{{ title }}."</b>
+            </ul>
+            <b>Otherwise:<br>
+                &nbsp&nbsp&nbspPlease enter your email and password, then press "{{ title }}."</b>
         </div>
 
 

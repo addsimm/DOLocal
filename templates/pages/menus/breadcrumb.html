@@ -2,26 +2,22 @@
 
 <div class="row" style="background-color: rgba(65, 45, 120, .2);
                          border-radius: 0;
-                         height: 45px;
+                         height: 60px;
                          margin-bottom: 0;
                          margin-top: 10px;">
 
+    <div class="col-xs-5" style="width: 37.5%; margin-top: 15px; padding: 0;">
 
-
-    <div class="col-xs-4"
-         style="height: 45px; padding-left: 7px; padding-top: 12px;">
-
-        <a style="margin-left: 0;"
+        <a class="joslargelinkbutton" style="margin-left: 5px;"
            href="{% url "personaldesk" %}/{{ request.user.id }}">
-           <span style="margin: 0 4px;">
                <i class="fa fa-home fa-fw"></i>
                 Desk
            </span>
         </a>
 
-        <a style="margin-left: 4px;"
+        <a class="joslargelinkbutton" style="margin-left: 5px;"
            href="{% url "josmessages:messages_redirect" %}">
-            <span style="margin: 0 4px;">
+            <span style="margin: 0 3px;">
                 <i class="fa fa-envelope fa-fw"></i>
                 Mail
             </span>
@@ -32,13 +28,13 @@
                     {{ my_var }}
                 </span>
             {% else %}
-                <span style="color: white; background-color: white; padding-right: 5px; padding-left: 5px;">
+                <span style="color: rgb(112, 154, 109); background-color: rgb(112, 154, 109); padding-right: 5px; padding-left: 5px;">
                     &nbsp&nbsp
                 </span>
             {% endif %}
         </a>
 
-        <a style="margin-left: 4px;"
+        <a class="joslargelinkbutton" style="margin-left: 5px;"
            href="{% url "josmembers:josmembers_list" %}">
             <span style="margin: 0 4px;">
                 <i class="fa fa-heart  fa-fw"></i>
@@ -48,6 +44,7 @@
 
     </div>
 
-    <div class="col-xs-7 breadcrumbtitle" style="padding-top: 6px; margin-left: -45px;">
-        <span style="font-size: 12pt; margin-right: 10px;">page: </span>
-    <!-- closing divs on pages -->
+    <div class="col-xs-6 breadcrumbtitle" style="width: 60%; margin-left: 0; padding-left: 0; padding-top: 10px;">
+        <span style="font-size: 12pt; margin-right: 7px;">page: </span>
+
+        <!-- closing divs on pages -->
