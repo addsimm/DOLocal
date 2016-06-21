@@ -2,28 +2,39 @@
 {% load i18n %}
 {% load url from future %}
 
+
+{% block inner_breadcrumb_menu %}
+    <span style="font-size: 18pt;">Messaging about:</span> {{ subject }}
+{% endblock %}
+
+
 {% block all_content %}
 
 <div class="row">
 
 <div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
 
-{#{% for message in message %}#}
+    <span class="josinstructions">Subject:</span>
+    <span class="homehead"style="margin-left: 10px;">{{ subject }}</span><br><br>
 
-{% if message.sender != request.user %}
+{% for mess in bodies %}
 
-    <div class="row">
-        <span class="josinstructions">Message:</span><br>
-        <span class="homehead">{{ message.subject }}</span><br><br>
+{% if mess.sender != request.user %}
 
-        <div class="row" style=" margin-top: 10px;">
-            At<span style="font-size: 20pt; margin-left: 7px;">{{ message.sent_at | date:_("DATETIME_FORMAT") }}</span>
-            <a href="{% url "profile" message.sender.id %}"
-               style="margin-left: 15px; margin-right: 10px;">
+    <div class="row" style="margin-top: 30px;">
+
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-1">
+                <span style="font-size: 20pt; margin-left: -50px;">
+                    {{ mess.sent_at | time:"f A" }} - {{ mess.sent_at | date:"D, M d" }}
+                </span>
+                <a href="{% url "profile" msg.sender.id %}"
+                   style="margin-left: 5px; margin-right: 10px;">
                     <span style="font-size: 20pt; margin: 0 0 0 5px;">
-                        {{ message.sender.JOSProfile.jos_name }}
+                        {{ mess.sender.JOSProfile.jos_name }}
                     </span>
-            </a>said:
+                </a>said:
+            </div>
         </div>
 
         <div class="row"
@@ -35,7 +46,7 @@
 
                 <img style="display: inline; height: 60px;" src="
                         {% if profile.profile_image_idstr != "noimage1" %}
-http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.profile_image_idstr }}
+http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}
                         {% else %}
                             /static/img/coming-soon-profile.png
                         {% endif %}">
@@ -47,7 +58,7 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.
                      font-size: 20pt;
                      padding: 15px;">
 
-                "{{ message.body | safe }}"
+                "{{ mess.body | striptags | safe }}"
 
             </div>
         </div>
@@ -55,76 +66,159 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.
 
 {% else %}
 
-    <div class="row"
-         style="border-bottom: 1px dashed rgb(65, 45, 120);
-             margin-top: 20px; padding-bottom: 10px;">
-
-        <div class="col-xs-9 col-xs-offset-2"
-             style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
-            "{{ message.body | safe }}"
+    <div class="row" style="margin-top: 30px;">
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-6">
+                <span style="font-size: 20pt; margin-left: 7px;">
+                    {{ mess.sent_at | time:"f A" }} - {{ mess.sent_at | date:"D, M d" }}
+                </span>
+                <a href="{% url "profile" msg.sender.id %}"
+                   style="margin-left: 5px; margin-right: 10px;">
+                        <span style="font-size: 20pt; margin: 0 0 0 5px;">
+                            {{ mess.sender.JOSProfile.jos_name }}
+                        </span>
+                </a>said:
+            </div>
         </div>
 
+        <div class="row"
+             style="border-bottom: 1px dashed rgb(65, 45, 120);
+                 margin-top: 20px; padding-bottom: 10px;">
 
-        <div class="col-xs-1">
-            <img style="display: inline; height: 60px;" src="
-                    {% if profile.profile_image_idstr != "noimage1" %}
-http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.profile_image_idstr }}
-                    {% else %}
-                        /static/img/coming-soon-profile.png
-                    {% endif %}">
+            <div class="col-xs-10 col-xs-offset-1"
+                 style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
+                "{{ mess.body | striptags | safe }}"
+            </div>
+
+            <div class="col-xs-1">
+                <img style="display: inline; height: 60px;" src="
+                        {% if profile.profile_image_idstr != "noimage1" %}
+    http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}
+                        {% else %}
+                            /static/img/coming-soon-profile.png
+                        {% endif %}">
+            </div>
         </div>
     </div>
 
 {% endif %}
 
-{#{% endfor %}#}
-</div>
-</div>
+{% endfor %}
 
+    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
 
-<div class="row" style="margin-top: 30px;">
+        <form action="" method="post">
+            {% csrf_token %}
 
-    <form id='reply_body' method="post"
-          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+            <div style="margin-left: 60px;">
 
-        <div id='reply' class="col-xs-12">
-            {{ reply.body | striptags }}<br>
-        </div>
+                {% for field in form %}
+                    {% if field.name == "recipient" %}
+                        {{ field.as_hidden }}
+                        <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+                    {% elif field.name == "message_thread_id" %}
+                        {{ field.as_hidden }}
+                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
+                    {% else %}
+                        <div class="form-group input_{{ field.id_for_label }}
+                                                         {{ field.field.type }}
+                                                         {% if field.errors %}
+                                                            has-error
+                                                         {% endif %}">
+                            {# field.name #}
+                            {% if field.label %}
+                                <label class="control-label"
+                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                            {% endif %}
 
-    </form>
+                            {{ field }}
 
-    <div class="col-xs-12">
+                            {% if field.errors %}
+                                <p class="help-block">
+                                    {% for e in field.errors %}
+                                        {% if not forloop.first %} / {% endif %}{{ e }}
+                                    {% endfor %}
+                                </p>
 
-        {% if reply_form %}
+                            {% elif field.help_text %}
+                                <p class="help-block">
+                                    {{ field.help_text }}
+                                </p>
+                            {% endif %}
 
-            <a class="btn btn-default"
-               style="width: 100px;"
-               href="{% url 'josmessages:messages_reply'  message.id %}">
-                Reply
-            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
 
-        {% endif %}
+                <button id="#button_cancel"
+                        class="btn btn-warning"
+                        style=" "
+                        onclick="cancel()">Cancel
+                </button>
 
+                <script>function cancel() {
+                    $('#button_cancel').addClass('hidden');
+                    $('#button_send').addClass('hidden');
+                    $('#reply_thread_form').addClass('hidden');
+                    $('#button_reply').removeClass('hidden');
+                    $('#button_inbox').removeClass('hidden');
+                    $('#button_delete').removeClass('hidden');
+                }</script>
 
-        <a class="btn btn-default"
-           style="background-color: #f0ad4e; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-           href="{% url 'josmessages:messages_inbox' %}">
-            Go back
-        </a>
+                <input id="#button_send"
+                       class="btn btn-default"
+                       style="margin-left: 10px; width: 100px;"
+                       type="submit" value="Send">
 
-        <a class="btn btn-default"
-           style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 15px;"
-           href="{% url 'josmessages:messages_delete' message.id %}">
-            Delete
-        </a>
+            </div>
+
+        </form>
 
     </div>
+
+    <!-- Bottom buttons -->
+    <div class="row" style="margin-top: 50px;">
+
+        <div class="col-xs-12">
+
+            <a id="button_reply"
+               class="btn btn-default"
+               style="margin-left: 40px; width: 100px;"
+               onclick="activateCKEdit()"
+               data-toggle="tooltip"
+               title="Activates the word processor to reply"
+               data-placement="right">
+                {% trans "Reply" %}
+            </a>
+
+            <a id="button_delete"
+               class="btn btn-default"
+               style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 10px;"
+               href="{% url 'josmessages:messages_delete' message_thread_id %}">
+                Delete
+            </a>
+
+            <a id="button_inbox"
+               class="joslargelinkbutton"
+               href="{% url 'josmessages:messages_inbox' %}">
+                <i class="fa fa-envelope fa-fw"></i>
+                <span style="margin-left: 5px; margin-right: 5px;">Mail</span>
+            </a>
+        </div>
+    </div>
 </div>
+</div>
+
 
 <script>
 
-    $(document).ready(function () {
-        alert("true");
+    function activateCKEdit() {
+        $('#reply_thread_form').removeClass('hidden');
+        $('#button_cancel').removeClass('hidden');
+        $('#button_send').removeClass('hidden');
+        $('#button_reply').addClass('hidden');
+        $('#button_inbox').addClass('hidden');
+        $('#button_delete').addClass('hidden');
         CKEDITOR.replace(id_body, {
             toolbar: [
                 {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
@@ -146,7 +240,7 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ message.sender.JOSProfile.
             tabSpaces: 4,
             extraPlugins: 'colorbutton'
         });
-    });
+    }
 
 </script>
 

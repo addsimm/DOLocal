@@ -21,13 +21,18 @@
                 {% for message in message_list %}
 
                     <tr>
-                        <td style=" ">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
-                        <td>{{ message.recipient.JOSProfile.jos_name }}</td>
-                        <td>{{ message.subject }}</td>
                         <td>
+                            &nbsp&nbsp&nbsp
+                            &nbsp&nbsp&nbsp
+                            {{ message.sent_at | time:"f A" }} - {{ message.sent_at | date:"D, M d" }}</td>
+                        <td>&nbsp&nbsp&nbsp
+                            {{ message.recipient.JOSProfile.jos_name }}</td>
+                        <td>&nbsp&nbsp&nbsp
+                            {{ message.subject }}</td>
+                        <td>&nbsp&nbsp&nbsp
                             <a class="btn btn-default"
                                style="margin-left: 30px; width: 100px;"
-                               href="{{ message.get_absolute_url }}">
+                               href="{% url 'josmessages:messages_detail' message.message_thread.id %}">
                                 Read
                             </a>
                         </td>

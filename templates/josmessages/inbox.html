@@ -1,6 +1,12 @@
 {% extends "josmessages/mailbase.html" %}
-{% load i18n %}
+{% load i18n tz %}
 {% load url from future %}
+
+{% block inner_breadcrumb_menu %}
+    {{ user.get_short_name }}'s inbox
+{% endblock %}
+
+
 
 {% block all_content %}
 
@@ -34,7 +40,7 @@
                                 <span class=" " style="color: black;">Reply sent</span>
                             {% endif %}
                         </td>
-                        <td style=" ">{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
+                        <td>{{ message.sent_at | time:"f A" }} - {{ message.sent_at | date:"D, M d" }}</td>
                         <td>{{ message.sender.JOSProfile.jos_name }}</td>
                         <td>
                             {{ message.subject }}
@@ -42,12 +48,13 @@
                         <td>
                             <a class="btn btn-default"
                                style="margin-left: 30px; width: 100px;"
-                               href="{{ message.get_absolute_url }}">
+                               href="{% url 'josmessages:messages_detail' message.message_thread.id %}">
                                 Read
                             </a>
-                            <a class="btn btn-default"
-                               style="background-color: #d9534f; border: none; color: white; outline: none; margin-left: 10px; width: 100px;"
-                               href="{% url 'josmessages:messages_delete' message.id %}">
+
+                            <a class="btn btn-danger"
+                               style="margin-left: 10px; width: 100px;"
+                               href="{% url 'josmessages:messages_delete' message.message_thread.id %}">
                                 Delete
                             </a>
                         </td>

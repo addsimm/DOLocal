@@ -11,9 +11,8 @@ import os
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118', '*']
 
-DATEFORMAT = 'M d'
-TIMEFORMAT = 'D, f A'
-DATETIME_FORMAT = 'D, M d f A'
+DATEFORMAT = "D, M d"
+TIMEFORMAT = 'f A'
 
 # Local time zone. Choice codes: wikipedia
 TIME_ZONE = 'America/Los_Angeles'
@@ -35,8 +34,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SITE_ID = 1
 
 # If set to False, Django will optimize and not load internationalization.
-USE_I18N = False
-USE_L10N = False
+USE_I18N = True
+USE_L10N = True
 
 AUTHENTICATION_BACKENDS = ('mezzanine.core.auth_backends.MezzanineBackend',)
 
@@ -74,6 +73,9 @@ ROOT_URLCONF = '%s.urls' % PROJECT_APP
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 # Every cache key will get prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
+
+GEOIP_DATABASE = STATIC_ROOT + '/easy_timezones/GeoLiteCity.dat'
+GEOIPV6_DATABASE = STATIC_ROOT + '/easy_timezones/GeoLiteCityv6.dat'
 
 
 INSTALLED_APPS = (
@@ -322,14 +324,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-##################
-# LOCAL SETTINGS #
-##################
-# Instead of doing 'from .local_settings import *', we use exec for full access
-f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
-if os.path.exists(f):
-    exec (open(f, 'rb').read())
-
 ####################
 # DYNAMIC SETTINGS #
 ####################
@@ -340,6 +334,14 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+##################
+# LOCAL SETTINGS #
+##################
+# Instead of doing 'from .local_settings import *', we use exec for full access
+f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
+if os.path.exists(f):
+    exec (open(f, 'rb').read())
 
 DEBUG = False
 

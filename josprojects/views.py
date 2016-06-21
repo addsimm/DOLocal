@@ -6,7 +6,7 @@ from django.contrib.messages import info
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.html import strip_tags
+from django.utils.timezone import activate
 
 from joscourses.models import JOSCourseWeek
 from josmembers.models import JOSProfile
@@ -21,6 +21,9 @@ User = get_user_model()
 @login_required
 def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra_context=None):
     user = get_object_or_404(User, pk=pk)
+
+    activate('America/Los_Angeles')
+
     currentProfile = get_object_or_404(JOSProfile, user=user)
     weeks = JOSCourseWeek.objects.filter(publish=True).order_by('weekno') # retrives all weeks available
 
@@ -42,21 +45,18 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 @csrf_exempt
 def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
-    user = request.user
     try:
         story = get_object_or_404(JOSStory, pk=storyid)
     except:
-        story = JOSStory.objects.create(author=user,
-                                        title="Untitled",
-                                        content="Coming soon")
+        story = JOSStory.objects.create(author=request.user, title="Untitled", content="Coming soon")
 
     try:
-        comment_thread = get_object_or_404(JOSMessageThread, id=story.id)
+        comment_thread = get_object_or_404(JOSMessageThread, subject='Comments: ' + str(story.id))
     except:
-        comment_thread = JOSMessageThread.objects.create(id=story.id,
-                                                         title='Comments: ' + strip_tags(story.title))
+        comment_thread = JOSMessageThread.objects.create(subject='Comments: '+ str(story.id))
 
-    comments = comment_thread.comments.order_by('sent_at')
+    comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
+    last_comment = comments.filter(is_last=True)
 
     publish_story = request.GET.get('pub', None)
     if publish_story != None:
@@ -73,13 +73,23 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         field_to_edit = request.POST['field_to_edit']
 
         if field_to_edit == "comment":
+            last_comment.is_last = False
+            last_comment.save()
             message = Message.objects.create(
                 body = nucontent,
-                sender = user,
-                sent_at = datetime.datetime.now().time(),
-                josmessagethread = comment_thread)
-            info(request, "Great thought!")
+                is_last = True,
+                message_thread = comment_thread,
+                recipient = story.author,
+                sender = request.user,
+                sent_at = datetime.datetime.now().time()
+            )
             message.save()
+            ct_mc = comment_thread.message_count
+            comment_thread.last_message.id = message.id
+            comment_thread.last_recipient = story.author
+            comment_thread.message_count = ct_mc + 1
+            comment_thread.save()
+            info(request, "Great thought, thanks!")
 
         else:
             ckrtfholder = CKRichTextHolder.objects.create(

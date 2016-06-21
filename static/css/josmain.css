@@ -101,15 +101,25 @@ a:hover {
 
 table {
     font-family: "Open Sans", sans-serif;
-    font-size: 16pt;
+    font-size: 18pt;
     border-collapse: collapse;
     width: 100%;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    vertical-align: middle;
 }
 
 td {
     border: 1px solid #ddd;
     text-align: left;
     padding: 20px 10px;
+    vertical-align: middle;
 }
 
 th {
@@ -117,6 +127,7 @@ th {
     text-align: center;
     color: white;
     padding: 10px;
+    vertical-align: middle;
 }
 
 tr:nth-child(even) {
@@ -142,10 +153,17 @@ footer {
     box-shadow: none;
     color: white;
     font-size: 16pt;
+    font-weight: bold;
     outline: none;
     text-decoration: none;
     text-shadow: none;
     width: 100px;
+}
+
+.btn-default, .btn-default:visited {
+    background-color: rgb(231, 209, 222);
+    border-color: rgb(65, 25, 140);
+    color: rgb(65, 25, 140);
 }
 
 .btn-default:visited,
@@ -158,11 +176,14 @@ footer {
     opacity: 1;
 }
 
-.btn-default, .btn-default:visited {
-    background-color: rgb(231, 209, 222);
-    border-color: rgb(65, 25, 140);
-    color: rgb(65, 25, 140);
-    font-weight: bold;
+.btn-primary:hover,
+.btn-success:hover,
+.btn-info:hover,
+.btn-warning:hover,
+.btn-danger:hover {
+    background-color: inherit;
+    color: black;
+    opacity: .8;
 }
 
 .fixed {

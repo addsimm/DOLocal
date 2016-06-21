@@ -1,6 +1,10 @@
 {% extends "josmessages/mailbase.html" %}
 {% load i18n %}
 
+{% block inner_breadcrumb_menu %}
+    <span style="font-size: 18pt;">Message to:</span> {{ recipient.JOSProfile.jos_name }}
+{% endblock %}
+
 {% block all_content %}
 
 <div class="row">
@@ -30,9 +34,7 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profi
     <form action="" method="post">
         {% csrf_token %}
 
-        recipient: {{ recipient.id }}
-
-            <div style="margin-left: 60px;">
+        <div style="margin-left: 60px;">
 
             {% for field in form %}
                 {% if field.label == "Recipient" %}
@@ -71,7 +73,7 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profi
 
             <button class="btn btn-warning"
                     style=" "
-                    onclick="goBack()">Go back
+                    onclick="goBack()">Cancel
             </button>
 
             <script>function goBack() {
@@ -79,7 +81,7 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profi
             }</script>
 
             <input class="btn btn-default"
-                   style="width: 100px;"
+                   style="margin-left: 10px; width: 100px;"
                    type="submit" value="Send">
 
         </div>

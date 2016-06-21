@@ -1,4 +1,5 @@
 from django.template import Library, Node, TemplateSyntaxError
+from josmessages.models import Message
 
 class InboxOutput(Node):
     def __init__(self, varname=None):
@@ -7,7 +8,9 @@ class InboxOutput(Node):
     def render(self, context):
         try:
             user = context['user']
-            count = user.received_messages.filter(read_at__isnull=True, recipient_deleted_at__isnull=True).count()
+            count = Message.objects.filter(message_thread__last_recipient=user,
+                                           recipient_deleted_at__isnull=True,
+                                           read_at__isnull=True).count()
         except (KeyError, AttributeError):
             count = ''
         if self.varname is not None:

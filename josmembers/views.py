@@ -10,15 +10,12 @@ from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-
+from django.utils.timezone import activate
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
 from mezzanine.utils.email import send_verification_mail, send_approve_mail
-from mezzanine.utils.urls import login_redirect, next_url
-
-from josmessages.utils import format_quote, get_username_field
-from josmessages.models import Message
+from mezzanine.utils.urls import next_url
 
 from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
@@ -34,6 +31,8 @@ def login(request, template="accounts/account_login.html",
         """
         Login form.
         """
+        activate('America/Los_Angeles')
+
         form = form_class(request.POST or None)
         if request.method == "POST" and form.is_valid():
             authenticated_user = form.save()
@@ -69,6 +68,9 @@ def josprofile_redirect(request):
 
 @csrf_exempt
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
+
+    activate('America/Los_Angeles')
+
     user = User.objects.get(id=userid)
     username = user.username
     currentProfile = get_object_or_404(JOSProfile, user=user)
