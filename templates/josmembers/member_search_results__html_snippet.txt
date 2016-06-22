@@ -28,13 +28,13 @@
                         <a class="btn btn-default"
                            style="margin-left: 10px; width: 150px;"
                            href="{% url 'josmessages:messages_compose' %}{{ member.user.id }}">
-                            Send message
+                            Message
                         </a>
 
                         <a class="btn btn-default"
                            style="margin-left: 10px; width: 150px;"
                            href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ member.user.id }} ">
-                            Make favorite
+                            Favorite
                         </a>
 
                     </td>

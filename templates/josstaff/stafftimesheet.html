@@ -1,37 +1,16 @@
 {% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
 
-{% load pages_tags mezzanine_tags i18n staticfiles %}
-
-{% block meta_title %}Staff Timekeeping{% endblock %}
-{% block title %}Staff Timekeeping{% endblock %}
-
-{% block breadcrumb_menu %}
-    {{ block.super }}
-    <li class="active">Timekeeping:<span style="margin-left: 12px;">{{ member.first_name }} {{ member.last_name }}</span></li>
+{% block meta_title %}Timekeeping{% endblock %}
+{% block title %}Timekeeping{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}
+    {{ story.author.JOSProfile.jos_name }} Timekeeping
+    </div></div>
 {% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static "css/datepicker.css" %}">
-{% endblock %}
-
-{% block extra_js %}
-    <script type="text/javascript" src="{% static "mezzanine/js/bootstrap-datepicker.js" %}"></script>
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $('#datepickerstart').datepicker();
-                $('#datepickerstart').on("changeDate", function () {
-                    $('#id_period_date_start').val($('#datepickerstart').datepicker('getFormattedDate'));
-                });
-                $('#datepickerend').datepicker();
-                $('#datepickerend').on("changeDate", function () {
-                    $('#id_period_date_end').val($('#datepickerend').datepicker('getFormattedDate'));
-                });
-            });
-    </script>
- {% endblock extra_js %}
-
 
 {% block all_content %}
+
+    <link rel="stylesheet" href="{% static "css/datepicker.css" %}">
 
     <style>
 
@@ -222,5 +201,19 @@
             </form>
         </div>
     </div>
+
+    <script type="text/javascript" src="{% static "mezzanine/js/bootstrap-datepicker.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datepickerstart').datepicker()
+                                 .on("changeDate", function () {
+                $('#id_period_date_start').val($('#datepickerstart').datepicker('getFormattedDate'));
+            });
+            $('#datepickerend').datepicker()
+                               .on("changeDate", function () {
+                $('#id_period_date_end').val($('#datepickerend').datepicker('getFormattedDate'));
+            });
+        });
+    </script>
 
 {% endblock all_content %}
