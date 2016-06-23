@@ -150,15 +150,6 @@
                 {% endif %}
         </a><br>
 
-        {% if profile.user == request.user and request.user.is_staff %}
-
-            <a class="btn btn-default pull-right" style="margin-top: 30px;"
-               href="{% url "josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
-                {% trans "Staff" %}
-            </a>
-
-        {% endif %}
-
     {% else %}<br>
 
         <a class="btn pull-right btn-default"

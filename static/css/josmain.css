@@ -34,6 +34,12 @@ a:hover {
     width: 165px;
 }
 
+.joslargelinkbutton:hover, .joslargelinkbutton:focus {
+    color: #f0ad4e;
+    background-color: white;
+    text-decoration: none;
+}
+
 .messages {
     background-color: lightgreen;
     font-size: 18pt;

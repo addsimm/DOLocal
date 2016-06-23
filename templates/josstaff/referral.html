@@ -1,60 +1,16 @@
-
 {% extends "josstaff/staff_base.html" %}
-{% load i18n tz pages_tags mezzanine_tags staticfiles%}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static "css/datepicker.css" %}">
-{% endblock %}
-
-{% block extra_js %}
-    <script type="text/javascript" src="{% static "mezzanine/js/bootstrap-datepicker.js" %}"></script>
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $('#datepickerstart').datepicker();
-                $('#datepickerstart').on("changeDate", function () {
-                    $('#id_period_date_start').val($('#datepickerstart').datepicker('getFormattedDate'));
-                });
-                $('#datepickerend').datepicker();
-                $('#datepickerend').on("changeDate", function () {
-                    $('#id_period_date_end').val($('#datepickerend').datepicker('getFormattedDate'));
-                });
-            });
-    </script>
- {% endblock extra_js %}
+{% load i18n tz pages_tags mezzanine_tags staticfiles %}
 
 
 {% block all_content %}
 
     {{ block.super }}
 
-    <style>
-
-        #id_hours_notes {
-            font-size: 14pt;
-            height: 150px;
-            padding: 10px;
-            width: 500px;
-        }
-
-        #id_hours_claimed {
-            font-size: 18pt;
-            padding: 10px;
-            width: 100px;
-        }
-
-        #id_period_date_start, #id_period_date_end {
-            width: 150px;
-        }
-
-    </style>
-
     <div class="row" style="margin-bottom: 50px; margin-top: 70px;">
-        <div class="col-xs-2 col-xs-offset-1">
-            <img class="img-responsive" src="{{ MEDIA_URL }}{% thumbnail member.bio_image 100 0 %}">
-        </div>
-        <div class="col-xs-7">
 
-            <h3>Previous Entries:</h3>
+        <div class="col-xs-10 col-xs-offset-1">
+
+            <h3>Previous Referrals:</h3>
             <div class="row">
 
                 <div class="col-xs-2 col-xs-offset-1">Start</div>
@@ -78,16 +34,15 @@
                     </div>
                 </div>
             {% endfor %}
+
         </div>
-        <div class="col-xs-2" style="color: green; font-size: 36pt; margin-top: 60px;">
-            {{ total_hours }}
-        </div>
+
     </div>
 
     {# form.as_p #}
 
     <div class="row">
-        <div class="col-xs-10 col-xs-offset-2" style="border-top: 2px solid rgba(65, 25, 140, 0.25);">
+        <div class="col-xs-10 col-xs-offset-1" style="border-top: 2px solid rgba(65, 25, 140, 0.25);">
 
             {% errors_for form %}
 
@@ -96,7 +51,7 @@
                     <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
                     {% csrf_token %}
                 {% endnevercache %}
-                <h3>New Entry:</h3>
+                <h3>New Referral:</h3>
                 <div class="row" style=" ">
                     <div class='col-xs-3 col-xs-offset-1'>
                         <h5 class=" ">Choose start date:</h5>

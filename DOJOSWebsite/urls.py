@@ -41,16 +41,10 @@ urlpatterns += patterns('',
     url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash), "josmembers.views.password_reset_verify",name="password_reset_verify"),
     ('^', include('josmembers.urls', namespace='josmembers')),
 
-    ### JOS Projects / Courses ###
+    ### JOS Staff / Projects / Courses ###
+    ("^", include("josstaff.urls", namespace='josstaff')),
     ("^", include("josprojects.urls")),
     ("^joscourses/", include("joscourses.urls")),
-
-    ### JOS Staff ###
-    url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
-    url("legals/$", "josstaff.views.legals", name="legals"),
-    url("community-rules/$", "josstaff.views.community_rules", name="community_rules"),
-    url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash), "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
-    url("^%s%s$" % ("josanal".strip("/"), _slash), "josstaff.views.josanal", name="josanal"),
 
     ### DJOINGO ###
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
