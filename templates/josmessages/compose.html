@@ -71,14 +71,11 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profi
                 {% endif %}
             {% endfor %}
 
-            <button class="btn btn-warning"
+            <a class="btn btn-warning"
                     style=" "
-                    onclick="goBack()">Cancel
-            </button>
-
-            <script>function goBack() {
-                window.history.back();
-            }</script>
+                    href="{% url "josmembers:josmembers_list" %}">
+                Cancel
+            </a>
 
             <input class="btn btn-default"
                    style="margin-left: 10px; width: 100px;"

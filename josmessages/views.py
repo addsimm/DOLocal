@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.timezone import activate
-
+from django.db.models import Q
 from josmessages.models import Message, JOSMessageThread
 from josmessages.forms import JOSComposeForm, JOSReplyForm
 from josmessages.utils import get_user_model
@@ -23,17 +23,23 @@ else:
 @login_required
 def inbox(request, template_name="josmessages/inbox.html"):
     """
-    Displays a list of received messages for the current user.
+    Displays a list of rece
+    ived messages for the current user.
     """
     activate('America/Los_Angeles')
-    thread_list = JOSMessageThread.objects.inbox_for(request.user)
-    message_list = []
-    for thread in thread_list:
-        message_id = thread.last_message_id
-        message = get_object_or_404(Message, pk=message_id)
-        message_list.append(message)
 
-    message_list.sort(key=lambda x: x.sent_at, reverse=True)
+    pot_message_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).order_by('-sent_at')
+
+    message_list = pot_message_list.order_by('message_thread__subject').distinct('message_thread__subject')
+
+    ### unique
+    # for message_id in pot_message_id:
+    #
+    #     message = get_object_or_404(Message, pk=message_id)
+    #     if message.recipient_deleted_at:
+    #         message_list.append(message)
+
+    #pot_message_list(key=lambda x: x.sent_at, reverse=True)
     return render_to_response(template_name,
                               {"message_list": message_list},
                               context_instance=RequestContext(request))
@@ -63,7 +69,7 @@ def trash(request, template_name="josmessages/trash.html"):
 
 
 @login_required
-def delete(request, message_thread_id=0, success_url=None):
+def delete(request, message_id=0, success_url=None):
     """
     Marks a message as deleted by sender or recipient. The message is not
     really removed from the database, because two users must delete a message
@@ -78,23 +84,11 @@ def delete(request, message_thread_id=0, success_url=None):
     user = request.user
     now = timezone.now()
     try:
-        message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    except:
-        raise Http404
-    try:
-        message = get_object_or_404(Message, id=message_thread.last_message_id)
+        message = get_object_or_404(JOSMessageThread, id=message_id)
     except:
         raise Http404
 
-    message_thread.is_deleted = True
-
-    if message.sender == user:
-        message.sender_deleted_at = now
-
-    if message.recipient == user:
-        message.recipient_deleted_at = now
-
-    message_thread.save()
+    message.recipient_deleted_at = now
     message.save()
     messages.info(request, _(u"Message successfully deleted."))
     return redirect('http://www.joinourstory.com/messages/inbox/')

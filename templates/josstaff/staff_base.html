@@ -43,6 +43,19 @@
                 </span>
             </a>
 
+            {#{% block inner_content %}#}
+            {##}
+            {#    <div class="row">#}
+            {#        <div class="col-xs-6 col-lg-offset-3" style="margin-top: 150px; background-color: transparent;">#}
+            {#            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
+            {#               {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">#}
+            {#                <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">#}
+            {#            </a>#}
+            {#        </div>#}
+            {#    </div>#}
+            {##}
+            {#{% endblock inner_content %}#}
+
             {#<a class="joslargelinkbutton"#}
             {#   style=" "#}
             {#   href="{% url 'josmessages:messages_trash' %} ">#}

@@ -12,6 +12,8 @@
 
     {{ block.super }}
 
+    message_list: {{ message_list }}
+
     <div class="josinstructions" style="margin-bottom: 20px;">Your messages:</div>
 
     {% if message_list %}
@@ -52,11 +54,11 @@
                                 Read
                             </a>
 
-                            <a class="btn btn-danger"
-                               style="margin-left: 10px; width: 100px;"
-                               href="{% url 'josmessages:messages_delete' message.message_thread.id %}">
-                                Delete
-                            </a>
+{#                            <a class="btn btn-danger"#}
+{#                               style="margin-left: 10px; width: 100px;"#}
+{#                               href="{% url 'josmessages:messages_delete' message.id %}">#}
+{#                                Delete#}
+{#                            </a>#}
                         </td>
                     </tr>
                 {% endfor %}

@@ -22,15 +22,6 @@ class MessageManager(models.Manager):
         )
 
 class JOSMessageThreadManager(models.Manager):
-    def inbox_for(self, user):
-        """
-        Returns all messages that were received by the given user and are not
-        marked as deleted.
-        """
-        return self.filter(
-            last_recipient=user,
-            is_deleted=False,
-        )
 
     def trash_for(self, user):
         """

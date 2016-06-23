@@ -60,3 +60,17 @@ class JOSStaffHoursEntry(TimeStamped, models.Model):
     hours_claimed = models.PositiveSmallIntegerField()
     hours_notes = models.TextField()
     time_claim_approved = models.BooleanField(default=False)
+
+
+class JOSReferral(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'JOSSReferral'
+        ordering = ("-updated",)
+
+    staff_member = models.ForeignKey(JOSStaffMember)
+    first_name = models.CharField(max_length=200, default=None)
+    last_name = models.CharField(max_length=200, default=None)
+    referral_email = models.EmailField()
+    referral_phone = models.CharField(max_length=40, default=None)
+    referral_city = models.CharField(max_length=40, default=None)
+    referral_notes = models.TextField(default = None)

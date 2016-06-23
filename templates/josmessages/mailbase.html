@@ -27,7 +27,7 @@
 
             <a class="joslargelinkbutton"
                style=" "
-               href="{% url 'josmessages:messages_inbox' %} ">
+               href="{% url 'josmessages:messages_inbox' %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-inbox fa-fw" style=" "></i>
                     My inbox
@@ -36,7 +36,7 @@
 
             <a class="joslargelinkbutton"
                style=" "
-               href="{% url 'josmessages:messages_outbox' %} ">
+               href="{% url 'josmessages:messages_outbox' %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-paper-plane fa-fw" style=" "></i>
                     Sent
@@ -52,8 +52,9 @@
             {#    </span>#}
             {#</a>#}
 
-            <span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>
-            <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">
+            <span class="josinstructions" style="margin-left: 40px;">Hint: to send messages, use:</span>
+            <a class="joslargelinkbutton" style="margin-left: 15px;"
+               href="{% url "josmembers:josmembers_list" %}">
                 <span style="margin-left: 5px; margin-right: 5px;">
                     <i class="fa fa-heart fa-fw" style=" "></i>
                     Friends

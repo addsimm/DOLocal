@@ -44,12 +44,12 @@
 
             <div class="col-xs-1">
 
-                <img style="display: inline; height: 60px;" src="
-                        {% if profile.profile_image_idstr != "noimage1" %}
-http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}
-                        {% else %}
-                            /static/img/coming-soon-profile.png
-                        {% endif %}">
+                {% if "noimage" in mess.sender.JOSProfile.profile_image_idstr %}
+                    <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/coming-soon-profile.png">
+                {% else %}
+                    <img class="img-responsive" style="display: inline; height: 60px;"
+                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}">
+                {% endif %}
 
             </div>
 
@@ -91,12 +91,12 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.pro
             </div>
 
             <div class="col-xs-1">
-                <img style="display: inline; height: 60px;" src="
-                        {% if profile.profile_image_idstr != "noimage1" %}
-    http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}
-                        {% else %}
-                            /static/img/coming-soon-profile.png
-                        {% endif %}">
+                {% if "noimage" in mess.sender.JOSProfile.profile_image_idstr.profile_image_idstr %}
+                    <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/coming-soon-profile.png">
+                {% else %}
+                    <img class="img-responsive" style="display: inline; height: 60px;"
+                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr.profile_image_idstr }}">
+                {% endif %}
             </div>
         </div>
     </div>
@@ -181,9 +181,16 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.pro
 
         <div class="col-xs-12">
 
+            <a id="button_inbox"
+               class="btn btn-warning"
+               style="margin-left: 40px;"
+               href="{% url 'josmessages:messages_inbox' %}">
+                Back
+            </a>
+
             <a id="button_reply"
                class="btn btn-default"
-               style="margin-left: 40px; width: 100px;"
+               style="margin-left: 10px; width: 100px;"
                onclick="activateCKEdit()"
                data-toggle="tooltip"
                title="Activates the word processor to reply"
@@ -192,18 +199,12 @@ http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.pro
             </a>
 
             <a id="button_delete"
-               class="btn btn-default"
-               style="background-color: #d9534f; border: none; color: white; outline: none; width: 100px; margin-left: 10px;"
+               class="btn btn-danger"
+               style="margin-left: 10px;"
                href="{% url 'josmessages:messages_delete' message_thread_id %}">
                 Delete
             </a>
 
-            <a id="button_inbox"
-               class="joslargelinkbutton"
-               href="{% url 'josmessages:messages_inbox' %}">
-                <i class="fa fa-envelope fa-fw"></i>
-                <span style="margin-left: 5px; margin-right: 5px;">Mail</span>
-            </a>
         </div>
     </div>
 </div>

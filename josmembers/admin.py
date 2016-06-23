@@ -10,7 +10,7 @@ class JOSProfileAdmin(admin.ModelAdmin):
     Admin class for JOSProfiles.
     """
 
-    verbose_name = 'JOS Profile'
+    verbose_name = 'Member profile'
 
     readonly_fields = ('created', 'updated',)
 

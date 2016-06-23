@@ -6,32 +6,28 @@
 
     {{ block.super }}
 
-    <div class="row" style="margin-bottom: 50px; margin-top: 70px;">
+    <div class="row">
 
         <div class="col-xs-10 col-xs-offset-1">
 
-            <h3>Previous Referrals:</h3>
+            <h3 style="margin-bottom: 40px;">Previous Referrals:</h3>
             <div class="row">
 
-                <div class="col-xs-2 col-xs-offset-1">Start</div>
-                <div class="col-xs-2">End</div>
-                <div class="col-xs-2 text-right">Hours</div>
-                <div class="col-xs-2 text-center">Status</div>
-                <div class="col-xs-3 text-right">Total Claim:</div><br><br>
+                <div class="col-xs-2 col-xs-offset-1" style="text-decoration: underline;">First</div>
+                <div class="col-xs-2" style="text-decoration: underline;">Last</div>
+                <div class="col-xs-3" style="text-decoration: underline;">Email</div>
+                <div class="col-xs-2" style="text-decoration: underline;">Phone</div>
+                <div class="col-xs-2" style="text-decoration: underline;">City</div><br><br>
 
             </div>
-            {% for instance in member_entries %}
+
+            {% for instance in past_referrals %}
                 <div class="row">
-                    <div class="col-xs-2 col-xs-offset-1">{{ instance.period_date_start | date:'m/d/y' }}</div>
-                    <div class="col-xs-2">{{ instance.period_date_end | date:'m/d/y'}}</div>
-                    <div class="col-xs-2 text-right">{{ instance.hours_claimed }}</div>
-                    <div class="col-xs-2">
-                        {% if instance.time_claim_approved %}
-                            Approved
-                        {% else %}
-                            Pend.
-                        {% endif %}
-                    </div>
+                    <div class="col-xs-2 col-xs-offset-1">{{ instance.first_name }}</div>
+                    <div class="col-xs-2">{{ instance.first_name }}</div>
+                    <div class="col-xs-3">{{ instance.referral_email }}</div>
+                    <div class="col-xs-2">{{ instance.referral_phone }}</div>
+                    <div class="col-xs-2">{{ instance.referral_city }}</div>
                 </div>
             {% endfor %}
 
@@ -39,126 +35,53 @@
 
     </div>
 
-    {# form.as_p #}
+    <div class="row" style="margin-top: 30px;">
 
-    <div class="row">
-        <div class="col-xs-10 col-xs-offset-1" style="border-top: 2px solid rgba(65, 25, 140, 0.25);">
-
+        <div class="col-xs-10 col-xs-offset-1" style="border-top: 2px solid rgba(65, 25, 140, 0.25); padding-top: 20px;">
+            <h3 style="margin-bottom: 40px;">New Referral:</h3>
+            {# form.as_p #}
             {% errors_for form %}
 
-            <form method="post">
-                {% nevercache %}
-                    <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
-                    {% csrf_token %}
-                {% endnevercache %}
-                <h3>New Referral:</h3>
-                <div class="row" style=" ">
-                    <div class='col-xs-3 col-xs-offset-1'>
-                        <h5 class=" ">Choose start date:</h5>
-                        <div id="datepickerstart" data-provide="datepicker-inline"></div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class='col-xs-3'>
-                        <h5 class=" ">End date:</h5>
-                        <div id="datepickerend" data-provide="datepicker-inline"></div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 10px;">
+            <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+                <fieldset>
+                    {% nevercache %}
+                        <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+                        {% csrf_token %}
+                    {% endnevercache %}
+
                     {% for field in form %}
                         {% if field.is_hidden %}
                             {{ field }}
+                        {% else %}
+                            <div class="form-group input_{{ field.id_for_label }}
+                                                             {{ field.field.type }}
+                                                             {% if field.errors %}
+                                                                has-error
+                                                             {% endif %}">
+
+                                {% if field.label %}
+                                    <label class="control-label"
+                                           for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                                {% endif %}
+
+                                {{ field }}
+
+                                {% if field.errors %}
+                                    <p class="help-block">
+                                        {% for e in field.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif field.help_text %}
+                                    <p class="help-block">
+                                        {{ field.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
                         {% endif %}
                     {% endfor %}
-
-                    <div class="form-group input_{{ field.id_for_label }}
-                                                 {{ field.field.type }}
-                                                 {% if field.errors %}
-                                                    has-error
-                                                 {% endif %}">
-
-                        <div class="row">
-                            <div class="col-xs-4 col-xs-offset-1">
-                                {{ form.period_date_start }}
-                                {% if form.period_date_start.errors %}
-                                    <p class="help-block">
-                                        {% for e in form.period_date_start.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
-
-                                {% elif form.period_date_start.help_text %}
-                                    <p class="help-block">
-                                        {{ form.period_date_start.help_text }}
-                                    </p>
-                                {% endif %}
-                            </div>
-                            <div class="col-xs-4 col-xs-offset-1">
-                                {{ form.period_date_end }}
-                                {% if form.period_date_end.errors %}
-                                    <p class="help-block">
-                                        {% for e in form.period_date_end.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
-
-                                {% elif form.period_date_end.help_text %}
-                                    <p class="help-block">
-                                        {{ form.period_date_end.help_text }}
-                                    </p>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top: 25px;">
-                            <div class="col-xs-4 col-xs-offset-1" style="margin-top: 25px;">
-
-                                <label class="control-label" style="font-size: 18pt;"
-                                       for="{{ form.hours_claimed.auto_id }}">
-                                    Hours Claimed:
-                                </label>
-
-                                {{ form.hours_claimed }}
-
-                                {% if form.hours_claimed.errors %}
-                                    <p class="help-block">
-                                        {% for e in form.hours_claimed.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
-
-                                {% elif form.hours_claimed.help_text %}
-                                    <p class="help-block">
-                                        {{ form.hours_claimed.help_text }}
-                                    </p>
-                                {% endif %}
-
-                            </div>
-                            <div class="col-xs-5">
-
-                                <label class="control-label" style="font-size: 14pt;"
-                                       for="{{ form.hours_notes.auto_id }}">
-                                    Notes:
-                                </label>
-
-                                {{ form.hours_notes }}
-
-                                {% if form.hours_notes.errors %}
-                                    <p class="help-block">
-                                        {% for e in form.hours_notes.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
-
-                                {% elif form.hours_notes.help_text %}
-                                    <p class="help-block">
-                                        {{ form.hours_notes.help_text }}
-                                    </p>
-                                {% endif %}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
                 <div class="form-actions"><!-- sumbit -->

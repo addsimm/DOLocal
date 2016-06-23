@@ -7,8 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.utils.email import send_approve_mail
 
-from .models import JOSStaffMember, JOSStaffHoursEntry
-from .forms import JOSStaffHoursEntryForm
+from .models import JOSStaffMember, JOSStaffHoursEntry, JOSReferral
+from .forms import JOSStaffHoursEntryForm, JOSReferralForm
 from request.models import Request
 
 # Create your views here.
@@ -39,7 +39,6 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
     staffmember = get_object_or_404(JOSStaffMember, first_name = firstname)
     staffmember_entries = staffmember.josstaffhoursentry_set.all().values('period_date_start', 'period_date_end','hours_claimed', 'time_claim_approved').order_by('period_date_start')
 
-
     josstaffhoursentry = JOSStaffHoursEntry(staff_member = staffmember)
 
     form = JOSStaffHoursEntryForm(instance=josstaffhoursentry)
@@ -50,7 +49,7 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
         if form.is_valid():
             form.save()
             # send_approve_mail(request, staffmember)
-            info(request, _("Entry accepted"))
+            info(request, _("Entry accepted; good job!"))
 
     staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
     context.update({"total_hours": staffmember_total_hours})
@@ -60,29 +59,22 @@ def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_conte
 
 @staff_member_required
 def referral(request, template="josstaff/referral.html", extra_context=None):
+
     firstname = request.GET.get('firstname')
     staffmember = get_object_or_404(JOSStaffMember, first_name=firstname)
+    past_referrals = JOSReferral.objects.filter(staff_member=staffmember)
 
+    referral = JOSReferral(staff_member=staffmember)
 
-    staffmember_entries = staffmember.josstaffhoursentry_set.all().values('period_date_start', 'period_date_end',
-                                                                          'hours_claimed',
-                                                                          'time_claim_approved').order_by(
-        'period_date_start')
-
-    josstaffhoursentry = JOSStaffHoursEntry(staff_member=staffmember)
-
-    form = JOSStaffHoursEntryForm(instance=josstaffhoursentry)
-    context = {"form": form, "member": staffmember, "member_entries": staffmember_entries}
+    form = JOSReferralForm(instance=referral)
+    context = {"form": form, "member": staffmember, "past_referrals": past_referrals}
 
     if request.method == 'POST':
-        form = JOSStaffHoursEntryForm(request.POST)
+        form = JOSReferralForm(request.POST)
         if form.is_valid():
             form.save()
             # send_approve_mail(request, staffmember)
-            info(request, _("Entry accepted"))
-
-    staffmember_total_hours = staffmember_entries.aggregate(Sum('hours_claimed'))['hours_claimed__sum']
-    context.update({"total_hours": staffmember_total_hours})
+            info(request, _("Referral accepted; good job!"))
 
     return render(request, template, context)
 
