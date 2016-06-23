@@ -56,7 +56,6 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         comment_thread = JOSMessageThread.objects.create(subject='Comments: '+ str(story.id))
 
     comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
-    last_comment = comments.filter(is_last=True)
 
     publish_story = request.GET.get('pub', None)
     if publish_story != None:
@@ -73,8 +72,6 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         field_to_edit = request.POST['field_to_edit']
 
         if field_to_edit == "comment":
-            last_comment.is_last = False
-            last_comment.save()
             message = Message.objects.create(
                 body = nucontent,
                 is_last = True,
@@ -85,7 +82,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
             )
             message.save()
             ct_mc = comment_thread.message_count
-            comment_thread.last_message.id = message.id
+            comment_thread.last_message_id = message.id
             comment_thread.last_recipient = story.author
             comment_thread.message_count = ct_mc + 1
             comment_thread.save()
