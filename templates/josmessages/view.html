@@ -95,7 +95,7 @@
                     <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/coming-soon-profile.png">
                 {% else %}
                     <img class="img-responsive" style="display: inline; height: 60px;"
-                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr.profile_image_idstr }}">
+                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_idstr }}">
                 {% endif %}
             </div>
         </div>
@@ -198,12 +198,12 @@
                 {% trans "Reply" %}
             </a>
 
-{#            <a id="button_delete"#}
-{#               class="btn btn-danger"#}
-{#               style="margin-left: 10px;"#}
-{#               href="{% url 'josmessages:messages_delete' message.id %}">#}
-{#                Delete#}
-{#            </a>#}
+            <a id="button_delete"
+               class="btn btn-danger"
+               style="margin-left: 10px;"
+               href="{% url 'josmessages:messages_delete' message_thread_id %}">
+                Delete
+            </a>
 
         </div>
     </div>

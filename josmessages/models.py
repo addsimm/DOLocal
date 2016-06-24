@@ -119,10 +119,9 @@ class Message(models.Model):
 
 def inbox_count_for(user):
     """
-    returns the number of unread messages for the given user but does not
-    mark them seen
+    returns the number of unread messages for the user
     """
-    return Message.objects.filter(message_thread__last_recipient=user, recipient_deleted_at__isnull=True, read_at__isnull=True).count()
+    return Message.objects.filter(recipient=user, read_at__isnull=True).count()
 
 # fallback for email notification if django-notification could not be found
 if "notification" not in settings.INSTALLED_APPS and getattr(settings, "JOSMESSAGES_NOTIFY", True):

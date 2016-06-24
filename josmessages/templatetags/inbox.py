@@ -8,9 +8,7 @@ class InboxOutput(Node):
     def render(self, context):
         try:
             user = context['user']
-            count = Message.objects.filter(message_thread__last_recipient=user,
-                                           recipient_deleted_at__isnull=True,
-                                           read_at__isnull=True).count()
+            count = Message.objects.filter(recipient=user, read_at__isnull=True).count()
         except (KeyError, AttributeError):
             count = ''
         if self.varname is not None:

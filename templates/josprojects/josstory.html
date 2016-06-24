@@ -8,7 +8,16 @@
 {% endblock %}
 
 {% block all_content %}
-<style> .cke { margin-left: 25px;}</style>
+<style>
+    #author, #author:visited {
+        background-color: white;
+        color: rgb(112, 154, 109);
+    }
+
+    #author:focus, #author:hover {color: #e38d13; outline: 2px dashed #e38d13}
+
+    .cke { margin-left: 25px;}
+</style>
 
 <div class="row" style="margin-top: 20px;">
 
@@ -42,7 +51,7 @@
                           {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
                         <div id='title' class="col-xs-12 homehead text-center">
-                            {{ story.title | striptags }}<br>
+                            {{ story.title | striptags | safe }}<br>
                         </div>
 
                         <input id="title_holder" type="hidden" name='nucontent' value = " ">
@@ -52,11 +61,11 @@
                 </div>
             </div>
 
-            <div class="text-center" style="margin-top: 20px;">
+            <div class="text-center" style="margin-top: 10px; padding-top: 10px;">
 
-                <a class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
-                   style=" padding: 10px 10px 0 10px;">
-                    <span style="font-size: 48pt; margin-left: 5px; margin-right: 5px;">
+                <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
+                   style="padding: 0">
+                    <span style="font-size: 48pt; margin: 0 15px;">
                         {{ story.author.JOSProfile.jos_name }}
                     </span>
                 </a>
@@ -256,7 +265,7 @@
            style="margin-top: 30px;"
                 {% if edit %}
                     href="{% url "josstory" story.id %}">
-                    {% trans "Hide edit" %}
+                    {% trans "Hide" %}
                 {% else %}
                     href="{% url "josstory_edit" story.id %}">
                     {% trans "Edit" %}

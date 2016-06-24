@@ -32,14 +32,6 @@ def inbox(request, template_name="josmessages/inbox.html"):
 
     message_list = pot_message_list.order_by('message_thread__subject').distinct('message_thread__subject')
 
-    ### unique
-    # for message_id in pot_message_id:
-    #
-    #     message = get_object_or_404(Message, pk=message_id)
-    #     if message.recipient_deleted_at:
-    #         message_list.append(message)
-
-    #pot_message_list(key=lambda x: x.sent_at, reverse=True)
     return render_to_response(template_name,
                               {"message_list": message_list},
                               context_instance=RequestContext(request))
@@ -69,27 +61,31 @@ def trash(request, template_name="josmessages/trash.html"):
 
 
 @login_required
-def delete(request, message_id=0, success_url=None):
+def delete(request, message_thread_id=0):
     """
     Marks a message as deleted by sender or recipient. The message is not
-    really removed from the database, because two users must delete a message
-    before it"s save to remove it completely.
-    A cron-job should prune the database and remove old messages which are
-    deleted by both users.
+    really removed from the database, because two users must delete
+    A cron-job should prune the database and remove old messages
     As a side effect, this makes it easy to implement a trash with undelete.
 
     You can pass ?next=/foo/bar/ via the url to redirect the user to a different
     page (e.g. `/foo/bar/`) than ``success_url`` after deletion of the message.
     """
+    activate('America/Los_Angeles')
     user = request.user
     now = timezone.now()
     try:
-        message = get_object_or_404(JOSMessageThread, id=message_id)
+        message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
     except:
         raise Http404
 
-    message.recipient_deleted_at = now
-    message.save()
+    message_list = Message.objects.filter(message_thread=message_thread)
+
+    for message in message_list:
+        message.read_at = now
+        message.recipient_deleted_at = now
+        message.save()
+
     messages.info(request, _(u"Message successfully deleted."))
     return redirect('http://www.joinourstory.com/messages/inbox/')
 

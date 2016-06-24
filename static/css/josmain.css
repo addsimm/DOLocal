@@ -175,22 +175,44 @@ footer {
     color: rgb(65, 25, 140);
 }
 
-.btn-default:visited,
-.btn-primary:visited,
-.btn-success:visited,
-.btn-info:visited,
-.btn-warning:visited,
-.btn-danger:visited {
-    background-color: inherit;
-    opacity: 1;
+.btn-primary:visited, .btn-primary:focus {
+    background-color: rgb(65, 25, 140);
+    color: rgb(65, 25, 140);
+    border-color: rgb(65, 25, 140);
 }
 
+.btn-success:visited, .btn-success:focus {
+    background-color: #5cb85c;
+    color: white;
+    border-color: #5cb85c;
+}
+
+.btn-info:visited, .btn-info:focus {
+    background-color: #5bc0de;
+    color: white;
+    border-color: #5bc0de;
+}
+
+.btn-warning:visited, .btn-warning:focus {
+    background-color: #f0ad4e;
+    color: white;
+    border-color: #f0ad4e;
+}
+
+.btn-danger:visited .btn-danger:focus {
+    background-color: #d9534f;
+    color: white;
+    border-color: #d9534f;
+}
+
+.btn-default:hover,
 .btn-primary:hover,
 .btn-success:hover,
 .btn-info:hover,
 .btn-warning:hover,
 .btn-danger:hover {
-    background-color: inherit;
+    background-color: white;
+    border-color: black;
     color: black;
     opacity: .8;
 }
