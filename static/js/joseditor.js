@@ -31,14 +31,14 @@ function manageCKEdit(el) {
     var pos = elstrid.search("_");
     var section = elstrid.slice(pos + 1);
     var acttxt = elstrid.slice(1, pos);
-    //alert(section);
+    // alert(section);
 
     switch (acttxt) {
 
         case "edit":
             $("#editing_side_panel").addClass('hidden');
             $("#editing_side_panel_hint").removeClass('hidden');
-            $(elstrid).hide();
+            $('.edit_section_button').hide();
             $('.joshint').show();
             $('#save_' + section).show();
             $('#discard_' + section).show();
