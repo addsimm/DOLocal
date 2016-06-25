@@ -150,7 +150,7 @@
                 {% endif %}
         </a><br>
 
-    {% else %}<br>
+    {% else %}
 
         <a class="btn pull-right btn-default"
            style="margin-top: 30px;"
@@ -158,11 +158,23 @@
             Message
         </a>
 
-        <a class="btn pull-right btn-default"
-           style="margin-top: 30px;"
-           href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
-            Favorite
-        </a>
+        {% if requesterfollows %}
+
+            <a class="btn pull-right  btn-default"
+               style="margin-top: 30px;"
+               href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ profile.user.id }} ">
+                Unfavor
+            </a>
+
+        {% else %}
+
+            <a class="btn pull-right btn-default"
+               style="margin-top: 30px;"
+               href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
+                Favor
+            </a>
+
+        {% endif %}
 
     {% endif %}
 

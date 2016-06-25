@@ -49,8 +49,8 @@
 
                                 <a class="btn btn-default"
                                    style="margin-left: 10px; width: 150px;"
-                                   href="{% url 'josmessages:messages_compose' %}{{ favorite.id }}">
-                                    Send message
+                                   href="{% url 'josmessages:messages_compose' favorite.id %}">
+                                    Message
                                 </a>
 
                                 <a class="btn btn-default"
@@ -89,7 +89,7 @@
 
 
             <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;" type="text" placeholder="Start typing here">
-            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px;" href="{% url "josmembers:josmembers_list" %}">
+            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;" href="{% url "josmembers:josmembers_list" %}">
                 Start over
             </a>
 

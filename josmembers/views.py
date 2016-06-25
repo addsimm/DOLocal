@@ -69,11 +69,18 @@ def josprofile_redirect(request):
 @csrf_exempt
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
 
+    # check request for favoring
+    follow_unfollow(request)
+
     activate('America/Los_Angeles')
 
     user = User.objects.get(id=userid)
     username = user.username
     currentProfile = get_object_or_404(JOSProfile, user=user)
+
+    is_follower = False
+    if request.user != user:
+        is_follower = Follow.objects.follows(request.user, user)
 
     def getPotentialNewProfileImageIdStr():
         import re
@@ -109,7 +116,8 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
 
     context = {"profile": currentProfile,
                "edit": edit,
-               "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr()}
+               "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr(),
+               "requesterfollows": is_follower}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -222,32 +230,8 @@ def jos_new_password(request, template="josmembers/josmembers_jospassword_reset.
 @login_required
 def members_list(request, template="josmembers/josmembers_members_list.html", extra_context=None):
 
-    other_user_id = request.GET.get('add_favorite', " ")
-    other_user = " "
-    remove_user_id = request.GET.get('remove_favorite', " ")
-    remove_user = " "
-
-    if other_user_id != " ":
-        try:
-            other_user = User.objects.get(id=other_user_id)
-            # Create request.user follows other_user relationship
-            Follow.objects.add_follower(request.user, other_user)
-            info(request, other_user.JOSProfile.jos_name() + " is now a favorite!")
-        except ValidationError:
-            info(request, "You cannot favorite yourself ...")
-        except AlreadyExistsError:
-            info(request, other_user.JOSProfile.jos_name() + " is already a favorite!")
-
-    if remove_user_id != " ":
-        try:
-            remove_user = User.objects.get(id=remove_user_id)
-            return_variable = Follow.objects.remove_follower(request.user, remove_user)
-            if return_variable:
-                info(request, remove_user.JOSProfile.jos_name() + " is no longer a favorite.")
-            else:
-                info(request, "Sorry, problme removing favortie - please contact us.")
-        except:
-            pass
+    #check request for favoring
+    follow_unfollow(request)
 
     # List of who this user is following
     following = Follow.objects.following(request.user)
@@ -289,3 +273,34 @@ def submit_member_search_from_ajax(request):
     }
 
     return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
+
+
+def follow_unfollow(request):
+    other_user_id = request.GET.get('add_favorite', " ")
+    other_user = " "
+    remove_user_id = request.GET.get('remove_favorite', " ")
+    remove_user = " "
+
+    if other_user_id != " ":
+        try:
+            other_user = User.objects.get(id=other_user_id)
+            # Create request.user follows other_user relationship
+            Follow.objects.add_follower(request.user, other_user)
+            info(request, other_user.JOSProfile.jos_name() + " is now a favorite!")
+        except ValidationError:
+            info(request, "You cannot favorite yourself ...")
+        except AlreadyExistsError:
+            info(request, other_user.JOSProfile.jos_name() + " is already a favorite!")
+
+    if remove_user_id != " ":
+        try:
+            remove_user = User.objects.get(id=remove_user_id)
+            return_variable = Follow.objects.remove_follower(request.user, remove_user)
+            if return_variable:
+                info(request, remove_user.JOSProfile.jos_name() + " is no longer a favorite.")
+            else:
+                info(request, "Sorry, problme removing favortie - please contact us.")
+        except:
+            pass
+
+        return
