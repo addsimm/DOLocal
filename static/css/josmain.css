@@ -169,16 +169,12 @@ footer {
     width: 100px;
 }
 
-.btn-default, .btn-default:visited {
-    background-color: rgb(231, 209, 222);
-    border-color: rgb(65, 25, 140);
-    color: rgb(65, 25, 140);
-}
-
+.btn-default, .btn-default:visited,
 .btn-primary:visited, .btn-primary:focus {
-    background-color: rgb(65, 25, 140);
-    color: rgb(65, 25, 140);
+    /* background-color: rgb(231, 209, 222); */
     border-color: rgb(65, 25, 140);
+    background-color: rgb(65, 25, 140);
+    color: white;
 }
 
 .btn-success:visited, .btn-success:focus {
