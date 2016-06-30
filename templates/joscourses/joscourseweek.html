@@ -32,46 +32,71 @@
 
 </style>
 
-<div class="row" style="margin-top: 30px;">
+<div class="row" style="outline: 3px solid rgba(65,45,120,.5); padding-bottom: 20px; padding-top: 20px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="josinstructions" style="font-weight: bold;">
 
-    <div class="col-xs-8 col-xs-offset-2 text-center">
+                    <span style="font-size: 36pt;
+                                 padding: 5px 10px;">
+                        <b>{{ week.week_title | striptags }}</b>
+                    </span>
 
-        <div class="josinstructions" style="font-weight: bold;">
+                </div>
+            </div>
+        </div>
 
-            <span style="font-size: larger;
-                         padding: 5px 10px;">
-                <u>{{ week.week_title | striptags }}</u>
-            </span>
+        <div id="progress_bar" class="row" style="padding-top: 20px;">
+            <div class="col-xs-12">
+                {% for handout in handouts %}
+
+                    <a class="joslargelinkbutton" style="font-size: 14pt; margin: 5px;" href="{% url "handout" %}/{{ handout.id }}">
+                        <span style="margin: 0 5px;">{{ handout.get_segment_type_display }}</span>
+                    </a>
+                    {% if not forloop.last %}
+                        <i class="fa fa-arrow-right" style="font-size: 14pt; color: rgb(0, 155, 175); margin-left: 5px;" aria-hidden="true"></i>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 40px;">
+
+                <a class="btn btn-default"
+                   style="margin-left: 50px; width: 150px;
+                        {% if handout == handouts.first %}
+                           background-color: white;
+                           color: white;
+                        {% endif %}"
+                   href="{% url "handout" %}/{{ handout.id|add:"-1" }}">
+                    {% trans "Previous" %}
+                </a>
+
+                <a class="btn btn-default"
+                   style="margin-left: 15px; width: 150px;
+                       {% if handout == handouts.last %}
+                           background-color: white;
+                           color: white;
+                       {% endif %}"
+                   href="{% url "handout" %}/{{ handout.id|add:"1" }}">
+                    {% trans "Next" %}
+                </a>
 
         </div>
     </div>
 </div>
 
-<div id="progress_bar" class="row" style="margin-bottom: 30px; margin-top: 30px; padding-left: 50px;">
-
-    Segments:
-
-    {% for handout in handouts %}
-
-
-        <a class="joslargelinkbutton" style="width: 500px;" href="{% url "handout" %}/{{ handout.id }}">
-            <span style="margin: 0 5px;">{{ handout.get_segment_type_display }}</span>
-        </a>
-
-    {% endfor %}
-
-</div>
-
-
- <!-- video
-        <div class="row" style="margin-top: 30px;">
-            <iframe src="{{ week.video }}"
-                    width="640" height="360"
-                    frameborder="0"
-                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
-            </iframe>
-        </div>
-endvideo -->
+{% if handout.segment_type == 3 %}
+    <div class="row" style="margin-top: 30px;">
+        <iframe src="{{ week.video }}"
+                width="640" height="360"
+                frameborder="0"
+                webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        </iframe>
+    </div>
+{% endif %}
 
 
 {% endblock %}

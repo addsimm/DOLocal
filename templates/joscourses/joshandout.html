@@ -3,10 +3,6 @@
 
 {% block meta_title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
 {% block title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
-{% block breadcrumb_menu %}{{ block.super }}
-    {{ handout.title  | safe | truncatechars:35 }}
-    </div></div>
-{% endblock %}
 
 {% block all_content %}
 
@@ -17,7 +13,7 @@
 <div class="row" style="margin-top: 40px;">
 
 <!-- Main Panel -->
-<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
+<div class="col-xs-10" style="border-right: 1px solid rgb(65, 45, 120);">
 
     <!-- Title -->
     <div class="row" style=" ">

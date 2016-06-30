@@ -74,7 +74,9 @@ class JOSHandout(TimeStamped, models.Model):
         (5, "Activity"),
         (6, "Summary"),
         (7, "Transcript"),
-        (8, "Other"),
+        (8, "Template"),
+        (9, "Lit Tip"),
+        (99, "Other"),
     )
 
     segment_type = models.IntegerField(default=8, blank=True, null=True, choices=SEGMENT_TYPE_CHOICES)
