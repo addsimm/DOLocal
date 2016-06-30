@@ -49,10 +49,16 @@
 
         <div id="progress_bar" class="row" style="padding-top: 20px;">
             <div class="col-xs-12">
-                {% for handout in handouts %}
+                {% for hout in handouts %}
 
-                    <a class="joslargelinkbutton" style="font-size: 14pt; margin: 5px;" href="{% url "handout" %}/{{ handout.id }}">
-                        <span style="margin: 0 5px;">{{ handout.get_segment_type_display }}</span>
+                    <a class="joslargelinkbutton"
+                       style="font-size: 14pt; margin: 5px;
+                            {% if handout == hout %}
+                                background-color: rgb(65,45,120);
+                                outline: 7px solid rgb(65,45,120);
+                            {% endif %}"
+                       href="{% url "handout" %}/{{ hout.id }}">
+                        <span style="margin: 0 5px;">{{ hout.get_segment_type_display }}</span>
                     </a>
                     {% if not forloop.last %}
                         <i class="fa fa-arrow-right" style="font-size: 14pt; color: rgb(0, 155, 175); margin-left: 5px;" aria-hidden="true"></i>
