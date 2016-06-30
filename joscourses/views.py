@@ -40,6 +40,9 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
                                             title="Untitled",
                                             content="Coming soon")
 
+    handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, publish=True).order_by('handoutno')
+
+
     publish_handout = request.GET.get('pub', None)
     if publish_handout != None:
         if publish_handout == 'publish':
@@ -59,7 +62,7 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
 
         edit = False
 
-    context = {'handout': handout, 'edit': edit}
+    context = {'week': handout.courseweek, 'handouts': handouts, 'handout': handout, 'edit': edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

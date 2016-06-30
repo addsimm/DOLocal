@@ -65,8 +65,23 @@ class JOSHandout(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Handout'
 
+    SEGMENT_TYPE_CHOICES = (
+        (0, "Re / Pre"),
+        (1, "Workshop"),
+        (2, "Goals"),
+        (3, "Video"),
+        (4, "Prompt"),
+        (5, "Activity"),
+        (6, "Summary"),
+        (7, "Transcript"),
+        (8, "Other"),
+    )
+
+    segment_type = models.IntegerField(default=8, blank=True, null=True, choices=SEGMENT_TYPE_CHOICES)
+    segment_order = models.IntegerField(default=0)
+
     handoutno = models.IntegerField(default=0)
-    courseweek = models.ForeignKey(JOSCourseWeek)
+    courseweek = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)

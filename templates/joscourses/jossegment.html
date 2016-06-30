@@ -1,4 +1,4 @@
-{% extends "joscourses/joscourseweek.html" %}
+{% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags static %}
 
 {% block meta_title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
@@ -11,8 +11,6 @@
 {% block all_content %}
 
 <style> .cke {margin-left: 25px;}</style>
-
-{{ block.super }}
 
 <div class="row" style="margin-top: 40px;">
 

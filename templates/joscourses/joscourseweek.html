@@ -11,7 +11,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {{ week.course |cut:"Course: " }}: Week #{{ week.weekno }}
+    {{ week.course |cut:"Course: " }} - week #{{ week.weekno }}
     </div></div>
 
 {% endblock %}
@@ -20,11 +20,21 @@
 
 <style>
     p {margin: 0;}
+
+    #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
+        background-color: rgb(0, 155, 175);
+    }
+
+    #progress_bar .joslargelinkbutton:focus, #progress_bar .joslargelinkbutton:hover {
+        background-color: white;
+        outline: 1px dashed rgb(0, 155, 175);
+    }
+
 </style>
 
-<div class="row" style="margin-bottom: 30px; margin-top: 70px;">
+<div class="row" style="margin-top: 30px;">
 
-    <div class="col-xs-9 col-xs-offset-1">
+    <div class="col-xs-8 col-xs-offset-2 text-center">
 
         <div class="josinstructions" style="font-weight: bold;">
 
@@ -34,7 +44,26 @@
             </span>
 
         </div>
+    </div>
+</div>
 
+<div id="progress_bar" class="row" style="margin-bottom: 30px; margin-top: 30px; padding-left: 50px;">
+
+    Segments:
+
+    {% for handout in handouts %}
+
+
+        <a class="joslargelinkbutton" style="width: 500px;" href="{% url "handout" %}/{{ handout.id }}">
+            <span style="margin: 0 5px;">{{ handout.get_segment_type_display }}</span>
+        </a>
+
+    {% endfor %}
+
+</div>
+
+
+ <!-- video
         <div class="row" style="margin-top: 30px;">
             <iframe src="{{ week.video }}"
                     width="640" height="360"
@@ -42,53 +71,8 @@
                     webkitallowfullscreen mozallowfullscreen allowfullscreen>
             </iframe>
         </div>
+endvideo -->
 
-        <div class="row" style="margin-top: 30px;">
-            <span class="josinstructions" style="font-weight: bold;">
-                <u>Handouts:</u>
-            </span><br><br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Number:</th>
-                        <th>Title:</th>
-                        <th>Updated:</th>
-                {% for handout in handouts %}
-
-                    <tr>
-                        <td style="text-align: right;">
-                            {{ handout.handoutno }}
-                        </td>
-                        <td>
-                            <a class="joslargelinkbutton" style="font-size: 14pt;" href="{% url "handout" %}/{{ handout.id }}">
-                                {{ handout.title | striptags }}
-                            </a>
-                        </td>
-                        <td style=" ">
-                            {{ handout.updated }}
-                        </td>
-                    </tr>
-
-                {% endfor %}
-            </table>
-
-        </div>
-
-    </div>
-
-    <div class="col-xs-2" style="margin-top: 50px;">
-
-        {% include "updated.html" with myobj=week %}
-
-        <a class="btn pull-right btn-default"
-           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px;"
-           href="{% url "personaldesk" %}/{{ request.user.id }}">
-            {% trans "Weeks" %}
-        </a>
-
-    </div>
-
-</div>
 
 {% endblock %}
 

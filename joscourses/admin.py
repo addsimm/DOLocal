@@ -33,11 +33,12 @@ admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)
 
 
 class JOSHandoutAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "courseweek", "updated")
-    verbose_name = 'JOS handout'
+    list_display = ("id", "title", "segment_order", "segment_type", "courseweek", "updated")
+    verbose_name = 'Segment'
     readonly_fields = ('created', 'updated',)
 
-
+    list_editable = ('segment_order', "courseweek")
+    list_filter = ("segment_type", "courseweek")
 admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 

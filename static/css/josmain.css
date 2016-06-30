@@ -171,10 +171,9 @@ footer {
 
 .btn-default, .btn-default:visited,
 .btn-primary:visited, .btn-primary:focus {
-    /* background-color: rgb(231, 209, 222); */
+    background-color: rgb(231, 209, 222);
     border-color: rgb(65, 25, 140);
-    background-color: rgb(65, 25, 140);
-    color: white;
+    color: rgb(65, 25, 140);
 }
 
 .btn-success:visited, .btn-success:focus {
