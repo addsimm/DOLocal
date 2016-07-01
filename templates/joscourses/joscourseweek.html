@@ -11,12 +11,12 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {{ week.course |cut:"Course: " }} - week #{{ week.weekno }}
+    {{ week.week_title | safe | truncatechars:25 }} - {{ handout.title }}
     </div></div>
 
 {% endblock %}
 
-{% block all_content %}
+{% block extra_bar %}
 
 <style>
     p {margin: 0;}
@@ -32,78 +32,45 @@
 
 </style>
 
-<div class="row" style="outline: 3px solid rgba(65,45,120,.5); padding-bottom: 20px; padding-top: 20px;">
+<div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5); padding-bottom: 15px; padding-top: 15px;">
     <div class="col-xs-12">
-        <div class="row">
+
+        <div id="progress_bar" class="row" style="padding-top: 10px;">
             <div class="col-xs-12">
-                <div class="josinstructions" style="font-weight: bold;">
 
-                    <span style="font-size: 36pt;
-                                 padding: 5px 10px;">
-                        <b>{{ week.week_title | striptags }}</b>
-                    </span>
-
-                </div>
-            </div>
-        </div>
-
-        <div id="progress_bar" class="row" style="padding-top: 20px;">
-            <div class="col-xs-12">
                 {% for hout in handouts %}
 
                     <a class="joslargelinkbutton"
-                       style="font-size: 14pt; margin: 5px;
+                       style="font-size: 12pt; margin: 5px;
                             {% if handout == hout %}
                                 background-color: rgb(65,45,120);
-                                outline: 7px solid rgb(65,45,120);
                             {% endif %}"
                        href="{% url "handout" %}/{{ hout.id }}">
-                        <span style="margin: 0 5px;">{{ hout.get_segment_type_display }}</span>
+                        <span style="margin: 0 3px;">{{ hout.get_segment_type_display }}</span>
                     </a>
                     {% if not forloop.last %}
-                        <i class="fa fa-arrow-right" style="font-size: 14pt; color: rgb(0, 155, 175); margin-left: 5px;" aria-hidden="true"></i>
+                        <i class="fa fa-arrow-right" style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;" aria-hidden="true"></i>
                     {% endif %}
 
                 {% endfor %}
+
+                {% if handout == handouts.last %}
+                    <a class="btn btn-warning"
+                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">
+                        {% trans "Last" %}
+                    </a>
+                {% else %}
+                    <a class="btn btn-warning pull-right"
+                       style="font-size: 12pt; width: 70px;"
+                       href="{% url "handout" %}/{{ handout.id|add:"1" }}">
+                        {% trans "Next" %}
+                    </a>
+                {% endif %}
+
             </div>
-        </div>
-
-        <div class="row" style="padding-top: 40px;">
-
-                <a class="btn btn-default"
-                   style="margin-left: 50px; width: 150px;
-                        {% if handout == handouts.first %}
-                           background-color: white;
-                           color: white;
-                        {% endif %}"
-                   href="{% url "handout" %}/{{ handout.id|add:"-1" }}">
-                    {% trans "Previous" %}
-                </a>
-
-                <a class="btn btn-default"
-                   style="margin-left: 15px; width: 150px;
-                       {% if handout == handouts.last %}
-                           background-color: white;
-                           color: white;
-                       {% endif %}"
-                   href="{% url "handout" %}/{{ handout.id|add:"1" }}">
-                    {% trans "Next" %}
-                </a>
-
         </div>
     </div>
 </div>
 
-{% if handout.segment_type == 3 %}
-    <div class="row" style="margin-left: 120px; margin-top: 120px;">
-        <iframe src="{{ week.video }}"
-                width="640" height="360"
-                frameborder="0"
-                webkitallowfullscreen mozallowfullscreen allowfullscreen>
-        </iframe>
-    </div>
-{% endif %}
-
-
-{% endblock %}
+{% endblock extra_bar %}
 

@@ -33,14 +33,14 @@ admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)
 
 
 class JOSHandoutAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "segment_order", "segment_type", "courseweek", "updated")
+    list_display = ("id", "updated", "title", "segment_order", "segment_type", "courseweek", "publish")
     verbose_name = 'Segment'
     readonly_fields = ('created', 'updated',)
 
-    list_editable = ('segment_order', "courseweek")
+    list_editable = ('segment_order', "segment_type", "publish")
     list_filter = ("segment_type", "courseweek")
-admin.site.register(JOSHandout, JOSHandoutAdmin)
 
+admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 # class JOSStoryActivityAdmin(admin.ModelAdmin):
 #     list_display = ("id", "title", "created", "course", "week")
