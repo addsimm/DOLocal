@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+
+    Live video test:
+    <div class="row" style="margin-top: 30px; background-color: lightblue;">
+
+        <div class="col-xs-6 col-xs-offset-3" style="background-color: lightgreen;">
+
+
+            <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
+            <script charset="utf-8">
+                var apiKey = '45616422';
+                var sessionId = '2_MX40NTYxNjQyMn5-MTQ2NzY1NTgwNjE2N35udEt6L211ckhqNmF0bVA2cVdHeUlpS1d-fg';
+                var token = 'T1==cGFydG5lcl9pZD00NTYxNjQyMiZzaWc9MTkyMDRhMTYyYjNjMWJkZTJkMTJhODUwOGQ0MWYyNjg1YWZlZmRlOTpzZXNzaW9uX2lkPTJfTVg0ME5UWXhOalF5TW41LU1UUTJOelkxTlRnd05qRTJOMzV1ZEV0NkwyMTFja2hxTm1GMGJWQTJjVmRIZVVscFMxZC1mZyZjcmVhdGVfdGltZT0xNDY3NjU1ODkyJm5vbmNlPTAuMzE5MDY2NDQ4ODM1NjU2MDUmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ2NzY3NzQ5NA==';
+                var session = OT.initSession(apiKey, sessionId)
+                        .on('streamCreated', function (event) {
+                            session.subscribe(event.stream);
+                        })
+                        .connect(token, function (error) {
+                            var publisher = OT.initPublisher();
+                            session.publish(publisher);
+                        });
+            </script>
+
+        </div>
+    </div>
+
+</body>
+</html>

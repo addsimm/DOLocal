@@ -32,6 +32,7 @@ import spirit.urls
 urlpatterns += patterns('',
     # EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+    url("tokboxtest$", "josprojects.views.tokboxtest", name="tokboxtest"),
 
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
@@ -54,7 +55,7 @@ urlpatterns += patterns('',
     #url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
     url(r'^messages/', include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
 
-    # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
+    # NOT IMPLEMENTED: url(r'^calendar/', include('schedule.urls')),
 
     ### ADD URLPATTERNS *ABOVE* MEZZANINE'S URLS
     ("^", include("mezzanine.urls")),

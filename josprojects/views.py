@@ -120,3 +120,8 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
+def tokboxtest(request, template="tokboxtest.html"):
+
+    return TemplateResponse(request, template)
+
+
