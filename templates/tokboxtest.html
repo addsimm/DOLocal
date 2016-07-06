@@ -5,60 +5,115 @@
 
 {% block all_content %}
 
-    {{ block.super }}
+{{ block.super }}
 
-    To do: manage sessions, format windows, place moderator at top
+To do: manage sessions, format windows, place moderator at top
 
-    <div class="row" style="margin-top: 50px; background-color: lightblue;">
+<div class="row" style="margin-top: 50px; background-color: lightblue;">
 
-        <div class="col-xs-4 col-xs-offset-2" style="background-color: lightgreen;">
+    <div class="col-xs-4 col-xs-offset-2" style="background-color: lightgreen;">
 
-            Live video test:
+        Live video test:
 
-            <div id="publisher" class="row"
-                 style="background-color: pink;>
-                 margin-top: 100px;">
-                Publisher:
-            </div>
+        <div id="publish" class="row"
+             style="background-color: pink;>
+             margin-top: 100px;">
+            Publisher:
+        </div>
 
-            <div id="subscribers" class="row"
-                 style="background-color: yellow;
-                 margin-top: 100px;">
-                Subscribers:
-            </div>
-
+        <div id="subscribers" class="row"
+             style="background-color: yellow;
+             margin-top: 100px;">
+            Subscribers:
         </div>
 
     </div>
 
+</div>
 
-    <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 
-    <script charset="utf-8">
+<script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
+
+<script charset="utf-8">
+    var session;
+    var connectionCount = 0;
+
+    function connect() {
         var apiKey = '45616422';
         var sessionId = '{{ session_id}}';
         var token = '{{ token }}';
-        var session = OT.initSession(apiKey, sessionId)
+        if (OT.checkSystemRequirements() == 1) {
+            var session = OT.initSession(apiKey, sessionId);
+        } else {
+            alert("The client does not support WebRTC.");
+        }
 
-        session.on('streamCreated', function (event) {
-                    var subContainer = document.createElement('div');
-                    subContainer.id = 'stream-' + event.stream.streamId;
-                    document.getElementById('subscribers').appendChild(subContainer);
 
-                    // Subscribe to stream that caused event, put inside container
-                    session.subscribe(event.stream, subContainer);
-                })
+        session.on({
+            streamCreated: function (event) {
+                var subContainer = document.createElement('div');
+                subContainer.id = 'stream-' + event.stream.streamId;
+                document.getElementById('subscribers').appendChild(subContainer);
 
-                .connect(token, function (error) {
-                    if (!error) {
-                        var publisher = OT.initPublisher('publisher', {
-                            insertMode: 'append',
-                            width: '30%'
-                        });
-                        session.publish(publisher);
-                    }
+                // Subscribe to stream that caused event, put inside container
+                session.subscribe(event.stream, subContainer);
+            },
+
+            sessionDisconnected: function sessionDisconnectHandler(event) {
+                // The event is defined by the SessionDisconnectEvent class
+                if (event.reason == "networkDisconnected") {
+                    alert("Your network connection terminated.")
+                }
+            },
+
+            connectionCreated: function (event) {
+                connectionCount++;
+                if (event.connection.connectionId != session.connection.connectionId) {
+                    console.log('Another client connected. ' + connectionCount + ' total.');
+                }
+            },
+
+            connectionDestroyed: function connectionDestroyedHandler(event) {
+                connectionCount--;
+                console.log('A client disconnected. ' + connectionCount + ' total.');
+            }
+        });
+
+        session.connect(token, function (error) {
+            if (!error) {
+                console.log("Connected to the session.");
+                var publisher = OT.initPublisher('publish', {
+                    insertMode: 'append'
                 });
+                // CAMERA ACCESS ALERTS
+                {#publisher.on({#}
+                {#    accessDialogOpened: function (event) {#}
+                {#        // The Allow/Deny dialog box is opened.#}
+                {#        // MESSAGE#}
+                {#        alert('Please allow access to camera.');#}
+                {#    },#}
+                {#    accessDialogClosed: function (event) {#}
+                {#        // The Allow/Deny dialog box is closed.#}
+                {#        alert('What happnened?')#}
+                {#    },#}
+                {#    accessAllowed: function (event) {#}
+                {#        // The user has granted access to the camera and mic.#}
+                {#        alert('Access to camera.');#}
+                {#    },#}
+                {#    accessDenied: function accessDeniedHandler(event) {#}
+                {#        // The user has denied access to the camera and mic.#}
+                {#        // NOT WORKING#}
+                {#        alert('You have denied camera access.');#}
+                {#    }#}
 
-    </script>
+                session.publish(publisher);
+            } else {
+                console.log("Error connecting: ", error.code, error.message);
+            }
+        });
+    }
+
+    connect();
+</script>
 
 {% endblock all_content %}
