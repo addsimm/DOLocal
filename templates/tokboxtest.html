@@ -1,31 +1,69 @@
-<!DOCTYPE HTML>
-<html>
-<body>
+
+{% extends "josstaff/staff_base.html" %}
+{% load i18n tz pages_tags mezzanine_tags staticfiles %}
 
 
-    Live video test:
+{% block all_content %}
+
+    {{ block.super }}
+
+
+
     <div class="row" style="margin-top: 30px; background-color: lightblue;">
 
         <div class="col-xs-6 col-xs-offset-3" style="background-color: lightgreen;">
+
+            Live video test:
+
+            apiKey = {{ apikey }}<br>
+            sessionId = {{ session_id }}<br>
+            token = {{ token }}<br>
+
+            <div class="container">
+                <h1>Session is Running</h1>
+
+                <div id="publisher"></div>
+
+                <div id="subscribers"></div>
+
+            </div>
+
+            To do:
+            Get token
+            manage sessions
+            format windows
+            place moderator at top
 
 
             <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
             <script charset="utf-8">
                 var apiKey = '45616422';
-                var sessionId = '2_MX40NTYxNjQyMn5-MTQ2NzY1NTgwNjE2N35udEt6L211ckhqNmF0bVA2cVdHeUlpS1d-fg';
-                var token = 'T1==cGFydG5lcl9pZD00NTYxNjQyMiZzaWc9MTkyMDRhMTYyYjNjMWJkZTJkMTJhODUwOGQ0MWYyNjg1YWZlZmRlOTpzZXNzaW9uX2lkPTJfTVg0ME5UWXhOalF5TW41LU1UUTJOelkxTlRnd05qRTJOMzV1ZEV0NkwyMTFja2hxTm1GMGJWQTJjVmRIZVVscFMxZC1mZyZjcmVhdGVfdGltZT0xNDY3NjU1ODkyJm5vbmNlPTAuMzE5MDY2NDQ4ODM1NjU2MDUmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ2NzY3NzQ5NA==';
+                var sessionId = '{{ session_id}}';
+                var token = '{{ token }}';
                 var session = OT.initSession(apiKey, sessionId)
-                        .on('streamCreated', function (event) {
-                            session.subscribe(event.stream);
+
+                session.on('streamCreated', function (event) {
+                            var subContainer = document.createElement('div');
+                            subContainer.id = 'stream-' + event.stream.streamId;
+                            document.getElementById('subscribers').appendChild(subContainer);
+
+                            // Subscribe to the stream that caused this event, put it inside the container we just made
+                            session.subscribe(event.stream, subContainer);
                         })
                         .connect(token, function (error) {
-                            var publisher = OT.initPublisher();
-                            session.publish(publisher);
+                            if (!error) {
+                                var publisher = OT.initPublisher('publisher', {
+                                    insertMode: 'append',
+                                    width: '30%'
+                                });
+                                session.publish(publisher);
+                            }
                         });
+
             </script>
 
         </div>
     </div>
 
-</body>
-</html>
+
+{% endblock all_content %}

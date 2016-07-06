@@ -14,6 +14,8 @@ from josmessages.models import Message, JOSMessageThread
 
 from .models import CKRichTextHolder, JOSStory
 
+from opentok import OpenTok
+
 # Create your views here.
 
 User = get_user_model()
@@ -121,7 +123,29 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
 
 
 def tokboxtest(request, template="tokboxtest.html"):
+    APIKey = '45616422'
+    secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
 
-    return TemplateResponse(request, template)
+    opentok = OpenTok(APIKey, secretkey)
+    session = opentok.create_session()
+    #session_id = session.session_id
+    #token = opentok.generate_token(session_id)
+
+    session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
+
+    token = 'T1==cGFydG5lcl9pZD00NTYxNjQyMiZzaWc9MWQ4Njg5Mjc4NzMxNDg4MTAwYzY0NmRlMGE1YTFkYmY2MDUzMWJhMjpzZXNzaW9uX2lkPTFfTVg0ME5UWXhOalF5TW41LU1UUTJOemMyTXpJNE9UUTJNMzQxU0hSTFluaGliV0pHUnpNeVNUWmtabkE1UVRKaFl6Qi1mZyZjcmVhdGVfdGltZT0xNDY3NzYzMzAwJm5vbmNlPTAuNjg4NjEyMzEwOTE0MzIyNyZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDY3NzY2ODk5'
+
+
+
+
+    context = {
+        'apikey':     APIKey,
+        'session_id': session_id,
+        'token':      token,
+    }
+
+    return TemplateResponse(request, template, context)
+
+
 
 

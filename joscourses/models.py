@@ -76,7 +76,7 @@ class JOSHandout(TimeStamped, models.Model):
         (7, "Transcript"),
         (8, "Template"),
         (9, "Lit Tip"),
-        (9, "Next Time"),
+        (10, "Next Time"),
         (99, "Other"),
     )
 
