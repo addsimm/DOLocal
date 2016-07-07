@@ -39,6 +39,7 @@ To do: manage sessions, format windows, place moderator at top
     var connectionCount = 0;
 
     function connect() {
+        var name = '{{ request.user.JOSProfile.jos_name }}';
         var apiKey = '45616422';
         var sessionId = '{{ session_id}}';
         var token = '{{ token }}';
@@ -54,9 +55,41 @@ To do: manage sessions, format windows, place moderator at top
                 var subContainer = document.createElement('div');
                 subContainer.id = 'stream-' + event.stream.streamId;
                 document.getElementById('subscribers').appendChild(subContainer);
+                var subscriberProperties = {
+                    name: name,
+                    insertMode: 'append'
+                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
+                };
+
+                subscriber.setStyle(
+                        "nameDisplayMode", on,
+                        "buttonDisplayMode", on,
+                        'backgroundImageURI',
+                        "/static/img/coming-soon-profile.png",
+                        "showControls", true,
+                        "audioLevelDisplayMode", on
+                );
 
                 // Subscribe to stream that caused event, put inside container
-                session.subscribe(event.stream, subContainer);
+                var subscriber = session.subscribe(event.stream,
+                        'subContainer',
+                        subscriberProperties,
+                        function (error) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Subscriber added.');
+                            }
+                        });
+
+                // Test for VIDEO DISABLED
+                subscriber.on("videoDisabled", function (event) {
+                    // You may want to hide the subscriber video element:
+                    // domElement = document.getElementById(subscriber.id);
+                    // domElement.style["visibility"] = "hidden";
+
+                    // You may want to add or adjust other UI.
+                });
             },
 
             sessionDisconnected: function sessionDisconnectHandler(event) {
@@ -83,8 +116,22 @@ To do: manage sessions, format windows, place moderator at top
             if (!error) {
                 console.log("Connected to the session.");
                 var publisher = OT.initPublisher('publish', {
+                    name: name,
                     insertMode: 'append'
+                    // AUDIO ONLY:  videoSource: null
                 });
+
+                publisher.setStyle(
+                        "nameDisplayMode", on,
+                        "buttonDisplayMode", on,
+                        'backgroundImageURI',
+                        "/static/img/coming-soon-profile.png",
+                        "showControls", true,
+                        "audioLevelDisplayMode", on
+                );
+
+                https://vimeo.com/173777838
+
                 // CAMERA ACCESS ALERTS
                 {#publisher.on({#}
                 {#    accessDialogOpened: function (event) {#}
@@ -114,6 +161,9 @@ To do: manage sessions, format windows, place moderator at top
     }
 
     connect();
+
+    // TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
+
 </script>
 
 {% endblock all_content %}
