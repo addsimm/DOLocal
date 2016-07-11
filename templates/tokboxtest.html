@@ -7,58 +7,129 @@
 
 {{ block.super }}
 
-To do: manage sessions, format windows, opentok.js-text-chat
+<div class="row josinstructions" style="margin-top: 40px; background-color: red;">
 
+    <div class="col-xs-8" style="background-color: orange;">
 
-    <div class="row josinstructions" style="margin-top: 50px; background-color: red;">
-
-        <div class="col-xs-8" style="background-color: orange;">
-
-            <div id="other_participants_div" class="row"
-                 style="background-color: pink;>
-             margin-top: 100px;">
-                Participants:
-            </div>
-
+        <div id="streamContainer" class="row"
+             style="background-color: pink;>
+         margin-top: 100px;">
+            Participants:
         </div>
 
-        <div class="col-xs-4" style="background-color: lightgreen;">
-
-            <div id="facilitator_div" class="row"
-                 style="background-color: rgb(65,45,120); color: white;">
-                Facilitator:
-            </div>
-
-            <div id="my_video_div" class="row"
-                 style="background-color: yellow;
-                 margin-top: 50px;">
-                {{ request.user.JOSProfile.jos_name }}
-            </div>
-
-        </div>
     </div>
 
+    <div class="col-xs-4" style="background-color: lightgreen;">
 
+        <div id="facilitator_div" class="row"
+             style="background-color: rgb(65,45,120); color: white;">
+            Facilitator:
+        </div>
+
+        <div id="my_video_div" class="row"
+             style="background-color: yellow;
+             margin-top: 50px;">
+            {{ request.user.JOSProfile.jos_name }}
+        </div>
+
+    </div>
+</div>
+
+<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 
 <script charset="utf-8">
     var session;
     var connectionCount = 0;
 
-    function connect() {
+    function connectThis() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
         var apiKey = '45616422';
         var sessionId = '{{ session_id}}';
         var token = '{{ token }}';
         var element_id = 'other';
 
+        // if (OT.checkSystemRequirements() == 1) {
+        //     var session = OT.initSession(apiKey, sessionId);
 
-        if (OT.checkSystemRequirements() == 1) {
-            var session = OT.initSession(apiKey, sessionId);
-        } else {
-            alert("The client does not support WebRTC.");
+        session.addEventListener('sessionConnected', sessionConnectedHandler);
+        session.addEventListener('streamCreated', streamCreatedHandler);
+        session.addEventListener('streamDestroyed', streamDestroyedHandler);
+
+        OT_LayoutContainer.init("streamContainer", 750, 550);
+
+        // } else {
+        //     alert("The client does not support WebRTC.");
+        // }
+
+
+        function publishStream() {
+            // Make up an id for our publisher
+            var divId = 'opentok_publisher';
+            // Pass in TRUE since this is a publisher
+            OT_LayoutContainer.addStream(divId, true);
+
+            session.publish(divId);
         }
 
+        function subscribeToStreams(streams) {
+            // For each stream
+            for (var i = 0; i < streams.length; i++) {
+                // Check if this is the stream that I am publishing, and if so do not subscribe.
+                if (streams[i].connection.connectionId != session.connection.connectionId) {
+                    // Make a unique div id for this stream
+                    var divId = 'stream_' + streams[i].streamId;
+
+                    // Pass in FALSE since this is a subscriber
+                    OT_LayoutContainer.addStream(divId, false);
+
+                    session.subscribe(streams[i], divId);
+                }
+            }
+        }
+
+        function sessionConnectedHandler(event) {
+            // Publish my stream to the session
+            publishStream();
+
+            // Subscribe to all streams currently in the Session
+            subscribeToStreams(event.streams);
+
+            // Re-layout the container with the new streams
+            OT_LayoutContainer.layout();
+        }
+
+        function streamCreatedHandler(event) {
+            // Subscribe to the newly created streams
+            subscribeToStreams(event.streams);
+
+            // Re-layout the container with the new streams
+            OT_LayoutContainer.layout();
+        }
+
+        function streamDestroyedHandler(event) {
+            // Get all destroyed streams       
+            for (var i = 0; i < event.streams.length; i++) {
+                // For each stream get the subscriber to that stream
+                var subscribers = session.getSubscribersForStream(event.streams[i]);
+                for (var j = 0; j < subscribers.length; j++) {
+                    // Then remove each stream
+                    OT_LayoutContainer.removeStream(subscribers[j].id);
+                }
+            }
+
+            // Re-layout the container without the removed streams
+            OT_LayoutContainer.layout();
+
+        }
+
+        function connect() {
+            session.connect(apiKey, token);
+        }
+
+        function disconnect() {
+            session.disconnect();
+        }
 
         session.on({
 
@@ -143,7 +214,7 @@ To do: manage sessions, format windows, opentok.js-text-chat
         });
     }
 
-    connect();
+    connectThis();
 
     // TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
     // CAMERA ACCESS ALERTS
