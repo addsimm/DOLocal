@@ -2,7 +2,6 @@
 {% extends "josstaff/staff_base.html" %}
 {% load i18n tz pages_tags mezzanine_tags staticfiles %}
 
-
 {% block all_content %}
 
 {{ block.super }}
@@ -11,10 +10,8 @@
 
     <div class="col-xs-8" style="background-color: orange;">
 
-        <div id="streamContainer" class="row"
-             style="background-color: pink;>
-         margin-top: 100px;">
-            Participants:
+        <div id="audienceContainer" class="row" style="background-color: pink;">
+
         </div>
 
     </div>
@@ -26,13 +23,8 @@
             Facilitator:
         </div>
 
-        <div id="my_video_div" class="row"
-             style="background-color: yellow;
-             margin-top: 50px;">
-            {{ request.user.JOSProfile.jos_name }}
-        </div>
-
     </div>
+
 </div>
 
 <script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>
@@ -47,20 +39,21 @@
         var apiKey = '45616422';
         var sessionId = '{{ session_id}}';
         var token = '{{ token }}';
-        var element_id = 'other';
 
-        // if (OT.checkSystemRequirements() == 1) {
-        //     var session = OT.initSession(apiKey, sessionId);
+        if (OT.checkSystemRequirements() == 1) {
+        var session = OT.initSession(apiKey, sessionId);
 
-        session.addEventListener('sessionConnected', sessionConnectedHandler);
-        session.addEventListener('streamCreated', streamCreatedHandler);
-        session.addEventListener('streamDestroyed', streamDestroyedHandler);
+            session.addEventListener('sessionConnected', sessionConnectedHandler);
+            session.addEventListener('streamCreated', streamCreatedHandler);
+            session.addEventListener('streamDestroyed', streamDestroyedHandler);
 
-        OT_LayoutContainer.init("streamContainer", 750, 550);
+            OT_LayoutContainer.init("audienceContainer", 750, 750);
 
-        // } else {
-        //     alert("The client does not support WebRTC.");
-        // }
+            session.connect(apiKey, token);
+
+        } else {
+             alert("Please call us and say 'my browser doesn't have WebRTC.'");
+        }
 
 
         function publishStream() {
@@ -68,6 +61,11 @@
             var divId = 'opentok_publisher';
             // Pass in TRUE since this is a publisher
             OT_LayoutContainer.addStream(divId, true);
+
+            var publisher = OT.initPublisher(divId, {
+                name: name
+                // AUDIO ONLY:  videoSource: null
+            });
 
             session.publish(divId);
         }
@@ -78,7 +76,7 @@
                 // Check if this is the stream that I am publishing, and if so do not subscribe.
                 if (streams[i].connection.connectionId != session.connection.connectionId) {
                     // Make a unique div id for this stream
-                    var divId = 'stream_' + streams[i].streamId;
+                    var divId = 'stream_' + streams[i].name;
 
                     // Pass in FALSE since this is a subscriber
                     OT_LayoutContainer.addStream(divId, false);
@@ -122,99 +120,101 @@
             OT_LayoutContainer.layout();
 
         }
-
-        function connect() {
-            session.connect(apiKey, token);
-        }
-
-        function disconnect() {
-            session.disconnect();
-        }
-
-        session.on({
-
-            streamDestroyed: function (event) {
-
-            },
-
-            streamCreated: function (event) {
-
-                if (event.stream.name == 'Adam S.') {
-                    element_id = 'facilitator_div';
-                } else {
-                    element_id = 'other_participants_div';
-                }
-
-                var subContainer = document.createElement('div');
-                subContainer.id = 'stream-' + event.stream.streamId;
-                subContainer.innerHTML = event.stream.name;
-                // $(subContainer).addClass('text-center');
-
-                document.getElementById(element_id).appendChild(subContainer);
-                var subscriberProperties = {
-                    insertMode: 'append'
-                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
-                };
-
-                // Subscribe to stream that caused event, put inside container
-                var subscriber = session.subscribe(event.stream,
-                        subContainer,
-                        subscriberProperties,
-                        function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log('Subscriber added.');
-                            }
-                        });
-
-                // Test for VIDEO DISABLED
-                // subscriber.on("videoDisabled", function (event) {
-                    // You may want to hide the subscriber video element:
-                    // domElement = document.getElementById(subscriber.id);
-                    // domElement.style["visibility"] = "hidden";
-
-                    // You may want to add or adjust other UI.
-                // });
-            },
-
-            sessionDisconnected: function sessionDisconnectHandler(event) {
-                // The event is defined by the SessionDisconnectEvent class
-                if (event.reason == "networkDisconnected") {
-                    alert("Your network connection terminated.")
-                }
-            },
-
-            connectionCreated: function (event) {
-                connectionCount++;
-                if (event.connection.connectionId != session.connection.connectionId) {
-                    console.log('Another client connected. ' + connectionCount + ' total.');
-                }
-            },
-
-            connectionDestroyed: function connectionDestroyedHandler(event) {
-                connectionCount--;
-                console.log('A client disconnected. ' + connectionCount + ' total.');
-            }
-        });
-
-        session.connect(token, function (error) {
-            if (!error) {
-                console.log("Connected to the session.");
-                var publisher = OT.initPublisher('my_video_div', {
-                    name: name,
-                    insertMode: 'append'
-                    // AUDIO ONLY:  videoSource: null
-                });
-
-                session.publish(publisher);
-            } else {
-                console.log("Error connecting: ", error.code, error.message);
-            }
-        });
     }
 
-    connectThis();
+        {#        function connect() {#}
+        {#            session.connect(apiKey, token);#}
+        {#        }#}
+        {##}
+        {#        function disconnect() {#}
+        {#            session.disconnect();#}
+        {#        }#}
+        {##}
+        {#        session.on({#}
+        {##}
+        {#            streamDestroyed: function (event) {#}
+        {##}
+        {#            },#}
+        {##}
+        {#            streamCreated: function (event) {#}
+        {##}
+        {#                if (event.stream.name == 'Adam S.') {#}
+        {#                    element_id = 'facilitator_div';#}
+        {#                } else {#}
+        {#                    element_id = 'other_participants_div';#}
+        {#                }#}
+        {##}
+        {#                var subContainer = document.createElement('div');#}
+        {#                subContainer.id = 'stream-' + event.stream.streamId;#}
+        {#                subContainer.innerHTML = event.stream.name;#}
+        {#                // $(subContainer).addClass('text-center');#}
+        {##}
+        {#                document.getElementById(element_id).appendChild(subContainer);#}
+        {#                var subscriberProperties = {#}
+        {#                    insertMode: 'append'#}
+        {#                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false#}
+        {#                };#}
+        {##}
+        {#                // Subscribe to stream that caused event, put inside container#}
+        {#                var subscriber = session.subscribe(event.stream,#}
+        {#                        subContainer,#}
+        {#                        subscriberProperties,#}
+        {#                        function (error) {#}
+        {#                            if (error) {#}
+        {#                                console.log(error);#}
+        {#                            } else {#}
+        {#                                console.log('Subscriber added.');#}
+        {#                            }#}
+        {#                        });#}
+        {##}
+        {#                // Test for VIDEO DISABLED#}
+        {#                // subscriber.on("videoDisabled", function (event) {#}
+        {#                    // You may want to hide the subscriber video element:#}
+        {#                    // domElement = document.getElementById(subscriber.id);#}
+        {#                    // domElement.style["visibility"] = "hidden";#}
+        {##}
+        {#                    // You may want to add or adjust other UI.#}
+        {#                // });#}
+        {#            },#}
+        {##}
+        {#            sessionDisconnected: function sessionDisconnectHandler(event) {#}
+        {#                // The event is defined by the SessionDisconnectEvent class#}
+        {#                if (event.reason == "networkDisconnected") {#}
+        {#                    alert("Your network connection terminated.")#}
+        {#                }#}
+        {#            },#}
+        {##}
+        {#            connectionCreated: function (event) {#}
+        {#                connectionCount++;#}
+        {#                if (event.connection.connectionId != session.connection.connectionId) {#}
+        {#                    console.log('Another client connected. ' + connectionCount + ' total.');#}
+        {#                }#}
+        {#            },#}
+        {##}
+        {#            connectionDestroyed: function connectionDestroyedHandler(event) {#}
+        {#                connectionCount--;#}
+        {#                console.log('A client disconnected. ' + connectionCount + ' total.');#}
+        {#            }#}
+        {#        });#}
+        {##}
+        {#        session.connect(token, function (error) {#}
+        {#            if (!error) {#}
+        {#                console.log("Connected to the session.");#}
+        {#                var publisher = OT.initPublisher('my_video_div', {#}
+        {#                    name: name,#}
+        {#                    insertMode: 'append'#}
+        {#                    // AUDIO ONLY:  videoSource: null#}
+        {#                });#}
+        {##}
+        {#                session.publish(publisher);#}
+        {#            } else {#}
+        {#                console.log("Error connecting: ", error.code, error.message);#}
+        {#            }#}
+        {#        });#}
+        {#    }#}
+
+        connectThis();
+
 
     // TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
     // CAMERA ACCESS ALERTS
