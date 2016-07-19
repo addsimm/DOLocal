@@ -30,19 +30,9 @@
 <script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 
-{#        function sessionConnectedHandler(event) {#}
-{#            // Publish my stream to the session#}
-{#            publishStream();#}
-{##}
-{#            // Subscribe to all streams currently in the Session#}
-{##}
-{#            subscribeToStreams(event.streams);#}
-{##}
-{#            // Re-layout the container with the new streams#}
-{#            OT_LayoutContainer.layout();#}
-{#        }#}
-{##}
+
 {#        function streamCreatedHandler(event) {#}
+
 {#            // Subscribe to the newly created streams#}
 {#            subscribeToStreams(event.streams);#}
 {#            alert(event.streams.length);#}
@@ -50,8 +40,9 @@
 {#            // Re-layout the container with the new streams#}
 {#            OT_LayoutContainer.layout();#}
 {#        }#}
-{##}
+
 {#        function streamDestroyedHandler(event) {#}
+
 {#            // Get all destroyed streams       #}
 {#            for (var i = 0; i < event.streams.length; i++) {#}
 {#                // For each stream get the subscriber to that stream#}
@@ -61,12 +52,12 @@
 {#                    OT_LayoutContainer.removeStream(subscribers[j].id);#}
 {#                }#}
 {#            }#}
-{##}
 {#            // Re-layout the container without the removed streams#}
 {#            OT_LayoutContainer.layout();#}
 {#        }#}
-{##}
+
 {#        function publishStream() {#}
+
 {#            // Make up an id for our publisher#}
 {#            var divId = 'opentok_publisher';#}
 {#            // Pass in TRUE since this is a publisher#}
@@ -79,8 +70,9 @@
 {##}
 {#            session.publish(publisher);#}
 {#        }#}
-{##}
+
 {#        function subscribeToStreams(streams) {#}
+
 {#            // For each stream#}
 {#            for (var i = 0; i < streams.length; i++) {#}
 {#                // Check if this is the stream that I am publishing, and if so do not subscribe.#}
@@ -97,32 +89,111 @@
 {#        }#}
 {#    }#}
 
+
+
+
 <script charset="utf-8">
 
+    var x = 0;
+    var y = 0;
+
+/*
+    for (i = 0; i < subscriberBox.children.length; i++) {
+        if (i % targetCols == 0) {
+            // We are the first element of the row
+            x = firstColMarginLeft;
+            if (i == lastRowIndex) x += lastRowMargin;
+            y += i == 0 ? firstRowMarginTop : targetHeight;
+        } else {
+            x += targetWidth;
+        }
+
+
+
+        // Set the height and width of the flash object (stream) that sits in the contaienr
+        child.width = targetWidth;
+        child.height = targetHeight;
+    }
+
+    function addStream (divId, publisher) {
+        var container = document.createElement("div");
+        if (publisher) {
+            // Put the publisher object in front to allow clicking permissions dialog
+            container.style.zIndex = 10;
+        }
+        var div = document.createElement("div");
+        div.setAttribute('id', divId);
+        container.appendChild(div);
+
+        var subscriberBox = document.getElementById(containerId);
+        subscriberBox.appendChild(container);
+    }
+
+    // Removes a stream from the layout container
+    // @param {String} subscriberId The ID of the subscriber object from the stream to be removed.
+
+    function removeStream (subscriberId) {
+        // Gets the container that holds the flash object (stream) and removes it from the page
+        var obj = document.getElementById(subscriberId);
+        var container = obj.parentNode;
+        container.parentNode.removeChild(container);
+    }
+*/
     var connectionCount = 0;
 
     function connectThis() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
         var apiKey = '45616422';
         var sessionID = '{{ session_id}}';
-        var session = OT.initSession(apiKey, sessionID);
         var token = '{{ token }}';
+        var session = OT.initSession(apiKey, sessionID);
+
+        var element_id = 'audienceContainer';
+
+
+        for (i = 0; i < 13; i++) {
+            var subContainer = document.createElement('div');
+            subContainer.id = 'empty_' + i;
+            subContainer.style.position = "absolute";
+            subContainer.innerHTML = 'xxx ' + i;
+            subContainer.style.backgroundColor = "green";
+            subContainer.style.height = 50 + "px";
+            subContainer.style.width = 100 + "px";
+            subContainer.style.left = (50 * i  + 15) + "px";
+            subContainer.style.top = (50 * i + 15) + "px";
+            document.getElementById(element_id).appendChild(subContainer);
+        }
+
+
+        var subscriberBox = document.getElementById(element_id);
+        var parent = subscriberBox.children[i];
+
+/*
+        // All streams placed in absolute position relative to the layout container
+        // parent
+
+        // Set position and size of the stream container
+        parent.style.height = 50 + "px";
+        parent.style.width = 50 + "px";
+        parent.style.left = 15 + "px";
+        parent.style.top = 15 + "px";
+
+*/
 
         if (OT.checkSystemRequirements() == 1) {
-            // OT_LayoutContainer.init("audienceContainer", 750, 750);
+
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
-                    element_id = 'audienceContainer';
 
                     var subContainer = document.createElement('div');
-                    // subContainer.id = 'stream-' + event.stream.name;
+                    subContainer.id = 'stream-' + name;
 
                     document.getElementById(element_id).appendChild(subContainer);
                     var publisher = OT.initPublisher(subContainer, {
-                        name: name,
+                        name: name
                         // AUDIO ONLY:  videoSource: null
-                    }); //// ADDED TO audienceContainer
+                    });
                     session.publish(publisher);
                 } else {
                     console.log("Error connecting: ", error.code, error.message);
@@ -137,7 +208,10 @@
                 connectionCount++;
                 if (event.connection.connectionId != session.connection.connectionId) {
                     console.log('Another client connected. ' + connectionCount + ' total.');
+                } else {
+                    console.log('I connected. ' + connectionCount + ' total.');
                 }
+
             },
 
             connectionDestroyed: function connectionDestroyedHandler(event) {
@@ -162,14 +236,12 @@
                 };
 
                 // Subscribe to stream that caused event, put inside container
-                var subscriber = session.subscribe(event.stream,
-                        subContainer,
-                        subscriberProperties,
-                        function (error) {
+                var subscriber = session.subscribe(
+                        event.stream, subContainer, subscriberProperties, function (error) {
                             if (error) {
                                 console.log(error);
                             } else {
-                                console.log('Stream created');
+                                console.log('Stream subscribed');
                             }
                         });
 
