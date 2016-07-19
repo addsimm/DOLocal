@@ -6,17 +6,14 @@
 
 {{ block.super }}
 
-<div class="row josinstructions" style="margin-top: 40px; background-color: red;">
+<div class="row josinstructions" style="margin-top: 50px; background-color: red;">
 
-    <div class="col-xs-8" style="background-color: orange;">
+    <div id="audienceContainer" class="col-xs-9" style="background-color: orange; padding: 15px 45px;">
 
-        <div id="audienceContainer" class="row" style="background-color: pink; height: 750px; width: 750px;">
-
-        </div>
 
     </div>
 
-    <div class="col-xs-4" style="background-color: lightgreen;">
+    <div class="col-xs-3" style="background-color: lightgreen;">
 
         <div id="facilitator_div" class="row"
              style="background-color: rgb(65,45,120); color: white;">
@@ -30,91 +27,20 @@
 <script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 
+<style>
 
-{#        function streamCreatedHandler(event) {#}
+    .videoContainer {
+        border: 3px solid green;
+        margin-top: 15px;
+        margin-left: 15px;
+        padding: 20px;
+    }
 
-{#            // Subscribe to the newly created streams#}
-{#            subscribeToStreams(event.streams);#}
-{#            alert(event.streams.length);#}
-{##}
-{#            // Re-layout the container with the new streams#}
-{#            OT_LayoutContainer.layout();#}
-{#        }#}
-
-{#        function streamDestroyedHandler(event) {#}
-
-{#            // Get all destroyed streams       #}
-{#            for (var i = 0; i < event.streams.length; i++) {#}
-{#                // For each stream get the subscriber to that stream#}
-{#                var subscribers = session.getSubscribersForStream(event.streams[i]);#}
-{#                for (var j = 0; j < subscribers.length; j++) {#}
-{#                    // Then remove each stream#}
-{#                    OT_LayoutContainer.removeStream(subscribers[j].id);#}
-{#                }#}
-{#            }#}
-{#            // Re-layout the container without the removed streams#}
-{#            OT_LayoutContainer.layout();#}
-{#        }#}
-
-{#        function publishStream() {#}
-
-{#            // Make up an id for our publisher#}
-{#            var divId = 'opentok_publisher';#}
-{#            // Pass in TRUE since this is a publisher#}
-{#            OT_LayoutContainer.addStream(divId, true);#}
-{##}
-{#            var publisher = OT.initPublisher(divId, {#}
-{#                name: name#}
-{#                // AUDIO ONLY:  videoSource: null#}
-{#            });#}
-{##}
-{#            session.publish(publisher);#}
-{#        }#}
-
-{#        function subscribeToStreams(streams) {#}
-
-{#            // For each stream#}
-{#            for (var i = 0; i < streams.length; i++) {#}
-{#                // Check if this is the stream that I am publishing, and if so do not subscribe.#}
-{#                if (streams[i].connection.connectionId != session.connection.connectionId) {#}
-{#                    // Make a unique div id for this stream#}
-{#                    var divId = 'stream_' + streams[i].name;#}
-{##}
-{#                    // Pass in FALSE since this is a subscriber#}
-{#                    OT_LayoutContainer.addStream(divId, false);#}
-{##}
-{#                    session.subscribe(streams[i], divId);#}
-{#                }#}
-{#            }#}
-{#        }#}
-{#    }#}
-
-
-
+</style>
 
 <script charset="utf-8">
 
-    var x = 0;
-    var y = 0;
-
 /*
-    for (i = 0; i < subscriberBox.children.length; i++) {
-        if (i % targetCols == 0) {
-            // We are the first element of the row
-            x = firstColMarginLeft;
-            if (i == lastRowIndex) x += lastRowMargin;
-            y += i == 0 ? firstRowMarginTop : targetHeight;
-        } else {
-            x += targetWidth;
-        }
-
-
-
-        // Set the height and width of the flash object (stream) that sits in the contaienr
-        child.width = targetWidth;
-        child.height = targetHeight;
-    }
-
     function addStream (divId, publisher) {
         var container = document.createElement("div");
         if (publisher) {
@@ -148,37 +74,26 @@
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
 
-        var element_id = 'audienceContainer';
+        for (i = 0; i < 4; i++) {
 
+            var rowI = document.createElement('div');
+            $(rowI).addClass('row');
+            rowI.id = 'row_' + i ;
+            document.getElementById('audienceContainer').appendChild(rowI);
 
-        for (i = 0; i < 13; i++) {
-            var subContainer = document.createElement('div');
-            subContainer.id = 'empty_' + i;
-            subContainer.style.position = "absolute";
-            subContainer.innerHTML = 'xxx ' + i;
-            subContainer.style.backgroundColor = "green";
-            subContainer.style.height = 50 + "px";
-            subContainer.style.width = 100 + "px";
-            subContainer.style.left = (50 * i  + 15) + "px";
-            subContainer.style.top = (50 * i + 15) + "px";
-            document.getElementById(element_id).appendChild(subContainer);
+            var spacerCol = document.createElement('div');
+            $(spacerCol).addClass('col-xs-1');
+            rowI.appendChild(spacerCol);
+
+            for (j = 1; j < 4; j++) {
+                var colJ = document.createElement('div');
+                $(colJ).addClass('col-xs-3 text-center videoContainer');
+                colJ.id = 'pos_' + (i * 3 + j)+'_empty';
+                colJ.innerHTML = colJ.id;
+
+                rowI.appendChild(colJ);
+            }
         }
-
-
-        var subscriberBox = document.getElementById(element_id);
-        var parent = subscriberBox.children[i];
-
-/*
-        // All streams placed in absolute position relative to the layout container
-        // parent
-
-        // Set position and size of the stream container
-        parent.style.height = 50 + "px";
-        parent.style.width = 50 + "px";
-        parent.style.left = 15 + "px";
-        parent.style.top = 15 + "px";
-
-*/
 
         if (OT.checkSystemRequirements() == 1) {
 
@@ -186,10 +101,20 @@
                 if (!error) {
                     console.log("Connected to the session.");
 
-                    var subContainer = document.createElement('div');
-                    subContainer.id = 'stream-' + name;
+                    var nextEmptyID = ' ';
+                    for (c = 1; c < 13; c++) {
+                        var testID = '#pos_' + c + '_empty';
+                        //alert(testID + ": " + $(testID).length);
+                        if ($(testID).length) {
+                            nextEmptyID = testID.substr(1);
+                            break;
+                        }
+                    }
 
-                    document.getElementById(element_id).appendChild(subContainer);
+                    alert('publish: ' + nextEmptyID);
+
+                    var subContainer = document.getElementById(nextEmptyID);
+                    subContainer.id = nextEmptyID.slice(0, -5) + name;
                     var publisher = OT.initPublisher(subContainer, {
                         name: name
                         // AUDIO ONLY:  videoSource: null
@@ -204,6 +129,49 @@
         }
 
         session.on({
+
+            streamCreated: function (event) {
+
+                var nextEmptyID = ' ';
+                for (c = 1; c < 13; c++) {
+                    var testID = '#pos_' + c + '_empty';
+                    //alert(testID + ": " + $(testID).length);
+                    if ($(testID).length) {
+                        nextEmptyID = testID.substr(1);
+                        break;
+                    }
+                }
+
+                alert('subscribe: ' + nextEmptyID);
+
+                var subContainer = document.getElementById(nextEmptyID);
+
+
+                var subscriberProperties = {
+                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
+                };
+
+                // Subscribe to stream that caused event, put inside container
+                var subscriber = session.subscribe(
+                        event.stream, subContainer, subscriberProperties, function (error) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Stream subscribed');
+                            }
+                        });
+
+                subContainer.id = nextEmptyID.slice(0, -5) + event.stream.name;
+
+            },
+
+            sessionDisconnected: function sessionDisconnectHandler(event) {
+                // The event is defined by the SessionDisconnectEvent class
+                if (event.reason == "networkDisconnected") {
+                    alert("Your network connection terminated.")
+                }
+            },
+
             connectionCreated: function (event) {
                 connectionCount++;
                 if (event.connection.connectionId != session.connection.connectionId) {
@@ -221,79 +189,48 @@
 
             streamDestroyed: function (event) {
 
-            },
-
-            streamCreated: function (event) {
-
-                element_id = 'audienceContainer';
-
-                var subContainer = document.createElement('div');
-                subContainer.id = 'stream-' + event.stream.name;
-
-                document.getElementById(element_id).appendChild(subContainer);
-                var subscriberProperties = {
-                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
-                };
-
-                // Subscribe to stream that caused event, put inside container
-                var subscriber = session.subscribe(
-                        event.stream, subContainer, subscriberProperties, function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log('Stream subscribed');
-                            }
-                        });
-
-            },
-
-            sessionDisconnected: function sessionDisconnectHandler(event) {
-                // The event is defined by the SessionDisconnectEvent class
-                if (event.reason == "networkDisconnected") {
-                    alert("Your network connection terminated.")
-                }
             }
         });
     }
 
 connectThis();
 
+
 </script>
 
 {% endblock all_content %}
 
+Test for VIDEO DISABLED
+subscriber.on("videoDisabled", function (event) {
+You may want to hide the subscriber video element:
+domElement = document.getElementById(subscriber.id);
+domElement.style["visibility"] = "hidden";
+
+You may want to add or adjust other UI.
 
 
-// Test for VIDEO DISABLED
-// subscriber.on("videoDisabled", function (event) {
-// You may want to hide the subscriber video element:
-// domElement = document.getElementById(subscriber.id);
-// domElement.style["visibility"] = "hidden";
+TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
 
-// You may want to add or adjust other UI.
-// });
-
-// TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
-// CAMERA ACCESS ALERTS
+CAMERA ACCESS ALERTS
 
 
-    {#publisher.on({#}
-    {#    accessDialogOpened: function (event) {#}
-    {#        // The Allow/Deny dialog box is opened.#}
-    {#        // MESSAGE#}
-    {#        alert('Please allow access to camera.');#}
-    {#    },#}
-    {#    accessDialogClosed: function (event) {#}
-    {#        // The Allow/Deny dialog box is closed.#}
-    {#        alert('What happnened?')#}
-    {#    },#}
-    {#    accessAllowed: function (event) {#}
-    {#        // The user has granted access to the camera and mic.#}
-    {#        alert('Access to camera.');#}
-    {#    },#}
-    {#    accessDenied: function accessDeniedHandler(event) {#}
-    {#        // The user has denied access to the camera and mic.#}
-    {#        // NOT WORKING#}
-    {#        alert('You have denied camera access.');#}
-    {#    }#}
+publisher.on({
+    accessDialogOpened: function (event) {
+        // The Allow/Deny dialog box is opened.
+        // MESSAGE
+        alert('Please allow access to camera.');
+    },
+    accessDialogClosed: function (event) {
+        // The Allow/Deny dialog box is closed.
+        alert('What happnened?')
+    },
+    accessAllowed: function (event) {
+        // The user has granted access to the camera and mic.
+        alert('Access to camera.');
+    },
+    accessDenied: function accessDeniedHandler(event) {
+        // The user has denied access to the camera and mic.
+        // NOT WORKING
+        alert('You have denied camera access.');
+    }
 
