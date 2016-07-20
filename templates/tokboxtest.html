@@ -81,10 +81,6 @@
             rowI.id = 'row_' + i ;
             document.getElementById('audienceContainer').appendChild(rowI);
 
-            var spacerCol = document.createElement('div');
-            $(spacerCol).addClass('col-xs-1');
-            rowI.appendChild(spacerCol);
-
             for (j = 1; j < 4; j++) {
                 var colJ = document.createElement('div');
                 $(colJ).addClass('col-xs-3 text-center videoContainer');
@@ -111,10 +107,11 @@
                         }
                     }
 
-                    alert('publish: ' + nextEmptyID);
+                    // alert('publish: ' + nextEmptyID);
 
                     var subContainer = document.getElementById(nextEmptyID);
                     subContainer.id = nextEmptyID.slice(0, -5) + name;
+                    subContainer.style.zIndex = 10;
                     var publisher = OT.initPublisher(subContainer, {
                         name: name
                         // AUDIO ONLY:  videoSource: null
@@ -130,6 +127,37 @@
 
         session.on({
 
+            connectionDestroyed: function connectionDestroyedHandler(event) {
+                connectionCount--;
+                console.log('connection destroyed; ' + connectionCount + ' total.');
+            },
+
+            streamDestroyed: function (event) {
+                event.preventDefault();
+                // alert("Stream destroyed: " + event.stream.name);
+
+                var reclaimedID = ' ';
+                subscriber = event.stream.name.slice(0, -1).split(' ').join('_');
+                for (c = 1; c < 13; c++) {
+                    var testID = '#pos_' + c + '_' + subscriber;
+                    // console.log('Test id:' + testID + " " + $(testID).length);
+                    // alert(testID + ": " + $(testID).length);
+                    if ($(testID).length) {
+                        reclaimedID = testID.substr(1);
+                        break;
+                    }
+                }
+                // alert('reclaimedID :' + reclaimedID);
+                subContainer = document.getElementById(reclaimedID);
+                $(subContainer).empty().removeClass();
+                $(subContainer).addClass('col-xs-3 text-center videoContainer');
+                subContainer.id = reclaimedID.replace(event.stream.name
+                        .slice(0,-1)
+                        .split(' ')
+                        .join('_'), 'empty');
+
+            },
+
             streamCreated: function (event) {
 
                 var nextEmptyID = ' ';
@@ -142,7 +170,7 @@
                     }
                 }
 
-                alert('subscribe: ' + nextEmptyID);
+                // alert('subscribe: ' + nextEmptyID);
 
                 var subContainer = document.getElementById(nextEmptyID);
 
@@ -161,7 +189,7 @@
                             }
                         });
 
-                subContainer.id = nextEmptyID.slice(0, -5) + event.stream.name;
+                subContainer.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
 
             },
 
@@ -179,15 +207,6 @@
                 } else {
                     console.log('I connected. ' + connectionCount + ' total.');
                 }
-
-            },
-
-            connectionDestroyed: function connectionDestroyedHandler(event) {
-                connectionCount--;
-                console.log('A client disconnected. ' + connectionCount + ' total.');
-            },
-
-            streamDestroyed: function (event) {
 
             }
         });
