@@ -32,10 +32,14 @@
 
 </style>
 
-<div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5); padding-bottom: 15px; padding-top: 15px;">
+<div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5);
+                        padding-bottom: 15px;
+                        padding-top: 15px;">
+
     <div class="col-xs-12">
 
         <div id="progress_bar" class="row" style="padding-top: 10px;">
+
             <div class="col-xs-12">
 
                 {% for hout in handouts %}
@@ -54,18 +58,19 @@
 
                 {% endfor %}
 
-                {% if handout == handouts.last %}
-                    <a class="btn btn-warning"
-                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">
-                        {% trans "Last" %}
-                    </a>
-                {% else %}
-                    <a class="btn btn-warning pull-right"
-                       style="font-size: 12pt; width: 70px;"
-                       href="{% url "handout" %}/{{ handout.id|add:"1" }}">
-                        {% trans "Next" %}
-                    </a>
-                {% endif %}
+{#                BUG NEXT BUTTON: USE SEGMENT ORDER TO MAP ON TO NOT SEQUENTIAL IDs #}
+{#                {% if handout == handouts.last %}#}
+{#                    <a class="btn btn-warning"#}
+{#                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">#}
+{#                        {% trans "Last" %}#}
+{#                    </a>#}
+{#                {% else %}#}
+{#                    <a class="btn btn-warning pull-right"#}
+{#                       style="font-size: 12pt; width: 70px;"#}
+{#                       href="{% url "handout" %}/{{ handout.segment_order|add:"1" }}">#}
+{#                        {% trans "Next" %}#}
+{#                    </a>#}
+{#                {% endif %}#}
 
             </div>
         </div>
