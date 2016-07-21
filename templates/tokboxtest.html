@@ -24,8 +24,15 @@
 
 </div>
 
-<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>
+<div id="chat" style="margin-top: 50px; background-color: blue;">
+
+</div>
+
+
+{#<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>#}
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
+<script src="static/js/opentok-text-chat.js"></script>
+<link rel="stylesheet" href="static/css/opentok-textchat.css"/>
 
 <style>
 
@@ -40,31 +47,6 @@
 
 <script charset="utf-8">
 
-/*
-    function addStream (divId, publisher) {
-        var container = document.createElement("div");
-        if (publisher) {
-            // Put the publisher object in front to allow clicking permissions dialog
-            container.style.zIndex = 10;
-        }
-        var div = document.createElement("div");
-        div.setAttribute('id', divId);
-        container.appendChild(div);
-
-        var subscriberBox = document.getElementById(containerId);
-        subscriberBox.appendChild(container);
-    }
-
-    // Removes a stream from the layout container
-    // @param {String} subscriberId The ID of the subscriber object from the stream to be removed.
-
-    function removeStream (subscriberId) {
-        // Gets the container that holds the flash object (stream) and removes it from the page
-        var obj = document.getElementById(subscriberId);
-        var container = obj.parentNode;
-        container.parentNode.removeChild(container);
-    }
-*/
     var connectionCount = 0;
 
     function connectThis() {
@@ -73,6 +55,8 @@
         var sessionID = '{{ session_id}}';
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
+
+
 
         for (i = 0; i < 4; i++) {
 
@@ -91,6 +75,7 @@
             }
         }
 
+
         if (OT.checkSystemRequirements() == 1) {
 
             session.connect(token, function (error) {
@@ -106,6 +91,11 @@
                             break;
                         }
                     }
+
+                    var chat = new OTSolution.TextChat.ChatWidget({
+                        session: session,
+                        container: '#chat'
+                    });
 
                     // alert('publish: ' + nextEmptyID);
 
