@@ -6,8 +6,6 @@
         /**
          * A convinient representation of a chat message.
          *
-         * @class ChatMessage
-         *
          * {String} senderId A unique id to identify the origin of the message.
          * {String} senderAlias A name to be displayed as the author of the message.
          * {String} text The contents of the message.
@@ -67,8 +65,6 @@
          * and allow the user to review past history even if receiving new messages.
          *
          * The chat UI can be placed inside any element by providing a `container` and it will fill the container box.
-         *
-         * @class ChatUI
          *
          * {Object} [options] Hash with customizing properties.
          * {String} [options.container='body'] CSS selector representing the container for the chat.
@@ -203,13 +199,7 @@
                 this._charCounter.textContent = remaining;
             },
 
-            /**
-             * Adds a message to the conversation.
-             *
-             * @method addMessage
-             * {ChatMessage} message The message to be displayed.
-             */
-
+            // Adds a message to the conversation.
             addMessage: function (message) {
                 var shouldGroup = this._shouldGroup(message);
                 var shouldScroll = this._shouldScroll();
@@ -223,10 +213,8 @@
             },
 
             /**
-             * Transform the message before displaying it in the conversation. The
-             * result of this method is considered safe html so be careful.
+             * Transform the message before displaying it be careful - safe html.
              *
-             * @method renderMessage
              * {String} raw Original contents recovered from the message.
              * {Boolean} isGrouping If `true` the content will be merged with the previous bubble.
              * @return {String} Valid HTML to be displayed in the conversation.
@@ -236,22 +224,14 @@
                 return raw;
             },
 
-            /**
-             * Enable input area and sending button.
-             *
-             * @method enableSending
-             */
+            // Enable input area and sending button.
             enableSending: function () {
                 this._sendButton.removeAttribute('disabled');
                 this._composer.removeAttribute('disabled');
                 this._composer.focus();
             },
 
-            /**
-             * Disable input area and sending button.
-             *
-             * @method disableSending
-             */
+            // Disable input area and sending button.
             disableSending: function () {
                 this._sendButton.disabled = true;
                 this._composer.disabled = true;
@@ -318,13 +298,7 @@
                 return bubble;
             },
 
-            /**
-             * Called when displaying a message to human format the date.
-             *
-             * @method humanizeDate
-             * {Date} date The date from the message.
-             * @return {String} Human friendly representation for the passed date.
-             */
+            // humanizeDate
             humanizeDate: function (date) {
                 var hours = date.getHours();
                 var isAM = hours < 12;
@@ -342,11 +316,9 @@
         /**
          * OpenTok signal based Chat client.
          *
-         * @class Chat
-         *
          * {Object} options Hash with configuration options.
          * {Session} options.session OpenTok connected session for the chat.
-         * {String} [options.signalName='TextChat'] The name for the signal to be used to transport messages. Leave as it is to ensure compatibility with the iOS and Android components or change to provide your own.
+         * {String} [options.signalName='TextChat'] name for signal to transports messages. Leave as for iOS and Android compatibility.
          */
         function Chat(options) {
             if (!options || !options.session) {
@@ -363,7 +335,6 @@
             /**
              * Sends a message though the chat.
              *
-             * @method send
              * {String} text Contents of the message.
              * {Function} callback Called once the signal has been sent. If there
              * is an error while sending, the callback is passed the error as first parameter.
@@ -374,13 +345,7 @@
                 this._session.signal(signal, callback);
             },
 
-            /**
-             * Called when receiving a new message from the chat.
-             *
-             * @method onMessageReceived
-             * {String} contents The contents from the received message.
-             * {Connection} from OpenTok `Connection` representing the participant sending the message.
-             */
+            // Called when receiving a new message from the chat
             onMessageReceived: function (contents, from) {
             },
 
@@ -413,15 +378,12 @@
          * An HTML widget enabling basic chat capabilities. Pass a `session` object the `options` hash.
          * It's not mandatory for the session to be connected but the chat won't allow the user until the session is connected.
          *
-         * @class ChatWidget
-         *
          * {Object} options A hash with the union of the options for
          * {{#crossLink "Chat"}}{{/crossLink}} and
          * {{#crossLink "ChatUI"}}{{/crossLink}} constructors to customize several aspects of the chat behaviour and internals.
          */
 
-        // The `ChatWidget` class combines the `ChatUI` and `ChatMessage` UI classes
-        // plus the `Chat` library to provide a functional Chat widget.
+        // ChatWidget combines `ChatUI` and `ChatMessage` classes with `Chat` library.
         function ChatWidget(options) {
 
             if (!options || !options.session) {
@@ -471,29 +433,19 @@
              * {Function} callback Function to (usually after it was successfully sent).  No parameters denote success; error indicates failure.
              */
 
-            // After the user click on the send button, simply send the contents through the `Chat` instance.
+            // After the user click on the send button, sends contents through the `Chat` instance.
             onMessageReadyToSend: function (contents, callback) {
                 this._chat.send(contents, callback);
             },
 
-            /**
-             * Called when the chat receives a message. Also extracts id and alias from the connection.
-             *
-             * @method onMessageReceived
-             * {String} contents The raw contents received through the chat.
-             * {Connection} OpenTok connection object representing the participant sending the message.
-             */
-
+            // Called when the chat receives a message. Also extracts id and alias from the connection.
             // After a message is received, simply create a new `ChatMessage` instance and add it to the UI.
             onMessageReceived: function (contents, from) {
                 var message = new ChatMessage(from.connectionId, from.data, contents);
                 this._chatBox.addMessage(message);
             },
 
-            /**
-             * Transform the text from the message into the actual content to be displayed. Override for further transformations.
-             */
-
+            // Transform the text from the message into the actual content to be displayed. Override for further transformations.
             // Transformations implemented by default: detecting URLs and allowing multiline messages.
             renderMessage: function (raw) {
                 var output;
