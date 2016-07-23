@@ -1,14 +1,14 @@
 
 .ot-textchat {
   font-family: 'Muli', sans-serif;
-  font-size: 1em;
+  font-size: 14pt;
   color: #333;
 
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: static;
+  /*top: 0;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
   overflow: hidden;
   
   background-color: #EEE;
@@ -27,10 +27,7 @@
   overflow-x: hidden;
 }
 
-/*
- * By default, normal bubbles are bubbles from the other participants and
- * the special case is the local participan.
- */
+/* By default, normal bubbles are bubbles from the other participants and special case is local. */
 .ot-textchat .ot-bubble {
   background-color: #F8F8F8;
   margin-left: 1em;
@@ -54,10 +51,7 @@
   white-space: normal;
 }
 
-/*
- * To keep the start of the text and the end aligned, we keep the width
- * but reducing the right padding so we "free" some space at right.
- */
+/* To keep start and end aligned, reduce right padding to "free" space at right. */
 .ot-textchat .ot-bubble.mine > div {
   width: calc(100% - 1.2em - 2em);
   background-color: #EEE;
@@ -77,10 +71,7 @@
   left: -0.7em;
 }
 
-/*
- * Simply hide (not destroy) the left triangle to simplify stylizing the
- * content.
- */
+/* Simply hide (not destroy) the left triangle to simplify stylizing the content. */
 .ot-textchat .ot-bubble.mine:before {
   border-color: transparent;
 }

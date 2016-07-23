@@ -10,7 +10,6 @@
 
     <div id="audienceContainer" class="col-xs-9" style="background-color: orange; padding: 15px 45px;">
 
-
     </div>
 
     <div class="col-xs-3" style="background-color: lightgreen;">
@@ -40,7 +39,7 @@
         border: 3px solid green;
         margin-top: 15px;
         margin-left: 15px;
-        padding: 20px;
+        padding: 5px;
     }
 
 </style>
@@ -55,8 +54,6 @@
         var sessionID = '{{ session_id}}';
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
-
-
 
         for (i = 0; i < 4; i++) {
 
@@ -75,12 +72,17 @@
             }
         }
 
+        var chat = new OTSolution.TextChat.ChatWidget({
+            session: session,
+            container: '#chat'
+        });
 
         if (OT.checkSystemRequirements() == 1) {
 
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
+
 
                     var nextEmptyID = ' ';
                     for (c = 1; c < 13; c++) {
@@ -91,11 +93,6 @@
                             break;
                         }
                     }
-
-{#                    var chat = new OTSolution.TextChat.ChatWidget({#}
-{#                        session: session,#}
-{#                        container: '#chat'#}
-{#                    });#}
 
                     // alert('publish: ' + nextEmptyID);
 
@@ -163,7 +160,6 @@
                 // alert('subscribe: ' + nextEmptyID);
 
                 var subContainer = document.getElementById(nextEmptyID);
-
 
                 var subscriberProperties = {
                     // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
