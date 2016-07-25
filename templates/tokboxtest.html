@@ -4,45 +4,56 @@
 
 {% block all_content %}
 
-{{ block.super }}
+<style>
 
-<div class="row josinstructions" style="margin-top: 50px; background-color: red;">
+    .videoContainer {
+        border: 7px solid rgb(65, 45, 120);
+        margin-top: 5px;
+        margin-left: 25px;
+        width: 240px;
+        height: 160px;
+        padding: 0;
+    }
 
-    <div id="audienceContainer" class="col-xs-9" style="background-color: orange; padding: 15px 45px;">
+    .nameContainer {
+        color: green;
+        font-family: "Open Sans", sans-serif;
+        font-size: 18pt;
+        margin-left: 25px;
+        width: 240px;
+        padding: 10px;
+    }
 
-    </div>
+</style>
 
-    <div class="col-xs-3" style="background-color: lightgreen;">
 
-        <div id="facilitator_div" class="row"
-             style="background-color: rgb(65,45,120); color: white;">
-            Facilitator:
-        </div>
+<span class="josinstructions">Facilitator:</span>
+<div class="row" style="background-color: green;">
+
+    <div id="facilitator_div"
+         class="col-xs-3 videoContainer"
+         style="background-color: rgb(65,45,120); margin-left: 0;">
 
     </div>
 
 </div>
 
-<div id="chat" style="margin-top: 50px; background-color: blue;">
+<div class="row josinstructions" style="margin-top: 15px; background-color: red;">
+
+    <div id="audienceContainer" class="col-xs-12" style="background-color: pink; padding: 15px 45px;">
+
+    </div>
 
 </div>
 
+<div id="chat" style="margin-top: 50px; background-color: lightblue;">
+
+</div>
 
 {#<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>#}
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 <script src="static/js/opentok-text-chat.js"></script>
 <link rel="stylesheet" href="static/css/opentok-textchat.css"/>
-
-<style>
-
-    .videoContainer {
-        border: 3px solid green;
-        margin-top: 15px;
-        margin-left: 15px;
-        padding: 5px;
-    }
-
-</style>
 
 <script charset="utf-8">
 
@@ -55,20 +66,27 @@
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
 
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < 3; i++) {
 
             var rowI = document.createElement('div');
             $(rowI).addClass('row');
             rowI.id = 'row_' + i ;
             document.getElementById('audienceContainer').appendChild(rowI);
 
-            for (j = 1; j < 4; j++) {
+            for (j = 1; j < 5; j++) {
                 var colJ = document.createElement('div');
                 $(colJ).addClass('col-xs-3 text-center videoContainer');
-                colJ.id = 'pos_' + (i * 3 + j)+'_empty';
+                colJ.id = 'pos_' + (i * 4 + j)+'_empty';
                 colJ.innerHTML = colJ.id;
-
                 rowI.appendChild(colJ);
+            }
+
+            for (j = 1; j < 5; j++) {
+                var colJName = document.createElement('div');
+                $(colJName).addClass('col-xs-3 text-center nameContainer');
+                colJName.id = 'name_' + (i * 4 + j);
+                colJName.innerHTML = colJName.id;
+                rowI.appendChild(colJName);
             }
         }
 
@@ -100,7 +118,9 @@
                     subContainer.id = nextEmptyID.slice(0, -5) + name;
                     subContainer.style.zIndex = 10;
                     var publisher = OT.initPublisher(subContainer, {
-                        name: name
+                        name: name,
+                        height: 160,
+                        width: 240
                         // AUDIO ONLY:  videoSource: null
                     });
                     session.publish(publisher);
@@ -163,6 +183,8 @@
 
                 var subscriberProperties = {
                     // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
+                    height: 160,
+                    width: 240
                 };
 
                 // Subscribe to stream that caused event, put inside container
