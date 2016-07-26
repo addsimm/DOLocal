@@ -11,6 +11,7 @@
         width: 240px;
         height: 160px;
         padding: 0;
+        margin: 0;
     }
 
     .nameContainer {
@@ -19,6 +20,7 @@
         font-size: 18pt;
         width: 240px;
         padding: 10px;
+        margin: 0;
     }
 
 </style>
@@ -36,7 +38,7 @@
 
 <div class="row josinstructions" style="margin-top: 15px; background-color: red;">
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: pink; padding: 15px 45px;">
+    <div id="audienceContainer" class="col-xs-12" style="background-color: pink; padding: 15px 25px;">
 
     </div>
 
@@ -74,7 +76,7 @@
             for (j = 1; j < 5; j++) {
                 var particBox = document.createElement('div');
                 $(particBox).addClass('col-xs-3');
-                particBox.id = 'box_' + (i * 4 + j) + '_empty';
+                particBox.id = 'box_' + (i * 4 + j);
                 var vidBox = document.createElement('div');
                 $(vidBox).addClass('row videoContainer');
                 vidBox.id = 'vid_' + (i * 4 + j)+'_empty';
@@ -107,20 +109,15 @@
                     var nextEmptyID = ' ';
                     for (c = 1; c < 13; c++) {
                         var testID = '#vid_' + c + '_empty';
-                        //alert(testID + ": " + $(testID).length);
                         if ($(testID).length) {
                             nextEmptyID = testID.substr(1);
                             break;
                         }
                     }
 
-                    // alert('publish: ' + nextEmptyID);
-
                     var vidBox = document.getElementById(nextEmptyID);
-                    vidBox.id = nextEmptyID.slice(0, -5) + name;
+                    vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
                     vidBox.style.zIndex = 10;
-                    var particBox = document.getElementById('box_'+ nextEmptyID.slice(4));
-                    particBox.id = 'box_' + vidBox.id.slice(4);
 
                     var publisher = OT.initPublisher(vidBox, {
                         name: name,
@@ -130,11 +127,13 @@
                     });
 
                     session.publish(publisher);
-                    var nameBoxID = 'name_' + particBox.id.split('_')[1].toString();
 
+                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
                     var nameBox = document.getElementById(nameBoxID);
                     nameBox.innerHTML = name;
+
                 } else {
+
                     console.log("Error connecting: ", error.code, error.message);
                 }
             });
@@ -150,58 +149,60 @@
             },
 
             streamDestroyed: function (event) {
+                console.log('Stream destroyed: ' + event.stream.name);
                 event.preventDefault();
-                // alert("Stream destroyed: " + event.stream.name);
 
                 var reclaimedID = ' ';
                 subscriber = event.stream.name.slice(0, -1).split(' ').join('_');
                 for (c = 1; c < 13; c++) {
-                    var testID = '#box_' + c + '_' + subscriber;
+                    var testID = '#vid_' + c + '_' + subscriber;
+                    console.log('testID: ' + testID);
                     if ($(testID).length) {
                         reclaimedID = testID.substr(1);
                         break;
                     }
                 }
-                alert('reclaimedID :' + reclaimedID);
-                particBox = document.getElementById(reclaimedID);
-                particBox.empty().removeClass();
-                $(particBox).addClass('col-xs-3');
-                particBox.id = reclaimedID.replace(event.stream.name
-                        .slice(0, -1)
-                        .split(' ')
-                        .join('_'), 'empty');
-                var vidBox = document.createElement('div');
+
+                var position = reclaimedID.split('_')[1].toString();
+                // alert('reclaimedID: ' + 'box_' + position);
+                particBox = document.getElementById('box_' + position);
+                $(particBox).empty();
+
+                vidBox = document.createElement('div');
                 $(vidBox).addClass('row videoContainer');
-                vidBox.id = 'vid_' + particBox.id.slice(5);
-                alert('vidBoxID :' + vidBox.id);
+                vidBox.id = 'vid_' + position + '_empty';
                 vidBox.innerHTML = vidBox.id;
                 particBox.appendChild(vidBox);
 
                 var nameBox = document.createElement('div');
-                var nameBoxID = 'name_' + particBox.id.split('_')[1].toString();
-                $(nameBox).addClass('row nameContainer');
-                nameBox.id = nameBoxID;
+                $(nameBox).addClass('row text-center nameContainer');
+                nameBox.id = 'name_' + position;
                 nameBox.innerHTML = nameBox.id;
                 particBox.appendChild(nameBox);
+
             },
 
             streamCreated: function (event) {
 
+                console.log('Stream Created: ' + event.stream.name);
+
                 var nextEmptyID = ' ';
                 for (c = 1; c < 13; c++) {
-                    var testID = '#pos_' + c + '_empty';
-                    //alert(testID + ": " + $(testID).length);
+                    var testID = '#vid_' + c + '_empty';
                     if ($(testID).length) {
                         nextEmptyID = testID.substr(1);
                         break;
                     }
                 }
 
-                // alert('subscribe: ' + nextEmptyID);
+                var vidBox = document.getElementById(nextEmptyID);
+                vidBox.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
 
-                var subContainer = document.getElementById(nextEmptyID);
+                var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+                var nameBox = document.getElementById(nameBoxID);
+                nameBox.innerHTML = event.stream.name;
 
-                var subscriberProperties = {
+                var subscribeProperties = {
                     // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
                     height: 160,
                     width: 240
@@ -209,16 +210,13 @@
 
                 // Subscribe to stream that caused event, put inside container
                 var subscriber = session.subscribe(
-                        event.stream, subContainer, subscriberProperties, function (error) {
+                        event.stream, vidBox, subscribeProperties, function (error) {
                             if (error) {
                                 console.log(error);
                             } else {
                                 console.log('Stream subscribed');
                             }
                         });
-
-                subContainer.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
-
             },
 
             sessionDisconnected: function sessionDisconnectHandler(event) {
