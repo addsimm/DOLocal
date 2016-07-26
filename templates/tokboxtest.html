@@ -8,8 +8,6 @@
 
     .videoContainer {
         border: 7px solid rgb(65, 45, 120);
-        margin-top: 5px;
-        margin-left: 25px;
         width: 240px;
         height: 160px;
         padding: 0;
@@ -19,7 +17,6 @@
         color: green;
         font-family: "Open Sans", sans-serif;
         font-size: 18pt;
-        margin-left: 25px;
         width: 240px;
         padding: 10px;
     }
@@ -65,6 +62,8 @@
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
 
+
+        // Particpant video layout
         for (i = 0; i < 3; i++) {
 
             var rowI = document.createElement('div');
@@ -73,22 +72,27 @@
             document.getElementById('audienceContainer').appendChild(rowI);
 
             for (j = 1; j < 5; j++) {
-                var colJ = document.createElement('div');
-                $(colJ).addClass('col-xs-3 text-center videoContainer');
-                colJ.id = 'pos_' + (i * 4 + j)+'_empty';
-                colJ.innerHTML = colJ.id;
-                rowI.appendChild(colJ);
+                var particBox = document.createElement('div');
+                $(particBox).addClass('col-xs-3');
+                particBox.id = 'box_' + (i * 4 + j) + '_empty';
+                var vidBox = document.createElement('div');
+                $(vidBox).addClass('row videoContainer');
+                vidBox.id = 'vid_' + (i * 4 + j)+'_empty';
+                vidBox.innerHTML = vidBox.id;
+                particBox.appendChild(vidBox);
+
+                var nameBox = document.createElement('div');
+                $(nameBox).addClass('row text-center nameContainer');
+                nameBox.id = 'name_' + (i * 4 + j);
+                nameBox.innerHTML = nameBox.id;
+                particBox.appendChild(nameBox);
+
+                rowI.appendChild(particBox);
             }
 
-            for (j = 1; j < 5; j++) {
-                var colJName = document.createElement('div');
-                $(colJName).addClass('col-xs-3 text-center nameContainer');
-                colJName.id = 'name_' + (i * 4 + j);
-                colJName.innerHTML = colJName.id;
-                rowI.appendChild(colJName);
-            }
         }
 
+        // All that is needed for text chat
         var chat = new OTSolution.TextChat.ChatWidget({
             session: session,
             container: '#chat'
@@ -100,10 +104,9 @@
                 if (!error) {
                     console.log("Connected to the session.");
 
-
                     var nextEmptyID = ' ';
                     for (c = 1; c < 13; c++) {
-                        var testID = '#pos_' + c + '_empty';
+                        var testID = '#vid_' + c + '_empty';
                         //alert(testID + ": " + $(testID).length);
                         if ($(testID).length) {
                             nextEmptyID = testID.substr(1);
@@ -113,16 +116,24 @@
 
                     // alert('publish: ' + nextEmptyID);
 
-                    var subContainer = document.getElementById(nextEmptyID);
-                    subContainer.id = nextEmptyID.slice(0, -5) + name;
-                    subContainer.style.zIndex = 10;
-                    var publisher = OT.initPublisher(subContainer, {
+                    var vidBox = document.getElementById(nextEmptyID);
+                    vidBox.id = nextEmptyID.slice(0, -5) + name;
+                    vidBox.style.zIndex = 10;
+                    var particBox = document.getElementById('box_'+ nextEmptyID.slice(4));
+                    particBox.id = 'box_' + vidBox.id.slice(4);
+
+                    var publisher = OT.initPublisher(vidBox, {
                         name: name,
                         height: 160,
                         width: 240
                         // AUDIO ONLY:  videoSource: null
                     });
+
                     session.publish(publisher);
+                    var nameBoxID = 'name_' + particBox.id.split('_')[1].toString();
+
+                    var nameBox = document.getElementById(nameBoxID);
+                    nameBox.innerHTML = name;
                 } else {
                     console.log("Error connecting: ", error.code, error.message);
                 }
@@ -145,23 +156,33 @@
                 var reclaimedID = ' ';
                 subscriber = event.stream.name.slice(0, -1).split(' ').join('_');
                 for (c = 1; c < 13; c++) {
-                    var testID = '#pos_' + c + '_' + subscriber;
-                    // console.log('Test id:' + testID + " " + $(testID).length);
-                    // alert(testID + ": " + $(testID).length);
+                    var testID = '#box_' + c + '_' + subscriber;
                     if ($(testID).length) {
                         reclaimedID = testID.substr(1);
                         break;
                     }
                 }
-                // alert('reclaimedID :' + reclaimedID);
-                subContainer = document.getElementById(reclaimedID);
-                $(subContainer).empty().removeClass();
-                $(subContainer).addClass('col-xs-3 text-center videoContainer');
-                subContainer.id = reclaimedID.replace(event.stream.name
-                        .slice(0,-1)
+                alert('reclaimedID :' + reclaimedID);
+                particBox = document.getElementById(reclaimedID);
+                particBox.empty().removeClass();
+                $(particBox).addClass('col-xs-3');
+                particBox.id = reclaimedID.replace(event.stream.name
+                        .slice(0, -1)
                         .split(' ')
                         .join('_'), 'empty');
+                var vidBox = document.createElement('div');
+                $(vidBox).addClass('row videoContainer');
+                vidBox.id = 'vid_' + particBox.id.slice(5);
+                alert('vidBoxID :' + vidBox.id);
+                vidBox.innerHTML = vidBox.id;
+                particBox.appendChild(vidBox);
 
+                var nameBox = document.createElement('div');
+                var nameBoxID = 'name_' + particBox.id.split('_')[1].toString();
+                $(nameBox).addClass('row nameContainer');
+                nameBox.id = nameBoxID;
+                nameBox.innerHTML = nameBox.id;
+                particBox.appendChild(nameBox);
             },
 
             streamCreated: function (event) {
