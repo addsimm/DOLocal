@@ -44,7 +44,7 @@
 
 </div>
 
-<div id="chat" style="margin-top: 50px; background-color: lightblue;">
+<div id="chat" style="margin-top: 50px; background-color: transparent;">
 
 </div>
 
@@ -75,29 +75,28 @@
 
             for (j = 1; j < 5; j++) {
                 var particBox = document.createElement('div');
-                $(particBox).addClass('col-xs-3');
+                $(particBox).addClass('col-xs-3 hidden');
                 particBox.id = 'box_' + (i * 4 + j);
+
                 var vidBox = document.createElement('div');
-                $(vidBox).addClass('row videoContainer');
                 vidBox.id = 'vid_' + (i * 4 + j)+'_empty';
-                vidBox.innerHTML = vidBox.id;
+                $(vidBox).addClass('row videoContainer').innerHTML = vidBox.id;
                 particBox.appendChild(vidBox);
 
                 var nameBox = document.createElement('div');
-                $(nameBox).addClass('row text-center nameContainer');
                 nameBox.id = 'name_' + (i * 4 + j);
-                nameBox.innerHTML = nameBox.id;
+                $(nameBox).addClass('row text-center nameContainer').innerHTML = nameBox.id;
                 particBox.appendChild(nameBox);
 
                 rowI.appendChild(particBox);
             }
-
         }
 
-        // All that is needed for text chat
+        // Setup text chat
         var chat = new OTSolution.TextChat.ChatWidget({
             session: session,
-            container: '#chat'
+            container: '#chat',
+            senderAlias: name
         });
 
         if (OT.checkSystemRequirements() == 1) {
@@ -132,6 +131,9 @@
                     var nameBox = document.getElementById(nameBoxID);
                     nameBox.innerHTML = name;
 
+                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+                    $(particBox).removeClass('hidden');
+
                 } else {
 
                     console.log("Error connecting: ", error.code, error.message);
@@ -164,9 +166,9 @@
                 }
 
                 var position = reclaimedID.split('_')[1].toString();
-                // alert('reclaimedID: ' + 'box_' + position);
+
                 particBox = document.getElementById('box_' + position);
-                $(particBox).empty();
+                $(particBox).empty().addClass('hidden');
 
                 vidBox = document.createElement('div');
                 $(vidBox).addClass('row videoContainer');
@@ -201,6 +203,9 @@
                 var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
                 var nameBox = document.getElementById(nameBoxID);
                 nameBox.innerHTML = event.stream.name;
+
+                var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+                $(particBox).removeClass('hidden');
 
                 var subscribeProperties = {
                     // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false

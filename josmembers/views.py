@@ -299,7 +299,7 @@ def follow_unfollow(request):
             if return_variable:
                 info(request, remove_user.JOSProfile.jos_name() + " is no longer a favorite.")
             else:
-                info(request, "Sorry, problme removing favortie - please contact us.")
+                info(request, "Sorry, problem removing favorite - please contact us.")
         except:
             pass
 

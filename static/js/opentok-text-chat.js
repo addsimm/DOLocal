@@ -30,15 +30,15 @@
         var uiLayout = [
             '<div class="ot-bubbles">',
             '</div>',
-            '<div class="ot-input">',
+            '<div class="ot-input" style="padding-bottom: 15px;">',
             '  <div>',
             '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
             '    <p class="ot-new-messages" hidden>\u25BE&nbsp;New messages</p>',
             '    <textarea placeholder="Send a message&hellip;" class="ot-composer">' + '</textarea>',
-            '    <div class="ot-bottom-line">',
-            '      <p class="ot-character-counter"><span></span> characters left</p>',
-            '      <button class="ot-send-button">Send&nbsp;\u27E9</button>',
-            '    </div>',
+            //'    <div class="ot-bottom-line">',
+            //'      <p class="ot-character-counter"><span></span> characters left</p>',
+            '      <button class="btn btn-default" style="float: right; margin-right: 30px; padding: 6px 12px;">Send</button>',
+            //'    </div>',
             '  </div>',
             '</div>'
         ].join('\n');
@@ -55,7 +55,7 @@
         /**
          * User interface for a basic chat client.
          *
-         * The UI display bubbles representing the chat activity in conversation area. An input area displays the remaining characters
+         * The UI display bubbles representing the chat activity . An input area displays the remaining characters
          *
          * send messages by hitting enter or clicking on the send button.
          *
@@ -86,7 +86,7 @@
             this._messages = [];
             this._setupTemplates();
             this._setupUI(options.container);
-            this._updateCharCounter();
+            // this._updateCharCounter();
         }
 
         ChatUI.prototype = {
@@ -103,21 +103,20 @@
                 var chatView = document.createElement('section');
                 chatView.innerHTML = uiLayout;
                 chatView.classList.add('ot-textchat');
-                var sendButton = chatView.querySelector('.ot-send-button');
+                var sendButton = chatView.querySelector('.btn');
                 var composer = chatView.querySelector('.ot-composer');
-                var charCounter = chatView.querySelector('.ot-character-counter > span');
+                // var charCounter = chatView.querySelector('.ot-character-counter > span');
                 var errorZone = chatView.querySelector('.ot-error-zone');
                 var newMessages = chatView.querySelector('.ot-new-messages');
                 this._composer = composer;
                 this._sendButton = sendButton;
-                this._charCounter = charCounter;
+                // this._charCounter = charCounter;
                 this._bubbles = chatView.firstElementChild;
                 this._errorZone = errorZone;
                 this._newMessages = newMessages;
-                // XXX: It's already bound in the constructor
                 this._bubbles.onscroll = this._watchScrollAtTheBottom;
                 this._sendButton.onclick = this._sendMessage.bind(this);
-                this._composer.onkeyup = this._updateCharCounter.bind(this);
+                // this._composer.onkeyup = this._updateCharCounter.bind(this);
                 this._composer.onkeydown = this._controlComposerInput.bind(this);
                 this._newMessages.onclick = this._goToNewMessages.bind(this);
                 parent.appendChild(chatView);
@@ -149,7 +148,7 @@
                             } else {
                                 _this.addMessage(new ChatMessage(_this.senderId, _this.senderAlias, contents));
                                 _this._composer.value = '';
-                                _this._updateCharCounter();
+                                // _this._updateCharCounter();
                                 _this._hideErrors();
                             }
                             _this.enableSending();
@@ -159,10 +158,10 @@
             },
 
             _showTooLongTextError: function () {
-                this._charCounter.parentElement.classList.add('error');
+                // this._charCounter.parentElement.classList.add('error');
             },
             _hideTooLongTextError: function () {
-                this._charCounter.parentElement.classList.remove('error');
+                // this._charCounter.parentElement.classList.remove('error');
             },
             _showNewMessageAlert: function () {
                 this._newMessages.removeAttribute('hidden');
@@ -188,16 +187,16 @@
                 this._scrollToBottom();
                 this._hideNewMessageAlert();
             },
-            _updateCharCounter: function () {
-                var remaining = this.maxTextLength - this._composer.value.length;
-                var isValid = remaining >= 0;
-                if (isValid) {
-                    this._hideTooLongTextError();
-                } else {
-                    this._showTooLongTextError();
-                }
-                this._charCounter.textContent = remaining;
-            },
+            //_updateCharCounter: function () {
+            //    var remaining = this.maxTextLength - this._composer.value.length;
+            //    var isValid = remaining >= 0;
+            //    if (isValid) {
+            //        this._hideTooLongTextError();
+            //    } else {
+            //        this._showTooLongTextError();
+            //    }
+            //    this._charCounter.textContent = remaining;
+            //},
 
             // Adds a message to the conversation.
             addMessage: function (message) {
@@ -285,16 +284,18 @@
                 var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
-                if (message.senderId === this.senderId) {
-                    bubble.classList.add('mine');
-                }
-                sender.textContent = message.senderAlias;
+                //if (message.senderId === this.senderId) {
+                //    bubble.classList.add('mine');
+                //    sender.textContent = "Me";
+                //} else {
+                    sender.textContent = message.senderAlias;
+                //}
                 // Content
                 var contents = this.renderMessage(message.text, false);
                 wrapper.appendChild(this._getBubbleContent(contents));
-                // Timestamp
-                timestamp.dateTime = message.dateTime.toISOString();
-                timestamp.textContent = this.humanizeDate(message.dateTime);
+                //// Timestamp
+                //timestamp.dateTime = message.dateTime.toISOString();
+                //timestamp.textContent = this.humanizeDate(message.dateTime);
                 return bubble;
             },
 
@@ -392,16 +393,16 @@
             this._chatBox = new ChatUI(options); //// NEW CHAT UI <<<<
 
 
-                                                    // Overriding transforms message before showing in chat.
-                                                    this._chatBox.renderMessage = this.renderMessage.bind(this);
-                                                    // If connected, create chat session
-                                                    if (options.session.connection) {
-                                                        this._start(options);
-                                                    }
-                                                    // otherwise wait for connection.
-                                                    else {
-                                                        options.session.once('sessionConnected', this._start.bind(this, options));
-                                                    }
+            // Overriding transforms message before showing in chat.
+            this._chatBox.renderMessage = this.renderMessage.bind(this);
+            // If connected, create chat session
+            if (options.session.connection) {
+                this._start(options);
+            }
+            // otherwise wait for connection.
+            else {
+                options.session.once('sessionConnected', this._start.bind(this, options));
+            }
 
             this._chatBox.disableSending();
         }
@@ -420,7 +421,7 @@
                     this._chatBox.onMessageReadyToSend = this.onMessageReadyToSend.bind(this);
                     // This set the sender information, id to messages - alias to other users.
                     this._chatBox.senderId = options.session.connection.connectionId;
-                    this._chatBox.senderAlias = options.session.connection.data;
+                    this._chatBox.senderAlias = options.senderAlias;
                     // Finally, enable message area and send buttons.
                     this._chatBox.enableSending();
                 }
