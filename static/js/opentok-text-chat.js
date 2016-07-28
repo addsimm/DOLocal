@@ -4,13 +4,8 @@
 
     ChatMessage = function () {
         /**
-         * A convinient representation of a chat message.
-         *
-         * {String} senderId A unique id to identify the origin of the message.
-         * {String} senderAlias A name to be displayed as the author of the message.
-         * {String} text The contents of the message.
-         *
-         */
+         *  A convinient representation of a chat message.
+         *  */
 
         function ChatMessage(senderId, senderAlias, text) {
             Object.defineProperties(this, {
@@ -35,44 +30,20 @@
             '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
             '    <p class="ot-new-messages" hidden>\u25BE&nbsp;New messages</p>',
             '    <textarea placeholder="Send a message&hellip;" class="ot-composer">' + '</textarea>',
-            //'    <div class="ot-bottom-line">',
-            //'      <p class="ot-character-counter"><span></span> characters left</p>',
+            '    <div class="ot-bottom-line">',
             '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
-            //'    </div>',
+            '    </div>',
             '  </div>',
             '</div>'
         ].join('\n');
 
         var bubbleLayout = [
             '<div>',
-            //'  <header class="ot-bubble-header">',
-            //'    <span class="ot-message-sender"></span>',
-            //'    <time class="ot-message-timestamp"></time>',
-            //'  </header>',
             '</div>'
         ].join('\n');
 
         /**
          * User interface for a basic chat client.
-         *
-         * The UI display bubbles representing the chat activity . An input area displays the remaining characters
-         *
-         * send messages by hitting enter or clicking on the send button.
-         *
-         * To add a normal break-line you can press the `shift + enter` combination.
-         *
-         * The conversation area groups messages separated no more than 2 minutes (although this can be configured)
-         * and allow the user to review past history even if receiving new messages.
-         *
-         * The chat UI can be placed inside any element by providing a `container` and it will fill the container box.
-         *
-         * {Object} [options] Hash with customizing properties.
-         * {String} [options.container='body'] CSS selector representing the container for the chat.
-         * {String} [options.senderId] Unique id for this client. It defaults in a random number.
-         * {String} [options.senderAlias='me'] Alias to be displayed for this client.
-         * {Number} [options.maxTextLength=1000] Maximum length of the message.
-         * {Number} [options.groupDelay=120000] Time in milliseconds for the UI to separate messages.
-         * {Number} [options.timeout=5000] Time in milliseconds before informing sending malfunction.
          */
 
         function ChatUI(options) {
@@ -86,7 +57,6 @@
             this._messages = [];
             this._setupTemplates();
             this._setupUI(options.container);
-            // this._updateCharCounter();
         }
 
         ChatUI.prototype = {
@@ -100,25 +70,26 @@
 
             _setupUI: function (parent) {
                 parent = document.querySelector(parent) || document.body;
+
                 var chatView = document.createElement('div');
                 chatView.innerHTML = uiLayout;
                 chatView.classList.add('ot-textchat');
+
                 var sendButton = chatView.querySelector('.btn');
                 var composer = chatView.querySelector('.ot-composer');
-                // var charCounter = chatView.querySelector('.ot-character-counter > span');
                 var errorZone = chatView.querySelector('.ot-error-zone');
                 var newMessages = chatView.querySelector('.ot-new-messages');
+
                 this._composer = composer;
                 this._sendButton = sendButton;
-                // this._charCounter = charCounter;
                 this._bubbles = chatView.firstElementChild;
                 this._errorZone = errorZone;
                 this._newMessages = newMessages;
                 this._bubbles.onscroll = this._watchScrollAtTheBottom;
                 this._sendButton.onclick = this._sendMessage.bind(this);
-                // this._composer.onkeyup = this._updateCharCounter.bind(this);
                 this._composer.onkeydown = this._controlComposerInput.bind(this);
                 this._newMessages.onclick = this._goToNewMessages.bind(this);
+
                 parent.appendChild(chatView);
             },
 
@@ -148,7 +119,6 @@
                             } else {
                                 _this.addMessage(new ChatMessage(_this.senderId, _this.senderAlias, contents));
                                 _this._composer.value = '';
-                                // _this._updateCharCounter();
                                 _this._hideErrors();
                             }
                             _this.enableSending();
@@ -187,23 +157,14 @@
                 this._scrollToBottom();
                 this._hideNewMessageAlert();
             },
-            //_updateCharCounter: function () {
-            //    var remaining = this.maxTextLength - this._composer.value.length;
-            //    var isValid = remaining >= 0;
-            //    if (isValid) {
-            //        this._hideTooLongTextError();
-            //    } else {
-            //        this._showTooLongTextError();
-            //    }
-            //    this._charCounter.textContent = remaining;
-            //},
 
             // Adds a message to the conversation.
             addMessage: function (message) {
                 // var shouldGroup = this._shouldGroup(message);
-                var shouldScroll = this._shouldScroll();
                 // this[shouldGroup ? '_groupBubble' : '_addNewBubble'](message);
                 this._addNewBubble(message);
+
+                var shouldScroll = this._shouldScroll();
                 if (shouldScroll) {
                     this._scrollToBottom();
                 } else {
@@ -212,14 +173,7 @@
                 this._messages.push(message);
             },
 
-            /**
-             * Transform the message before displaying it be careful - safe html.
-             *
-             * {String} raw Original contents recovered from the message.
-             * {Boolean} isGrouping If `true` the content will be merged with the previous bubble.
-             * @return {String} Valid HTML to be displayed in the conversation.
-             *
-             */
+            // Transform the message before displaying it be careful - safe html.
             renderMessage: function (raw, isGrouping) {
                 return raw;
             },
@@ -237,14 +191,22 @@
                 this._composer.disabled = true;
             },
 
-            //_shouldGroup: function (message) {
-            //    if (this._lastMessage && this._lastMessage.senderId === message.senderId) {
-            //        var reference = this._lastMessage.dateTime.getTime();
-            //        var newDate = message.dateTime.getTime();
-            //        return newDate - reference < this.groupDelay;
-            //    }
-            //    return false;
-            //},
+    //// Reinstate:
+            _shouldGroup: function (message) {
+                if (this._lastMessage && this._lastMessage.senderId === message.senderId) {
+                    var reference = this._lastMessage.dateTime.getTime();
+                    var newDate = message.dateTime.getTime();
+                    return newDate - reference < this.groupDelay;
+                }
+                return false;
+            },
+
+            _groupBubble: function (message) {
+                var contents = this.renderMessage(message.text, true);
+                this._lastBubble.appendChild(this._getBubbleContent(contents));
+                this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
+            },
+
             _shouldScroll: function () {
                 return this._isAtBottom();
             },
@@ -255,12 +217,6 @@
             _scrollToBottom: function () {
                 this._bubbles.scrollTop = this._bubbles.scrollHeight;
             },
-            //_groupBubble: function (message) {
-            //    var contents = this.renderMessage(message.text, true);
-            //    this._lastBubble.appendChild(this._getBubbleContent(contents));
-            //    this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
-            //},
-
             _addNewBubble: function (message) {
                 this._bubbles.appendChild(this._getBubble(message));
             },
@@ -277,8 +233,6 @@
             _getBubble: function (message) {
                 var bubble = this._bubbleTemplate.cloneNode(true);
                 var wrapper = bubble.querySelector('div');
-                // var sender = wrapper.querySelector('.ot-message-sender');
-                // var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
                 var sender_alias = 'Missing name';
@@ -293,10 +247,6 @@
                 wrapper.classList.add('ot-message-content');
                 wrapper.innerHTML = "<span class='ot-message-sender'>" + sender_alias + '</span>' + contents;
 
-
-                //// Timestamp
-                //timestamp.dateTime = message.dateTime.toISOString();
-                //timestamp.textContent = this.humanizeDate(message.dateTime);
                 return bubble;
             },
 
@@ -317,10 +267,6 @@
 
         /**
          * OpenTok signal based Chat client.
-         *
-         * {Object} options Hash with configuration options.
-         * {Session} options.session OpenTok connected session for the chat.
-         * {String} [options.signalName='TextChat'] name for signal to transports messages. Leave as for iOS and Android compatibility.
          */
         function Chat(options) {
             if (!options || !options.session) {
@@ -336,11 +282,6 @@
             constructor: Chat,
             /**
              * Sends a message though the chat.
-             *
-             * {String} text Contents of the message.
-             * {Function} callback Called once the signal has been sent. If there
-             * is an error while sending, the callback is passed the error as first parameter.
-             * @async
              */
             send: function (text, callback) {
                 var signal = this._getMessageSignal(text);
@@ -378,11 +319,6 @@
 
         /**
          * An HTML widget enabling basic chat capabilities. Pass a `session` object the `options` hash.
-         * It's not mandatory for the session to be connected but the chat won't allow the user until the session is connected.
-         *
-         * {Object} options A hash with the union of the options for
-         * {{#crossLink "Chat"}}{{/crossLink}} and
-         * {{#crossLink "ChatUI"}}{{/crossLink}} constructors to customize several aspects of the chat behaviour and internals.
          */
 
         // ChatWidget combines `ChatUI` and `ChatMessage` classes with `Chat` library.
@@ -396,10 +332,12 @@
 
             // Overriding transforms message before showing in chat.
             this._chatBox.renderMessage = this.renderMessage.bind(this);
+
             // If connected, create chat session
             if (options.session.connection) {
                 this._start(options);
             }
+
             // otherwise wait for connection.
             else {
                 options.session.once('sessionConnected', this._start.bind(this, options));
@@ -430,9 +368,6 @@
 
             /**
              * Called when the user clicks on the send button. It will receive the contents from the input area and a callback.
-             *
-             * {String} contents Contents of the input area at the moment the user clicks the send button.
-             * {Function} callback Function to (usually after it was successfully sent).  No parameters denote success; error indicates failure.
              */
 
             // After the user click on the send button, sends contents through the `Chat` instance.

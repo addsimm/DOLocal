@@ -23,11 +23,6 @@
         margin: 0;
     }
 
-{#    #chat * {#}
-{#        margin: 0;#}
-{#        padding: 0;#}
-{#    }#}
-
 </style>
 
 <span class="josinstructions">Facilitator:</span>
@@ -49,8 +44,6 @@
 
 </div>
 
-
-{#<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>#}
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
 <script src="static/js/opentok-text-chat.js"></script>
 <link rel="stylesheet" href="static/css/opentok-textchat.css"/>
@@ -252,37 +245,34 @@ connectThis();
 
 {% endblock all_content %}
 
-Test for VIDEO DISABLED
-subscriber.on("videoDisabled", function (event) {
-You may want to hide the subscriber video element:
-domElement = document.getElementById(subscriber.id);
-domElement.style["visibility"] = "hidden";
-
 You may want to add or adjust other UI.
 
+Test for VIDEO DISABLED:
+    subscriber.on("videoDisabled", function (event) {
+    You may want to hide the subscriber video element:
+    domElement = document.getElementById(subscriber.id);
+    domElement.style["visibility"] = "hidden";
 
 TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
 
-CAMERA ACCESS ALERTS
-
-
-publisher.on({
-    accessDialogOpened: function (event) {
-        // The Allow/Deny dialog box is opened.
-        // MESSAGE
-        alert('Please allow access to camera.');
-    },
-    accessDialogClosed: function (event) {
-        // The Allow/Deny dialog box is closed.
-        alert('What happnened?')
-    },
-    accessAllowed: function (event) {
-        // The user has granted access to the camera and mic.
-        alert('Access to camera.');
-    },
-    accessDenied: function accessDeniedHandler(event) {
-        // The user has denied access to the camera and mic.
-        // NOT WORKING
-        alert('You have denied camera access.');
-    }
+CAMERA ACCESS ALERTS:
+    publisher.on({
+        accessDialogOpened: function (event) {
+            // The Allow/Deny dialog box is opened.
+            // MESSAGE
+            alert('Please allow access to camera.');
+        },
+        accessDialogClosed: function (event) {
+            // The Allow/Deny dialog box is closed.
+            alert('What happnened?')
+        },
+        accessAllowed: function (event) {
+            // The user has granted access to the camera and mic.
+            alert('Access to camera.');
+        },
+        accessDenied: function accessDeniedHandler(event) {
+            // The user has denied access to the camera and mic.
+            // NOT WORKING
+            alert('You have denied camera access.');
+        }
 
