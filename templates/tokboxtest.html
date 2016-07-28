@@ -2,45 +2,53 @@
 {% extends "josstaff/staff_base.html" %}
 {% load i18n tz pages_tags mezzanine_tags staticfiles %}
 
+{% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
+
 {% block all_content %}
 
 <style>
 
+    .container {
+        margin-top: 0;
+    }
+
     .videoContainer {
         border: 7px solid rgb(65, 45, 120);
-        width: 240px;
         height: 160px;
-        padding: 0;
         margin: 0;
+        padding: 0;
+        width: 240px;
     }
 
     .nameContainer {
         color: green;
         font-family: "Open Sans", sans-serif;
         font-size: 18pt;
-        width: 240px;
-        padding: 10px;
         margin: 0;
+        padding: 10px;
+        width: 240px;
     }
 
 </style>
 
-<span class="josinstructions">Facilitator:</span>
-<div class="row" style="background-color: transparent;">
+{#<span class="josinstructions">Facilitator:</span>#}
 
-    <div class="col-xs-3" style="background-color: rgb(65,45,120); margin-left: 0;">
-        <div id="facilitator_div" class="videoContainer"></div>
-    </div>
 
-    <div class="col-xs-9" style="background-color: rgba(65, 45, 120, .2);">
-        <div id="chat"></div>
-    </div>
+<div class="row josinstructions" style="margin-top: -50px;">
+
+    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
 
 </div>
 
-<div class="row josinstructions" style="margin-top: 15px;">
+<div class="row" style="background-color: transparent;">
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
+    {#    <div class="col-xs-3" style="background-color: rgb(65,45,120); margin-left: 0;">#}
+    {#        <div id="facilitator_div" class="videoContainer"></div>#}
+    {#    </div>#}
+
+    <div class="col-xs-12" style="background-color: rgba(65, 45, 120, .2); border: 3px solid rgba(65, 45, 120, .2);">
+        <div id="chat"></div>
+    </div>
 
 </div>
 

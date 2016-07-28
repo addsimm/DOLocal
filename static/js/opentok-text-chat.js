@@ -25,15 +25,15 @@
         var uiLayout = [
             '<div class="ot-bubbles">',
             '</div>',
-            '<div class="ot-input" style="padding-bottom: 15px;">',
+            '<div class="ot-input" style="padding: 15px  0;">',
             '  <div>',
             '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
-            '    <p class="ot-new-messages" hidden>\u25BE&nbsp;New messages</p>',
-            '    <textarea placeholder="Send a message&hellip;" class="ot-composer">' + '</textarea>',
-            '    <div class="ot-bottom-line">',
+            '    <p class="ot-new-messages" hidden>\u25BE&nbsp;Click to scroll to new messages</p>',
+            '    <textarea placeholder="Send a thought&hellip;" class="ot-composer">' + '</textarea>',
+            // '    <div class="ot-bottom-line">',
             '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
             '    </div>',
-            '  </div>',
+            // '  </div>',
             '</div>'
         ].join('\n');
 
@@ -367,7 +367,7 @@
             },
 
             /**
-             * Called when the user clicks on the send button. It will receive the contents from the input area and a callback.
+             * Called when the user clicks send. Receivescontents of input area and a callback.
              */
 
             // After the user click on the send button, sends contents through the `Chat` instance.
@@ -382,7 +382,7 @@
                 this._chatBox.addMessage(message);
             },
 
-            // Transform the text from the message into the actual content to be displayed. Override for further transformations.
+            // Transform the text from message into content. Override for further transformations.
             // Transformations implemented by default: detecting URLs and allowing multiline messages.
             renderMessage: function (raw) {
                 var output;

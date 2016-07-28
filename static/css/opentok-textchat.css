@@ -1,6 +1,6 @@
 
 .ot-textchat {
-    color: #333;
+    color: rgb(65, 45, 120);
     font-family: 'Open Sans', sans-serif;
     font-size: 14pt;
     overflow: hidden;
@@ -13,25 +13,26 @@
 }
 
 .ot-textchat .ot-bubbles {
-    position: relative;
-    padding: 10px;
-    height: 200px;
+    height: 250px;
     margin-bottom: 10px;
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px;
+    position: relative;
 }
 
 /* By default, normal bubbles are bubbles from the other participants and special case is local. */
 .ot-textchat .ot-bubble {
-    padding: 7px;
-    border-bottom: 1px dashed rgb(65, 45, 120);
     background-color: white;
-    width: 80%;
+    border-bottom: 1px dashed rgb(65, 45, 120);
+    float: right;
+    padding: 7px;
     white-space: nowrap;
+    width: 95%;
 }
 
 .ot-textchat .ot-bubble.mine > div {
-    color: red;
+    color: #d9534f;
 }
 
 .ot-textchat .ot-message-sender {
@@ -50,37 +51,39 @@
 }
 
 .ot-textchat .ot-composer {
-    padding: .5em;
-    height: 3em;
-    width: 85%;
-    border: none;
     background-color: #fff;
+    border: none;
     box-sizing: border-box;
     font-family: "Open sans", sans-serif;
     font-size: 16pt;
+    height: 2.3em;
     line-height: normal;
     outline: none;
     overflow: auto;
+    padding: .5em;
+    width: 87.5%;
 }
 
 .ot-textchat .ot-error-zone,
 .ot-textchat .ot-new-messages {
-    padding: 1em;
-    position: absolute;
+    background-color: white;
     left: 0;
+    position: absolute;
     right: 0;
-    height: 2em;
-    background-color: #F8F8F8;
-    transform: translateY(-100%);
     text-align: center;
+    transform: translateY(-100%);
 }
 
 .ot-textchat .ot-error-zone {
     color: #EE2E08;
+    width: 85%;
 }
 
 .ot-textchat .ot-new-messages {
-    color: #888;
+    height: 1.1em;
+    color: #5bc0de;
+    padding: 3px;
+    width: 85%;
 }
 
 .ot-textchat .ot-bottom-line {
