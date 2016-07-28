@@ -127,11 +127,15 @@ def tokboxtest(request, template="tokboxtest.html"):
     secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
 
     opentok = OpenTok(APIKey, secretkey)
+
+    jos_name = request.user.JOSProfile.jos_name()
+
+    connectionMetadata = jos_name
     # session = opentok.create_session()
     # session_id = session.session_id
 
     session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
-    token = opentok.generate_token(session_id)
+    token = opentok.generate_token(session_id=session_id, data=connectionMetadata)
 
     context = {
         'apikey':     APIKey,

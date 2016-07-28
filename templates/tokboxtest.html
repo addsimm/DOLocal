@@ -23,30 +23,32 @@
         margin: 0;
     }
 
+{#    #chat * {#}
+{#        margin: 0;#}
+{#        padding: 0;#}
+{#    }#}
+
 </style>
 
 <span class="josinstructions">Facilitator:</span>
-<div class="row" style="background-color: green;">
+<div class="row" style="background-color: transparent;">
 
-    <div id="facilitator_div"
-         class="col-xs-3 videoContainer"
-         style="background-color: rgb(65,45,120); margin-left: 0;">
+    <div class="col-xs-3" style="background-color: rgb(65,45,120); margin-left: 0;">
+        <div id="facilitator_div" class="videoContainer"></div>
+    </div>
 
+    <div class="col-xs-9" style="background-color: rgba(65, 45, 120, .2);">
+        <div id="chat"></div>
     </div>
 
 </div>
 
-<div class="row josinstructions" style="margin-top: 15px; background-color: red;">
+<div class="row josinstructions" style="margin-top: 15px;">
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: pink; padding: 15px 25px;">
-
-    </div>
+    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
 
 </div>
 
-<div id="chat" style="margin-top: 50px; background-color: transparent;">
-
-</div>
 
 {#<script src="static/js/OT_LayoutContainer.js" type="text/javascript" charset="utf-8"></script>#}
 <script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>

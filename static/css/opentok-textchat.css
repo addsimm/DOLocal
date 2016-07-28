@@ -10,8 +10,6 @@
     /*left: 0;*/
     /*right: 0;*/
     overflow: hidden;
-
-    background-color: rgba(65, 45, 120, .2);
 }
 
 .ot-textchat * {
@@ -21,89 +19,89 @@
 
 .ot-textchat .ot-bubbles {
     position: relative;
-    margin-bottom: 1em;
-    height: calc(100% - 20em);
+    padding: 10px;
+    height: 200px;
+    margin-bottom: 10px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 /* By default, normal bubbles are bubbles from the other participants and special case is local. */
 .ot-textchat .ot-bubble {
-    background-color: #F8F8F8;
-    margin-left: 1em;
-    border-bottom: 0.2em solid #ECEBEB;
+    /*background-color: #F8F8F8;*/
+    /*border-bottom: 0.2em solid #ECEBEB;*/
+    padding: 7px;
+    border-bottom: 1px dashed rgb(65, 45, 120);
+    background-color: white;
+    width: 80%;
     white-space: nowrap;
 }
 
 /* Centering triangle with bubble contents */
-.ot-textchat .ot-bubble:before,
-.ot-textchat .ot-bubble:after,
-.ot-textchat .ot-bubble > div {
-    display: inline-block;
-    vertical-align: middle;
-}
+/*.ot-textchat .ot-bubble:before,*/
+/*.ot-textchat .ot-bubble:after,*/
+/*.ot-textchat .ot-bubble > div {*/
+    /*display: inline-block;*/
+    /*vertical-align: middle;*/
+/*}*/
 
-.ot-textchat .ot-bubble > div {
-    width: calc(100% - 1.2em - 2em);
-    position: relative;
-    left: -0.8em;
-    padding: 1em 2em 1em 1.2em;
-    white-space: normal;
-}
+/*.ot-textchat .ot-bubble > div {*/
+    /*width: calc(100% - 1.2em - 2em);*/
+    /*position: relative;*/
+    /*left: -0.8em;*/
+    /*padding: 1em 2em 1em 1.2em;*/
+    /*white-space: normal;*/
+/*}*/
 
 /* To keep start and end aligned, reduce right padding to "free" space at right. */
 .ot-textchat .ot-bubble.mine > div {
-    width: calc(100% - 1.2em - 2em);
-    background-color: #EEE;
-    padding-right: 1em;
+    /*width: calc(100% - 1.2em - 2em);*/
+    color: red;
+    /*background-color: #EEE;*/
+    /*padding-right: 1em;*/
 }
 
 /* The left triangle */
-.ot-textchat .ot-bubble:before {
-    content: "";
-    /* triangle */
-    border: 0.6em solid transparent;
-    border-left: none;
-    border-right-width: 0.8em;
-    border-right-color: #F8F8F8;
-    /* move outside the box */
-    position: relative;
-    left: -0.7em;
-}
+/*.ot-textchat .ot-bubble:before {*/
+    /*content: "";*/
+    /*!* triangle *!*/
+    /*border: 0.6em solid transparent;*/
+    /*border-left: none;*/
+    /*border-right-width: 0.8em;*/
+    /*border-right-color: #F8F8F8;*/
+    /*!* move outside the box *!*/
+    /*position: relative;*/
+    /*left: -0.7em;*/
+/*}*/
 
 /* Simply hide (not destroy) the left triangle to simplify stylizing the content. */
-.ot-textchat .ot-bubble.mine:before {
-    border-color: transparent;
-}
+/*.ot-textchat .ot-bubble.mine:before {*/
+    /*border-color: transparent;*/
+/*}*/
 
 /* The right triangle */
-.ot-textchat .ot-bubble.mine:after {
-    content: "";
-    /* triangle */
-    border: 0.6em solid transparent;
-    border-right: none;
-    border-left-width: 0.8em;
-    border-left-color: #EEE;
-    /* move outside the box */
-    position: relative;
-    right: 0.8em;
-}
+/*.ot-textchat .ot-bubble.mine:after {*/
+    /*content: "";*/
+    /*!* triangle *!*/
+    /*border: 0.6em solid transparent;*/
+    /*border-right: none;*/
+    /*border-left-width: 0.8em;*/
+    /*border-left-color: #EEE;*/
+    /*!* move outside the box *!*/
+    /*position: relative;*/
+    /*right: 0.8em;*/
+/*}*/
 
-.ot-textchat .ot-bubble-header {
-    font-size: 1.4em;
-    overflow: auto;
-    margin-bottom: 1.6em;
-}
+/*.ot-textchat .ot-bubble-header {*/
+    /*font-size: 1.4em;*/
+    /*overflow: auto;*/
+    /*margin-bottom: 1.6em;*/
+/*}*/
 
 .ot-textchat .ot-message-sender {
     color: green;
-    float: left;
-
-}
-
-.ot-textchat .ot-message-sender:after {
-    content: " --";
-    margin-right: 5px;
+    font-size: 12pt;
+    margin-right: 10px;
 }
 
 /*.ot-textchat .ot-message-timestamp {*/
@@ -113,8 +111,7 @@
 /*}*/
 
 .ot-textchat .ot-message-content {
-    font-size: 1.4em;
-    margin-bottom: 1.3em;
+    font-size: 16pt;
 }
 
 .ot-textchat .ot-input {
@@ -144,7 +141,7 @@
     right: 0;
     height: 2em;
     background-color: #F8F8F8;
-    transform: translateY(calc(-100%));
+    transform: translateY(-100%);
     text-align: center;
 }
 

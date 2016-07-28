@@ -37,7 +37,7 @@
             '    <textarea placeholder="Send a message&hellip;" class="ot-composer">' + '</textarea>',
             //'    <div class="ot-bottom-line">',
             //'      <p class="ot-character-counter"><span></span> characters left</p>',
-            '      <button class="btn btn-default" style="float: right; margin-right: 30px; padding: 6px 12px;">Send</button>',
+            '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
             //'    </div>',
             '  </div>',
             '</div>'
@@ -45,10 +45,10 @@
 
         var bubbleLayout = [
             '<div>',
-            '  <header class="ot-bubble-header">',
-            '    <p class="ot-message-sender"></p>',
-            '    <time class="ot-message-timestamp"></time>',
-            '  </header>',
+            //'  <header class="ot-bubble-header">',
+            //'    <span class="ot-message-sender"></span>',
+            //'    <time class="ot-message-timestamp"></time>',
+            //'  </header>',
             '</div>'
         ].join('\n');
 
@@ -93,14 +93,14 @@
             constructor: ChatUI,
 
             _setupTemplates: function () {
-                this._bubbleTemplate = document.createElement('section');
+                this._bubbleTemplate = document.createElement('div');
                 this._bubbleTemplate.innerHTML = bubbleLayout;
                 this._bubbleTemplate.classList.add('ot-bubble');
             },
 
             _setupUI: function (parent) {
                 parent = document.querySelector(parent) || document.body;
-                var chatView = document.createElement('section');
+                var chatView = document.createElement('div');
                 chatView.innerHTML = uiLayout;
                 chatView.classList.add('ot-textchat');
                 var sendButton = chatView.querySelector('.btn');
@@ -200,9 +200,10 @@
 
             // Adds a message to the conversation.
             addMessage: function (message) {
-                var shouldGroup = this._shouldGroup(message);
+                // var shouldGroup = this._shouldGroup(message);
                 var shouldScroll = this._shouldScroll();
-                this[shouldGroup ? '_groupBubble' : '_addNewBubble'](message);
+                // this[shouldGroup ? '_groupBubble' : '_addNewBubble'](message);
+                this._addNewBubble(message);
                 if (shouldScroll) {
                     this._scrollToBottom();
                 } else {
@@ -236,14 +237,14 @@
                 this._composer.disabled = true;
             },
 
-            _shouldGroup: function (message) {
-                if (this._lastMessage && this._lastMessage.senderId === message.senderId) {
-                    var reference = this._lastMessage.dateTime.getTime();
-                    var newDate = message.dateTime.getTime();
-                    return newDate - reference < this.groupDelay;
-                }
-                return false;
-            },
+            //_shouldGroup: function (message) {
+            //    if (this._lastMessage && this._lastMessage.senderId === message.senderId) {
+            //        var reference = this._lastMessage.dateTime.getTime();
+            //        var newDate = message.dateTime.getTime();
+            //        return newDate - reference < this.groupDelay;
+            //    }
+            //    return false;
+            //},
             _shouldScroll: function () {
                 return this._isAtBottom();
             },
@@ -254,11 +255,12 @@
             _scrollToBottom: function () {
                 this._bubbles.scrollTop = this._bubbles.scrollHeight;
             },
-            _groupBubble: function (message) {
-                var contents = this.renderMessage(message.text, true);
-                this._lastBubble.appendChild(this._getBubbleContent(contents));
-                this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
-            },
+            //_groupBubble: function (message) {
+            //    var contents = this.renderMessage(message.text, true);
+            //    this._lastBubble.appendChild(this._getBubbleContent(contents));
+            //    this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
+            //},
+
             _addNewBubble: function (message) {
                 this._bubbles.appendChild(this._getBubble(message));
             },
@@ -271,28 +273,27 @@
             get _lastTimestamp() {
                 return this._bubbles.lastElementChild.querySelector('.ot-message-timestamp');
             },
-            _getBubbleContent: function (safeHtml) {
-                var div = document.createElement('DIV');
-                div.classList.add('ot-message-content');
-                div.innerHTML = safeHtml;
-                return div;
-            },
+
             _getBubble: function (message) {
                 var bubble = this._bubbleTemplate.cloneNode(true);
                 var wrapper = bubble.querySelector('div');
-                var sender = wrapper.querySelector('.ot-message-sender');
-                var timestamp = wrapper.querySelector('.ot-message-timestamp');
+                // var sender = wrapper.querySelector('.ot-message-sender');
+                // var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
-                //if (message.senderId === this.senderId) {
-                //    bubble.classList.add('mine');
-                //    sender.textContent = "Me";
-                //} else {
-                    sender.textContent = message.senderAlias;
-                //}
+                var sender_alias = 'Missing name';
+                if (message.senderId === this.senderId) {
+                    bubble.classList.add('mine');
+                    sender_alias = "Me";
+                } else {
+                    sender_alias = message.senderAlias;
+                }
                 // Content
                 var contents = this.renderMessage(message.text, false);
-                wrapper.appendChild(this._getBubbleContent(contents));
+                wrapper.classList.add('ot-message-content');
+                wrapper.innerHTML = "<span class='ot-message-sender'>" + sender_alias + '</span>' + contents;
+
+
                 //// Timestamp
                 //timestamp.dateTime = message.dateTime.toISOString();
                 //timestamp.textContent = this.humanizeDate(message.dateTime);
