@@ -59,18 +59,18 @@
                 {% endfor %}
 
 {#                BUG NEXT BUTTON: USE SEGMENT ORDER TO MAP ON TO NOT SEQUENTIAL IDs #}
-{#                {% if handout == handouts.last %}#}
-{#                    <a class="btn btn-warning"#}
-{#                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">#}
-{#                        {% trans "Last" %}#}
-{#                    </a>#}
-{#                {% else %}#}
-{#                    <a class="btn btn-warning pull-right"#}
-{#                       style="font-size: 12pt; width: 70px;"#}
-{#                       href="{% url "handout" %}/{{ handout.segment_order|add:"1" }}">#}
-{#                        {% trans "Next" %}#}
-{#                    </a>#}
-{#                {% endif %}#}
+                {% if handout == handouts.last %}
+                    <a class="btn btn-warning"
+                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">
+                        {% trans "Last" %}
+                    </a>
+                {% else %}
+                    <a class="btn btn-warning pull-right"
+                       style="font-size: 12pt; width: 70px;"
+                       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">
+                        {% trans "Next" %}
+                    </a>
+                {% endif %}
 
             </div>
         </div>
