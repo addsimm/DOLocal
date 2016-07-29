@@ -35,11 +35,9 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
     try:
         handout = get_object_or_404(JOSHandout, pk=handoutid)
     except:
-        handout = JOSHandout.objects.create(course_week = default_week,
-                                            title="Untitled",
-                                            content="Coming soon")
+        handout = get_object_or_404(JOSHandout, pk=1)
 
-    handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, publish=True).order_by('handoutno')
+    handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, publish=True).order_by('segment_order')
 
 
     publish_handout = request.GET.get('pub', None)
@@ -65,3 +63,18 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
+
+
+def nexthandout(request, extra_context=None):
+    weekid = request.GET['weekid']
+    nextorder = int(request.GET['order'])
+
+    week = get_object_or_404(JOSCourseWeek, pk=weekid)
+    handouts =JOSHandout.objects.filter(courseweek=week, publish=True).order_by('segment_order')
+
+    try:
+        next_handout_id = str(handouts[nextorder].id)
+    except:
+        next_handout_id = str(handouts[0].id)
+
+    return redirect("http://www.joinourstory.com/joscourses/handout/" + next_handout_id)
