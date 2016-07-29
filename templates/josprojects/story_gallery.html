@@ -19,7 +19,7 @@
 
 <style> tbody tr {height: 70px;}</style>
 
-<div class="row" style="margin-top: 40px;">
+<div class="row" style="margin-top: 0;">
 
     <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
 
@@ -35,7 +35,7 @@
                </span>
             </a -->
             <br><br>
-            <span class="josinstructions">Please click a title to view (also, click for author profiles):</span>
+            <span class="josinstructions">Please click title to view (also, refresh to sort):</span>
         </div>
 
 
@@ -44,7 +44,7 @@
                 <tr>
                     <th data-sortable="true">Author</th>
                     <th data-sortable="true">Title</th>
-                    <th data-sortable="true">Last change</th>
+                    <th>Last change</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +64,7 @@
                             </a>
                         </td>
 
-                        <td>{{ story.updated | time:"f A" }} - {{ story.updated | date:"D, M d" }}</td>
+                        <td>{{ story.updated | date:"D, M d" }} - {{ story.updated | time:"f A" }}</td>
 
                     </tr>
                 {% endfor %}

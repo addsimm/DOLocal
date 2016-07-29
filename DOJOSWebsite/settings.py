@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'cloudinary',
     'embed_video',
     'notification',
+    'taggit',
     ### NOT IMPLEMENTED 'mailer',
     ### NOT IMPLEMENTED 'schedule',
 
@@ -230,6 +231,10 @@ MIDDLEWARE_CLASSES = (
 # Store these package names here as they may change in the future.
 PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
 PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
+
+##################
+# OTHER SETTINGS #
+TAGGIT_CASE_INSENSITIVE = True
 
 #########################
 # OPTIONAL APPLICATIONS #
@@ -348,11 +353,11 @@ DEBUG = False
 ##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 
-# def show_toolbar(request):
-#     return True
-#
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-# }
-#
-# DEBUG = True
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+}
+
+DEBUG = True

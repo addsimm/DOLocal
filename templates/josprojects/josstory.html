@@ -18,12 +18,19 @@
 
     .cke { margin-left: 25px;}
 </style>
+<span style="font-size: 9px; margin-right: 2px;">Tags:
+    {% for tag in story.tags.all %}
+        {{ tag.name }}
+    {% endfor %}
+</span>
 
 <div class="row" style="margin-top: 20px;">
 
 <!-- Main Panel -->
 <div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
+
     <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
+
         <span class="joshint"
               style="display: none; font-size: 16pt;"
               data-toggle="tooltip"

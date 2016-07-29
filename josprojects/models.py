@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from mezzanine.core.models import TimeStamped
+from taggit.managers import TaggableManager
 
 from josmessages.models import JOSMessageThread
 
@@ -34,6 +35,7 @@ class JOSStory(TimeStamped, models.Model):
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)
+    tags = TaggableManager()
 
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]

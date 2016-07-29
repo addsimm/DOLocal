@@ -114,7 +114,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
 
 @login_required
 def story_gallery(request, template="josprojects/story_gallery.html", extra_context=None):
-    stories = JOSStory.objects.filter(publish=True)
+    stories = JOSStory.objects.filter(publish=True).order_by('updated')
 
     context = {'stories': stories}
     context.update(extra_context or {})
