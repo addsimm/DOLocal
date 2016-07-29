@@ -20,6 +20,7 @@ function activateCKEdit(section) {
         disableNativeSpellChecker: false,
         width: '95%',
         tabSpaces: 4,
+        removePlugins: 'liststyle,tabletools,scayt,contextmenu',
         extraPlugins: 'colorbutton'
     });
 
