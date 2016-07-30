@@ -212,16 +212,6 @@ footer {
     opacity: .8;
 }
 
-.fixed {
-    height: 600px;
-    overflow: hidden;
-}
-
-.scrollit {
-    min-height: 400px;
-    overflow-y: scroll;
-}
-
 .edit_border {
     background-color: white;
     border: 3px dashed #28a4c9;

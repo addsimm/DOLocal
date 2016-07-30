@@ -32,20 +32,20 @@ body.jconfirm-noscroll {
 }
 
 .jconfirm .btn {
-    margin-top: 50px;
+    margin-top: 30px;
     width: 200px;
 }
 
 .jconfirm {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
   color: rgb(65, 45, 120);
   font-family: 'source sans pro', sans-serif;
   font-size: 24pt;
+  left: 0;
   overflow: hidden;
+  position: fixed;
+  width: 1275px;
+  top: 0;
 }
 .jconfirm .jconfirm-bg {
   position: fixed;
@@ -145,6 +145,18 @@ body.jconfirm-noscroll {
   width: 100%;
   position: relative;
 }
+
+.jconfirm .jconfirm-box div.content-pane .content:before {
+    display: inline-block;
+    width: 55px;
+    height: 75px;
+    margin-right: 20px;
+    content: "";
+    background: url(/static/img/peeky-123115.png) no-repeat 0 0;
+    background-size: 100%;
+    vertical-align: -75%;
+}
+
 .jconfirm .jconfirm-box div.content-pane .content {
   position: absolute;
   top: 0;
@@ -153,6 +165,7 @@ body.jconfirm-noscroll {
           transition: all 0.2s ease-in;
   right: 0;
 }
+
 .jconfirm .jconfirm-box div.content-pane .content img {
   width: 100%;
   height: auto;
