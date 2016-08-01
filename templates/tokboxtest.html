@@ -33,7 +33,6 @@
 
 {#<span class="josinstructions">Facilitator:</span>#}
 
-
 <div class="row josinstructions" style="margin-top: -50px;">
 
     <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
@@ -42,11 +41,8 @@
 
 <div class="row" style="background-color: transparent;">
 
-    {#    <div class="col-xs-3" style="background-color: rgb(65,45,120); margin-left: 0;">#}
-    {#        <div id="facilitator_div" class="videoContainer"></div>#}
-    {#    </div>#}
-
-    <div class="col-xs-12" style="background-color: rgba(65, 45, 120, .2); border: 3px solid rgba(65, 45, 120, .2);">
+    <div class="col-xs-12"
+         style="background-color: rgba(65, 45, 120, .2); border: 3px solid rgba(65, 45, 120, .2);">
         <div id="chat"></div>
     </div>
 
@@ -67,9 +63,8 @@
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
 
-        // Particpant video layout
-        for (i = 0; i < 3; i++) {
-
+        // Layout particpant videos
+        for (i = 0; i < 4; i++) {
             var rowI = document.createElement('div');
             $(rowI).addClass('row');
             rowI.id = 'row_' + i ;
@@ -102,30 +97,35 @@
         });
 
         if (OT.checkSystemRequirements() == 1) {
-
+            console.log("checkSystemRequirements: " + checkSystemRequirements);
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
 
                     var audioInputDevices;
                     var videoInputDevices;
-                    OT.getDevices(function (error, devices) {
+                    var inputDevices = OT.getDevices(function (error, devices) {
                         if (!error) {
-                            audioInputDevices = devices.filter(function (element) {
+                            return devices;
+                        } else {
+                            console.log("error: " + error);
+                        }
+                        if (inputDevices.length > 0) {
+                            audioInputDevices = inputDevices.filter(function (element) {
                                 return element.kind == "audioInput";
                             });
                             console.log("audioId: " + audioInputDevices[0].deviceId);
-                            videoInputDevices = devices.filter(function (element) {
+                            videoInputDevices = inputDevices.filter(function (element) {
                                 return element.kind == "videoInput";
                             });
                             console.log("videoId: " + videoInputDevices[0].deviceId);
                             console.log("videokind: " + videoInputDevices[0].kind);
                         } else {
-                            console.log("error: " + error);
+                        console.log("No input devices found" );
                         }
                     });
 
-
+                    // Find open video slot to publish
                     var nextEmptyID = ' ';
                     for (c = 1; c < 13; c++) {
                         var testID = '#vid_' + c + '_empty';
@@ -139,6 +139,7 @@
                     vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
                     vidBox.style.zIndex = 10;
 
+                    // initPublisher
                     var publisher = OT.initPublisher(vidBox, {
                         name: name,
                         height: 160,
@@ -148,6 +149,7 @@
 
                     session.publish(publisher);
 
+                    // add jos_name
                     var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
                     var nameBox = document.getElementById(nameBoxID);
                     nameBox.innerHTML = name;
@@ -161,7 +163,8 @@
                 }
             });
         } else {
-            alert("Please call us and say: my browser doesn't have 'WebRTC'");
+            // checkSystemRequirements error
+            alert("Sorry, there is a problem - please call and say 'Web RTC' is not working. Thanks!");
         }
 
         session.on({
@@ -175,6 +178,7 @@
                 console.log('Stream destroyed: ' + event.stream.name);
                 event.preventDefault();
 
+                // Reclaim slot
                 var reclaimedID = ' ';
                 subscriber = event.stream.name.slice(0, -1).split(' ').join('_');
                 for (c = 1; c < 13; c++) {
@@ -209,6 +213,7 @@
 
                 console.log('Stream Created: ' + event.stream.name);
 
+                // Find open video slot to subscribe
                 var nextEmptyID = ' ';
                 for (c = 1; c < 13; c++) {
                     var testID = '#vid_' + c + '_empty';
@@ -265,7 +270,6 @@
     }
 
 connectThis();
-
 
 </script>
 
