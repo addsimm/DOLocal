@@ -67,7 +67,6 @@
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
 
-
         // Particpant video layout
         for (i = 0; i < 3; i++) {
 
@@ -107,6 +106,25 @@
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
+
+                    var audioInputDevices;
+                    var videoInputDevices;
+                    OT.getDevices(function (error, devices) {
+                        if (!error) {
+                            audioInputDevices = devices.filter(function (element) {
+                                return element.kind == "audioInput";
+                            });
+                            console.log("audioId: " + audioInputDevices[0].deviceId);
+                            videoInputDevices = devices.filter(function (element) {
+                                return element.kind == "videoInput";
+                            });
+                            console.log("videoId: " + videoInputDevices[0].deviceId);
+                            console.log("videokind: " + videoInputDevices[0].kind);
+                        } else {
+                            console.log("error: " + error);
+                        }
+                    });
+
 
                     var nextEmptyID = ' ';
                     for (c = 1; c < 13; c++) {
