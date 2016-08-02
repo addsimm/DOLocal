@@ -58,6 +58,12 @@
 
     function connectThis() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
+        var backgroundImage = '/static/img/coming-soon-profile.png';
+        var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        if (bckgrndtest != "noimage1") {
+            backgroundImage = 'http://res-4.cloudinary.com/desg88u7l/image/upload/{{ request.user.JOSProfile.profile_image_idstr }}';
+        }
+
         var apiKey = '45616422';
         var sessionID = '{{ session_id}}';
         var token = '{{ token }}';
@@ -97,7 +103,7 @@
         });
 
         if (OT.checkSystemRequirements() == 1) {
-            console.log("checkSystemRequirements: " + checkSystemRequirements);
+            console.log("checkSystemRequirements: " + OT.checkSystemRequirements());
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
@@ -144,10 +150,15 @@
                         name: name,
                         height: 160,
                         width: 240,
-                        resolution: '320x240',
                         frameRate: 15
                         // AUDIO ONLY:  videoSource: null
                     });
+
+                    publisher.setStyle({audioLevelDisplayMode: "on",
+                                        nameDisplayMode: 'off',
+                                        buttonDisplayMode: 'on'});
+
+                    // publisher.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
 
                     session.publish(publisher);
 
@@ -277,8 +288,6 @@ connectThis();
 
 {% endblock all_content %}
 
-You may want to add or adjust other UI.
-
 Test for VIDEO DISABLED:
     subscriber.on("videoDisabled", function (event) {
     You may want to hide the subscriber video element:
@@ -294,14 +303,7 @@ CAMERA ACCESS ALERTS:
             // MESSAGE
             alert('Please allow access to camera.');
         },
-        accessDialogClosed: function (event) {
-            // The Allow/Deny dialog box is closed.
-            alert('What happnened?')
-        },
-        accessAllowed: function (event) {
-            // The user has granted access to the camera and mic.
-            alert('Access to camera.');
-        },
+
         accessDenied: function accessDeniedHandler(event) {
             // The user has denied access to the camera and mic.
             // NOT WORKING
