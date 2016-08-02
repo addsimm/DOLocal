@@ -58,22 +58,21 @@
 
     function connectThis() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
-        var backgroundImage = '/static/img/coming-soon-profile.png';
-        var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
-        if (bckgrndtest != "noimage1") {
-            backgroundImage = 'http://res-4.cloudinary.com/desg88u7l/image/upload/{{ request.user.JOSProfile.profile_image_idstr }}';
-        }
+        // var backgroundImage = '/static/img/coming-soon-profile.png';
+        // var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        // if (bckgrndtest != "noimage1") {backgroundImage = 'URL HERE' }}'};
 
         var apiKey = '45616422';
         var sessionID = '{{ session_id}}';
         var token = '{{ token }}';
         var session = OT.initSession(apiKey, sessionID);
+        var inputDevices = [];
 
         // Layout particpant videos
         for (i = 0; i < 4; i++) {
             var rowI = document.createElement('div');
             $(rowI).addClass('row');
-            rowI.id = 'row_' + i ;
+            rowI.id = 'row_' + i;
             document.getElementById('audienceContainer').appendChild(rowI);
 
             for (j = 1; j < 5; j++) {
@@ -82,7 +81,7 @@
                 particBox.id = 'box_' + (i * 4 + j);
 
                 var vidBox = document.createElement('div');
-                vidBox.id = 'vid_' + (i * 4 + j)+'_empty';
+                vidBox.id = 'vid_' + (i * 4 + j) + '_empty';
                 $(vidBox).addClass('row videoContainer').innerHTML = vidBox.id;
                 particBox.appendChild(vidBox);
 
@@ -107,68 +106,25 @@
             session.connect(token, function (error) {
                 if (!error) {
                     console.log("Connected to the session.");
-
-                    var audioInputDevices;
-                    var videoInputDevices;
-                    var inputDevices = OT.getDevices(function (error, devices) {
+                    OT.getDevices(function (error, devices) {
                         if (!error) {
-                            return devices;
+                            inputDevices = devices;
                         } else {
                             console.log("error: " + error);
                         }
-                        if (inputDevices.length > 0) {
-                            audioInputDevices = inputDevices.filter(function (element) {
-                                return element.kind == "audioInput";
-                            });
-                            console.log("audioId: " + audioInputDevices[0].deviceId);
-                            videoInputDevices = inputDevices.filter(function (element) {
-                                return element.kind == "videoInput";
-                            });
-                            console.log("videoId: " + videoInputDevices[0].deviceId);
-                            console.log("videokind: " + videoInputDevices[0].kind);
-                        } else {
-                        console.log("No input devices found" );
-                        }
-                    });
+    // c
 
-                    // Find open video slot to publish
-                    var nextEmptyID = ' ';
-                    for (c = 1; c < 13; c++) {
-                        var testID = '#vid_' + c + '_empty';
-                        if ($(testID).length) {
-                            nextEmptyID = testID.substr(1);
-                            break;
-                        }
-                    }
+                        var audioInputDevices = inputDevices.filter(function (element) {
+                            return element.kind == "audioInput";
+                        });
+                        console.log("audioId: " + audioInputDevices[0].deviceId);
 
-                    var vidBox = document.getElementById(nextEmptyID);
-                    vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
-                    vidBox.style.zIndex = 10;
+                        var videoId = inputDevices.filter(function (element) {
+                            return element.kind == "videoInput";
+                        })[0].deviceId;
 
-                    // initPublisher
-                    var publisher = OT.initPublisher(vidBox, {
-                        name: name,
-                        height: 160,
-                        width: 240,
-                        frameRate: 15
-                        // AUDIO ONLY:  videoSource: null
-                    });
-
-                    publisher.setStyle({audioLevelDisplayMode: "on",
-                                        nameDisplayMode: 'off',
-                                        buttonDisplayMode: 'on'});
-
-                    // publisher.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
-
-                    session.publish(publisher);
-
-                    // add jos_name
-                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-                    var nameBox = document.getElementById(nameBoxID);
-                    nameBox.innerHTML = name;
-
-                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-                    $(particBox).removeClass('hidden');
+                        console.log("videoId: " + videoId);
+                    })
 
                 } else {
 
@@ -179,6 +135,65 @@
             // checkSystemRequirements error
             alert("Sorry, there is a problem - please call and say 'Web RTC' is not working. Thanks!");
         }
+    }
+
+    function nextStep() {
+
+        // Find open video slot to publish
+        var nextEmptyID = ' ';
+        for (c = 1; c < 13; c++) {
+            var testID = '#vid_' + c + '_empty';
+            if ($(testID).length) {
+                nextEmptyID = testID.substr(1);
+                break;
+            }
+        }
+
+        var vidBox = document.getElementById(nextEmptyID);
+        vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
+        vidBox.style.zIndex = 10;
+
+        // initPublisher
+        var publisher = OT.initPublisher(vidBox, {
+            name: name,
+            height: 160,
+            width: 240,
+            frameRate: 15
+            // AUDIO ONLY:  videoSource: null
+        });
+
+        publisher.setStyle({
+            audioLevelDisplayMode: "on",
+            nameDisplayMode: 'off',
+            buttonDisplayMode: 'on'
+        });
+
+        publisher.on({
+
+            accessDialogOpened: function (event) {
+                // The Allow/Deny dialog box is opened.
+                alert('Please allow access to camera.');
+            },
+
+            accessDenied: function accessDeniedHandler(event) {
+                // The user has denied access to the camera and mic.
+                // NOT WORKING
+                alert('You have denied camera access.');
+            }
+
+        });
+
+        // publisher.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
+
+        session.publish(publisher);
+
+        // add jos_name
+        var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+        var nameBox = document.getElementById(nameBoxID);
+        nameBox.innerHTML = name;
+
+        var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+        $(particBox).removeClass('hidden');
 
         session.on({
 
@@ -277,7 +292,6 @@
                 } else {
                     console.log('I connected. ' + connectionCount + ' total.');
                 }
-
             }
         });
     }
@@ -298,15 +312,5 @@ TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
 
 CAMERA ACCESS ALERTS:
     publisher.on({
-        accessDialogOpened: function (event) {
-            // The Allow/Deny dialog box is opened.
-            // MESSAGE
-            alert('Please allow access to camera.');
-        },
 
-        accessDenied: function accessDeniedHandler(event) {
-            // The user has denied access to the camera and mic.
-            // NOT WORKING
-            alert('You have denied camera access.');
-        }
 
