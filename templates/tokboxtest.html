@@ -56,11 +56,13 @@
 
     var connectionCount = 0;
 
-    function connectMe() {
+    function connectToSession() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
-        // var backgroundImage = '/static/img/coming-soon-profile.png';
-        // var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
-        // if (bckgrndtest != "noimage1") {backgroundImage = 'URL HERE' }}'};
+        var backgroundImage = '/static/img/coming-soon-profile.png';
+        var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        if (bckgrndtest != "noimage1") {
+            backgroundImage = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        }
 
         var apiKey = '45616422';
         var sessionID = '{{ session_id}}';
@@ -76,21 +78,21 @@
             document.getElementById('audienceContainer').appendChild(rowI);
 
             for (j = 1; j < 5; j++) {
-                var particBox = document.createElement('div');
-                $(particBox).addClass('col-xs-3 hidden');
-                particBox.id = 'box_' + (i * 4 + j);
+                var newParticBox = document.createElement('div');
+                $(newParticBox).addClass('col-xs-3 hidden');
+                newParticBox.id = 'box_' + (i * 4 + j);
 
-                var vidBox = document.createElement('div');
-                vidBox.id = 'vid_' + (i * 4 + j) + '_empty';
-                $(vidBox).addClass('row videoContainer').innerHTML = vidBox.id;
-                particBox.appendChild(vidBox);
+                var newVidBox = document.createElement('div');
+                newVidBox.id = 'vid_' + (i * 4 + j) + '_empty';
+                $(newVidBox).addClass('row videoContainer').innerHTML = newVidBox.id;
+                newParticBox.appendChild(newVidBox);
 
-                var nameBox = document.createElement('div');
-                nameBox.id = 'name_' + (i * 4 + j);
-                $(nameBox).addClass('row text-center nameContainer').innerHTML = nameBox.id;
-                particBox.appendChild(nameBox);
+                var newNameBox = document.createElement('div');
+                newNameBox.id = 'name_' + (i * 4 + j);
+                $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
+                newParticBox.appendChild(newNameBox);
 
-                rowI.appendChild(particBox);
+                rowI.appendChild(newParticBox);
             }
         }
 
@@ -102,16 +104,16 @@
         });
 
         if (OT.checkSystemRequirements() == 1) {
-            console.log("checkSystemRequirements: " + OT.checkSystemRequirements());
+            console.log("1. checkSystemRequirements: " + OT.checkSystemRequirements());
             session.connect(token, function (error) {
 
                 if (!error) {
-                    console.log("Connected to the session.");
+                    console.log("2. session.connect success");
                     OT.getDevices(function (error, devices) {
                         if (!error) {
                             inputDevices = devices;
                         } else {
-                            console.log("error: " + error);
+                            console.log("getDevices error: " + error);
                         }
 
                         var audioInputDevices = inputDevices.filter(function (element) {
@@ -123,11 +125,83 @@
                             return element.kind == "videoInput";
                         })[0].deviceId;
                         console.log("videoId: " + videoId);
-                    })
+                    });
+
+
+                    // initPublisher
+                    console.log('initPublisher');
+
+                    // Find open video slot to publish
+                    var nextEmptyID = ' ';
+                    for (c = 1; c < 13; c++) {
+                        var testID = '#vid_' + c + '_empty';
+                        if ($(testID).length) {
+                            nextEmptyID = testID.substr(1);
+                            break;
+                        }
+                    }
+
+                    console.log('publisher nextEmptyID: ' + nextEmptyID);
+
+                    var vidBox = document.getElementById(nextEmptyID);
+                    vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
+                    vidBox.style.zIndex = 10;
+
+                    var publisher = OT.initPublisher(vidBox, {
+                        name: name,
+                        height: 160,
+                        width: 240,
+                        frameRate: 15
+                        // AUDIO ONLY:  videoSource: null
+                    });
+
+                    publisher.setStyle({
+                        audioLevelDisplayMode: "on",
+                        nameDisplayMode: 'off',
+                        buttonDisplayMode: 'on'
+                    });
+
+                    publisher.on({
+                        accessAllowed: function (event) {
+                            console.log('accessAllowed');
+                        },
+
+                        accessDenied: function (event) {
+                            // The user has denied access to the camera and mic.
+                            console.log('accessDenied');
+                        },
+
+                        accessDialogClosed: function (event) {
+                            console.log('accessDialogClosed');
+                        },
+
+                        accessDialogOpened: function (event) {
+                            // The Allow/Deny dialog box is opened.
+                            console.log('accessDialogOpened');
+                        },
+
+                        streamCreated: function (event) {
+                            console.log('publisher streamCreated');
+                        },
+
+                        streamDestroyed: function (event) {
+                            console.log('publisher streamDestroyed');
+                        }
+                    });
+
+                    session.publish(publisher);
+
+                    // add jos_name
+                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+                    var nameBox = document.getElementById(nameBoxID);
+                    nameBox.innerHTML = name;
+
+                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+                    $(particBox).removeClass('hidden');
 
                 } else {
 
-                    console.log("Error connecting: ", error.code, error.message);
+                    console.log("session.connect error: ", error.code, error.message);
                 }
             });
 
@@ -142,67 +216,69 @@
             connectionCreated: function (event) {
                 connectionCount++;
                 if (event.connection.connectionId != session.connection.connectionId) {
-                    console.log('Another client connected. ' + connectionCount + ' total.');
+                    console.log('Another client connected. active connections: ' + connectionCount);
                 } else {
-                    console.log('I connected. ' + connectionCount + ' total.');
+                    console.log('4. This client connected. active connections: ' + connectionCount);
                 }
             },
 
             connectionDestroyed: function connectionDestroyedHandler(event) {
                 connectionCount--;
-                console.log('connection destroyed; ' + connectionCount + ' total.');
+                console.log('connection destroyed. active connections: ' + connectionCount);
             },
 
             sessionConnected: function sessionConnected(event) {
-                console.log('session connected');
+                console.log('3. session connected');
             },
 
             sessionDisconnected: function sessionDisconnectHandler(event) {
-                console.log('sessionDisconnect: ' + event.stream.name);
+                console.log('sessionDisconnected');
                 // if (event.reason == "networkDisconnected") {alert("Your network connection terminated.")}
             },
 
             streamCreated: function (event) {
                 console.log('Stream Created: ' + event.stream.name);
-                populateSlot();
 
-                function populateSlot() {
-                    // Find open video slot to subscribe
-                    var nextEmptyID = ' ';
-                    for (c = 1; c < 13; c++) {
-                        var testID = '#vid_' + c + '_empty';
-                        if ($(testID).length) {
-                            nextEmptyID = testID.substr(1);
-                            break;
-                        }
+                // Find open video slot to subscribe
+                var nextEmptyID = ' ';
+                for (c = 1; c < 13; c++) {
+                    console.log('test_id: ' + testID);
+                    var testID = '#vid_' + c + '_empty';
+                    if ($(testID).length) {
+                        nextEmptyID = testID.substr(1);
+                        break;
                     }
-
-                    var vidBox = document.getElementById(nextEmptyID);
-                    vidBox.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
-
-                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-                    var nameBox = document.getElementById(nameBoxID);
-                    nameBox.innerHTML = event.stream.name;
-
-                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-                    $(particBox).removeClass('hidden');
-
-                    var subscribeProperties = {
-                        // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
-                        height: 160,
-                        width: 240
-                    };
-
-                    // Subscribe to stream that caused event, put inside container
-                    var subscriber = session.subscribe(
-                            event.stream, vidBox, subscribeProperties, function (error) {
-                                if (error) {
-                                    console.log(error);
-                                } else {
-                                    console.log('Stream subscribed');
-                                }
-                            });
                 }
+
+                console.log('subscriber nextEmptyID: ' + nextEmptyID);
+
+                var vidBox = document.getElementById(nextEmptyID);
+                vidBox.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
+
+                var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+                var nameBox = document.getElementById(nameBoxID);
+                nameBox.innerHTML = event.stream.name;
+
+                var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+                $(particBox).removeClass('hidden');
+
+                var subscribeProperties = {
+                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
+                    height: 160,
+                    width: 240,
+                    frameRate: 15
+                };
+
+                // Subscribe to stream that caused event, put inside container
+                var subscriber = session.subscribe(
+                        event.stream, vidBox, subscribeProperties, function (error) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Stream subscribed');
+                            }
+                        });
+
             },
 
             streamDestroyed: function (event) {
@@ -242,71 +318,12 @@
             },
 
             streamPropertyChanged: function (event) {
-                console.log('stream property changed');
+                console.log('stream property changed: ' + event.stream.name);
             }
         });
     }
 
-    function nextStep() {
-
-        // Find open video slot to publish
-        var nextEmptyID = ' ';
-        for (c = 1; c < 13; c++) {
-            var testID = '#vid_' + c + '_empty';
-            if ($(testID).length) {
-                nextEmptyID = testID.substr(1);
-                break;
-            }
-        }
-
-        var vidBox = document.getElementById(nextEmptyID);
-        vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
-        vidBox.style.zIndex = 10;
-
-        // initPublisher
-        var publisher = OT.initPublisher(vidBox, {
-            name: name,
-            height: 160,
-            width: 240,
-            frameRate: 15
-            // AUDIO ONLY:  videoSource: null
-        });
-
-        publisher.setStyle({
-            audioLevelDisplayMode: "on",
-            nameDisplayMode: 'off',
-            buttonDisplayMode: 'on'
-        });
-
-        publisher.on({
-
-            accessDialogOpened: function (event) {
-                // The Allow/Deny dialog box is opened.
-                alert('Please allow access to camera.');
-            },
-
-            accessDenied: function accessDeniedHandler(event) {
-                // The user has denied access to the camera and mic.
-                // NOT WORKING
-                alert('You have denied camera access.');
-            }
-
-        });
-
-// publisher.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
-
-        session.publish(publisher);
-
-        // add jos_name
-        var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-        var nameBox = document.getElementById(nameBoxID);
-        nameBox.innerHTML = name;
-
-        var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-        $(particBox).removeClass('hidden');
-    }
-
-connectMe();
+connectToSession();
 
 </script>
 
@@ -321,15 +338,6 @@ Test for VIDEO DISABLED:
 TOGGLE AUDIO / VIDEO: subscriber.subscribeToAudio(false); // audio off
 
 Events:
-
-publisher.on({
-    accessAllowed
-    accessDenied
-    accessDialogClosed
-    accessDialogOpened
-    audioLevelUpdated
-    streamCreated
-    streamDestroyed
 
 subscriber.on({
     audioLevelUpdated
