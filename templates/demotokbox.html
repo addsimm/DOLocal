@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Video Chat</title>
+</head>
+<style>
+    #subscribersContainer {
+        border-radius: 25px;
+        background: url(paper.gif);
+        background-position: left top;
+        background-repeat: repeat;
+        padding: 20px;
+        width: 200px;
+        height: 150px;
+    }
+
+    #publisherContainer {
+        width: 100px;
+        height: 100px;
+        background-position: left top;
+        background-repeat: repeat;
+        padding: 20px;
+        border-radius: 25px;
+    }
+
+    @media screen and (max-width: 650px) {
+        #publisherContainer {
+            width: 89px;
+            height: 50px;
+            background-position: left top;
+            background-repeat: repeat;
+            padding: 20px;
+            border-radius: 25px;
+        }
+    }
+</style>
+
+
+<body>
+<div id="links">
+    <input type="button" value="Connect" id="connectLink" onClick="javascript:connect()"/>
+    <input type="button" value="Disconnect" id="disconnectLink" onClick="javascript:disconnect()" style="display:none"/>
+    <input type="button" value="Publish" id="publishLink" onClick="javascript:startPublishing()" style="display:none"/>
+    <input type="button" value="Unpublish" id="unpublishLink" onClick="javascript:stopPublishing()"
+           style="display:none"/>
+    <input type="button" value="startArchive" id="startArchive" onClick="javascript:startArchivSession()"
+           style="display:none"/>
+    <input type="button" value="stopArchive" id="stopArchive" onClick="javascript:stopArchiveSession()"
+           style="display:none"/>
+    <input type="button" value="Signal" id="signalLink" onClick="javascript:sendSignal()" style="display:none"/>
+</div>
+
+
+<div id="publisherContainer"></div>
+<div id="subscribersContainer"></div>
+
+<div id="signals"></div>
+
+<script src='https://static.opentok.com/v2/js/TB.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+
+    var apiKey = '45616422';
+    var sessionId = '{{ session_id }}';
+    var token = '{{ token }}';
+    var session;
+
+    session = OT.initSession(apiKey, sessionId);
+
+
+    session.on("streamPropertyChanged", streamPropertyChangedHandler);
+    function streamPropertyChangedHandler(event) {
+        switch (event.changedProperty) {
+            case "hasAudio":
+                alert("hasAudio: " + event.newValue)
+                break;
+            case "hasVideo":
+                alert("hasVideo: " + event.newValue)
+                break;
+            case "videoDimensions" :
+                alert("orientation change:" + event.newValue);
+                break;
+            case "quality":
+                for (var index in event.newValue) {
+                    alert(indedx + ": " + event.newValue[index])
+                }
+
+                break;
+        }
+    }
+
+    var arr = new Array();
+
+    var connectionCount = 0;
+    // Add event listeners to the session
+    session.on({
+        sessionDisconnected: function (event) {
+            // The user was disconnected from the Session. Any subscribers
+            // and publishers will automatically be removed from the dom.
+            show('connectLink');
+            hide('disconnectLink');
+            hide('publishLink');
+            hide('unpublishLink');
+            hide('signalLink');
+        },
+        connectionCreated: function (event) {
+
+            console.log(connectionCount);
+            console.log("123=" + event.connection.connectionId);
+            arr.push(event.connection.connectionId)
+            conn = event.connection.connectionId;
+            //alert("commingggggg"+conn);
+            if (connectionCount == 2) {
+                conn2 = event.connection.connectionId;
+                //alert("comming"+conn2);
+                connectionCount++;
+            }
+        },
+        streamCreated: function (event) {
+            // Subscribe to a new third-party stream in the session.
+            console.log('streamCreated');
+
+            var abc = document.getElementById('subscribersContainer');
+            var subOptions = {insertMode: 'append'};
+            var subscriber = session.subscribe(event.stream, 'subscribersContainer', subOptions);
+            if (subscriber.stream.hasVideo) {
+                alert("video");
+            } else {
+                alert("coming");
+                subscriber.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
+            }
+
+
+        },
+        signal: function (event) {
+            // A signal was received.
+            var signalsDiv = document.getElementById('signals');
+            var messageP = document.createElement('p');
+            messageP.innerHTML = event.data;
+            signalsDiv.appendChild(messageP);
+        }
+
+
+    });
+
+
+    //--------------------------------------
+    //  LINK CLICK HANDLERS
+    //--------------------------------------
+
+    function connect() {
+        alert("testing");
+        session.connect(token, function (error) {
+            if (error) {
+                alert(error.message);
+            } else {
+                show('disconnectLink');
+                show('publishLink');
+                show('signalLink');
+                hide('connectLink');
+            }
+        });
+    }
+
+    function disconnect() {
+        session.disconnect();
+        hide('disconnectLink');
+        hide('publishLink');
+        hide('unpublishLink');
+    }
+
+    //alert("Available width/height: " + screen.availWidth + "*" + screen.availHeight);
+
+    // Called when user wants to start publishing to the session
+    function startPublishing() {
+        var ran = Math.floor((Math.random() * 3) + 1);
+        /*var publisherOptions = {
+         name: 'A web-based OpenTok client',
+         insertMode: 'append',
+         resolution: res[ran]
+         };*/
+
+        var publisherOptions = {
+
+            name: 'John',
+            publishVideo: false,
+            style: {buttonDisplayMode: 'on'},
+            style: {nameDisplayMode: 'off'}
+
+
+        };
+        publisher = OT.initPublisher('publisherContainer', publisherOptions)
+        ///////////
+        publisher.on(
+                {
+                    accessAllowed: function (event) {
+                        alert("allowed");
+                    },
+                    accessDenied: function (event) {
+                        alert("denied");
+                    }
+                },
+                publisher);
+
+        //////
+
+        //  publisher = OT.initPublisher('publisherContainer', publisherOptions);
+        session.publish(publisher, function (error) {
+            if (error) {
+                alert(error.message);
+            }
+            if (publisher.hasVideo) {
+                alert("video");
+            } else {
+
+                publisher.setStyle('backgroundImageURI', 'http://www.joinourstory.com/static/img/coming-soon-profile.png');
+                alert("coming");
+            }
+
+        });
+        show('unpublishLink');
+        hide('publishLink');
+        show('startArchive');
+
+
+    }
+
+    function stopPublishing() {
+        session.unpublish(publisher);
+        show('publishLink');
+        show('archive');
+        hide('unpublishLink');
+
+    }
+
+    function sendSignal() {
+        session.signal({
+                    data: "sabir testing"
+                },
+                function (error) {
+                    if (error) {
+                        console.log("signal error: " + error.reason + "code=" + error.code);
+                    } else {
+                        console.log("signal sent");
+                    }
+                }
+        );
+    }
+
+    // Receiving signal data
+    session.on("signal", function (event) {
+        console.log("Signal sent from connection " + event.from.id);
+        console.log("data=" + event.data);
+        // Process the event.data property, if there is any data.
+    });
+
+
+    // Start Archive
+    function startArchivSession() {
+        alert("start");
+        // Ajax call
+        //https://api.opentok.com/v2/partner/<api_key>/archive
+        $.ajax({
+            url: 'https://api.opentok.com/v2/partner/45592942/archive',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            headers: 'X-TB-PARTNER-AUTH: 45592942:92c49242824dd9e83890c8c282da3628e8d56752',
+            data: {
+                "sessionId": "1_MX40NTU5Mjk0Mn5-MTQ2NzExNjQzNzM3Nn4wUTUzNnNURHlLQmdKWjNPUTVMdlNSSkd-fg",
+                "hasAudio": true,
+                "hasVideo": true,
+                "name": "sabir",
+                "outputMode": "individual",
+            },
+            processData: false,
+            success: function (data) {
+                console.log("success" + data);
+                console.log(JSON.stringify(data));
+            },
+            error: function (errorThrown) {
+                console.log("Error" + JSON.stringify(errorThrown));
+            }
+        });
+
+
+        hide('startArchive');
+        show('stopArchive');
+    }
+
+    // Stop archive
+    function stopArchiveSession() {
+        $.ajax({
+            url: 'https://api.opentok.com/v2/partner/45592942/archive/arch_id/stop',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            headers: 'X-TB-PARTNER-AUTH: 45592942:92c49242824dd9e83890c8c282da3628e8d56752',
+            processData: false,
+            success: function (data) {
+                console.log("success" + data);
+                console.log(JSON.stringify(data));
+            },
+            error: function (errorThrown) {
+                console.log("Error" + JSON.stringify(errorThrown));
+            }
+        });
+
+        show('startArchive');
+        hide('stopArchive');
+    }
+    //--------------------------------------
+    //  HELPER METHODS
+    //--------------------------------------
+
+    function show(id) {
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function hide(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+</script>
+</body>
+</html>
