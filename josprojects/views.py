@@ -122,7 +122,7 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def tokboxtest(request, template="demotokbox.html"):
+def tokboxtest(request, template="tokboxtest.html"):
     APIKey = '45616422'
     secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
 
