@@ -1,0 +1,46 @@
+
+{% extends "josstaff/staff_base.html" %}
+{% load i18n tz pages_tags mezzanine_tags staticfiles %}
+
+{% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
+
+{% block all_content %}
+
+<style>
+
+    #center {
+        margin-top: 0;
+        background-color: lightyellow;
+        border: 3px solid rgb(65, 45, 120);
+        padding: 50px;
+    }
+
+</style>
+
+
+<div id="center" class="row">
+
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 josinstructions">
+                Instructions on connecting to workshop
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 50px;">
+            <div class="col-xs-10 col-xs-offset-1  text-center">
+                <a class="btn btn-default btn-lg"
+                   style="width: 300px;"
+                   href="http://www.joinourstory.com/tokboxtest">
+                    Connect to workshop
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock all_content %}
+
+

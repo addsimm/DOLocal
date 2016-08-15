@@ -146,5 +146,10 @@ def tokboxtest(request, template="tokboxtest.html"):
     return TemplateResponse(request, template, context)
 
 
+def workshop_connect(request, template="workshop_connect.html"):
 
+    context = {
+    }
+
+    return TemplateResponse(request, template, context)
 

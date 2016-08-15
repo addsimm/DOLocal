@@ -33,6 +33,7 @@ urlpatterns += patterns('',
     # EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     url("tokboxtest$", "josprojects.views.tokboxtest", name="tokboxtest"),
+    url("workshopconnect$", "josprojects.views.workshop_connect", name="workshop_connect"),
 
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
