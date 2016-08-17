@@ -26,7 +26,7 @@
 {% block all_content %}
 
     <div class="row">
-        <div class="col-xs-offset-1 col-xs-10">
+        <div class="col-xs-11" style="padding-left: 50px;">
             {% block accounts_content %}
                 {# form.as_p #}
                 {% errors_for form %}
@@ -71,22 +71,26 @@
                                 </div>
                             {% endif %}
                         {% endfor %}
+                    </fieldset>
 
-                        <div class="form-actions"><!-- sumbit -->
-                            {% block account_form_actions %}
-                                {% if title == "Sign up" %}
-                                    <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
-                                        I agree to the
-                                        <a href="/community-rules">community rules</a>
-                                        as well as the <a href="/legals">terms and conditions</a>.
-                                    </div>
-                                {% endif %}
-                                <input class="btn btn-default btn-lg pull-left"
-                                       style="margin-top: 10px; width: 200px;"
-                                       type="submit"
-                                       value="{{ title }}">
-                            {% endblock account_form_actions %}
-                        </div>
+                    <div class="form-actions"><!-- sumbit -->
+                        {% block account_form_actions %}
+                            {% if title == "Sign up" %}
+                                <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
+                                    I agree to the
+                                    <a class="joslargelinkbutton" style=" " href="/community-rules">Community
+                                        rules</a>
+                                    &nbsp&nbsp&nbsp&
+                                    <a class="joslargelinkbutton" style=" " href="/legals">Terms and
+                                        conditions</a><br><br>
+                                </div>
+                            {% endif %}
+                            <input class="btn btn-default btn-lg pull-left"
+                                   style="margin-top: 10px; width: 200px;"
+                                   type="submit"
+                                   value="{{ title }}">
+                        {% endblock account_form_actions %}
+                    </div>
 
                 </form>
             </div>

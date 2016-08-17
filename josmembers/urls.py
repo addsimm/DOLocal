@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from views import members_list, submit_member_search_from_ajax
+from views import members_list, submit_member_search_from_ajax, reserve_space
 
 from mezzanine.conf import settings
 
@@ -34,6 +34,8 @@ urlpatterns = patterns('',
        "josmembers.views.signup_verify", name="signup_verify"),
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
        "josmembers.views.password_reset", name="jos_password_reset"),
+
+    url("reserve_space", reserve_space, name="josreservespace"),
 
    # friends AJAX search
 

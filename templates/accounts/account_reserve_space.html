@@ -1,0 +1,26 @@
+{% extends "accounts/account_form.html" %}
+{% load i18n %}
+
+{% block accounts_content %}
+
+    {% if request.user.is_authenticated  %}
+
+        <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
+
+    {% else %}
+        <div class="josinstructions" style="margin-bottom: 30px;">
+            <b>Thanks for your interest in Join Our Story!<br></b>
+            - Completing this form reserves your space.<br>
+            - You do not need any special equipment or skills to participate.<br>
+            - This info will only be used to help you start smoothly.<br>
+            - Please answer every question;&nbsp&nbsptake the time to get answers, when possible.<br><br>
+            When done,&nbsp&nbspclick "{{ title }}"&nbsp&nbsp-- the computer may indicate some issues.<br>
+            And remember, we are always here for you:&nbsp&nbsp<span style="color: #d9534f; font-weight: bold;">(213) 465-0885</span><br><br>
+            Join Our Story will contact you ASAP to make sure everything is ready to go :-).
+        </div>
+
+        {{ block.super }}
+
+    {% endif %}
+
+{% endblock accounts_content %}

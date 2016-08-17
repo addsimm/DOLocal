@@ -35,3 +35,16 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         return jos_name
 
 
+class JOSReservation(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Reservation'
+        ordering = ("-updated",)
+
+    first_name = models.CharField(max_length=200, default=None)
+    last_name = models.CharField(max_length=200, default=None)
+    referral_email = models.EmailField()
+    referral_phone = models.CharField(max_length=40, default=None)
+    referral_city = models.CharField(max_length=40, default=None)
+    referral_notes = models.TextField(default=None)
+
+

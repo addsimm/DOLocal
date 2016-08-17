@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block meta_title %}Landing{% endblock %}
 
 {% block title %}Landing{% endblock %}
@@ -33,6 +35,20 @@
 <div id="landing_page" style="margin-left: 150px;">
 
     <div class="row" style="margin-top: -30px; margin-left: -90px; margin-right: -30px; background-color: transparent;">
+
+        <div class="row" style="background-color: transparent;">
+            <div class="col-xs-12" style=" ">
+
+                <a href="{% url "josmembers:josreservespace" %}" class="btn btn-success"
+                   style="font-size: 24pt; height: 85px; padding-top: 20px; width: 250px;">
+                    {% trans "Reserve space!" %}</a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" style="margin-top: 30px; margin-left: -90px; margin-right: -30px; background-color: transparent;">
 
         <div class="col-xs-5" style="margin-top: 35px; background-color: transparent;">
             <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
