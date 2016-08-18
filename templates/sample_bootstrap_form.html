@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form class="form-horizontal" method="post" role="form">
+    <input type="hidden" value="Gs75dgICYsfK1DXRIRpol026vWjtgdL4" name="csrfmiddlewaretoken">
+    <input id="id_hidden_field" type="hidden" name="hidden_field">
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_char_field">Char field</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <input id="id_char_field" class=" form-control" type="text" name="char_field">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_choice_field">Choice field</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <select id="id_choice_field" class=" form-control" name="choice_field">
+                <option value="0">Zero</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 ">Radio choice</label>
+        <div class=" col-sm-10 col-lg-10">
+            <div class="radio">
+                <label>
+                    <input type="radio" value="0" name="radio_choice">
+                    Zero
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" value="1" name="radio_choice">
+                    One
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" value="2" name="radio_choice">
+                    Two
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_multiple_choice">Multiple choice</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <select id="id_multiple_choice" class=" form-control" name="multiple_choice" multiple="multiple">
+                <option value="0">Zero</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_multiple_checkbox">Multiple checkbox</label>
+        <div class=" col-sm-10 col-lg-10 multiple-checkbox">
+            <ul id="id_multiple_checkbox">
+                <li>
+                    <label for="id_multiple_checkbox_0">
+                        <input id="id_multiple_checkbox_0" type="checkbox" value="0" name="multiple_checkbox">
+                        Zero
+                    </label>
+                </li>
+                <li>
+                    <label for="id_multiple_checkbox_1">
+                        <input id="id_multiple_checkbox_1" type="checkbox" value="1" name="multiple_checkbox">
+                        One
+                    </label>
+                </li>
+                <li>
+                    <label for="id_multiple_checkbox_2">
+                        <input id="id_multiple_checkbox_2" type="checkbox" value="2" name="multiple_checkbox">
+                        Two
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_file_fied">File fied</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <input id="id_file_fied" type="file" name="file_fied">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_password_field">Password field</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <input id="id_password_field" class=" form-control" type="password" name="password_field">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2 col-lg-2 " for="id_textarea">Textarea</label>
+        <div class=" col-sm-10 col-lg-10 ">
+            <textarea id="id_textarea" class=" form-control" rows="10" name="textarea" cols="40"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class=" col-sm-offset-2 col-sm-10 col-lg-offset-2 col-lg-10">
+            <div class="checkbox">
+                <label>
+                    <input id="id_boolean_field" type="checkbox" name="boolean_field">
+                    <span>Boolean field</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </div>
+    </div>
+</form>
+</body>
+</html>
+

@@ -28,9 +28,7 @@ else:
 
 _exclude_fields = tuple(getattr(settings, "ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS", ()))
 
-# If a profile model has been configured with the ``AUTH_PROFILE_MODULE``
-# setting, create a model form for it that will have its fields added to
-# ``ProfileForm``.
+# If an ``AUTH_PROFILE_MODULE`` is set, creating a model form for it will add fields to ``ProfileForm``.
 try:
     class ProfileFieldsForm(forms.ModelForm):
         class Meta:

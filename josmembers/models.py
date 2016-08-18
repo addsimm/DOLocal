@@ -35,16 +35,52 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         return jos_name
 
 
+PRIMARY_DEVICE_CHOICES = (
+    (1, 'Laptop'),
+    (2, 'Desktop'),
+    (3, 'Tablet'),
+)
+
+PRIMARY_OS_CHOICES = (
+    (1, 'Windows'),
+    (2, 'Mac'),
+    (3, 'Other'),
+    (4, 'Uncertain'),
+)
+
+BROWSER_CHOICES = (
+    (1, 'Firefox'),
+    (2, 'Internet Explorer'),
+    (3, 'Chrome'),
+    (4, 'Safari'),
+    (5, 'Uncertain'),
+)
+
+EMAIL_FREQ_CHOICES = (
+    (1, 'More than once a day'),
+    (2, 'Everyday'),
+    (3, 'Not everyday'),
+    (4, 'Never'),
+)
+
 class JOSReservation(TimeStamped, models.Model):
+
     class Meta:
         verbose_name = 'Reservation'
-        ordering = ("-updated",)
+        ordering = ("-created",)
 
+    zip = models.IntegerField(default=None)
     first_name = models.CharField(max_length=200, default=None)
     last_name = models.CharField(max_length=200, default=None)
-    referral_email = models.EmailField()
-    referral_phone = models.CharField(max_length=40, default=None)
-    referral_city = models.CharField(max_length=40, default=None)
-    referral_notes = models.TextField(default=None)
+    email = models.EmailField(default=None)
+    email_frequency = models.IntegerField(default=0, choices=EMAIL_FREQ_CHOICES)
+    phone = models.CharField(max_length=40, default=None)
+    phone_text = models.BooleanField(default=False)
+    best_time_to_call = models.TextField(default=None)
+    primary_device = models.IntegerField(default=0, choices=PRIMARY_DEVICE_CHOICES)
+    webcam = models.BooleanField(default=False)
+    primary_os = models.IntegerField(default=0, choices=PRIMARY_OS_CHOICES)
+    browser = models.IntegerField(default=0, choices=BROWSER_CHOICES)
+
 
 

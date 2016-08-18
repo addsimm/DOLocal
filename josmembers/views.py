@@ -321,9 +321,9 @@ def reserve_space(request, template="accounts/account_reserve_space.html", extra
 
         if reservation:
             ###                send_approve_mail(request, new_user)
-            info(request, _("Thanks for reserving a spot; we look forward to speaking!"))
+            info(request, _("Success! We will contact you soon."))
         else:
-            info(request, _("Sorry, there was a problem, please try again or contact us at (213) 465-0885."))
+            info(request, _("Sorry, please try again or contact us at (213) 465-0885."))
 
         return redirect(next_url(request) or "/")
 
