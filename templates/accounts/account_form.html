@@ -31,7 +31,10 @@
                 {# form.as_p #}
                 {% errors_for form %}
 
-                <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+                <form class="form-horizontal"
+                      method="post"
+                      {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+
                     <fieldset>
                         {% nevercache %}
                             <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
@@ -42,15 +45,17 @@
                             {% if field.is_hidden %}
                                 {{ field }}
                             {% else %}
-                                 <div class="form-group input_{{ field.id_for_label }}
-                                                             {{ field.field.type }}
-                                                             {% if field.errors %}
-                                                                has-error
-                                                             {% endif %}">
-                                    {# field.name #}
+
+                                    <div class="form-group input_{{ field.id_for_label }}
+                                                                 {{ field.field.type }}
+                                                                 {% if field.errors %}
+                                                                    has-error
+                                                                 {% endif %}">
+    {# field.name #}
                                     {% if field.label %}
                                         <label class="control-label"
-                                        for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                                            for="{{ field.auto_id }}">{{ field.label | title }}
+                                        </label>
                                     {% endif %}
 
                                     {{ field }}
@@ -100,6 +105,43 @@
         <div class="col-xs-1"></div>
 
     </div>
+
+    <style>
+
+        input[type='radio'], input[type='checkbox'] {
+            width: 1.25em;
+            height: 1.25em;
+            margin-top: 12px;
+            margin-right: 5px;
+        }
+
+        label[for*='id_email_frequency_'] {
+
+        }
+
+    </style>
+
+    <script>
+
+        // Then move the input to outside of the label
+        //// $('.input_id_email_frequency > label > input').each(function () {$(this).parent().before(this);});
+
+        var radio_box_selectors = [
+            ".input_id_email_frequency",
+            ".input_id_primary_device",
+            ".input_id_primary_os",
+            ".input_id_browser"
+        ];
+        for (i = 0; i < radio_box_selectors.length; i++) {
+            console.log('radio_box_selectors: ' + radio_box_selectors[i]);
+            $(radio_box_selectors[i] + " ul").contents().unwrap();
+            $(radio_box_selectors[i] + " li").contents().unwrap();
+            $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
+            $('<br>').insertBefore(radio_box_selectors[i] + " > label");
+        }
+
+    </script>
+
 
 {% endblock all_content %}
 

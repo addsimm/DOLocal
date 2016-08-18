@@ -17,7 +17,7 @@ from mezzanine.utils.urls import slugify, unique_slug
 
 import floppyforms.__future__ as forms
 
-from models import JOSReservation
+from models import *
 
 User = get_user_model()
 
@@ -292,6 +292,26 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
         model = JOSReservation
         fields = '__all__'
         exclude = _exclude_fields
+
+    email_frequency = forms.ChoiceField(
+        label='How often do you check your email?',
+        widget=forms.RadioSelect(), choices=EMAIL_FREQ_CHOICES
+    )
+
+    primary_device = forms.ChoiceField(
+            label='What kind of device do you usually use for the internet?',
+            widget=forms.RadioSelect(), choices=PRIMARY_DEVICE_CHOICES
+    )
+
+    primary_os = forms.ChoiceField(
+            label='What is the type of that device?',
+            widget=forms.RadioSelect(), choices=PRIMARY_OS_CHOICES
+    )
+
+    browser = forms.ChoiceField(
+            label='What internet browsers do you have on that device?',
+            widget=forms.CheckboxSelectMultiple(), choices=BROWSER_CHOICES
+    )
 
     def __init__(self, *args, **kwargs):
         super(JOSReserveSpaceForm, self).__init__(*args, **kwargs)
