@@ -108,6 +108,36 @@
 
     <style>
 
+        .form-group > input[type="text"],
+        .form-group > input[type="email"],
+        .form-group > input[type="number"],
+        .form-group > textarea {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            outline: 2px dotted #28a4c9;
+            box-shadow: none;
+            color: rgb(65, 45, 120);
+            display: block;
+            font-size: 14pt;
+            line-height: normal;
+            max-width: 85%;
+            padding: 6px 12px;
+            transition: none;
+            vertical-align: middle;
+            width: 85%;
+        }
+
+        .form-group > input[type="text"],
+        .form-group > input[type="email"],
+        .form-group > input[type="number"] {
+            height: 50px;
+        }
+
+        .form-group > input[type="checkbox"] {
+            height: 80px;
+        }
+
         input[type='radio'] {
             height: 1.35em;
             margin-right: 7px;
@@ -142,21 +172,25 @@
         var radio_box_selectors = [
             ".input_id_email_frequency",
             ".input_id_primary_device",
-            ".input_id_primary_os",
-            ".input_id_browser"
+            ".input_id_primary_os"
         ];
         for (i = 0; i < radio_box_selectors.length; i++) {
-            console.log('radio_box_selectors: ' + radio_box_selectors[i]);
+            //console.log('radio_box_selectors: ' + radio_box_selectors[i]);
             $(radio_box_selectors[i] + " ul").contents().unwrap();
             $(radio_box_selectors[i] + " li").contents().unwrap();
             $(radio_box_selectors[i]).children()
-                    .wrap("<div class='radio' style='margin-left: 30px; margin-top: 15px;'></div>");
+                    .wrap("<div class='radio' style='margin-left: 30px; margin-top: 10px;'></div>");
             $(radio_box_selectors[i] + " .control-label").unwrap();
             // $(radio_box_selectors[i] + " label").removeAttr('for');
 
             // $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
             // $('<br>').insertBefore(radio_box_selectors[i] + " > label");
         }
+
+        $(".form-group").each(function(index) {
+            $(this).wrap("<div class='col-xs-6' style='margin-top: 15px;'></div>");
+            console.log(index + ": " + $(this).parent().attr('class'));
+        });
 
     </script>
 

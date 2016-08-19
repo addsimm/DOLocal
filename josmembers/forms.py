@@ -299,7 +299,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     )
 
     primary_device = forms.ChoiceField(
-            label='What device do you usually use to access the internet?',
+            label='How do you usually access the internet?',
             widget=forms.RadioSelect(), choices=PRIMARY_DEVICE_CHOICES
     )
 
@@ -316,10 +316,10 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     zip        = forms.IntegerField(label='What is your 5 digit zip code?')
 
     best_time_to_call = forms.CharField(label='When are the best times to call you?',
-                                        widget=forms.Textarea())
+                                        widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))
 
     browser           = forms.CharField(label='Bonus: what internet browsers do you know?',
-                                        widget=forms.Textarea())
+                                        widget=forms.Textarea(attrs = {'cols': 50, 'rows': 5}))
 
     def __init__(self, *args, **kwargs):
         super(JOSReserveSpaceForm, self).__init__(*args, **kwargs)
