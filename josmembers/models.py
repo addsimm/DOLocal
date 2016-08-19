@@ -52,14 +52,13 @@ BROWSER_CHOICES = (
     (1, 'Firefox'),
     (2, 'Internet Explorer'),
     (3, 'Chrome'),
-    (4, 'Safari'),
-    (5, 'Uncertain'),
+    (4, 'Apple Safari'),
 )
 
 EMAIL_FREQ_CHOICES = (
     (1, 'More than once a day'),
     (2, 'Everyday'),
-    (3, 'Not everyday'),
+    (3, 'Rarely'),
     (4, 'Never'),
 )
 
@@ -69,9 +68,10 @@ class JOSReservation(TimeStamped, models.Model):
         verbose_name = 'Reservation'
         ordering = ("-created",)
 
-    zip = models.IntegerField(default=None)
+
     first_name = models.CharField(max_length=200, default=None)
     last_name = models.CharField(max_length=200, default=None)
+    zip = models.IntegerField(default=None)
     email = models.EmailField(default=None)
 
     email_frequency = models.IntegerField(default=0, choices=EMAIL_FREQ_CHOICES)
@@ -84,7 +84,8 @@ class JOSReservation(TimeStamped, models.Model):
 
     primary_os = models.IntegerField(default=0, choices=PRIMARY_OS_CHOICES)
 
-    browser = models.IntegerField(default=0, choices=BROWSER_CHOICES)
+    browser = models.TextField(blank=True, default=None)
+
 
 
 

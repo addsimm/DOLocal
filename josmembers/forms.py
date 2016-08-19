@@ -299,19 +299,27 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     )
 
     primary_device = forms.ChoiceField(
-            label='What kind of device do you usually use for the internet?',
+            label='What device do you usually use to access the internet?',
             widget=forms.RadioSelect(), choices=PRIMARY_DEVICE_CHOICES
     )
 
     primary_os = forms.ChoiceField(
-            label='What is the type of that device?',
+            label='What is its operating system?',
             widget=forms.RadioSelect(), choices=PRIMARY_OS_CHOICES
     )
 
-    browser = forms.ChoiceField(
-            label='What internet browsers do you have on that device?',
-            widget=forms.CheckboxSelectMultiple(), choices=BROWSER_CHOICES
-    )
+
+    phone_text = forms.BooleanField(label='Check this box if you text on your phone:')
+    webcam     = forms.BooleanField(label='Check this box if you have a webcam:')
+    phone      = forms.IntegerField(label='Phone number - with area code')
+    email      = forms.EmailField(label='What is your email address?')
+    zip        = forms.IntegerField(label='What is your 5 digit zip code?')
+
+    best_time_to_call = forms.CharField(label='When are the best times to call you?',
+                                        widget=forms.Textarea())
+
+    browser           = forms.CharField(label='Bonus: what internet browsers do you know?',
+                                        widget=forms.Textarea())
 
     def __init__(self, *args, **kwargs):
         super(JOSReserveSpaceForm, self).__init__(*args, **kwargs)

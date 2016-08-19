@@ -108,12 +108,25 @@
 
     <style>
 
-        input[type='radio'], input[type='checkbox'] {
-            width: 1.25em;
-            height: 1.25em;
-            margin-top: 12px;
-            margin-right: 5px;
+        input[type='radio'] {
+            height: 1.35em;
+            margin-right: 7px;
+            margin-top: 0;
+            width: 1.35em;
         }
+
+        input[type='checkbox'] {
+            height: 1.75em;
+            width: 1.75em;
+            margin-left: 7px;
+            vertical-align: middle;
+        }
+
+        .control-label {
+            vertical-align: middle;
+        }
+
+
 
         label[for*='id_email_frequency_'] {
 
@@ -136,8 +149,13 @@
             console.log('radio_box_selectors: ' + radio_box_selectors[i]);
             $(radio_box_selectors[i] + " ul").contents().unwrap();
             $(radio_box_selectors[i] + " li").contents().unwrap();
-            $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
-            $('<br>').insertBefore(radio_box_selectors[i] + " > label");
+            $(radio_box_selectors[i]).children()
+                    .wrap("<div class='radio' style='margin-left: 30px; margin-top: 15px;'></div>");
+            $(radio_box_selectors[i] + " .control-label").unwrap();
+            // $(radio_box_selectors[i] + " label").removeAttr('for');
+
+            // $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
+            // $('<br>').insertBefore(radio_box_selectors[i] + " > label");
         }
 
     </script>
@@ -145,6 +163,9 @@
 
 {% endblock all_content %}
 
+input_id_webcam
+input_id_phone_text
 
+input_id_browser
 
 
