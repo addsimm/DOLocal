@@ -77,7 +77,7 @@ class JOSReservation(TimeStamped, models.Model):
     email_frequency = models.IntegerField(default=0, choices=EMAIL_FREQ_CHOICES)
     phone = models.CharField(max_length=40, default=None)
     zip = models.IntegerField(max_length=5, default=None)
-    phone_text = models.BooleanField(default=False)
+    phone_text = models.NullBooleanField(blank=True, default=False)
 
     best_time_to_call = models.TextField(default=None)
 
@@ -87,8 +87,10 @@ class JOSReservation(TimeStamped, models.Model):
 
     primary_os = models.IntegerField(default=0, choices=PRIMARY_OS_CHOICES)
 
-    webcam = models.BooleanField(default=False)
+    webcam = models.NullBooleanField(blank=True, default=False)
     browser = models.TextField(blank=True, default=None)
+    refer = models.TextField(blank=True, null=True, default=None)
+    staff_notes = models.TextField(blank=True, null=True, default=None)
 
 
 

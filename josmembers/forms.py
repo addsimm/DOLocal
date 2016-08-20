@@ -291,7 +291,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     class Meta:
         model = JOSReservation
         fields = '__all__'
-        exclude = _exclude_fields
+        exclude = ('staff_notes',)
 
     email_frequency = forms.ChoiceField(
         label='How often do you check your email?',
@@ -309,8 +309,14 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     )
 
 
-    phone_text = forms.BooleanField(label='Check this box if you text on your phone:')
-    webcam     = forms.BooleanField(label='Check this box if you have a webcam:')
+    phone_text = forms.NullBooleanField(label='Check this box if you text on your phone:',
+                                    initial=False,
+                                    widget=forms.CheckboxInput,
+                                    required=False)
+    webcam     = forms.NullBooleanField(label='Check this box if you have a webcam:',
+                                        widget=forms.CheckboxInput,
+                                        initial=False,
+                                        required=False)
     phone      = forms.IntegerField(label='Phone number - with area code')
     email      = forms.EmailField(label='What is your email address?')
     zip        = forms.IntegerField(label='What is your 5 digit zip code?')
@@ -318,8 +324,14 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     best_time_to_call = forms.CharField(label='When are the best times to call you?',
                                         widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))
 
-    browser           = forms.CharField(label='Bonus: what internet browsers do you know?',
-                                        widget=forms.Textarea(attrs = {'cols': 50, 'rows': 5}))
+    browser    = forms.CharField(label='Bonus: what internet browsers do you know?',
+                                 initial='Not certain',
+                                 required=False,
+                                 widget=forms.Textarea(attrs = {'cols': 50, 'rows': 5}))
+
+    refer      = forms.CharField(label='Finally, how did you hear about Join Our Story?',
+                                 required=False,
+                                 widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))
 
     def __init__(self, *args, **kwargs):
         super(JOSReserveSpaceForm, self).__init__(*args, **kwargs)
@@ -345,5 +357,3 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
         ### Notify Adam
 
         return reservation
-
-
