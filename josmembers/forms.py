@@ -317,9 +317,9 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
                                         widget=forms.CheckboxInput,
                                         initial=False,
                                         required=False)
-    phone      = forms.IntegerField(label='Phone number - with area code')
+    phone      = forms.CharField(label='Phone number - with area code')
     email      = forms.EmailField(label='What is your email address?')
-    zip        = forms.IntegerField(label='What is your 5 digit zip code?')
+    zip        = forms.CharField(label='What is your 5 digit zip code?')
 
     best_time_to_call = forms.CharField(label='When are the best times to call you?',
                                         widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))

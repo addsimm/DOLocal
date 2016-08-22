@@ -327,7 +327,7 @@ def reserve_space(request, template="accounts/account_reserve_space.html", extra
 
         return redirect(next_url(request) or "/")
 
-    context = {"form": form, "title": _("Reserve space")}
+    context = {"form": form, "title": _("Reserve place")}
     context.update({"remote_address": remote_address})
     context.update(extra_context or {})
 
