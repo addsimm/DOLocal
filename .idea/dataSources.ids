@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>221867</introspection-state-number>
-        <introspection-timestamp>2016-08-20.09:27:22.344</introspection-timestamp>
+        <introspection-state-number>223383</introspection-state-number>
+        <introspection-timestamp>2016-08-23.15:22:12.085</introspection-timestamp>
       </schema>
       <schema id="3" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -537,7 +537,7 @@
       </table>
       <table id="133" parent="2" name="josmembers_josreservation">
         <object-id>21387</object-id>
-        <state-number>221867</state-number>
+        <state-number>223383</state-number>
       </table>
       <table id="134" parent="2" name="josmessages_josmessagethread">
         <object-id>20858</object-id>
@@ -22246,9 +22246,9 @@ course_id</columns>
         <data-type>integer</data-type>
       </column>
       <column id="4033" parent="133" name="zip">
-        <state-number>218691</state-number>
+        <state-number>223383</state-number>
         <mandatory>1</mandatory>
-        <data-type>integer</data-type>
+        <data-type>varchar(10)</data-type>
       </column>
       <column id="4034" parent="133" name="email_frequency">
         <state-number>218738</state-number>

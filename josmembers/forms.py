@@ -343,7 +343,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
         Ensure the email address is not already registered.
         """
         email = self.cleaned_data.get("email")
-        qs = User.objects.exclude(id=self.instance.id).filter(email=email)
+        qs = JOSReservation.objects.exclude(id=self.instance.id).filter(email=email)
         if len(qs) == 0:
             return email
         raise forms.ValidationError(
