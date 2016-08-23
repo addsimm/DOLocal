@@ -320,14 +320,14 @@ def reserve_space(request, template="accounts/account_reserve_space.html", extra
         reservation = form.save()
 
         if reservation:
-            ###                send_approve_mail(request, new_user)
+            ### send_approve_mail(request, new_user)
             info(request, _("Success! We will contact you soon."))
         else:
             info(request, _("Sorry, please try again or contact us at (213) 465-0885."))
 
         return redirect(next_url(request) or "/")
 
-    context = {"form": form, "title": _("Reserve space")}
+    context = {"form": form, "title": _("Reserve place")}
     context.update({"remote_address": remote_address})
     context.update(extra_context or {})
 

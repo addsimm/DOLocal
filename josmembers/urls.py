@@ -28,13 +28,14 @@ urlpatterns = patterns('',
        "josmembers.views.login", name="login"),
     url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
        "josmembers.views.logout", name="logout"),
-    url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
-       "josmembers.views.signup", name="jossignup"),
     url("^%s%s%s$" % (SIGNUP_VERIFY_URL.strip("/"), _verify_pattern, _slash),
        "josmembers.views.signup_verify", name="signup_verify"),
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
        "josmembers.views.password_reset", name="jos_password_reset"),
 
+    # url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
+    #   "josmembers.views.signup", name="jossignup"),
+    url("signup", "josmembers.views.signup", name="jossignup"),
     url("reserve_space", reserve_space, name="josreservespace"),
 
    # friends AJAX search
