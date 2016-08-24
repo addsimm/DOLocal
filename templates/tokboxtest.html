@@ -31,13 +31,17 @@
 
 </style>
 
-{#<span class="josinstructions">Facilitator:</span>#}
+{# <span class="josinstructions">Facilitator:</span> #}
 
 <div class="row josinstructions" style="margin-top: -50px;">
+
+    <input type="button" value="Signal" id="signalLink" onClick="sendSignal()">
 
     <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
 
 </div>
+
+<div id="signals"></div>
 
 <div class="row" style="background-color: transparent;">
 
@@ -48,53 +52,32 @@
 
 </div>
 
-<script src="https://static.opentok.com/v2/js/opentok.min.js" charset="utf-8"></script>
-<script src="static/js/opentok-text-chat.js"></script>
-<link rel="stylesheet" href="static/css/opentok-textchat.css"/>
+{# scripts #}
+<script src="https://static.opentok.com/v2/js/TB.min.js" charset="utf-8"></script>
+<script src="/static/js/opentok-text-chat.js"></script>
+<link rel="stylesheet" href="/static/css/opentok-textchat.css"/>
 
 <script charset="utf-8">
+    LayoutVideoContainer();
 
     var connectionCount = 0;
 
     function connectToSession() {
         var name = '{{ request.user.JOSProfile.jos_name }}';
-        var backgroundImage = '/static/img/coming-soon-profile.png';
-        var bckgrndtest = '{{ request.user.JOSProfile.profile_image_idstr }}';
-        if (bckgrndtest != "noimage1") {
-            backgroundImage = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        var backgroundImage = '{{ request.user.JOSProfile.profile_image_idstr }}';
+        console.log("backgroundImage: " + backgroundImage);
+        if (backgroundImage == "noimage1") {
+            backgroundImageURL = 'https://www.joinourstory.com/static/img/coming-soon-profile.png';
+        } else {
+            backgroundImageURL = 'https://res-4.cloudinary.com/desg88u7l/image/upload/' + backgroundImage;
         }
 
         var apiKey = '45616422';
         var sessionID = '{{ session_id }}';
         var token = '{{ token }}';
-        var session = OT.initSession(apiKey, sessionID);
         var inputDevices = [];
 
-        // Layout particpant videos
-        for (i = 0; i < 4; i++) {
-            var rowI = document.createElement('div');
-            $(rowI).addClass('row');
-            rowI.id = 'row_' + i;
-            document.getElementById('audienceContainer').appendChild(rowI);
-
-            for (j = 1; j < 5; j++) {
-                var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 hidden');
-                newParticBox.id = 'box_' + (i * 4 + j);
-
-                var newVidBox = document.createElement('div');
-                newVidBox.id = 'vid_' + (i * 4 + j) + '_empty';
-                $(newVidBox).addClass('row videoContainer').innerHTML = newVidBox.id;
-                newParticBox.appendChild(newVidBox);
-
-                var newNameBox = document.createElement('div');
-                newNameBox.id = 'name_' + (i * 4 + j);
-                $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
-                newParticBox.appendChild(newNameBox);
-
-                rowI.appendChild(newParticBox);
-            }
-        }
+        var session = OT.initSession(apiKey, sessionID);
 
         // Setup text chat
         var chat = new OTSolution.TextChat.ChatWidget({
@@ -103,49 +86,51 @@
             senderAlias: name
         });
 
+        console.log("OT.checkSystemRequirements " + OT.checkSystemRequirements());
         if (OT.checkSystemRequirements() == 1) {
-            console.log("1. checkSystemRequirements: " + OT.checkSystemRequirements());
+
+            // Session connect
             session.connect(token, function (error) {
 
                 if (!error) {
                     console.log("2. session.connect success");
+
+                    // Log input devices
                     OT.getDevices(function (error, devices) {
                         if (!error) {
                             inputDevices = devices;
+                            var audioInputDevices = inputDevices.filter(function (element) {
+                                return element.kind == "audioInput";
+                            });
+                            console.log("audioId: " + audioInputDevices[0].deviceId);
+                            var videoId = inputDevices.filter(function (element) {
+                                return element.kind == "videoInput";
+                            })[0].deviceId;
+                            console.log("videoId: " + videoId);
+
                         } else {
                             console.log("getDevices error: " + error);
                         }
-
-                        var audioInputDevices = inputDevices.filter(function (element) {
-                            return element.kind == "audioInput";
-                        });
-                        console.log("audioId: " + audioInputDevices[0].deviceId);
-
-                        var videoId = inputDevices.filter(function (element) {
-                            return element.kind == "videoInput";
-                        })[0].deviceId;
-                        console.log("videoId: " + videoId);
                     });
 
-
                     // initPublisher
-                    console.log('initPublisher');
+                    console.log('starting initPublisher');
 
-                    // Find open video slot to publish
-                    var nextEmptyID = ' ';
-                    for (c = 1; c < 13; c++) {
-                        var testID = '#vid_' + c + '_empty';
-                        if ($(testID).length) {
-                            nextEmptyID = testID.substr(1);
-                            break;
-                        }
-                    }
 
+                    // Find open video slot and publish
+                    var nextEmptyId = getNextEmptySlot();
                     console.log('publisher nextEmptyID: ' + nextEmptyID);
 
                     var vidBox = document.getElementById(nextEmptyID);
                     vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
                     vidBox.style.zIndex = 10;
+
+                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+                    var nameBox = document.getElementById(nameBoxID);
+                    nameBox.innerHTML = name;
+
+                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+                    $(particBox).removeClass('hidden');
 
                     var publisher = OT.initPublisher(vidBox, {
                         name: name,
@@ -158,8 +143,10 @@
                     publisher.setStyle({
                         audioLevelDisplayMode: "on",
                         nameDisplayMode: 'off',
-                        buttonDisplayMode: 'on'
-                    });
+                        buttonDisplayMode: 'on',
+                        backgroundImageURI: backgroundImageURL
+
+                });
 
                     publisher.on({
                         accessAllowed: function (event) {
@@ -167,7 +154,7 @@
                         },
 
                         accessDenied: function (event) {
-                            // The user has denied access to the camera and mic.
+                            // The user has denied access.
                             console.log('accessDenied');
                         },
 
@@ -189,15 +176,8 @@
                         }
                     });
 
+                    // Session publish
                     session.publish(publisher);
-
-                    // add jos_name
-                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-                    var nameBox = document.getElementById(nameBoxID);
-                    nameBox.innerHTML = name;
-
-                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-                    $(particBox).removeClass('hidden');
 
                 } else {
 
@@ -208,7 +188,22 @@
         } else {
 
             // checkSystemRequirements error
-            alert("Sorry, there is a problem - please call us and say 'RTC' is not working. Thanks!");
+            alert("Sorry, there is a problem - please call us; then,  say 'RTC' is not working. Thanks!");
+        }
+
+
+        function sendSignal() {
+            session.signal({
+                        data: "Adam signal test"
+                    },
+                    function (error) {
+                        if (error) {
+                            console.log("signal error: " + error.reason + "code=" + error.code);
+                        } else {
+                            console.log("signal sent");
+                        }
+                    }
+            );
         }
 
         session.on({
@@ -239,17 +234,8 @@
             streamCreated: function (event) {
                 console.log('Stream Created: ' + event.stream.name);
 
-                // Find open video slot to subscribe
-                var nextEmptyID = ' ';
-                for (c = 1; c < 13; c++) {
-                    console.log('test_id: ' + testID);
-                    var testID = '#vid_' + c + '_empty';
-                    if ($(testID).length) {
-                        nextEmptyID = testID.substr(1);
-                        break;
-                    }
-                }
-
+                // // Find open video slot and subscribe
+                var nextEmptyId = getNextEmptySlot();
                 console.log('subscriber nextEmptyID: ' + nextEmptyID);
 
                 var vidBox = document.getElementById(nextEmptyID);
@@ -275,7 +261,7 @@
                             if (error) {
                                 console.log(error);
                             } else {
-                                console.log('Stream subscribed');
+                                console.log('Stream subscribed: ' + event.stream.name);
                             }
                         });
 
@@ -284,46 +270,169 @@
             streamDestroyed: function (event) {
                 console.log('Stream destroyed: ' + event.stream.name);
                 event.preventDefault();
-                reclaimSlot();
-
-                function reclaimSlot() {
-                    var reclaimedID = ' ';
-                    subscriber = event.stream.name.slice(0, -1).split(' ').join('_');
-                    for (c = 1; c < 13; c++) {
-                        var testID = '#vid_' + c + '_' + subscriber;
-                        console.log('testID: ' + testID);
-                        if ($(testID).length) {
-                            reclaimedID = testID.substr(1);
-                            break;
-                        }
-                    }
-
-                    var position = reclaimedID.split('_')[1].toString();
-
-                    particBox = document.getElementById('box_' + position);
-                    $(particBox).empty().addClass('hidden');
-
-                    vidBox = document.createElement('div');
-                    $(vidBox).addClass('row videoContainer');
-                    vidBox.id = 'vid_' + position + '_empty';
-                    vidBox.innerHTML = vidBox.id;
-                    particBox.appendChild(vidBox);
-
-                    var nameBox = document.createElement('div');
-                    $(nameBox).addClass('row text-center nameContainer');
-                    nameBox.id = 'name_' + position;
-                    nameBox.innerHTML = nameBox.id;
-                    particBox.appendChild(nameBox);
-                }
+                reclaimSlot(event);
             },
 
             streamPropertyChanged: function (event) {
-                console.log('stream property changed: ' + event.stream.name);
+                switch (event.changedProperty) {
+                    case "hasAudio":
+                        console.log("streamPropertyChanged hasAudio: " + event.newValue);
+                        break;
+                    case "hasVideo":
+                        console.log("streamPropertyChanged hasVideo: " + event.newValue);
+                        break;
+                    case "videoDimensions" :
+                        console.log(" streamPropertyChangedorientation change:" + event.newValue);
+                        break;
+                    case "quality":
+                        for (var i in event.newValue) {
+                            console.log("streamPropertyChanged index[" + i + "]: " + event.newValue[i])
+                        }
+                        break;
+                }
+            },
+
+            signal: function (event) {
+                // Signal received
+                console.log("Signal received: " + event.data);
+
             }
         });
     }
 
-connectToSession();
+    connectToSession();
+
+    // Archive ???
+
+    // Start Archive
+    function startArchiveSession() {
+        alert("start");
+        // Ajax call
+        //https://api.opentok.com/v2/partner/<api_key>/archive
+        $.ajax({
+            url: 'https://api.opentok.com/v2/partner/45592942/archive',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            headers: 'X-TB-PARTNER-AUTH: 45592942:92c49242824dd9e83890c8c282da3628e8d56752',
+            data: {
+                "sessionId": "1_MX40NTU5Mjk0Mn5-MTQ2NzExNjQzNzM3Nn4wUTUzNnNURHlLQmdKWjNPUTVMdlNSSkd-fg",
+                "hasAudio": true,
+                "hasVideo": true,
+                "name": "sabir",
+                "outputMode": "individual",
+            },
+            processData: false,
+            success: function (data) {
+                console.log("success" + data);
+                console.log(JSON.stringify(data));
+            },
+            error: function (errorThrown) {
+                console.log("Error" + JSON.stringify(errorThrown));
+            }
+        });
+
+
+        hide('startArchive');
+        show('stopArchive');
+    }
+
+    // Stop archive
+    function stopArchiveSession() {
+        $.ajax({
+            url: 'https://api.opentok.com/v2/partner/45592942/archive/arch_id/stop',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            headers: 'X-TB-PARTNER-AUTH: 45592942:92c49242824dd9e83890c8c282da3628e8d56752',
+            processData: false,
+            success: function (data) {
+                console.log("success" + data);
+                console.log(JSON.stringify(data));
+            },
+            error: function (errorThrown) {
+                console.log("Error" + JSON.stringify(errorThrown));
+            }
+        });
+
+        show('startArchive');
+        hide('stopArchive');
+    }
+
+
+
+    // ----------------
+    // Layout functions
+    // ----------------
+
+    function LayoutVideoContainer() {
+        // Layout particpant videos
+        for (i = 0; i < 4; i++) {
+            var rowI = document.createElement('div');
+            $(rowI).addClass('row');
+            rowI.id = 'row_' + i;
+            document.getElementById('audienceContainer').appendChild(rowI);
+
+            for (j = 1; j < 5; j++) {
+                var newParticBox = document.createElement('div');
+                $(newParticBox).addClass('col-xs-3 hidden');
+                newParticBox.id = 'box_' + (i * 4 + j);
+
+                var newVidBox = document.createElement('div');
+                newVidBox.id = 'vid_' + (i * 4 + j) + '_empty';
+                $(newVidBox).addClass('row videoContainer').innerHTML = newVidBox.id;
+                newParticBox.appendChild(newVidBox);
+
+                var newNameBox = document.createElement('div');
+                newNameBox.id = 'name_' + (i * 4 + j);
+                $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
+                newParticBox.appendChild(newNameBox);
+
+                rowI.appendChild(newParticBox);
+            }
+        }
+    }
+
+    function getNextEmptySlot() {
+        for (c = 1; c < 13; c++) {
+            var testID = '#vid_' + c + '_empty';
+            if ($(testID).length) {
+                nextEmptyID = testID.substr(1);
+                break;
+            }
+        }
+        return nextEmptyID;
+    }
+
+    function reclaimSlot(e) {
+        var reclaimedID = ' ';
+        subscriber = e.stream.name.slice(0, -1).split(' ').join('_');
+        for (c = 1; c < 13; c++) {
+            var testID = '#vid_' + c + '_' + subscriber;
+            console.log('testID: ' + testID);
+            if ($(testID).length) {
+                reclaimedID = testID.substr(1);
+                break;
+            }
+        }
+
+        var position = reclaimedID.split('_')[1].toString();
+
+        particBox = document.getElementById('box_' + position);
+        $(particBox).empty().addClass('hidden');
+
+        vidBox = document.createElement('div');
+        $(vidBox).addClass('row videoContainer');
+        vidBox.id = 'vid_' + position + '_empty';
+        vidBox.innerHTML = vidBox.id;
+        particBox.appendChild(vidBox);
+
+        var nameBox = document.createElement('div');
+        $(nameBox).addClass('row text-center nameContainer');
+        nameBox.id = 'name_' + position;
+        nameBox.innerHTML = nameBox.id;
+        particBox.appendChild(nameBox);
+    }
 
 </script>
 
