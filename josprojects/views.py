@@ -130,17 +130,18 @@ def tokboxtest(request, template="tokboxtest.html"):
 
     jos_name = request.user.JOSProfile.jos_name()
 
-    connectionMetadata = jos_name
+    connectionMetadata = 'xxxxx'
     # session = opentok.create_session()
     # session_id = session.session_id
 
     session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
-    token = opentok.generate_token(session_id=session_id, data=connectionMetadata)
+    token = opentok.generate_token(session_id=session_id)
 
     context = {
         'apikey':     APIKey,
         'session_id': session_id,
         'token':      token,
+        'connectionMetadata': connectionMetadata
     }
 
     return TemplateResponse(request, template, context)

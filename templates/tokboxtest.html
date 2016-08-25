@@ -6,6 +6,9 @@
 
 {% block all_content %}
 
+
+{#chat not working#}
+
 <style>
 
     .container {
@@ -29,13 +32,17 @@
         width: 240px;
     }
 
+    .bckgrndimg {
+
+    }
+
 </style>
 
 {# <span class="josinstructions">Facilitator:</span> #}
 
 <div class="row josinstructions" style="margin-top: -50px;">
 
-    <input type="button" value="Signal" id="signalLink" onClick="sendSignal()">
+{#<input type="button" value="Signal" id="signalLink" onClick="sendSignal()">#}
 
     <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;"></div>
 
@@ -63,19 +70,23 @@
     var connectionCount = 0;
 
     function connectToSession() {
-        var name = '{{ request.user.JOSProfile.jos_name }}';
-        var backgroundImage = '{{ request.user.JOSProfile.profile_image_idstr }}';
-        console.log("backgroundImage: " + backgroundImage);
-        if (backgroundImage == "noimage1") {
-            backgroundImageURL = 'https://www.joinourstory.com/static/img/coming-soon-profile.png';
+        var name = '{{ request.user.JOSProfile.jos_name }}' + ',' +
+        '{{ request.user.JOSProfile.profile_image_idstr }}';
+        var publisher_jos_name = name.split(',')[0];
+        var publisher_background_image = name.split(',')[1];
+        var bckgrndImageURL = ' ';
+        if (publisher_background_image == "noimage1") {
+            bckgrndImageURL = 'https://www.joinourstory.com/static/img/coming-soon-profile.png';
         } else {
-            backgroundImageURL = 'https://res-4.cloudinary.com/desg88u7l/image/upload/' + backgroundImage;
+            bckgrndImageURL = 'https://res-4.cloudinary.com/desg88u7l/image/upload/' + publisher_background_image;
         }
+
 
         var apiKey = '45616422';
         var sessionID = '{{ session_id }}';
         var token = '{{ token }}';
-        var inputDevices = [];
+        var mic = false;
+        var cam = false;
 
         var session = OT.initSession(apiKey, sessionID);
 
@@ -83,10 +94,35 @@
         var chat = new OTSolution.TextChat.ChatWidget({
             session: session,
             container: '#chat',
-            senderAlias: name
+            senderAlias: publisher_jos_name
         });
 
         console.log("OT.checkSystemRequirements " + OT.checkSystemRequirements());
+
+        // Log input devices
+        OT.getDevices(function (error, devices) {
+            console.log("get devices");
+            if (!error) {
+                inputDevices = devices;
+
+                for (var i = 0; i < inputDevices.length; i++) {
+                    switch (inputDevices[i].kind) {
+                        case "audioInput":
+                            mic = true;
+                            break;
+                        case "videoInput":
+                            cam = true;
+                            break;
+                    }
+                }
+                // console.log("1 Mics: " + mic);
+                // console.log("1 Cams: " + cam);
+
+            } else {
+                console.log("getDevices error: " + error);
+            }
+        });
+
         if (OT.checkSystemRequirements() == 1) {
 
             // Session connect
@@ -94,59 +130,42 @@
 
                 if (!error) {
                     console.log("2. session.connect success");
+                    // console.log("2 Mics: " + mic);
+                    // console.log("2 Cams: " + cam);
 
-                    // Log input devices
-                    OT.getDevices(function (error, devices) {
-                        if (!error) {
-                            inputDevices = devices;
-                            var audioInputDevices = inputDevices.filter(function (element) {
-                                return element.kind == "audioInput";
-                            });
-                            console.log("audioId: " + audioInputDevices[0].deviceId);
-                            var videoId = inputDevices.filter(function (element) {
-                                return element.kind == "videoInput";
-                            })[0].deviceId;
-                            console.log("videoId: " + videoId);
+                    // Find open video box
+                    var vidBox = getNextEmptyVidBox(divname=publisher_jos_name, publish=true);
 
+                    var publisherOptions = {
+                        audioLevelDisplayMode: "on",
+                        buttonDisplayMode: 'on',
+                        frameRate: 15,
+                        height: 160,
+                        name: name,
+                        nameDisplayMode: 'off',
+                        publishVideo: 'true',
+                        width: 240
+                    };
+
+                    if (cam != true) {
+                        publisherOptions.videoSource = null;
+                    }
+
+                    // initPublisher
+                    var publisher = OT.initPublisher(vidBox, publisherOptions, function(error) {
+                        if (error) {
+                            console.log(error);
                         } else {
-                            console.log("getDevices error: " + error);
+                            console.log("Publisher initialized.");
                         }
                     });
 
-                    // initPublisher
-                    console.log('starting initPublisher');
+                    // Session publish
+                    session.publish(publisher);
 
-
-                    // Find open video slot and publish
-                    var nextEmptyId = getNextEmptySlot();
-                    console.log('publisher nextEmptyID: ' + nextEmptyID);
-
-                    var vidBox = document.getElementById(nextEmptyID);
-                    vidBox.id = nextEmptyID.slice(0, -5) + name.slice(0, -1).split(' ').join('_');
-                    vidBox.style.zIndex = 10;
-
-                    var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-                    var nameBox = document.getElementById(nameBoxID);
-                    nameBox.innerHTML = name;
-
-                    var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-                    $(particBox).removeClass('hidden');
-
-                    var publisher = OT.initPublisher(vidBox, {
-                        name: name,
-                        height: 160,
-                        width: 240,
-                        frameRate: 15
-                        // AUDIO ONLY:  videoSource: null
-                    });
-
-                    publisher.setStyle({
-                        audioLevelDisplayMode: "on",
-                        nameDisplayMode: 'off',
-                        buttonDisplayMode: 'on',
-                        backgroundImageURI: backgroundImageURL
-
-                });
+                    if (cam != true) {
+                        $(vidBox).html("<img style='height: 140px; padding: 5px 0;' src=" + bckgrndImageURL + ">");
+                    }
 
                     publisher.on({
                         accessAllowed: function (event) {
@@ -176,9 +195,6 @@
                         }
                     });
 
-                    // Session publish
-                    session.publish(publisher);
-
                 } else {
 
                     console.log("session.connect error: ", error.code, error.message);
@@ -191,19 +207,65 @@
             alert("Sorry, there is a problem - please call us; then,  say 'RTC' is not working. Thanks!");
         }
 
+        function getNextEmptyVidBox(divname, publish) {
+            for (c = 1; c < 13; c++) {
+                var testID = '#vid_' + c + '_empty';
+                if ($(testID).length) {
+                    nextEmptyID = testID.substr(1);
+                    break;
+                }
+            }
+            var vidBox = document.getElementById(nextEmptyID);
+            vidBox.id = nextEmptyID.slice(0, -5) + divname.slice(0, -1).split(' ').join('_');
+            if (publish == true) {
+                vidBox.style.zIndex = 10;
+            }
 
-        function sendSignal() {
-            session.signal({
-                        data: "Adam signal test"
-                    },
-                    function (error) {
+            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById(nameBoxID);
+            nameBox.innerHTML = divname;
+
+            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+            $(particBox).removeClass('hidden');
+
+            return vidBox
+        }
+
+        function streamCreatedHandler(e) {
+            // // Find open video slot
+            var subscriber_jos_name = e.stream.name.split(',')[0];
+            var subscriber_background_image = e.stream.name.split(',')[1];
+
+            var bckgrndImageURL = ' ';
+            if (subscriber_background_image == "noimage1") {
+                bckgrndImageURL = 'https://www.joinourstory.com/static/img/coming-soon-profile.png';
+            } else {
+                bckgrndImageURL = 'https://res-4.cloudinary.com/desg88u7l/image/upload/' + subscriber_background_image;
+            }
+
+            var vidBox = getNextEmptyVidBox(divname = subscriber_jos_name, publish = false);
+
+            var subscribeProperties = {
+                height: 160,
+                width: 240,
+                frameRate: 15
+            };
+
+            // Subscribe to stream that caused event
+            var subscriber = session.subscribe(
+                    e.stream, vidBox, subscribeProperties, function (error) {
                         if (error) {
-                            console.log("signal error: " + error.reason + "code=" + error.code);
+                            console.log(error);
                         } else {
-                            console.log("signal sent");
+                            console.log('Stream subscribed: ' + e.stream.name);
                         }
-                    }
-            );
+                    });
+
+            var stream_video = e.stream.hasVideo;
+            console.log("stream_video: " + stream_video);
+            if (stream_video != true) {
+                $(vidBox).html("<img style='height: 140px; padding: 5px 0;' src=" + bckgrndImageURL + ">");
+            }
         }
 
         session.on({
@@ -233,38 +295,7 @@
 
             streamCreated: function (event) {
                 console.log('Stream Created: ' + event.stream.name);
-
-                // // Find open video slot and subscribe
-                var nextEmptyId = getNextEmptySlot();
-                console.log('subscriber nextEmptyID: ' + nextEmptyID);
-
-                var vidBox = document.getElementById(nextEmptyID);
-                vidBox.id = nextEmptyID.slice(0, -5) + event.stream.name.slice(0, -1).split(' ').join('_');
-
-                var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-                var nameBox = document.getElementById(nameBoxID);
-                nameBox.innerHTML = event.stream.name;
-
-                var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-                $(particBox).removeClass('hidden');
-
-                var subscribeProperties = {
-                    // AUDIO ONLY:  subscribeToAudio: true, subscribeToVideo: false
-                    height: 160,
-                    width: 240,
-                    frameRate: 15
-                };
-
-                // Subscribe to stream that caused event, put inside container
-                var subscriber = session.subscribe(
-                        event.stream, vidBox, subscribeProperties, function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log('Stream subscribed: ' + event.stream.name);
-                            }
-                        });
-
+                streamCreatedHandler(event);
             },
 
             streamDestroyed: function (event) {
@@ -292,11 +323,11 @@
                 }
             },
 
-            signal: function (event) {
-                // Signal received
-                console.log("Signal received: " + event.data);
-
-            }
+{#            signal: function (event) {#}
+{#                // Signal received#}
+{#                console.log("Signal received: " + event.data);#}
+{##}
+{#            }#}
         });
     }
 
@@ -365,8 +396,9 @@
     // Layout functions
     // ----------------
 
+    // Layout particpant videos
     function LayoutVideoContainer() {
-        // Layout particpant videos
+
         for (i = 0; i < 4; i++) {
             var rowI = document.createElement('div');
             $(rowI).addClass('row');
@@ -375,7 +407,7 @@
 
             for (j = 1; j < 5; j++) {
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 hidden');
+                $(newParticBox).addClass('col-xs-3 hidden text-center');
                 newParticBox.id = 'box_' + (i * 4 + j);
 
                 var newVidBox = document.createElement('div');
@@ -393,23 +425,12 @@
         }
     }
 
-    function getNextEmptySlot() {
-        for (c = 1; c < 13; c++) {
-            var testID = '#vid_' + c + '_empty';
-            if ($(testID).length) {
-                nextEmptyID = testID.substr(1);
-                break;
-            }
-        }
-        return nextEmptyID;
-    }
-
     function reclaimSlot(e) {
         var reclaimedID = ' ';
-        subscriber = e.stream.name.slice(0, -1).split(' ').join('_');
+        var subscriber_jos_name = e.stream.name.split(',')[0];
+        subscriber = subscriber_jos_name.slice(0, -1).split(' ').join('_');
         for (c = 1; c < 13; c++) {
             var testID = '#vid_' + c + '_' + subscriber;
-            console.log('testID: ' + testID);
             if ($(testID).length) {
                 reclaimedID = testID.substr(1);
                 break;
