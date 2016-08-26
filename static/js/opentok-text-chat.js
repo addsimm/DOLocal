@@ -1,11 +1,10 @@
 ;(function () {
-    "use strict";
     var ChatMessage, ChatUI, Chat, ChatWidget, opentok_text_chat;
 
     ChatMessage = function () {
         /**
-         *  A convinient representation of a chat message.
-         *  */
+         * A representation of a chat message.
+         */
 
         function ChatMessage(senderId, senderAlias, text) {
             Object.defineProperties(this, {
@@ -29,8 +28,9 @@
             '  <div>',
             '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
             '    <p class="ot-new-messages" hidden>\u25BE&nbsp;Click to scroll to new messages</p>',
-            '    <textarea placeholder="Send a thought&hellip;" class="ot-composer">' + '</textarea>',
+            '    <textarea placeholder="Contribute a thought&hellip;" class="ot-composer">' + '</textarea>',
             // '    <div class="ot-bottom-line">',
+            '      <p class="ot-character-counter"><span></span> characters left</p>',
             '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
             '    </div>',
             // '  </div>',
@@ -39,6 +39,10 @@
 
         var bubbleLayout = [
             '<div>',
+            // '  <header class="ot-bubble-header">',
+            // '    <p class="ot-message-sender"></p>',
+            // '    <time class="ot-message-timestamp"></time>',
+            // '  </header>',
             '</div>'
         ].join('\n');
 
@@ -57,6 +61,7 @@
             this._messages = [];
             this._setupTemplates();
             this._setupUI(options.container);
+            this._updateCharCounter();
         }
 
         ChatUI.prototype = {
@@ -77,16 +82,20 @@
 
                 var sendButton = chatView.querySelector('.btn');
                 var composer = chatView.querySelector('.ot-composer');
+                var charCounter = chatView.querySelector('.ot-character-counter > span');
                 var errorZone = chatView.querySelector('.ot-error-zone');
                 var newMessages = chatView.querySelector('.ot-new-messages');
 
                 this._composer = composer;
                 this._sendButton = sendButton;
+                this._charCounter = charCounter;
                 this._bubbles = chatView.firstElementChild;
                 this._errorZone = errorZone;
                 this._newMessages = newMessages;
+                // XXX: It's already bound in the constructor
                 this._bubbles.onscroll = this._watchScrollAtTheBottom;
                 this._sendButton.onclick = this._sendMessage.bind(this);
+                this._composer.onkeyup = this._updateCharCounter.bind(this);
                 this._composer.onkeydown = this._controlComposerInput.bind(this);
                 this._newMessages.onclick = this._goToNewMessages.bind(this);
 
@@ -119,6 +128,7 @@
                             } else {
                                 _this.addMessage(new ChatMessage(_this.senderId, _this.senderAlias, contents));
                                 _this._composer.value = '';
+                                _this._updateCharCounter();
                                 _this._hideErrors();
                             }
                             _this.enableSending();
@@ -128,10 +138,10 @@
             },
 
             _showTooLongTextError: function () {
-                // this._charCounter.parentElement.classList.add('error');
+                this._charCounter.parentElement.classList.add('error');
             },
             _hideTooLongTextError: function () {
-                // this._charCounter.parentElement.classList.remove('error');
+                this._charCounter.parentElement.classList.remove('error');
             },
             _showNewMessageAlert: function () {
                 this._newMessages.removeAttribute('hidden');
@@ -157,14 +167,26 @@
                 this._scrollToBottom();
                 this._hideNewMessageAlert();
             },
-
-            // Adds a message to the conversation.
+            _updateCharCounter: function () {
+                var remaining = this.maxTextLength - this._composer.value.length;
+                var isValid = remaining >= 0;
+                if (isValid) {
+                    this._hideTooLongTextError();
+                } else {
+                    this._showTooLongTextError();
+                }
+                this._charCounter.textContent = remaining;
+            },
+            /**
+             * Adds a message to the conversation.
+             *
+             * @method addMessage
+             * @param {ChatMessage} message The message to be displayed.
+             */
             addMessage: function (message) {
-                // var shouldGroup = this._shouldGroup(message);
-                // this[shouldGroup ? '_groupBubble' : '_addNewBubble'](message);
-                this._addNewBubble(message);
-
+                var shouldGroup = this._shouldGroup(message);
                 var shouldScroll = this._shouldScroll();
+                this[shouldGroup ? '_groupBubble' : '_addNewBubble'](message);
                 if (shouldScroll) {
                     this._scrollToBottom();
                 } else {
@@ -190,8 +212,6 @@
                 this._sendButton.disabled = true;
                 this._composer.disabled = true;
             },
-
-    //// Reinstate:
             _shouldGroup: function (message) {
                 if (this._lastMessage && this._lastMessage.senderId === message.senderId) {
                     var reference = this._lastMessage.dateTime.getTime();
@@ -200,13 +220,6 @@
                 }
                 return false;
             },
-
-            _groupBubble: function (message) {
-                var contents = this.renderMessage(message.text, true);
-                this._lastBubble.appendChild(this._getBubbleContent(contents));
-                this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
-            },
-
             _shouldScroll: function () {
                 return this._isAtBottom();
             },
@@ -216,6 +229,11 @@
             },
             _scrollToBottom: function () {
                 this._bubbles.scrollTop = this._bubbles.scrollHeight;
+            },
+            _groupBubble: function (message) {
+                var contents = this.renderMessage(message.text, true);
+                this._lastBubble.appendChild(this._getBubbleContent(contents));
+                // this._lastTimestamp.textContent = this.humanizeDate(message.dateTime);
             },
             _addNewBubble: function (message) {
                 this._bubbles.appendChild(this._getBubble(message));
@@ -229,10 +247,17 @@
             get _lastTimestamp() {
                 return this._bubbles.lastElementChild.querySelector('.ot-message-timestamp');
             },
-
+            _getBubbleContent: function (safeHtml) {
+                var div = document.createElement('DIV');
+                div.classList.add('ot-message-content');
+                div.innerHTML = safeHtml;
+                return div;
+            },
             _getBubble: function (message) {
                 var bubble = this._bubbleTemplate.cloneNode(true);
                 var wrapper = bubble.querySelector('div');
+                var sender = wrapper.querySelector('.ot-message-sender');
+                var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
                 var sender_alias = 'Missing name';
@@ -244,7 +269,7 @@
                 }
                 // Content
                 var contents = this.renderMessage(message.text, false);
-                wrapper.classList.add('ot-message-content');
+                wrapper.appendChild(this._getBubbleContent(contents));
                 wrapper.innerHTML = "<span class='ot-message-sender'>" + sender_alias + '</span>' + contents;
 
                 return bubble;
@@ -360,7 +385,7 @@
                     this._chatBox.onMessageReadyToSend = this.onMessageReadyToSend.bind(this);
                     // This set the sender information, id to messages - alias to other users.
                     this._chatBox.senderId = options.session.connection.connectionId;
-                    this._chatBox.senderAlias = options.senderAlias;
+                    this._chatBox.senderAlias = options.session.connection.data;
                     // Finally, enable message area and send buttons.
                     this._chatBox.enableSending();
                 }
