@@ -50,11 +50,12 @@
          * User interface for a basic chat client.
          */
 
+        var senderAlias = 'xxx';
         function ChatUI(options) {
             options = options || {};
             this.senderId = options.senderId || ('' + Math.random()).substr(2);
-            this.senderAlias = options.senderAlias || 'me';
-            this.maxTextLength = options.maxTextLength || 1000;
+            senderAlias = options.senderAlias || 'xxx';
+            this.maxTextLength = options.maxTextLength || 140;
             this.groupDelay = options.groupDelay || 2 * 60 * 1000; // 2 min
             this.timeout = options.timeout || 5000;
             this._watchScrollAtTheBottom = this._watchScrollAtTheBottom.bind(this);
@@ -92,7 +93,6 @@
                 this._bubbles = chatView.firstElementChild;
                 this._errorZone = errorZone;
                 this._newMessages = newMessages;
-                // XXX: It's already bound in the constructor
                 this._bubbles.onscroll = this._watchScrollAtTheBottom;
                 this._sendButton.onclick = this._sendMessage.bind(this);
                 this._composer.onkeyup = this._updateCharCounter.bind(this);
@@ -126,7 +126,9 @@
                             if (err) {
                                 _this._showError();
                             } else {
-                                _this.addMessage(new ChatMessage(_this.senderId, _this.senderAlias, contents));
+                                /// none
+                                alert("second senderAlias: " + senderAlias);
+                                _this.addMessage(new ChatMessage(_this.senderId, senderAlias, contents));
                                 _this._composer.value = '';
                                 _this._updateCharCounter();
                                 _this._hideErrors();
@@ -179,9 +181,6 @@
             },
             /**
              * Adds a message to the conversation.
-             *
-             * @method addMessage
-             * @param {ChatMessage} message The message to be displayed.
              */
             addMessage: function (message) {
                 var shouldGroup = this._shouldGroup(message);
@@ -260,13 +259,16 @@
                 var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
-                var sender_alias = 'Missing name';
-                if (message.senderId === this.senderId) {
-                    bubble.classList.add('mine');
-                    sender_alias = "Me";
-                } else {
-                    sender_alias = message.senderAlias;
-                }
+                alert("message.senderId: " + message.sessionId);
+                // sender_alias = 'Missing name';
+                alert("three message.sender_alias: " + message.senderAlias);
+                sender_alias = message.senderAlias;
+                //if (message.senderId === this.senderId) {
+                //    bubble.classList.add('mine');
+                //    sender_alias = "Me";
+                //} else {
+                //    sender_alias = message.senderAlias;
+                //}
                 // Content
                 var contents = this.renderMessage(message.text, false);
                 wrapper.appendChild(this._getBubbleContent(contents));
@@ -403,7 +405,9 @@
             // Called when the chat receives a message. Also extracts id and alias from the connection.
             // After a message is received, simply create a new `ChatMessage` instance and add it to the UI.
             onMessageReceived: function (contents, from) {
+    //////// PROBLEM:
                 var message = new ChatMessage(from.connectionId, from.data, contents);
+                alert("from ID: " + from.connectionId + ", data: " + from.data + ", contents: " + contents);
                 this._chatBox.addMessage(message);
             },
 
