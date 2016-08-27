@@ -126,8 +126,7 @@
                             if (err) {
                                 _this._showError();
                             } else {
-                                /// none
-                                alert("second senderAlias: " + senderAlias);
+                                // alert("second senderAlias: " + senderAlias);
                                 _this.addMessage(new ChatMessage(_this.senderId, senderAlias, contents));
                                 _this._composer.value = '';
                                 _this._updateCharCounter();
@@ -310,6 +309,7 @@
             /**
              * Sends a message though the chat.
              */
+            ///////////////////////////////////////////////////////////////////////////////////////
             send: function (text, callback) {
                 var signal = this._getMessageSignal(text);
                 this._session.signal(signal, callback);
@@ -331,6 +331,7 @@
             },
 
             _getMessageSignal: function (text) {
+                ///////////////////////////////////////////////////////////////////////////////////////
                 return {
                     type: this.signalName,
                     data: text
@@ -394,20 +395,37 @@
             },
 
             /**
-             * Called when the user clicks send. Receivescontents of input area and a callback.
+             * Called when the user clicks send. Receives contents of input area and a callback.
              */
 
             // After the user click on the send button, sends contents through the `Chat` instance.
             onMessageReadyToSend: function (contents, callback) {
+                alert("send: " + contents + " callback: " + callback);
                 this._chat.send(contents, callback);
             },
 
             // Called when the chat receives a message. Also extracts id and alias from the connection.
             // After a message is received, simply create a new `ChatMessage` instance and add it to the UI.
+
+            /////////////////////////////////////////////////////
+
             onMessageReceived: function (contents, from) {
-    //////// PROBLEM:
+
+                seen = [];
+
+                json = JSON.stringify(from, function (key, val) {
+                    if (typeof val == "object") {
+                        if (seen.indexOf(val) >= 0)
+                            return;
+                        seen.push(val)
+                    }
+                    return val
+                });
+
+
+                alert("from object: " + json);
                 var message = new ChatMessage(from.connectionId, from.data, contents);
-                alert("from ID: " + from.connectionId + ", data: " + from.data + ", contents: " + contents);
+                alert("from.connectionId: " + from.connectionId + ", from.data: " + from.data + ", contents: "  + contents);
                 this._chatBox.addMessage(message);
             },
 
