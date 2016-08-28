@@ -258,9 +258,9 @@
                 var timestamp = wrapper.querySelector('.ot-message-timestamp');
                 // Sender & alias
                 bubble.dataset.senderId = message.senderId;
-                alert("message.senderId: " + message.sessionId);
+                // alert("message.senderId: " + message.sessionId);
                 // sender_alias = 'Missing name';
-                alert("three message.sender_alias: " + message.senderAlias);
+                // alert("three message.sender_alias: " + message.senderAlias);
                 sender_alias = message.senderAlias;
                 //if (message.senderId === this.senderId) {
                 //    bubble.classList.add('mine');
@@ -400,7 +400,7 @@
 
             // After the user click on the send button, sends contents through the `Chat` instance.
             onMessageReadyToSend: function (contents, callback) {
-                alert("send: " + contents + " callback: " + callback);
+                // ("send: " + contents + " callback: " + callback);
                 this._chat.send(contents, callback);
             },
 
@@ -423,9 +423,9 @@
                 });
 
 
-                alert("from object: " + json);
+                // alert("from object: " + json);
                 var message = new ChatMessage(from.connectionId, from.data, contents);
-                alert("from.connectionId: " + from.connectionId + ", from.data: " + from.data + ", contents: "  + contents);
+                // alert("from.connectionId: " + from.connectionId + ", from.data: " + from.data + ", contents: "  + contents);
                 this._chatBox.addMessage(message);
             },
 

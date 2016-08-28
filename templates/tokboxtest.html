@@ -142,14 +142,8 @@
                         frameRate: 15,
                         height: 160,
                         name: name,
-                        nameDisplayMode: 'off',
-                        publishVideo: 'true',
                         width: 240
                     };
-
-                    if (cam != true) {
-                        publisherOptions.videoSource = null;
-                    }
 
                     // initPublisher
                     var publisher = OT.initPublisher(vidBox, publisherOptions, function(error) {
