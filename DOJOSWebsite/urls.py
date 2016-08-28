@@ -32,6 +32,7 @@ import spirit.urls
 urlpatterns += patterns('',
     # EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+    url("temasystest$", "josprojects.views.temasystest", name="temasystest"),
     url("tokboxtest$", "josprojects.views.tokboxtest", name="tokboxtest"),
     url("workshopconnect$", "josprojects.views.workshop_connect", name="workshop_connect"),
 
