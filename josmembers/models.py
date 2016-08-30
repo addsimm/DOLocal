@@ -88,8 +88,9 @@ class JOSReservation(TimeStamped, models.Model):
     webcam = models.NullBooleanField(blank=True, default=False)
     browser = models.TextField(blank=True, default=None)
     refer = models.TextField(blank=True, null=True, default=None)
-    staff_notes = models.TextField(blank=True, null=True, default=None)
 
+    staff_notes = models.TextField(blank=True, null=True, default=None)
+    ready = models.NullBooleanField(blank=True, default=False)
 
 
 

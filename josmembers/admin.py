@@ -27,11 +27,11 @@ class JOSReservationAdmin(admin.ModelAdmin):
     Admin class for JOSReservations.
     """
 
-    list_display = ("id", "created", "first_name", "last_name")
+    list_display = ("id", "updated", "first_name", "last_name", "ready")
 
     verbose_name = 'Reservation'
 
-    readonly_fields = ('created', 'updated',)
+    readonly_fields = ('updated',)
 
     # fieldsets = josprofile_fieldsets
     # list_display = josprofile_list_display

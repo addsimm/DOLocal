@@ -1,4 +1,3 @@
-
 {% extends "josstaff/staff_base.html" %}
 {% load i18n tz pages_tags mezzanine_tags staticfiles %}
 
@@ -8,131 +7,118 @@
 
 
 
-<style>
+    <style>
 
-    .container {
-        margin-top: 0;
-    }
+        .container {
+            margin-top: 0;
+        }
 
-    .videoContainer {
-        border: 7px solid rgb(65, 45, 120);
-        height: 160px;
-        margin: 0;
-        padding: 0;
-        width: 240px;
-        background-color: pink;
-    }
+        .videoContainer {
+            border: 7px solid rgb(65, 45, 120);
+            height: 160px;
+            margin: 0;
+            padding: 0;
+            width: 240px;
+            background-color: pink;
+        }
 
-    .nameContainer {
-        color: green;
-        font-family: "Open Sans", sans-serif;
-        font-size: 18pt;
-        margin: 0;
-        padding: 10px;
-        width: 240px;
-    }
+        .nameContainer {
+            color: green;
+            font-family: "Open Sans", sans-serif;
+            font-size: 18pt;
+            margin: 0;
+            padding: 10px;
+            width: 240px;
+        }
 
-    .bckgrndimg {
+        .bckgrndimg {
 
-    }
+        }
 
-</style>
+    </style>
 
-{# <span class="josinstructions">Facilitator:</span> #}
-
-
+    {# <span class="josinstructions">Facilitator:</span> #}
 
 
-<div class="row josinstructions" style="margin-top: -50px;">
 
-{#<input type="button" value="Signal" id="signalLink" onClick="sendSignal()">#}
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-        <video id="myvideo0" style="transform: rotateY(-180deg);" autoplay muted></video>
+    <div class="row josinstructions" style="margin-top: -50px;">
+
+        <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
+
+            <video id="myvideo" style="transform: rotateY(-180deg);" autoplay muted></video>
+
+        </div>
+
     </div>
 
-     <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-         <video id="myvideo1" style="transform: rotateY(-180deg);" autoplay muted></video>
-     </div>
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-        <video id="myvideo2" style="transform: rotateY(-180deg);" autoplay muted></video>
-    </div>
+    {# scripts #}
+    <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-        <video id="myvideo3" style="transform: rotateY(-180deg);" autoplay muted></video>
-    </div>
+    <script charset="utf-8">
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-        <video id="myvideo4" style="transform: rotateY(-180deg);" autoplay muted></video>
-    </div>
+        var SkylinkDemo = new Skylink();
 
-    <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
-        <video id="myvideo5" style="transform: rotateY(-180deg);" autoplay muted></video>
-    </div>
+        SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
+            console.log('peerJoined Id: ' + peerId);
 
-</div>
+            if (isSelf) return; // self - video element already created above
 
-<div id="signals"></div>
-
-<div class="row" style="background-color: transparent;">
-
-    <div class="col-xs-12"
-         style="background-color: rgba(65, 45, 120, .2); border: 3px solid rgba(65, 45, 120, .2);">
-        <div id="chat"></div>
-    </div>
-
-</div>
-
-{# scripts #}
-<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
-
-<script charset="utf-8">
-
-
-    for (j = 1; j < 5; j++) {
-        var newParticBox = document.createElement('div');
-        $(newParticBox).addClass('col-xs-3 hidden text-center');
-        newParticBox.id = 'box_' + j;
-
-        newParticBox.innerHTML = "<video id='" + j + "' style='transform: rotateY(-180deg);' autoplay muted></video>";
-
-
-        $('#audienceContainer').append(newParticBox);
-    }
-
-
-
-    var skylink = new Skylink();
-
-{#    skylink.on('peerJoined', function (peerId, peerInfo, isSelf) {#}
-{#        var vid = document.getElementById('myvideo');#}
-{#        vid.autoplay = true;#}
-{#        vid.muted = true; // Added to avoid feedback when testing locally#}
-{#        vid.id = peerId;#}
-{#        document.body.appendChild(vid);#}
-{#    });#}
-
-    skylink.on('incomingStream', function (peerId, stream, isSelf) {
-        var rand = Math.abs(Math.round(Math.random() * (1 - 5) + 5));
-        console.log('rand: ' + rand);
-        var div = 'myvideo' + rand;
-        console.log('div: ' + div);
-        var vid = document.getElementById(div);
-        attachMediaStream(vid, stream);
-    });
-
-    skylink.init({
-        apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
-        defaultRoom: 'Main'
-    }, function () {
-        skylink.joinRoom({
-            audio: true,
-            video: true
+            // create element for peer video:
+            var vid = document.createElement('video');
+            vid.autoplay = true;
+            vid.muted = true; // Added to avoid feedback when testing locally
+            vid.id = peerId;
+            document.body.appendChild(vid);
         });
-    });
 
-</script>
+        SkylinkDemo.on('incomingStream', function (peerId, stream, isSelf) {
+            console.log('incomingStream Id: ' + peerId);
+            if (isSelf) return;
+            var vid = document.getElementById(peerId);
+            // attach media stream
+            attachMediaStream(vid, stream);
+        });
+
+        SkylinkDemo.on('peerLeft', function (peerId, peerInfo, isSelf) {
+            console.log('peerLeft Id: ' + peerId);
+            var vid = document.getElementById(peerId);
+            document.body.removeChild(vid);
+        });
+
+        SkylinkDemo.on('mediaAccessSuccess', function (stream) {
+            console.log('mediaAccessSuccess Id: ' + peerId);
+            var vid = document.getElementById('myvideo');
+            attachMediaStream(vid, stream);
+        });
+
+        SkylinkDemo.on("readyStateChange", function (state, room) {
+            console.log("Room (" + room + ") state: ", room);
+        });
+
+        // always remember to call init() - HIDE API KEY
+        SkylinkDemo.init("441543cd-a1c5-4d93-a25c-3339daa9b959", function (error, success) {
+            console.log('init Id: ' + peerId);
+
+            // do a check for error or success
+            if (error) {
+
+                console.error("Init failed error: ", error);
+            } else {
+                console.log('joinRoom init');
+                SkylinkDemo.joinRoom("my_room", {  // ENCRYPT ROOM NAME
+                    userData: "My Username",
+                    audio: true,
+                    audioFallback: true,
+                    video: true
+                });
+            }
+        });
+
+
+
+    </script>
 
 {% endblock all_content %}
 
