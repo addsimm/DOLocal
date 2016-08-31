@@ -88,7 +88,7 @@
         });
 
         SkylinkDemo.on('mediaAccessSuccess', function (stream) {
-            console.log('mediaAccessSuccess Id: ' + peerId);
+            console.log('mediaAccessSuccess: ' + stream);
             var vid = document.getElementById('myvideo');
             attachMediaStream(vid, stream);
         });
@@ -98,20 +98,26 @@
         });
 
         // always remember to call init() - HIDE API KEY
-        SkylinkDemo.init("441543cd-a1c5-4d93-a25c-3339daa9b959", function (error, success) {
-            console.log('init Id: ' + peerId);
+        SkylinkDemo.init({
+            appKey: "441543cd-a1c5-4d93-a25c-3339daa9b959",
+            defaultRoom: "defaultroom"                     // ENCRYPT ROOM NAME
+            },
+            function (error, success) {
+            console.log('init: ' + success);
 
             // do a check for error or success
             if (error) {
-
                 console.error("Init failed error: ", error);
             } else {
                 console.log('joinRoom init');
-                SkylinkDemo.joinRoom("my_room", {  // ENCRYPT ROOM NAME
-                    userData: "My Username",
+                SkylinkDemo.joinRoom({
+                    userData: '{{ request.user.username }}',
+                    video: true,
                     audio: true,
                     audioFallback: true,
-                    video: true
+                    height: 160,
+                    width: 240,
+                    frameRate: 15
                 });
             }
         });
