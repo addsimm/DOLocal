@@ -14,12 +14,7 @@
         }
 
         .videoContainer {
-            border: 7px solid rgb(65, 45, 120);
-            height: 160px;
-            margin: 0;
-            padding: 0;
-            width: 240px;
-            background-color: pink;
+
         }
 
         .nameContainer {
@@ -31,8 +26,11 @@
             width: 240px;
         }
 
-        .bckgrndimg {
-
+        video {
+            height: 160px;
+            margin: 0;
+            padding: 0;
+            width: 240px;
         }
 
     </style>
@@ -58,8 +56,13 @@
 
     <script charset="utf-8">
 
+        LayoutVideoContainer();
+
         var SkylinkDemo = new Skylink();
 
+
+
+        // Peer Joined
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
 
@@ -70,8 +73,12 @@
             vid.autoplay = true;
             vid.muted = true; // Added to avoid feedback when testing locally
             vid.id = peerId;
-            document.body.appendChild(vid);
+            document.getElementById('audienceContainer').appendChild(vid);
         });
+
+
+
+
 
         SkylinkDemo.on('incomingStream', function (peerId, stream, isSelf) {
             console.log('incomingStream Id: ' + peerId);
@@ -81,10 +88,17 @@
             attachMediaStream(vid, stream);
         });
 
+
+
+
+
+
+
+
         SkylinkDemo.on('peerLeft', function (peerId, peerInfo, isSelf) {
             console.log('peerLeft Id: ' + peerId);
             var vid = document.getElementById(peerId);
-            document.body.removeChild(vid);
+            document.getElementById('audienceContainer').removeChild(vid);
         });
 
         SkylinkDemo.on('mediaAccessSuccess', function (stream) {
@@ -112,17 +126,103 @@
                 console.log('joinRoom init');
                 SkylinkDemo.joinRoom({
                     userData: '{{ request.user.username }}',
-                    video: true,
+                    video: {
+                        resolution: SkylinkDemo.VIDEO_RESOLUTION.HQVGA
+                    },
                     audio: true,
                     audioFallback: true,
-                    height: 160,
-                    width: 240,
                     frameRate: 15
                 });
             }
         });
 
+        // ----------------
+        // Layout functions
+        // ----------------
 
+        function getNextEmptyVidBox(divIdName, publish) {
+            for (c = 1; c < 13; c++) {
+                var testID = '#vid_' + c + '_empty';
+                if ($(testID).length) {
+                    nextEmptyID = testID.substr(1);
+                    break;
+                }
+            }
+
+            var emptyVidBox = document.getElementById(nextEmptyID);
+            emptyVidBox.id = nextEmptyID.slice(0, -5) + divIdName.slice(0, -1).split(' ').join('_');
+            if (publish == true) {
+                emptyVidBox.style.zIndex = 10;
+            }
+
+            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById(nameBoxID);
+            nameBox.innerHTML = divIdName;
+
+            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+            $(particBox).removeClass('hidden');
+
+            return emptyVidBox
+        }
+
+        // Layout particpant videos
+        function LayoutVideoContainer() {
+
+            for (i = 0; i < 4; i++) {
+                var rowI = document.createElement('div');
+                $(rowI).addClass('row');
+                rowI.id = 'row_' + i;
+                document.getElementById('audienceContainer').appendChild(rowI);
+
+                for (j = 1; j < 5; j++) {
+                    var newParticBox = document.createElement('div');
+                    $(newParticBox).addClass('col-xs-3 hidden text-center');
+                    newParticBox.id = 'box_' + (i * 4 + j);
+
+                    var newVidBox = document.createElement('video');
+                    newVidBox.id = 'vid_' + (i * 4 + j) + '_empty';
+                    $(newVidBox).addClass('row videoContainer').innerHTML = newVidBox.id;
+                    newParticBox.appendChild(newVidBox);
+
+                    var newNameBox = document.createElement('div');
+                    newNameBox.id = 'name_' + (i * 4 + j);
+                    $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
+                    newParticBox.appendChild(newNameBox);
+
+                    rowI.appendChild(newParticBox);
+                }
+            }
+        }
+
+        function reclaimSlot(e) {
+            var reclaimedID = ' ';
+            var subscriber_jos_name = e.stream.name.split(',')[0];
+            subscriber = subscriber_jos_name.slice(0, -1).split(' ').join('_');
+            for (c = 1; c < 13; c++) {
+                var testID = '#vid_' + c + '_' + subscriber;
+                if ($(testID).length) {
+                    reclaimedID = testID.substr(1);
+                    break;
+                }
+            }
+
+            var position = reclaimedID.split('_')[1].toString();
+
+            particBox = document.getElementById('box_' + position);
+            $(particBox).empty().addClass('hidden');
+
+            vidBox = document.createElement('video');
+            $(vidBox).addClass('row videoContainer');
+            vidBox.id = 'vid_' + position + '_empty';
+            vidBox.innerHTML = vidBox.id;
+            particBox.appendChild(vidBox);
+
+            var nameBox = document.createElement('div');
+            $(nameBox).addClass('row text-center nameContainer');
+            nameBox.id = 'name_' + position;
+            nameBox.innerHTML = nameBox.id;
+            particBox.appendChild(nameBox);
+        }
 
     </script>
 

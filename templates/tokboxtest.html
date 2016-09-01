@@ -134,7 +134,7 @@
                     // console.log("2 Cams: " + cam);
 
                     // Find open video box
-                    var vidBox = getNextEmptyVidBox(divname=publisher_jos_name, publish=true);
+                    var vidBox = getNextEmptyVidBox(divIdName=publisher_jos_name, publish=true);
 
                     var publisherOptions = {
                         audioLevelDisplayMode: "on",
@@ -201,7 +201,7 @@
             alert("Sorry, there is a problem - please call us; then,  say 'RTC' is not working. Thanks!");
         }
 
-        function getNextEmptyVidBox(divname, publish) {
+        function getNextEmptyVidBox(divIdName, publish) {
             for (c = 1; c < 13; c++) {
                 var testID = '#vid_' + c + '_empty';
                 if ($(testID).length) {
@@ -210,14 +210,14 @@
                 }
             }
             var vidBox = document.getElementById(nextEmptyID);
-            vidBox.id = nextEmptyID.slice(0, -5) + divname.slice(0, -1).split(' ').join('_');
+            vidBox.id = nextEmptyID.slice(0, -5) + divIdName.slice(0, -1).split(' ').join('_');
             if (publish == true) {
                 vidBox.style.zIndex = 10;
             }
 
             var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById(nameBoxID);
-            nameBox.innerHTML = divname;
+            nameBox.innerHTML = divIdName;
 
             var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
             $(particBox).removeClass('hidden');
