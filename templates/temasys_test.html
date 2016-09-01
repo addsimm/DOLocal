@@ -5,8 +5,6 @@
 
 {% block all_content %}
 
-
-
     <style>
 
         .container {
@@ -37,19 +35,15 @@
 
     {# <span class="josinstructions">Facilitator:</span> #}
 
-
-
-
     <div class="row josinstructions" style="margin-top: -50px;">
 
-        <div id="audienceContainer" class="col-xs-12" style="background-color: transparent; padding: 15px 25px;">
+        <div id="audienceContainer" class="col-xs-12" style="padding: 15px 25px; background-color: transparent; ">
 
             <video id="myvideo" style="transform: rotateY(-180deg);" autoplay muted></video>
 
         </div>
 
     </div>
-
 
     {# scripts #}
     <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
@@ -61,11 +55,10 @@
         var SkylinkDemo = new Skylink();
 
 
-
         // Peer Joined
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
-
+            console.log('peerJoined Info: ' + peerInfo);
             if (isSelf) return; // self - video element already created above
 
             // create element for peer video:
@@ -77,15 +70,14 @@
         });
 
 
-
-
-
+        // Incoming Stream
         SkylinkDemo.on('incomingStream', function (peerId, stream, isSelf) {
             console.log('incomingStream Id: ' + peerId);
             if (isSelf) return;
-            var vid = document.getElementById(peerId);
+            var vid = document.getElementById('vid_1_empty');
             // attach media stream
             attachMediaStream(vid, stream);
+            console.log('incomingStream attached');
         });
 
 
@@ -101,29 +93,33 @@
             document.getElementById('audienceContainer').removeChild(vid);
         });
 
-        SkylinkDemo.on('mediaAccessSuccess', function (stream) {
-            console.log('mediaAccessSuccess: ' + stream);
-            var vid = document.getElementById('myvideo');
+        SkylinkDemo.on('mediaAccessSuccess', function (stream) { // 'local media stream'
+            console.log('3. mediaAccessSuccess: ' + stream);
+            var vid = document.getElementById('vid_1_empty');
+            var vid1 = document.getElementById('myvideo');
             attachMediaStream(vid, stream);
+            attachMediaStream(vid1, stream);
+            console.log('mediaAccessSuccess attached');
         });
 
         SkylinkDemo.on("readyStateChange", function (state, room) {
             console.log("Room (" + room + ") state: ", room);
         });
 
-        // always remember to call init() - HIDE API KEY
+        // ENCRYPT ROOM NAME - HIDE API KEY
+        // always remember to call init()!!!
         SkylinkDemo.init({
             appKey: "441543cd-a1c5-4d93-a25c-3339daa9b959",
-            defaultRoom: "defaultroom"                     // ENCRYPT ROOM NAME
+            defaultRoom: "defaultroom"
             },
             function (error, success) {
-            console.log('init: ' + success);
+            console.log('1. Skylink init: ' + success);
 
             // do a check for error or success
             if (error) {
                 console.error("Init failed error: ", error);
             } else {
-                console.log('joinRoom init');
+                console.log('2. joinRoom init');
                 SkylinkDemo.joinRoom({
                     userData: '{{ request.user.username }}',
                     video: {
@@ -165,7 +161,6 @@
             return emptyVidBox
         }
 
-        // Layout particpant videos
         function LayoutVideoContainer() {
 
             for (i = 0; i < 4; i++) {
