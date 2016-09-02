@@ -11,6 +11,10 @@
             margin-top: 0;
         }
 
+        .particbox {
+            margin-top: 30px;
+        }
+
         .videoContainer {
             background-color: pink;
             height: 180px;
@@ -59,7 +63,7 @@
         // Peer Joined
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
-            console.log('peerJoined Info: ' + peerInfo);
+            console.log('peerJoined Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
             if (isSelf) return; // self - video element already created above
 
             // create element for peer video:
@@ -77,8 +81,12 @@
         SkylinkDemo.on("incomingStream", function (peerId, stream, peerInfo, isSelf) {
             console.log('incomingStream Id: ' + peerId);
             if (isSelf) {
-                attachMediaStream(document.getElementById('myvideo'), stream);
-                } else {
+                var vidbox = getNextEmptyVidBox(divIdName=peerId, publish=true);
+                attachMediaStream(vidbox, stream);
+                vidbox.id = 'vid_1_' + peerId;
+
+            } else {
+
                 var peerVideo = document.createElement('video');
                 peerVideo.id = peerId;
                 peerVideo.autoplay = 'autoplay';
@@ -113,8 +121,12 @@
                 console.error('Init failed: ', error);
             } else {
                 console.log('1. Skylink init: ' + success);
+                console.log('jos_name: ' + '{{ request.user.JOSProfile.jos_name }}');
+
+    ///////////////////// NEXT TIME
+
                 SkylinkDemo.joinRoom('my_room', {
-                    userData: 'My Username',
+                    userData: '{{ request.user.JOSProfile.jos_name }}',
                     audioFallback: true,
                     audio: true,
                     video: true,
@@ -123,38 +135,33 @@
             }
         });
 
-
-
-
-
-
-
-
-
         // ----------------
         // Layout functions
         // ----------------
 
         function getNextEmptyVidBox(divIdName, publish) {
             for (c = 1; c < 13; c++) {
-                var testID = '#vid_' + c + '_empty';
-                if ($(testID).length) {
-                    nextEmptyID = testID.substr(1);
+
+                var testId = '#vid_' + c + '_empty';
+                console.log('testId: ' + testId);
+                if ($(testId).length) {
+                    nextEmptyID = testId.substr(1);
                     break;
+
                 }
             }
 
             var emptyVidBox = document.getElementById(nextEmptyID);
-            emptyVidBox.id = nextEmptyID.slice(0, -5) + divIdName.slice(0, -1).split(' ').join('_');
+            emptyVidBox.id = nextEmptyID.slice(0, -5) + divIdName;
             if (publish == true) {
                 emptyVidBox.style.zIndex = 10;
             }
 
-            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+            var nameBoxID = 'name_' + emptyVidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById(nameBoxID);
             nameBox.innerHTML = divIdName;
 
-            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+            var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
             $(particBox).removeClass('hidden');
 
             return emptyVidBox
@@ -162,22 +169,24 @@
 
         function LayoutVideoContainer() {
 
-            for (i = 0; i < 1; i++) {
+            for (i = 0; i < 2; i++) {
                 var rowI = document.createElement('div');
                 $(rowI).addClass('row');
                 rowI.id = 'row_' + i;
                 document.getElementById('audienceContainer').appendChild(rowI);
 
-                for (j = 1; j < 2; j++) {
+                for (j = 1; j < 5; j++) {
+                    var pstn = (i * 4) + j;
                     var newParticBox = document.createElement('div');
-                    $(newParticBox).addClass('col-xs-3 text-center');
-                    newParticBox.id = 'box_' + (i * 4 + j);
-                    newParticBox.innerHTML = "<video id='myvideo' class='videoContainer' muted='' autoplay='' style='transform: rotateY(-180deg);'> </video>";
+                    $(newParticBox).addClass('col-xs-3 text-center particbox');
+                    newParticBox.id = 'box_' + pstn;
+
+                    var videoBoxId = 'vid_' + pstn + '_empty';
+                    newParticBox.innerHTML = "<video id=" + videoBoxId + " class='videoContainer' muted='' autoplay='' style='transform: rotateY(-180deg);'> </video>";
                     var newVidBox = document.createElement('video');
-{#                    newVidBox.id = 'vid_' + (i * 4 + j) + '_empty';#}
 
                     var newNameBox = document.createElement('div');
-                    newNameBox.id = 'name_' + (i * 4 + j);
+                    newNameBox.id = 'name_' + pstn;
                     $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
                     newParticBox.appendChild(newNameBox);
 
