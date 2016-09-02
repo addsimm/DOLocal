@@ -21,7 +21,7 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
     ''' A model for JOS Staff Members '''
 
     class Meta:
-        verbose_name = 'JOS Staff Member'
+        verbose_name = 'Staff Member Profile'
 
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
@@ -64,7 +64,7 @@ class JOSStaffHoursEntry(TimeStamped, models.Model):
 
 class JOSReferral(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'JOSSReferral'
+        verbose_name = 'Referral'
         ordering = ("-updated",)
 
     staff_member = models.ForeignKey(JOSStaffMember)
