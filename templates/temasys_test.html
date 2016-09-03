@@ -50,9 +50,11 @@
 
     <script charset="utf-8">
 
-        LayoutVideoContainer();
+        LayoutVideoContainers();
 
+        var userJOSName = 'missing';
         var SkylinkDemo = new Skylink();
+
         // call joinRoom after init() callback if you want to joinRoom instantly.
         SkylinkDemo.on("readyStateChange", function (state, room) {
             console.log("Room (" + room + ") state: ", room);
@@ -64,35 +66,26 @@
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
             console.log('peerJoined Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
-            if (isSelf) return; // self - video element already created above
-
-            // create element for peer video:
-            var vid = document.createElement('video');
-            $(vid).addClass('videoContainer');
-            vid.autoplay = true;
-            vid.muted = true; // Added to avoid feedback when testing locally
-            vid.id = peerId;
-            document.getElementById('audienceContainer').appendChild(vid);
+            userJOSName = peerInfo['userData'];
         });
 
 
 
         // Incoming Stream
         SkylinkDemo.on("incomingStream", function (peerId, stream, peerInfo, isSelf) {
-            console.log('incomingStream Id: ' + peerId);
+            console.log('incomingStream Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
+
+
+            var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = userJOSName, publish=true);
+            vidbox.autoplay = 'autoplay';
+
             if (isSelf) {
-                var vidbox = getNextEmptyVidBox(divIdName=peerId, publish=true);
-                attachMediaStream(vidbox, stream);
-                vidbox.id = 'vid_1_' + peerId;
-
-            } else {
-
-                var peerVideo = document.createElement('video');
-                peerVideo.id = peerId;
-                peerVideo.autoplay = 'autoplay';
-                document.getElementById('peersVideo').appendChild(peerVideo);
-                attachMediaStream(peerVideo, stream);
+                ///// do isSelf
             }
+
+            attachMediaStream(vidbox, stream);
+            vidbox.id = 'vid_1_' + peerId;
+
         });
 
 
@@ -121,9 +114,6 @@
                 console.error('Init failed: ', error);
             } else {
                 console.log('1. Skylink init: ' + success);
-                console.log('jos_name: ' + '{{ request.user.JOSProfile.jos_name }}');
-
-    ///////////////////// NEXT TIME
 
                 SkylinkDemo.joinRoom('my_room', {
                     userData: '{{ request.user.JOSProfile.jos_name }}',
@@ -139,7 +129,7 @@
         // Layout functions
         // ----------------
 
-        function getNextEmptyVidBox(divIdName, publish) {
+        function getNextEmptyVidBox(pId, uJOSN, publish) {
             for (c = 1; c < 13; c++) {
 
                 var testId = '#vid_' + c + '_empty';
@@ -152,14 +142,15 @@
             }
 
             var emptyVidBox = document.getElementById(nextEmptyID);
-            emptyVidBox.id = nextEmptyID.slice(0, -5) + divIdName;
+            emptyVidBox.id = nextEmptyID.slice(0, -5) + pId;
+
             if (publish == true) {
                 emptyVidBox.style.zIndex = 10;
             }
 
             var nameBoxID = 'name_' + emptyVidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById(nameBoxID);
-            nameBox.innerHTML = divIdName;
+            nameBox.innerHTML = uJOSN;
 
             var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
             $(particBox).removeClass('hidden');
@@ -167,7 +158,7 @@
             return emptyVidBox
         }
 
-        function LayoutVideoContainer() {
+        function LayoutVideoContainers() {
 
             for (i = 0; i < 2; i++) {
                 var rowI = document.createElement('div');
@@ -182,6 +173,28 @@
                     newParticBox.id = 'box_' + pstn;
 
                     var videoBoxId = 'vid_' + pstn + '_empty';
+
+                    // // // // // // STOPPED
+
+                    var uiLayout = [
+                        '<div class="ot-bubbles">',
+                        '</div>',
+                        '<div class="ot-input" style="padding: 15px  0;">',
+                        '  <div>',
+                        '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
+                        '    <p class="ot-new-messages" hidden>\u25BE&nbsp;Click to scroll to new messages</p>',
+                        '    <textarea placeholder="Contribute a thought&hellip;" class="ot-composer">' + '</textarea>',
+
+                        '      <p class="ot-character-counter"><span></span> characters left</p>',
+                        '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
+                        '    </div>',
+                        // '  </div>',
+                        '</div>'
+                    ].join('\n');
+
+
+
+
                     newParticBox.innerHTML = "<video id=" + videoBoxId + " class='videoContainer' muted='' autoplay='' style='transform: rotateY(-180deg);'> </video>";
                     var newVidBox = document.createElement('video');
 
