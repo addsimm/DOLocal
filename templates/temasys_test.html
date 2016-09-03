@@ -16,7 +16,7 @@
         }
 
         .videoContainer {
-            background-color: pink;
+            background-color: transparent;
             height: 180px;
             margin: 0;
             outline: 7px solid rgb(65, 45, 120);
@@ -28,9 +28,9 @@
             color: green;
             font-family: "Open Sans", sans-serif;
             font-size: 18pt;
-            margin: 0;
-            padding: 10px;
-            width: 240px;
+            margin-left: 0;
+            margin-top: 5px;
+            padding: 0;
         }
 
     </style>
@@ -53,6 +53,7 @@
         LayoutVideoContainers();
 
         var userJOSName = 'missing';
+        var globIsSelf = false;
         var SkylinkDemo = new Skylink();
 
         // call joinRoom after init() callback if you want to joinRoom instantly.
@@ -65,27 +66,26 @@
         // Peer Joined
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
-            console.log('peerJoined Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
+            globIsSelf = isSelf;
+            // console.log('peerJoined Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
+            console.log('peerJoined isSelf: ' + JSON.stringify(isSelf).replace(/,/g, ",\n"));
             userJOSName = peerInfo['userData'];
         });
 
 
 
         // Incoming Stream
-        SkylinkDemo.on("incomingStream", function (peerId, stream, peerInfo, isSelf) {
-            console.log('incomingStream Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
+        SkylinkDemo.on("incomingStream", function (peerId, stream, peerInfo) {
+            // console.log('incomingStream Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
 
-
-            var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = userJOSName, publish=true);
+            var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = userJOSName);
             vidbox.autoplay = 'autoplay';
 
-            if (isSelf) {
-                ///// do isSelf
+            if (globIsSelf) {
+                $(vidbox).css('transform','rotateY(-180deg)', 'z-index', '10');
             }
 
             attachMediaStream(vidbox, stream);
-            vidbox.id = 'vid_1_' + peerId;
-
         });
 
 
@@ -93,18 +93,9 @@
         SkylinkDemo.on('peerLeft', function (peerId, peerInfo, isSelf) {
             console.log('peerLeft Id: ' + peerId);
             if (!isSelf) {
-                var peerVideo = document.getElementById(peerId);
-                // do a check if peerVideo exists first
-                if (peerVideo) {
-                    document.getElementById('peersVideo').removeChild(peerVideo);
-                } else {
-                    console.error('Peer video for ' + peerId + ' is not found.');
-                }
+                reclaimSlot(pId);
             }
         });
-
-
-
 
         // ENCRYPT ROOM NAME - HIDE API KEY
         // always remember to call init()
@@ -129,30 +120,24 @@
         // Layout functions
         // ----------------
 
-        function getNextEmptyVidBox(pId, uJOSN, publish) {
+        function getNextEmptyVidBox(pId, uJOSN) {
             for (c = 1; c < 13; c++) {
-
                 var testId = '#vid_' + c + '_empty';
-                console.log('testId: ' + testId);
                 if ($(testId).length) {
-                    nextEmptyID = testId.substr(1);
+                    var nextEmptyID = testId.substr(1);
                     break;
-
                 }
             }
 
             var emptyVidBox = document.getElementById(nextEmptyID);
             emptyVidBox.id = nextEmptyID.slice(0, -5) + pId;
 
-            if (publish == true) {
-                emptyVidBox.style.zIndex = 10;
-            }
-
             var nameBoxID = 'name_' + emptyVidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById(nameBoxID);
             nameBox.innerHTML = uJOSN;
 
             var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
+
             $(particBox).removeClass('hidden');
 
             return emptyVidBox
@@ -173,69 +158,54 @@
                     newParticBox.id = 'box_' + pstn;
 
                     var videoBoxId = 'vid_' + pstn + '_empty';
+                    var nameBoxId = 'name_' + pstn;
 
-                    // // // // // // STOPPED
-
-                    var uiLayout = [
-                        '<div class="ot-bubbles">',
-                        '</div>',
-                        '<div class="ot-input" style="padding: 15px  0;">',
-                        '  <div>',
-                        '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
-                        '    <p class="ot-new-messages" hidden>\u25BE&nbsp;Click to scroll to new messages</p>',
-                        '    <textarea placeholder="Contribute a thought&hellip;" class="ot-composer">' + '</textarea>',
-
-                        '      <p class="ot-character-counter"><span></span> characters left</p>',
-                        '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
-                        '    </div>',
-                        // '  </div>',
+                    var particBoxLayout = [
+                        "<div class='row'>",
+                        "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                        "    </video>",
+                        "</div>",
+                        '<div class="row">',
+                        "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
                         '</div>'
                     ].join('\n');
 
-
-
-
-                    newParticBox.innerHTML = "<video id=" + videoBoxId + " class='videoContainer' muted='' autoplay='' style='transform: rotateY(-180deg);'> </video>";
-                    var newVidBox = document.createElement('video');
-
-                    var newNameBox = document.createElement('div');
-                    newNameBox.id = 'name_' + pstn;
-                    $(newNameBox).addClass('row text-center nameContainer').innerHTML = newNameBox.id;
-                    newParticBox.appendChild(newNameBox);
+                    $(newParticBox).html(particBoxLayout);
 
                     rowI.appendChild(newParticBox);
                 }
             }
         }
 
-        function reclaimSlot(e) {
+        function reclaimSlot(pId) {
             var reclaimedID = ' ';
-            var subscriber_jos_name = e.stream.name.split(',')[0];
-            subscriber = subscriber_jos_name.slice(0, -1).split(' ').join('_');
             for (c = 1; c < 13; c++) {
-                var testID = '#vid_' + c + '_' + subscriber;
-                if ($(testID).length) {
-                    reclaimedID = testID.substr(1);
+                var testId = '#vid_' + c + '_' + pId;
+                console.log('testId: ' + testId);
+                if ($(testId).length) {
+                    console.log('testId.length: ' + $(testId).length);
+                    reclaimedID = testId.substr(1);
                     break;
                 }
             }
 
-            var position = reclaimedID.split('_')[1].toString();
+            var pstn = reclaimedID.split('_')[1].toString();
 
-            particBox = document.getElementById('box_' + position);
-            $(particBox).empty().addClass('hidden');
+            reParticBox = document.getElementById('box_' + pstn);
+            var videoBoxId = 'vid_' + pstn + '_empty';
+            var nameBoxId = 'name_' + pstn;
 
-            vidBox = document.createElement('video');
-            $(vidBox).addClass('row videoContainer');
-            vidBox.id = 'vid_' + position + '_empty';
-            vidBox.innerHTML = vidBox.id;
-            particBox.appendChild(vidBox);
+            var particBoxLayout = [
+                "<div class='row'>",
+                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                "    </video>",
+                "</div>",
+                '<div class="row">',
+                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                '</div>'
+            ].join('\n');
 
-            var nameBox = document.createElement('div');
-            $(nameBox).addClass('row text-center nameContainer');
-            nameBox.id = 'name_' + position;
-            nameBox.innerHTML = nameBox.id;
-            particBox.appendChild(nameBox);
+            $(reParticBox).html(particBoxLayout);
         }
 
     </script>
