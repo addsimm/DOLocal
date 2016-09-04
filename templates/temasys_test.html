@@ -12,7 +12,7 @@
         }
 
         .particbox {
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .videoContainer {
@@ -37,11 +37,11 @@
 
     {# <span class="josinstructions">Facilitator:</span> #}
 
-    <div class="row josinstructions" style="margin-top: -50px;">
+    <div class="row josinstructions" style="margin-top: -65px; padding:10px 0; border-top: 3px solid rgb(231, 209, 222); border-bottom: 3px solid rgb(231, 209, 222);">
 
         <div id="audienceContainer"
              class="col-xs-12"
-             style="padding: 15px 25px;">
+             style="padding: 0 20px;">
         </div>
     </div>
 
@@ -56,38 +56,27 @@
         var globIsSelf = false;
         var SkylinkDemo = new Skylink();
 
-        // call joinRoom after init() callback if you want to joinRoom instantly.
+
         SkylinkDemo.on("readyStateChange", function (state, room) {
             console.log("Room (" + room + ") state: ", room);
         });
-
-
 
         // Peer Joined
         SkylinkDemo.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined Id: ' + peerId);
             globIsSelf = isSelf;
-            // console.log('peerJoined Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
-            console.log('peerJoined isSelf: ' + JSON.stringify(isSelf).replace(/,/g, ",\n"));
             userJOSName = peerInfo['userData'];
         });
 
-
-
         // Incoming Stream
         SkylinkDemo.on("incomingStream", function (peerId, stream, peerInfo) {
-            // console.log('incomingStream Info: ' + JSON.stringify(peerInfo).replace(/,/g, ",\n"));
-
             var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = userJOSName);
             vidbox.autoplay = 'autoplay';
-
             if (globIsSelf) {
                 $(vidbox).css('transform','rotateY(-180deg)', 'z-index', '10');
             }
-
             attachMediaStream(vidbox, stream);
         });
-
 
         // Peer left
         SkylinkDemo.on('peerLeft', function (peerId, peerInfo, isSelf) {
@@ -98,14 +87,11 @@
         });
 
         // ENCRYPT ROOM NAME - HIDE API KEY
-        // always remember to call init()
         SkylinkDemo.init('441543cd-a1c5-4d93-a25c-3339daa9b959', function (error, success) {
             // do a check for error or success
             if (error) {
                 console.error('Init failed: ', error);
             } else {
-                console.log('1. Skylink init: ' + success);
-
                 SkylinkDemo.joinRoom('my_room', {
                     userData: '{{ request.user.JOSProfile.jos_name }}',
                     audioFallback: true,
@@ -137,7 +123,6 @@
             nameBox.innerHTML = uJOSN;
 
             var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
-
             $(particBox).removeClass('hidden');
 
             return emptyVidBox
@@ -154,7 +139,7 @@
                 for (j = 1; j < 5; j++) {
                     var pstn = (i * 4) + j;
                     var newParticBox = document.createElement('div');
-                    $(newParticBox).addClass('col-xs-3 text-center particbox');
+                    $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
                     newParticBox.id = 'box_' + pstn;
 
                     var videoBoxId = 'vid_' + pstn + '_empty';
@@ -192,6 +177,7 @@
             var pstn = reclaimedID.split('_')[1].toString();
 
             reParticBox = document.getElementById('box_' + pstn);
+            $(reParticBox).addClass('hidden');
             var videoBoxId = 'vid_' + pstn + '_empty';
             var nameBoxId = 'name_' + pstn;
 
