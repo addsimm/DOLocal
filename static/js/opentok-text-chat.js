@@ -29,20 +29,17 @@
             '    <p class="ot-error-zone" hidden>Error sending the message!</p>',
             '    <p class="ot-new-messages" hidden>\u25BE&nbsp;Click to scroll to new messages</p>',
             '    <textarea placeholder="Contribute a thought&hellip;" class="ot-composer">' + '</textarea>',
-            // '    <div class="ot-bottom-line">',
+
             '      <p class="ot-character-counter"><span></span> characters left</p>',
             '      <button class="btn btn-default" style="float: right; padding: 6px 12px;">Send</button>',
             '    </div>',
-            // '  </div>',
+
             '</div>'
         ].join('\n');
 
         var bubbleLayout = [
             '<div>',
-            // '  <header class="ot-bubble-header">',
-            // '    <p class="ot-message-sender"></p>',
-            // '    <time class="ot-message-timestamp"></time>',
-            // '  </header>',
+
             '</div>'
         ].join('\n');
 
@@ -53,13 +50,18 @@
         var senderAlias = 'xxx';
         function ChatUI(options) {
             options = options || {};
-            this.senderId = options.senderId || ('' + Math.random()).substr(2);
-            senderAlias = options.senderAlias || 'xxx';
-            this.maxTextLength = options.maxTextLength || 140;
-            this.groupDelay = options.groupDelay || 2 * 60 * 1000; // 2 min
-            this.timeout = options.timeout || 5000;
-            this._watchScrollAtTheBottom = this._watchScrollAtTheBottom.bind(this);
+
             this._messages = [];
+
+            this.senderId =     options.senderId || ('' + Math.random()).substr(2);
+            senderAlias =       options.senderAlias || 'xxx';
+            this.maxTextLength = options.maxTextLength || 140;
+            this.groupDelay =   options.groupDelay || 2 * 60 * 1000; // 2 min
+            this.timeout =      options.timeout || 5000;
+
+            this._watchScrollAtTheBottom = this._watchScrollAtTheBottom.bind(this);
+
+
             this._setupTemplates();
             this._setupUI(options.container);
             this._updateCharCounter();
@@ -117,16 +119,19 @@
                     _this._hideErrors();
                     if (typeof _this.onMessageReadyToSend === 'function') {
                         _this.disableSending();
+
                         var timeout = setTimeout(function () {
                             _this._showError();
                             _this.enableSending();
                         }, _this.timeout);
+
                         var sent = _this.onMessageReadyToSend(contents, function (err) {
                             clearTimeout(timeout);
                             if (err) {
                                 _this._showError();
+
                             } else {
-                                // alert("second senderAlias: " + senderAlias);
+
                                 _this.addMessage(new ChatMessage(_this.senderId, senderAlias, contents));
                                 _this._composer.value = '';
                                 _this._updateCharCounter();
@@ -424,7 +429,7 @@
 
 
                 // alert("from object: " + json);
-                var message = new ChatMessage(from.connectionId, from.data, contents);
+                  var message = new ChatMessage(from.connectionId, from.data, contents);
                 // alert("from.connectionId: " + from.connectionId + ", from.data: " + from.data + ", contents: "  + contents);
                 this._chatBox.addMessage(message);
             },
