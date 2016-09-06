@@ -36,25 +36,51 @@
         padding: 0;
     }
 
+    #composeContainer {
+
+    }
+
     .action {
-        color: #5bc0de;
+        color: #28a4c9;
         font-style: italic;
-        margin-left: 10px;
+        margin-left: 80px;
+    }
+
+    .cntnt {
     }
 
     .usr {
         color: green;
-        font-size: 12pt;
     }
     
-    .cntnt {
-        background-color: lightpink;
-    }
-
     .me {
         color: red;
     }
 
+    .table {
+        background-color: white;
+        font-family: "Open Sans", sans-serif;
+        margin: 0 15px;
+        width: 97%;
+    }
+
+    .table > tbody > tr > td {
+        border: none;
+        border-top: 1px dashed rgb(65,45,120);
+        line-height: normal;
+        padding: 5px 0;
+    }
+
+    #composeSection { }
+
+    td {
+        border: none;
+        padding: 0;
+    }
+
+    tr:hover {
+        background-color: inherit;
+    }
 
 </style>
 
@@ -64,15 +90,33 @@
     <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px;"></div>
 </div>
 
-<div id="messagesSection" class="row">
-    <div id="messagesContainer" class="col-xs-12"></div>
+<div id="messagesSection" class="row" style="background-color: rgb(231, 209, 222); padding-bottom: 25px;">
+    <div id="messagesContainer"
+         class="col-xs-12"
+         style="margin-top: 20px;
+                height: 180px;
+                overflow-x: hidden;
+                overflow-y: auto;">
+
+    </div>
 </div>
 
-<div id="composeSection" class="row">
-    <div id="composeContainer" class="col-xs-12">
-        <input id="composeInput" type="text" placeholder="Add a thought!">
-        <button class="btn btn-default" onclick="sendMessage()">Send</button>
-    </div>
+<div id="composeSection" class="row" style="margin: 20px 0 0 30px;">
+    <table style="margin: 10px 0 0 30px;">
+        <tr>
+            <td style="width: 65%;">
+                <input id="composeInput" type="text"
+                       style="font-size: 14pt;
+                              width: 100%;
+                              padding: 10px;
+                              border: 3px solid rgb(65,45,120);"
+                       placeholder="Add a thought!">
+            </td>
+            <td>
+                <button class="btn btn-default" style="margin-left: 10px;" onclick="sendMessage()">Send</button>
+            </td>
+        </tr>
+    </table>
 </div>
 
 
@@ -104,31 +148,21 @@
         console.log("addMessage: " + cntnt);
 
         var messagesContainer = document.getElementById('messagesContainer');
-        var div = document.createElement('div');
-        div.className = clssnm;
+        var div = document.createElement('table');
+        $(div).addClass('table ' + clssnm);
 
-        var cntntClass = 'col-xs-9 cntnt';
+        var cntntClass = 'cntnt';
         if (usr == 'Me') {
-            cntntClass = 'col-xs-9 cntnt me';
+            cntntClass = 'cntnt me';
         }
 
-        var chatMessage = ' ';
-        if (clssnm == 'message') {
+        var chatMessage = [
+            "<tr class='chat-message'>",
+            "    <td class='usr' style='overflow-x: hidden; width: 12%; padding-left: 10px;'>" + usr + "</td>",
+            "    <td class='" + cntntClass + "' style='overflow-x: hidden;'>" + cntnt + "</td>",
+            "</tr>"
+        ].join('\n');
 
-            ////// change to table
-            chatMessage = [
-                "<div class='row chat-message' style=' '>",
-                "    <div class='col-xs-1 usr'>" + usr + "</div>",
-                "    <div class='" + cntntClass + "' >" + cntnt + "</div>",
-                "</div>"
-            ].join('\n');
-
-
-
-        } else {
-            chatMessage = usr + cntnt;
-        }
-        
         div.innerHTML =  chatMessage;
         messagesContainer.appendChild(div);
     }
@@ -173,12 +207,11 @@
     // Peer left
     JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
         console.log('peerLeft Id: ' + peerId);
-{#            if (!isSelf) {#}
-{#                reclaimSlot(pId);#}
-{#            }#}
+            if (!isSelf) {
+                reclaimSlot(pId);
+            }
 
         if (!isSelf) {
-            peerJOSName = JOSSkylink.getUserData(peerId)['name'];
             addMessage(usr = peerJOSName, cntnt = ' has left chat', clssnm = 'action');
         }
     });
@@ -191,8 +224,8 @@
         } else {
             JOSSkylink.joinRoom('my_room', {
                 audioFallback: true,
-                audio: false, //////////////////////////////////////////////////
-                video: false, //////////////////////////////////////////////////
+                audio: true, //////////////////////////////////////////////////
+                video: true, //////////////////////////////////////////////////
                 frameRate: 15
             });
             JOSSkylink.setUserData({
