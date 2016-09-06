@@ -5,256 +5,303 @@
 
 {% block all_content %}
 
-    <style>
+<style>
 
-        #videoSection {
-            margin-top: -65px;
-            padding: 10px 0;
-            border-top: 3px solid rgb(231, 209, 222);
-            border-bottom: 3px solid rgb(231, 209, 222);
-        }
+    #videoSection {
+        margin-top: -65px;
+        padding: 10px 0;
+        border-top: 3px solid rgb(231, 209, 222);
+        border-bottom: 3px solid rgb(231, 209, 222);
+    }
 
-        .particbox {
-            margin-top: 20px;
-        }
+    .particbox {
+        margin-top: 20px;
+    }
 
-        .videoContainer {
-            background-color: transparent;
-            height: 180px;
-            margin: 0;
-            outline: 7px solid rgb(65, 45, 120);
-            padding: 0;
-            width: 240px;
-        }
+    .videoContainer {
+        background-color: transparent;
+        height: 180px;
+        margin: 0;
+        outline: 7px solid rgb(65, 45, 120);
+        padding: 0;
+        width: 240px;
+    }
 
-        .nameContainer {
-            color: green;
-            font-family: "Open Sans", sans-serif;
-            font-size: 18pt;
-            margin-left: 0;
-            margin-top: 5px;
-            padding: 0;
-        }
+    .nameContainer {
+        color: green;
+        font-family: "Open Sans", sans-serif;
+        font-size: 18pt;
+        margin-left: 0;
+        margin-top: 5px;
+        padding: 0;
+    }
 
-    </style>
+    .action {
+        color: #5bc0de;
+        font-style: italic;
+        margin-left: 10px;
+    }
 
-    {# <span class="josinstructions">Facilitator:</span> #}
+    .usr {
+        color: green;
+        font-size: 12pt;
+    }
+    
+    .cntnt {
+        background-color: lightpink;
+    }
 
-    <div id="videoSection" class="row">
+    .me {
+        color: red;
+    }
 
-        <div id="audienceContainer"
-             class="col-xs-12"
-             style="padding: 0 15px;">
-        </div>
 
+</style>
+
+{# HTML #}
+
+<div id="videoSection" class="row">
+    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px;"></div>
+</div>
+
+<div id="messagesSection" class="row">
+    <div id="messagesContainer" class="col-xs-12"></div>
+</div>
+
+<div id="composeSection" class="row">
+    <div id="composeContainer" class="col-xs-12">
+        <input id="composeInput" type="text" placeholder="Add a thought!">
+        <button class="btn btn-default" onclick="sendMessage()">Send</button>
     </div>
+</div>
 
-    <input id="message" type="text" placeholder="My message">
-    <button onclick="sendMessage()">Send message</button>
 
-    <div id="chatSection">
-        <div id="chatbox"></div>
-    </div>
+{# Scripts #}
+<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
+<script charset="utf-8">
 
-    {# scripts #}
-    <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
-    <script charset="utf-8">
+    LayoutVideoContainers();
 
-        LayoutVideoContainers();
+    var peerJOSName = 'missing',
+        globIsSelf = false,
+        JOSSkylink = new Skylink();
 
-        var peerJOSName = 'missing',
-            globIsSelf = false,
-            JOSSkylink = new Skylink();
+// ----
+// Chat
+// ----
 
-        // ----
-        // Chat
-        // ----
+    function sendMessage() {
 
-        function sendMessage() {
-            console.log("sendMessage");
-            var input = document.getElementById('message');
-            JOSSkylink.sendP2PMessage(input.value);
-            input.value = '';
+        var input = document.getElementById('composeInput');
+        JOSSkylink.sendP2PMessage(input.value);
+
+        console.log("sendMessage: " + input.value);
+        input.value = '';
+    }
+
+
+    function addMessage(usr, cntnt, clssnm) {
+        console.log("addMessage: " + cntnt);
+
+        var messagesContainer = document.getElementById('messagesContainer');
+        var div = document.createElement('div');
+        div.className = clssnm;
+
+        var cntntClass = 'col-xs-9 cntnt';
+        if (usr == 'Me') {
+            cntntClass = 'col-xs-9 cntnt me';
         }
 
-        function addMessage(message, className) {
-            console.log("addMessage");
-            var chatbox = document.getElementById('chatbox'),
-                    div = document.createElement('div');
-            div.className = className;
-            div.textContent = message;
-            chatbox.appendChild(div);
+        var chatMessage = ' ';
+        if (clssnm == 'message') {
+
+            ////// change to table
+            chatMessage = [
+                "<div class='row chat-message' style=' '>",
+                "    <div class='col-xs-1 usr'>" + usr + "</div>",
+                "    <div class='" + cntntClass + "' >" + cntnt + "</div>",
+                "</div>"
+            ].join('\n');
+
+
+
+        } else {
+            chatMessage = usr + cntnt;
         }
+        
+        div.innerHTML =  chatMessage;
+        messagesContainer.appendChild(div);
+    }
 
 
-        JOSSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
-            console.log("incomingMessage");
-            var user = 'Me', className = 'Me';
-            if (!isSelf) {
-                user = peerJOSName || peerId;
-                className = 'message';
-            }
-            addMessage(user + ': ' + message.content, className);
-        });
+    JOSSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
+        console.log("incomingMessage");
+        var user = 'Me', className = 'message';
+        if (!isSelf) {
+            user = peerJOSName || peerId;
+        }
+        addMessage(usr = user, cntnt = message.content, clssnm = className);
+    });
 
-        // ----
-        // Main
-        // ----
 
-        // Peer Joined
-        JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-            console.log('peerJoined Id: ' + peerId);
-            globIsSelf = isSelf;
+// ----
+// Main
+// ----
+
+    // Peer Joined
+    JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
+        console.log('peerJoined Id: ' + peerId);
+        globIsSelf = isSelf;
+
+        peerJOSName = 'Me';
+        if (!isSelf) {
             peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+            addMessage(usr = peerJOSName, cntnt = ' has joined chat', clssnm = 'action');
+        }
+    });
 
-            // Chat
-            var user = 'Me';
-            if (!isSelf) {
-                user = peerInfo.userData.name || peerId;
-            }
-            addMessage(peerJOSName + ' joined the room', 'action');
-        });
+    // Incoming Stream
+    JOSSkylink.on("incomingStream", function (peerId, stream) {
+        var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = peerJOSName);
+        vidbox.autoplay = 'autoplay';
+        if (globIsSelf) {
+            $(vidbox).css('transform','rotateY(-180deg)', 'z-index', '10');
+        }
+        attachMediaStream(vidbox, stream);
+    });
 
-        // Incoming Stream
-        JOSSkylink.on("incomingStream", function (peerId, stream) {
-            var vidbox = getNextEmptyVidBox(pId= peerId, uJOSN = peerJOSName);
-            vidbox.autoplay = 'autoplay';
-            if (globIsSelf) {
-                $(vidbox).css('transform','rotateY(-180deg)', 'z-index', '10');
-            }
-            attachMediaStream(vidbox, stream);
-        });
-
-        // Peer left
-        JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
-            console.log('peerLeft Id: ' + peerId);
+    // Peer left
+    JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
+        console.log('peerLeft Id: ' + peerId);
 {#            if (!isSelf) {#}
 {#                reclaimSlot(pId);#}
 {#            }#}
 
-            // Chat
-            var user = 'Me';
-            if (!isSelf) {
-                user = peerInfo.userData.name || peerId;
-            }
-            addMessage(peerJOSName + ' left the room', 'action');
-        });
-
-        // ENCRYPT ROOM NAME - HIDE API KEY
-        JOSSkylink.init('{{ JOSKey }}', function (error, success) {
-            // do a check for error or success
-            if (error) {
-                console.error('Init failed: ', error);
-            } else {
-                JOSSkylink.joinRoom('my_room', {
-                    audioFallback: true,
-                    audio: false, //////////////////////////////////////////////////
-                    video: false, //////////////////////////////////////////////////
-                    frameRate: 15
-                });
-                JOSSkylink.setUserData({
-                    name: '{{ request.user.JOSProfile.jos_name }}'
-                });
-            }
-        });
-
-        // ------
-        // Layout
-        // ------
-
-        function getNextEmptyVidBox(pId, uJOSN) {
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_empty';
-                if ($(testId).length) {
-                    var nextEmptyID = testId.substr(1);
-                    break;
-                }
-            }
-
-            var emptyVidBox = document.getElementById(nextEmptyID);
-            emptyVidBox.id = nextEmptyID.slice(0, -5) + pId;
-
-            var nameBoxID = 'name_' + emptyVidBox.id.split('_')[1].toString();
-            var nameBox = document.getElementById(nameBoxID);
-            nameBox.innerHTML = uJOSN;
-
-            var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
-            $(particBox).removeClass('hidden');
-
-            return emptyVidBox
+        if (!isSelf) {
+            peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+            addMessage(usr = peerJOSName, cntnt = ' has left chat', clssnm = 'action');
         }
+    });
 
-        function LayoutVideoContainers() {
+    // ENCRYPT ROOM NAME
+    JOSSkylink.init('{{ JOSKey }}', function (error, success) {
+        // do a check for error or success
+        if (error) {
+            console.error('Init failed: ', error);
+        } else {
+            JOSSkylink.joinRoom('my_room', {
+                audioFallback: true,
+                audio: false, //////////////////////////////////////////////////
+                video: false, //////////////////////////////////////////////////
+                frameRate: 15
+            });
+            JOSSkylink.setUserData({
+                name: '{{ request.user.JOSProfile.jos_name }}'
+            });
+        }
+    });
 
-            for (i = 0; i < 2; i++) {
-                var rowI = document.createElement('div');
-                $(rowI).addClass('row');
-                rowI.id = 'row_' + i;
-                document.getElementById('audienceContainer').appendChild(rowI);
 
-                for (j = 1; j < 5; j++) {
-                    var pstn = (i * 4) + j;
-                    var newParticBox = document.createElement('div');
-                    $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
-                    newParticBox.id = 'box_' + pstn;
+// ------
+// Layout
+// ------
 
-                    var videoBoxId = 'vid_' + pstn + '_empty';
-                    var nameBoxId = 'name_' + pstn;
-
-                    var particBoxLayout = [
-                        "<div class='row'>",
-                        "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                        "    </video>",
-                        "</div>",
-                        '<div class="row">',
-                        "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                        '</div>'
-                    ].join('\n');
-
-                    $(newParticBox).html(particBoxLayout);
-
-                    rowI.appendChild(newParticBox);
-                }
+    function getNextEmptyVidBox(pId, uJOSN) {
+        for (c = 1; c < 13; c++) {
+            var testId = '#vid_' + c + '_empty';
+            if ($(testId).length) {
+                var nextEmptyID = testId.substr(1);
+                break;
             }
         }
 
-        function reclaimSlot(pId) {
-            var reclaimedID = ' ';
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_' + pId;
-                console.log('testId: ' + testId);
-                if ($(testId).length) {
-                    console.log('testId.length: ' + $(testId).length);
-                    reclaimedID = testId.substr(1);
-                    break;
-                }
+        var emptyVidBox = document.getElementById(nextEmptyID);
+        emptyVidBox.id = nextEmptyID.slice(0, -5) + pId;
+
+        var nameBoxID = 'name_' + emptyVidBox.id.split('_')[1].toString();
+        var nameBox = document.getElementById(nameBoxID);
+        nameBox.innerHTML = uJOSN;
+
+        var particBox = document.getElementById('box_' + emptyVidBox.id.split('_')[1].toString());
+        $(particBox).removeClass('hidden');
+
+        return emptyVidBox
+    }
+
+    function LayoutVideoContainers() {
+
+        for (i = 0; i < 2; i++) {
+            var rowI = document.createElement('div');
+            $(rowI).addClass('row');
+            rowI.id = 'row_' + i;
+            document.getElementById('audienceContainer').appendChild(rowI);
+
+            for (j = 1; j < 5; j++) {
+                var pstn = (i * 4) + j;
+                var newParticBox = document.createElement('div');
+                $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
+                newParticBox.id = 'box_' + pstn;
+
+                var videoBoxId = 'vid_' + pstn + '_empty';
+                var nameBoxId = 'name_' + pstn;
+
+                var particBoxLayout = [
+                    "<div class='row'>",
+                    "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                    "    </video>",
+                    "</div>",
+                    '<div class="row">',
+                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                    '</div>'
+                ].join('\n');
+
+                $(newParticBox).html(particBoxLayout);
+
+                rowI.appendChild(newParticBox);
             }
+        }
+    }
 
-            var pstn = reclaimedID.split('_')[1].toString();
-
-            reParticBox = document.getElementById('box_' + pstn);
-            $(reParticBox).addClass('hidden');
-            var videoBoxId = 'vid_' + pstn + '_empty';
-            var nameBoxId = 'name_' + pstn;
-
-            var particBoxLayout = [
-                "<div class='row'>",
-                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                "    </video>",
-                "</div>",
-                '<div class="row">',
-                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                '</div>'
-            ].join('\n');
-
-            $(reParticBox).html(particBoxLayout);
+    function reclaimSlot(pId) {
+        var reclaimedID = ' ';
+        for (c = 1; c < 13; c++) {
+            var testId = '#vid_' + c + '_' + pId;
+            console.log('testId: ' + testId);
+            if ($(testId).length) {
+                console.log('testId.length: ' + $(testId).length);
+                reclaimedID = testId.substr(1);
+                break;
+            }
         }
 
-        // JOSSkylink.on("readyStateChange", function (state, room) {
-        //     console.log("Room (" + room + ") state: ", room);
-        // });
+        var pstn = reclaimedID.split('_')[1].toString();
 
-    </script>
+        reParticBox = document.getElementById('box_' + pstn);
+        $(reParticBox).addClass('hidden');
+        var videoBoxId = 'vid_' + pstn + '_empty';
+        var nameBoxId = 'name_' + pstn;
+
+        var particBoxLayout = [
+            "<div class='row'>",
+            "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+            "    </video>",
+            "</div>",
+            '<div class="row">',
+            "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+            '</div>'
+        ].join('\n');
+
+        $(reParticBox).html(particBoxLayout);
+    }
+
+
+// Unused
+
+    // JOSSkylink.on("readyStateChange", function (state, room) {
+    //     console.log("Room (" + room + ") state: ", room);
+    // });
+
+</script>
 
 {% endblock all_content %}
 
