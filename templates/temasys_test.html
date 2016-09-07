@@ -147,7 +147,7 @@
 // ----
 // Chat
 // ----
-
+    /* SCREEN SHARE - MOSTLY WORKING
     function start() {
         console.log("screenshare request");
         JOSSkylink.shareScreen(function (error, success) {
@@ -158,13 +158,10 @@
                 console.log(success);
             }
         });
-        // JOSSkylink.joinRoom();
-    }
+    } */
 
-{#JOSSkylink.on('mediaAccessSuccess', function (stream) {#}
-{#    var vid = document.getElementById('myscreen');#}
-{#    attachMediaStream(vid, stream);#}
-{#});#}
+
+
 
     mc.onscroll = function() {
         var isAtBottom = (mc.scrollHeight - mc.scrollTop) === mc.clientHeight;

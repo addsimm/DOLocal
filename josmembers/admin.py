@@ -41,10 +41,10 @@ class JOSReservationAdmin(admin.ModelAdmin):
     """
     Admin class for JOSReservations.
     """
-
-    list_display = ("ready", "updated", "first_name", "last_name", "refer")
-
     verbose_name = 'Reservation'
+
+    list_display = ("id", "ready", "confirmed", "updated", "first_name", "last_name", "refer")
+    list_editable = ("ready", "confirmed")
 
     readonly_fields = ('updated',)
 

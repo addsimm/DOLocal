@@ -86,11 +86,13 @@ class JOSReservation(TimeStamped, models.Model):
     primary_os = models.IntegerField(default=0, choices=PRIMARY_OS_CHOICES)
 
     webcam = models.NullBooleanField(blank=True, default=False)
+    printer = models.NullBooleanField(blank=True, default=False)
     browser = models.TextField(blank=True, default=None)
     refer = models.TextField(blank=True, null=True, default=None)
 
     staff_notes = models.TextField(blank=True, null=True, default=None)
     ready = models.NullBooleanField(blank=True, default=False)
+    confirmed = models.NullBooleanField(blank=True, default=False)
 
 
 

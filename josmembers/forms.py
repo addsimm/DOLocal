@@ -291,7 +291,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     class Meta:
         model = JOSReservation
         fields = '__all__'
-        exclude = ('staff_notes',)
+        exclude = ('staff_notes', 'ready', 'confirmed')
 
     email_frequency = forms.ChoiceField(
         label='How often do you check your email?',
@@ -309,14 +309,18 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     )
 
 
-    phone_text = forms.NullBooleanField(label='Check this box if you text on your phone:',
+    phone_text = forms.NullBooleanField(label='Check this if you ever use text on your phone:',
                                     initial=False,
                                     widget=forms.CheckboxInput,
                                     required=False)
-    webcam     = forms.NullBooleanField(label='Check this box if you have a webcam:',
+    webcam     = forms.NullBooleanField(label='Check this if you have a webcam:',
                                         widget=forms.CheckboxInput,
                                         initial=False,
                                         required=False)
+    printer = forms.NullBooleanField(label='Check this you have a printer:',
+                                    widget=forms.CheckboxInput,
+                                    initial=False,
+                                    required=False)
     phone      = forms.CharField(label='Phone number - with area code')
     email      = forms.EmailField(label='What is your email address?')
     zip        = forms.CharField(label='What is your 5 digit zip code?')

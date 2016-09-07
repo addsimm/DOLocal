@@ -162,3 +162,21 @@ def workshop_connect(request, template="workshop_connect.html"):
 
     return TemplateResponse(request, template, context)
 
+@login_required
+def community_room(request, template="community_room.html"):
+    APIKey = '45616422'
+    secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
+
+    opentok = OpenTok(APIKey, secretkey)
+
+    session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
+    token = opentok.generate_token(session_id=session_id)
+
+    context = {
+        'apikey':             APIKey,
+        'session_id':         session_id,
+        'token':              token
+    }
+
+    return TemplateResponse(request, template, context)
+

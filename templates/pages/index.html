@@ -74,10 +74,19 @@
     </div>
 
     <div class="col-xs-1" style="padding-left: 0;">
-        <a class="secret-button"
-           style="height: 199px; outline: none; display: block; width: 100%; border: 1px dashed rgb(65, 45, 120); border-left: none; background-color: rgb(65, 45, 120);"
-           href="{% url "josmembers:jossignup" %}">
-
+        <a  class="secret-button"
+            style="height: 199px;
+                   outline: none;
+                   display: block;
+                   width: 100%;
+                   border: 1px dashed rgb(65, 45, 120);
+                   background-color: rgb(65, 45, 120);"
+            href="
+                {% if request.user.id > 0 %}
+                    {% url 'personaldesk' %}/{{ request.user.id }}
+                {% else %}
+                    {% url 'josmembers:jossignup' %}
+                {% endif %}">
         </a>
     </div>
 
@@ -150,10 +159,6 @@
 </div>
 
     {#<div class="col-xs-5" style="margin-top: 50px; background-color: transparent;">#}
-    {#    <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
-    {#       {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">#}
-    {#        <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">#}
-    {#    </a>#}
     {#    <div class="text-center" style="font-size: 18pt; margin-left: -25px;">#}
     {#        A storytelling community for<br>happier souls and healthier minds.#}
     {#    </div>#}
