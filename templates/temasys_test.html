@@ -87,6 +87,9 @@
 {# HTML #}
 <div>
 <div id="videoSection" class="row">
+    <button onclick="start()">Share screen</button><br>
+    <video id="myscreen" autoplay muted></video>
+
     <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 250px;"></div>
 </div>
 
@@ -138,13 +141,30 @@
 
     var JOSSkylink = new Skylink();
     var composeInput = document.getElementById('composeInput');
+    var mc = document.getElementById('messagesContainer');
+    var newMessageButton = document.getElementById('newMessageButton');
 
 // ----
 // Chat
 // ----
 
-    var mc = document.getElementById('messagesContainer');
-    var newMessageButton = document.getElementById('newMessageButton');
+    function start() {
+        console.log("screenshare request");
+        JOSSkylink.shareScreen(function (error, success) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                console.log(success);
+            }
+        });
+        // JOSSkylink.joinRoom();
+    }
+
+{#JOSSkylink.on('mediaAccessSuccess', function (stream) {#}
+{#    var vid = document.getElementById('myscreen');#}
+{#    attachMediaStream(vid, stream);#}
+{#});#}
 
     mc.onscroll = function() {
         var isAtBottom = (mc.scrollHeight - mc.scrollTop) === mc.clientHeight;
