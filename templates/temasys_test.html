@@ -88,7 +88,7 @@
 <div>
 <div id="videoSection" class="row">
     {% if request.user.is_staff %}
-        <button class="josstaffbutton" onclick="start()">Staff share screen</button><br>
+        <button class="josstaffbutton" onclick="start()">> Staff share screen</button><br>
     {% endif %}
     <video id="myscreen" autoplay muted></video>
 
@@ -146,10 +146,8 @@
     var mc = document.getElementById('messagesContainer');
     var newMessageButton = document.getElementById('newMessageButton');
 
-// ----
-// Chat
-// ----
-    /* SCREEN SHARE - MOSTLY WORKING
+
+    // SCREEN SHARE - MOSTLY WORKING
     function start() {
         console.log("screenshare request");
         JOSSkylink.shareScreen(function (error, success) {
@@ -160,7 +158,11 @@
                 console.log(success);
             }
         });
-    } */
+    }
+
+// ----
+// Chat
+// ----
 
     mc.onscroll = function() {
         var isAtBottom = (mc.scrollHeight - mc.scrollTop) === mc.clientHeight;
@@ -224,8 +226,9 @@
         addMessage(usr = user, cntnt = message.content, clssnm = className);
     });
 
-
+// ----
 // Main
+// ----
 
     // Peer Joined
     JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {

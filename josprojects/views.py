@@ -147,6 +147,7 @@ def tokboxtest(request, template="tokboxtest.html"):
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def temasystest(request, template="temasys_test.html"):
     JOSKey = '441543cd-a1c5-4d93-a25c-3339daa9b959'
 
@@ -156,12 +157,14 @@ def temasystest(request, template="temasys_test.html"):
 
     return TemplateResponse(request, template, context)
 
+
 @login_required
 def workshop_connect(request, template="workshop_connect.html"):
 
     context = {  }
 
     return TemplateResponse(request, template, context)
+
 
 @login_required
 def community_room(request, template="community_room.html"):
