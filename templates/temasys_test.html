@@ -87,12 +87,23 @@
 {# HTML #}
 <div>
 <div id="videoSection" class="row">
-    {% if request.user.is_staff %}
-        <button class="josstaffbutton" onclick="start()">> Staff share screen</button><br>
-    {% endif %}
-    <video id="myscreen" autoplay muted></video>
 
-    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 250px;"></div>
+    {% if request.user.is_staff %}
+        <button id="shareButton" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
+            Share screen
+        </button><br>
+    {% endif %}
+
+    <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px; min-height: 250px;">
+
+        <video id="myscreen" style="height: 850px;" autoplay muted></video>
+
+    </div>
+
+    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 250px;">
+
+    </div>
+
 </div>
 
 <div id="messagesSection" class="row" style="background-color: rgba(65, 45, 120, .2); padding-bottom: 15px;">
@@ -148,17 +159,37 @@
 
 
     // SCREEN SHARE - MOSTLY WORKING
-    function start() {
+    function controlShare() {
         console.log("screenshare request");
-        JOSSkylink.shareScreen(function (error, success) {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                console.log(success);
-            }
-        });
+        ac = document.getElementById('audienceContainer');
+        ss = document.getElementById('screenShare');
+        sbut = document.getElementById('shareButton');
+
+        if (sbut.innerText == "Share screen") {
+            sbut.innerText = "Stop share";
+            $(ac).addClass('hidden');
+            $(ss).removeClass('hidden');
+
+            JOSSkylink.setUserData({
+                name: 'screenshare'
+            });
+
+            JOSSkylink.shareScreen(function (error, success) {
+                if (error) {
+                    console.log("screen share error: " + error);
+                } else {
+                    console.log(success);
+                }
+            });
+
+        } else {
+            sbut.innerText = "Share screen";
+            $(ss).addClass('hidden');
+            $(ac).removeClass('hidden');
+            JOSSkylink.stopScreen()
+        }
     }
+
 
 // ----
 // Chat
@@ -243,72 +274,81 @@
     // Incoming Stream
     JOSSkylink.on("incomingStream", function (peerId, stream, isSelf) {
         var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
-        console.log('incomingStream name: ' + peerJOSName);
+        console.log('incomingStream peerjosname: ' + peerJOSName);
 
-        for (c = 1; c < 13; c++) {
-            var testId = '#vid_' + c + '_empty';
-            if ($(testId).length) {
-                var nextEmptyID = testId.substr(1);
-                break;
+        if (peerJOSName != 'screenshare') {
+            for (c = 1; c < 13; c++) {
+                var testId = '#vid_' + c + '_empty';
+                if ($(testId).length) {
+                    var nextEmptyID = testId.substr(1);
+                    break;
+                }
             }
+
+            var vidBox = document.getElementById(nextEmptyID);
+            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
+
+            if (isSelf) {
+                vidBox.muted = true;
+            }
+
+            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById(nameBoxID);
+            nameBox.innerHTML = peerJOSName;
+
+            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+            $(particBox).removeClass('hidden');
+
+            vidBox.autoplay = 'autoplay';
+            if (isSelf) {
+                $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
+            }
+        } else {
+            vidBox = document.getElementById('myscreen');
         }
 
-        var vidBox = document.getElementById(nextEmptyID);
-        vidBox.id = nextEmptyID.slice(0, -5) + peerId;
-
-        if (isSelf) {
-            vidBox.muted = true;
-        }
-
-                var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-        var nameBox = document.getElementById(nameBoxID);
-        nameBox.innerHTML = peerJOSName;
-
-        var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-        $(particBox).removeClass('hidden');
-
-        vidBox.autoplay = 'autoplay';
-        if (isSelf) {
-            $(vidBox).css('transform','rotateY(-180deg)', 'z-index', '10');
-        }
         attachMediaStream(vidBox, stream);
     });
 
     // Peer left
     JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
         console.log('peerLeft Id: ' + peerId);
+        var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+        console.log('peerLeft peerjosname: ' + peerJOSName);
+
         if (!isSelf) {
+            if (peerJOSName != 'screenshare') {
+                var reclaimedID = ' ';
 
-            var reclaimedID = ' ';
-
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_' + peerId;
-                if ($(testId).length) {
-                    console.log('testId.length: ' + $(testId).length);
-                    reclaimedID = testId.substr(1);
-                    break;
+                for (c = 1; c < 13; c++) {
+                    var testId = '#vid_' + c + '_' + peerId;
+                    if ($(testId).length) {
+                        console.log('testId.length: ' + $(testId).length);
+                        reclaimedID = testId.substr(1);
+                        break;
+                    }
                 }
+
+                var pstn = reclaimedID.split('_')[1].toString();
+
+                reParticBox = document.getElementById('box_' + pstn);
+                $(reParticBox).addClass('hidden');
+                var videoBoxId = 'vid_' + pstn + '_empty';
+                var nameBoxId = 'name_' + pstn;
+
+                var particBoxLayout = [
+                    "<div class='row'>",
+                    "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                    "    </video>",
+                    "</div>",
+                    '<div class="row">',
+                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                    '</div>'
+                ].join('\n');
+
+                $(reParticBox).html(particBoxLayout);
+                addMessage(usr = peerJOSName, cntnt = ' has left chat', clssnm = 'action');
             }
-
-            var pstn = reclaimedID.split('_')[1].toString();
-
-            reParticBox = document.getElementById('box_' + pstn);
-            $(reParticBox).addClass('hidden');
-            var videoBoxId = 'vid_' + pstn + '_empty';
-            var nameBoxId = 'name_' + pstn;
-
-            var particBoxLayout = [
-                "<div class='row'>",
-                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                "    </video>",
-                "</div>",
-                '<div class="row">',
-                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                '</div>'
-            ].join('\n');
-
-            $(reParticBox).html(particBoxLayout);
-            addMessage(usr = peerJOSName, cntnt = ' has left chat', clssnm = 'action');
         }
     });
 
@@ -320,8 +360,8 @@
         } else {
             JOSSkylink.joinRoom('my_room', {
                 audioFallback: true,
-                audio: true, //////////////////////////////////////////////////
-                video: true, //////////////////////////////////////////////////
+                audio: true,
+                video: true,
                 frameRate: 15
             });
             JOSSkylink.setUserData({
@@ -343,7 +383,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
+                $(newParticBox).addClass('col-xs-3 text-center particbox '); // hidden
                 newParticBox.id = 'box_' + pstn;
 
                 var videoBoxId = 'vid_' + pstn + '_empty';
