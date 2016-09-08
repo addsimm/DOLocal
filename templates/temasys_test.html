@@ -96,7 +96,7 @@
 
     <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px; min-height: 250px;">
 
-        <video id="myscreen" style="height: 850px;" autoplay muted></video>
+        <video id="myscreen" style="height: 850px; outline: 5px solid rgb(65, 45, 120);" autoplay muted></video>
 
     </div>
 
@@ -383,7 +383,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox '); // hidden
+                $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //
                 newParticBox.id = 'box_' + pstn;
 
                 var videoBoxId = 'vid_' + pstn + '_empty';
