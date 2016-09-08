@@ -254,7 +254,11 @@
         var vidBox = document.getElementById(nextEmptyID);
         vidBox.id = nextEmptyID.slice(0, -5) + peerId;
 
-        var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+        if (isSelf) {
+            vidBox.muted = true;
+        }
+
+                var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
         var nameBox = document.getElementById(nameBoxID);
         nameBox.innerHTML = peerJOSName;
 

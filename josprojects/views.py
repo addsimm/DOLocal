@@ -156,6 +156,7 @@ def temasystest(request, template="temasys_test.html"):
 
     return TemplateResponse(request, template, context)
 
+@login_required
 def workshop_connect(request, template="workshop_connect.html"):
 
     context = {  }
