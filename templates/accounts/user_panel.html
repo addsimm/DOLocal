@@ -12,7 +12,8 @@
 
             {% if request.user.is_staff %}
 
-                <a class="btn btn-success" style="width: 85px;"
+                <a class="josstaffbutton"
+                   style="font-size: 14pt;"
                    href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
                     {% trans "Staff" %}
                 </a>

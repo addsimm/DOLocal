@@ -10,8 +10,8 @@
     #videoSection {
         margin-top: -65px;
         padding: 0 0 10px 0;
-        border-top: 3px solid rgb(231, 209, 222);
-        border-bottom: 3px solid rgb(231, 209, 222);
+        border-top: 3px solid rgba(65, 45, 120, .2);
+        border-bottom: 3px solid rgba(65, 45, 120, .2);
     }
 
     .particbox {
@@ -87,15 +87,17 @@
 {# HTML #}
 <div>
 <div id="videoSection" class="row">
-    <button onclick="start()">Share screen</button><br>
+    {% if request.user.is_staff %}
+        <button class="josstaffbutton" onclick="start()">Staff share screen</button><br>
+    {% endif %}
     <video id="myscreen" autoplay muted></video>
 
     <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 250px;"></div>
 </div>
 
-<div id="messagesSection" class="row" style="background-color: rgb(231, 209, 222); padding-bottom: 15px;">
+<div id="messagesSection" class="row" style="background-color: rgba(65, 45, 120, .2); padding-bottom: 15px;">
     <div id="messagesContainer"
-         class="col-xs-12"
+         class="col-xs-12 text-center"
          style="margin-top: 15px;
                 height: 135px;
                 overflow-x: hidden;
@@ -103,7 +105,7 @@
     </div>
 </div>
 
-<div id="composeSection" class="row" style="padding-bottom: 15px; border: 3px solid rgb(231, 209, 222); ">
+<div id="composeSection" class="row" style="padding-bottom: 15px; border: 3px solid rgba(65, 45, 120, .2); ">
     <div class="col-xs-12 text-center">
         <button id='newMessageButton'
                 class="btn btn-warning invisible"
@@ -159,9 +161,6 @@
             }
         });
     } */
-
-
-
 
     mc.onscroll = function() {
         var isAtBottom = (mc.scrollHeight - mc.scrollTop) === mc.clientHeight;

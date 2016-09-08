@@ -24,6 +24,19 @@ a:hover {
     text-decoration: none;
 }
 
+.josstaffbutton, .josstaffbutton:visited {
+    color: white;
+    background-color: black;
+    border: 1px solid black;
+    font-size: 12pt;
+    outline: none;
+}
+
+.josstaffbutton:hover, .josstaffbutton:focus {
+    color: black;
+    background-color: white;
+}
+
 .joslargelinkbutton, .joslargelinkbutton:visited {
     background-color: rgb(112, 154, 109);
     color: white;
