@@ -94,13 +94,13 @@
         </button><br>
     {% endif %}
 
-    <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px; min-height: 250px;">
+    <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
 
-        <video id="myscreen" style="height: 850px; outline: 5px solid rgb(65, 45, 120);" autoplay muted></video>
+        <video id="sharedvideo" style="height: 650px; max-width: 800px; border: 5px solid rgb(65, 45, 120);" autoplay></video>
 
     </div>
 
-    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 250px;">
+    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 300px;">
 
     </div>
 
@@ -160,42 +160,200 @@
 
     // SCREEN SHARE - MOSTLY WORKING
     function controlShare() {
-        console.log("screenshare request");
-        ac = document.getElementById('audienceContainer');
-        ss = document.getElementById('screenShare');
-        sbut = document.getElementById('shareButton');
 
+        sbut = document.getElementById('shareButton');
+        var name = 'missing';
         if (sbut.innerText == "Share screen") {
             sbut.innerText = "Stop share";
-            $(ac).addClass('hidden');
-            $(ss).removeClass('hidden');
+            name = JOSSkylink.getUserData()['name'] + ', screenshare';
 
             JOSSkylink.setUserData({
-                name: 'screenshare'
+                name: name
             });
 
-            JOSSkylink.shareScreen(function (error, success) {
-                if (error) {
-                    console.log("screen share error: " + error);
-                } else {
-                    console.log(success);
-                }
-            });
+            JOSSkylink.shareScreen();
 
         } else {
             sbut.innerText = "Share screen";
-            $(ss).addClass('hidden');
-            $(ac).removeClass('hidden');
-            JOSSkylink.stopScreen()
+            name = JOSSkylink.getUserData()['name'].slice(0, -13);
+            JOSSkylink.setUserData({
+                name: name + ', stopshare'
+            });
+
+            JOSSkylink.stopScreen();
+
+            JOSSkylink.setUserData({
+                name: name
+            });
         }
     }
+
+// ----
+// Main
+// ----
+
+
+    // Incoming Stream
+    JOSSkylink.on("incomingStream", function (peerId, stream, isSelf) {
+        var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+        console.log('incomingStream peerId: ' + peerId + ', peerjosname: ' + peerJOSName);
+
+        var ac = document.getElementById('audienceContainer');
+        var ss = document.getElementById('screenShare');
+
+        var stpshr = peerJOSName.indexOf("stopshare");
+        if (stpshr > 0) {
+            peerJOSName = peerJOSName.slice(0, -11);
+
+            $(ss).addClass('hidden');
+            $(ac).removeClass('hidden');
+            addMessage(usr = 'Facilatator', cntnt = 'stopped share', clssnm = 'action');
+        }
+
+        var shrscrn= peerJOSName.indexOf("screenshare");
+        if (shrscrn == -1) {
+
+            for (c = 1; c < 13; c++) {
+                var testId = '#vid_' + c + '_empty';
+                if ($(testId).length) {
+                    var nextEmptyID = testId.substr(1);
+                    break;
+                }
+            }
+
+            var vidBox = document.getElementById(nextEmptyID);
+            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
+
+            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById(nameBoxID);
+            nameBox.innerHTML = peerJOSName;
+
+            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
+            $(particBox).removeClass('hidden');
+
+            vidBox.autoplay = 'autoplay';
+            if (isSelf) {
+                $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
+            }
+
+        } else {
+
+            $(ac).addClass('hidden');
+            $(ss).removeClass('hidden');
+
+            var reclaimedID = ' ';
+
+            for (c = 1; c < 13; c++) {
+                var othtestId = '#vid_' + c + '_' + peerId;
+                if ($(othtestId).length) {
+                    reclaimedID = othtestId.substr(1);
+                    break;
+                }
+            }
+
+            var pstn = reclaimedID.split('_')[1].toString();
+
+            reParticBox = document.getElementById('box_' + pstn);
+            $(reParticBox).addClass('hidden');
+            var videoBoxId = 'vid_' + pstn + '_empty';
+            var nameBoxId = 'name_' + pstn;
+
+            var particBoxLayout = [
+                "<div class='row'>",
+                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                "    </video>",
+                "</div>",
+                '<div class="row">',
+                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                '</div>'
+            ].join('\n');
+
+            $(reParticBox).html(particBoxLayout);
+            addMessage(usr = 'Facilatator', cntnt = 'started share', clssnm = 'action');
+
+            vidBox = document.getElementById('sharedvideo');
+        }
+
+
+        if (isSelf) {
+            vidBox.muted = true;
+        }
+
+        attachMediaStream(vidBox, stream);
+    });
+
+    // Peer Joined
+    JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
+        console.log('peerJoined: ' + peerId);
+        peerJOSName = 'Me';
+        if (!isSelf) {
+            peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+            addMessage(usr = peerJOSName, cntnt = 'has joined chat', clssnm = 'action');
+        }
+    });
+
+    // Peer left
+    JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
+        var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
+        console.log('peerLeft peerId: ' + peerId + ', peerjosname: ' + peerJOSName);
+
+        if (!isSelf) {
+                var reclaimedID = ' ';
+
+                for (c = 1; c < 13; c++) {
+                    var testId = '#vid_' + c + '_' + peerId;
+                    if ($(testId).length) {
+                        reclaimedID = testId.substr(1);
+                        break;
+                    }
+                }
+
+                var pstn = reclaimedID.split('_')[1].toString();
+
+                reParticBox = document.getElementById('box_' + pstn);
+                $(reParticBox).addClass('hidden');
+                var videoBoxId = 'vid_' + pstn + '_empty';
+                var nameBoxId = 'name_' + pstn;
+
+                var particBoxLayout = [
+                    "<div class='row'>",
+                    "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                    "    </video>",
+                    "</div>",
+                    '<div class="row">',
+                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                    '</div>'
+                ].join('\n');
+
+                $(reParticBox).html(particBoxLayout);
+                addMessage(usr = peerJOSName, cntnt = 'has left chat', clssnm = 'action');
+            }
+    });
+
+    // ENCRYPT ROOM NAME
+    JOSSkylink.init('{{ JOSKey }}', function (error, success) {
+        // do a check for error or success
+        if (error) {
+            console.error('Init failed: ', error);
+        } else {
+            JOSSkylink.joinRoom('my_room', {
+                audioFallback: true,
+                audio: true,
+                video: true,
+                frameRate: 15
+            });
+            JOSSkylink.setUserData({
+                name: '{{ request.user.JOSProfile.jos_name }}'
+            });
+        }
+    });
 
 
 // ----
 // Chat
 // ----
 
-    mc.onscroll = function() {
+    mc.onscroll = function () {
         var isAtBottom = (mc.scrollHeight - mc.scrollTop) === mc.clientHeight;
         if (isAtBottom) {
             $(newMessageButton).addClass('invisible').prop("disabled", true);
@@ -208,8 +366,6 @@
     }
 
     function addMessage(usr, cntnt, clssnm) {
-        console.log("addMessage: " + cntnt);
-
         var div = document.createElement('table');
         $(div).addClass('table ' + clssnm);
 
@@ -237,7 +393,6 @@
 
     function sendMessage() {
         JOSSkylink.sendP2PMessage(composeInput.value);
-        console.log("sendMessage: " + composeInput.value);
         composeInput.value = '';
     }
 
@@ -249,126 +404,14 @@
     });
 
     JOSSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
-        console.log("incomingMessage info: " +  peerInfo);
         var user = 'Me', className = 'message';
         if (!isSelf) {
-            user = JOSSkylink.getUserData(peerId)['name'];;
+            user = JOSSkylink.getUserData(peerId)['name'];
+            ;
         }
         addMessage(usr = user, cntnt = message.content, clssnm = className);
     });
 
-// ----
-// Main
-// ----
-
-    // Peer Joined
-    JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-        console.log('peerJoined: ' + peerId);
-        peerJOSName = 'Me';
-        if (!isSelf) {
-            peerJOSName = JOSSkylink.getUserData(peerId)['name'];
-            addMessage(usr = peerJOSName, cntnt = ' has joined chat', clssnm = 'action');
-        }
-    });
-
-    // Incoming Stream
-    JOSSkylink.on("incomingStream", function (peerId, stream, isSelf) {
-        var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
-        console.log('incomingStream peerjosname: ' + peerJOSName);
-
-        if (peerJOSName != 'screenshare') {
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_empty';
-                if ($(testId).length) {
-                    var nextEmptyID = testId.substr(1);
-                    break;
-                }
-            }
-
-            var vidBox = document.getElementById(nextEmptyID);
-            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
-
-            if (isSelf) {
-                vidBox.muted = true;
-            }
-
-            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-            var nameBox = document.getElementById(nameBoxID);
-            nameBox.innerHTML = peerJOSName;
-
-            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-            $(particBox).removeClass('hidden');
-
-            vidBox.autoplay = 'autoplay';
-            if (isSelf) {
-                $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
-            }
-        } else {
-            vidBox = document.getElementById('myscreen');
-        }
-
-        attachMediaStream(vidBox, stream);
-    });
-
-    // Peer left
-    JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
-        console.log('peerLeft Id: ' + peerId);
-        var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
-        console.log('peerLeft peerjosname: ' + peerJOSName);
-
-        if (!isSelf) {
-            if (peerJOSName != 'screenshare') {
-                var reclaimedID = ' ';
-
-                for (c = 1; c < 13; c++) {
-                    var testId = '#vid_' + c + '_' + peerId;
-                    if ($(testId).length) {
-                        console.log('testId.length: ' + $(testId).length);
-                        reclaimedID = testId.substr(1);
-                        break;
-                    }
-                }
-
-                var pstn = reclaimedID.split('_')[1].toString();
-
-                reParticBox = document.getElementById('box_' + pstn);
-                $(reParticBox).addClass('hidden');
-                var videoBoxId = 'vid_' + pstn + '_empty';
-                var nameBoxId = 'name_' + pstn;
-
-                var particBoxLayout = [
-                    "<div class='row'>",
-                    "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                    "    </video>",
-                    "</div>",
-                    '<div class="row">',
-                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                    '</div>'
-                ].join('\n');
-
-                $(reParticBox).html(particBoxLayout);
-                addMessage(usr = peerJOSName, cntnt = ' has left chat', clssnm = 'action');
-            }
-        }
-    });
-
-    // ENCRYPT ROOM NAME
-    JOSSkylink.init('{{ JOSKey }}', function (error, success) {
-        // do a check for error or success
-        if (error) {
-            console.error('Init failed: ', error);
-        } else {
-            JOSSkylink.joinRoom('my_room', {
-                audioFallback: true,
-                audio: true,
-                video: true,
-                frameRate: 15
-            });
-            JOSSkylink.setUserData({
-                name: '{{ request.user.JOSProfile.jos_name }}'
-            });
-        }
-    });
 
 // Layout
 
