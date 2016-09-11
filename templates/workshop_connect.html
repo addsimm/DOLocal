@@ -18,26 +18,43 @@
 </style>
 
 
-<div id="center" class="row">
+<div id="center" class="row josinstructions">
 
-    <div class="col-xs-12">
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 josinstructions text-center">
-                --- Insert connection instructions here ---
-            </div>
-        </div>
-
-        <div class="row" style="margin-top: 50px;">
-            <div class="col-xs-10 col-xs-offset-1  text-center">
-                <a class="btn btn-default btn-lg"
-                   style="width: 400px;"
-                   href="https://www.joinourstory.com/temasystest">
-                    Connect to community room
-                </a>
-            </div>
-        </div>
+    <div class="col-xs-12 text-center">
+        --- Instructions ---<br><br>
     </div>
+    <div class="col-xs-12 ">
+        Click the "Join" button below to join the community room.<br><br>
+    </div>
+    <div class="col-xs-8" style="margin-top: 0;">
 
+        You may see a question at the upper left that looks like this:<br>
+        If so, please click the "Share selected devices" button.<br><br>
+
+        You may also have to login again and click "Community room"<br>
+    </div>
+    <div class="col-xs-4">
+            <img src="/static/img/chrome-cam-share.png" style='height: 104px; margin: 0 0 15px -10px; border: 3px solid black;'><br>
+    </div>
+    <div class="col-xs-12 text-center" style="margin-top: 50px;">
+       If you do not see others in the community room, please call us.<br>
+
+        Have fun!
+    </div>
+    <div class="col-xs-12  text-center" style="margin-top: 30px;">
+        <a class="btn btn-default btn-lg"
+           style="width: 400px;"
+           href="https://www.joinourstory.com/temasystest">
+            Join community room
+        </a>
+        {% if request.user.is_staff %}
+            <a class="josstaffbutton btn btn-lg"
+               style="width: 200px;"
+               href="https://www.joinourstory.com/temasystest/incognito">
+                > Join incognito <
+            </a>
+        {% endif %}
+    </div>
 </div>
 
 

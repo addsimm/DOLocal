@@ -87,7 +87,6 @@
 {# HTML #}
 <div>
 <div id="videoSection" class="row">
-
     {% if request.user.is_staff %}
         <button id="shareButton" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
             Share screen
@@ -207,7 +206,7 @@
 
             $(ss).addClass('hidden');
             $(ac).removeClass('hidden');
-            addMessage(usr = 'Facilatator', cntnt = 'stopped share', clssnm = 'action');
+            addMessage(usr = 'Mod', cntnt = 'stopped share', clssnm = 'action');
         }
 
         var shrscrn= peerJOSName.indexOf("screenshare");
@@ -229,7 +228,9 @@
             nameBox.innerHTML = peerJOSName;
 
             var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-            $(particBox).removeClass('hidden');
+            {% if not incognito %}
+                $(particBox).removeClass('hidden');
+            {% endif %}
 
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
@@ -269,7 +270,7 @@
             ].join('\n');
 
             $(reParticBox).html(particBoxLayout);
-            addMessage(usr = 'Facilatator', cntnt = 'started share', clssnm = 'action');
+            addMessage(usr = 'Mod', cntnt = 'started share', clssnm = 'action');
 
             vidBox = document.getElementById('sharedvideo');
         }
@@ -417,7 +418,7 @@
 
     function LayoutVideoContainers() {
 
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 3; i++) {
             var rowI = document.createElement('div');
             $(rowI).addClass('row');
             rowI.id = 'row_' + i;

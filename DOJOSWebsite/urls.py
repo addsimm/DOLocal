@@ -32,13 +32,15 @@ import spirit.urls
 urlpatterns += patterns('',
     # EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
-    url("community_room$", "josprojects.views.community_room", name="community_room"),
-    url("temasystest$", "josprojects.views.temasystest", name="temasystest"),
-    url("tokboxtest$", "josprojects.views.tokboxtest", name="tokboxtest"),
-    url("workshopconnect$", "josprojects.views.workshop_connect", name="workshop_connect"),
 
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
+
+    # Video conference
+    url("workshopconnect$", "josprojects.views.workshop_connect", name="workshop_connect"),
+
+    url("temasystest/incognito/$", "josprojects.views.temasystest", {'incognito': True}, name="temasystest"),
+    url("temasystest$", "josprojects.views.temasystest", name="temasystest"),
 
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),

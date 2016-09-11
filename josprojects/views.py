@@ -122,39 +122,39 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def tokboxtest(request, template="tokboxtest.html"):
-    APIKey = '45616422'
-    secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
-
-    opentok = OpenTok(APIKey, secretkey)
-
-    jos_name = request.user.JOSProfile.jos_name()
-
-    connectionMetadata = 'xxxxx'
-    # session = opentok.create_session()
-    # session_id = session.session_id
-
-    session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
-    token = opentok.generate_token(session_id=session_id)
-
-    context = {
-        'apikey':     APIKey,
-        'session_id': session_id,
-        'token':      token,
-        'connectionMetadata': connectionMetadata
-    }
-
-    return TemplateResponse(request, template, context)
+# def tokboxtest(request, template="tokboxtest.html"):
+#     APIKey = '45616422'
+#     secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
+#
+#     opentok = OpenTok(APIKey, secretkey)
+#
+#     jos_name = request.user.JOSProfile.jos_name()
+#
+#     connectionMetadata = 'xxxxx'
+#     # session = opentok.create_session()
+#     # session_id = session.session_id
+#
+#     session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
+#     token = opentok.generate_token(session_id=session_id)
+#
+#     context = {
+#         'apikey':     APIKey,
+#         'session_id': session_id,
+#         'token':      token,
+#         'connectionMetadata': connectionMetadata
+#     }
+#
+#     return TemplateResponse(request, template, context)
 
 
 @login_required
-def temasystest(request, template="temasys_test.html"):
+def temasystest(request, incognito=False, template="temasys_test.html"):
     JOSKey = '441543cd-a1c5-4d93-a25c-3339daa9b959'
 
     context = {
         'JOSKey': JOSKey,
+        'incognito': incognito
     }
-
     return TemplateResponse(request, template, context)
 
 
@@ -166,21 +166,13 @@ def workshop_connect(request, template="workshop_connect.html"):
     return TemplateResponse(request, template, context)
 
 
-@login_required
-def community_room(request, template="community_room.html"):
-    APIKey = '45616422'
-    secretkey = '7deb719076852b32e72682b2f19b732f35bf5ecf'
-
-    opentok = OpenTok(APIKey, secretkey)
-
-    session_id = '1_MX40NTYxNjQyMn5-MTQ2Nzc2MzI4OTQ2M341SHRLYnhibWJGRzMySTZkZnA5QTJhYzB-fg'
-    token = opentok.generate_token(session_id=session_id)
-
-    context = {
-        'apikey':             APIKey,
-        'session_id':         session_id,
-        'token':              token
-    }
-
-    return TemplateResponse(request, template, context)
+# @login_required
+# def community_room(request, template="community_room.html"):
+#     APIKey = '45616422'
+#
+#     context = {
+#         'apikey': APIKey,
+#     }
+#
+#     return TemplateResponse(request, template, context)
 
