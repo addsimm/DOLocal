@@ -93,6 +93,7 @@
         </button><br>
     {% endif %}
 
+{#    incognito: {{ incognito }}#}
     <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
 
         <video id="sharedvideo" style="height: 650px; max-width: 800px; border: 5px solid rgb(65, 45, 120);" autoplay></video>
@@ -210,7 +211,7 @@
         }
 
         var shrscrn= peerJOSName.indexOf("screenshare");
-        if (shrscrn == -1) {
+        if (shrscrn === -1) {
 
             for (c = 1; c < 13; c++) {
                 var testId = '#vid_' + c + '_empty';
@@ -228,9 +229,13 @@
             nameBox.innerHTML = peerJOSName;
 
             var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-            {% if not incognito %}
+
+            var incog = peerJOSName.indexOf("incognito");
+            if (incog > 0) {
+                vidBox.muted = true;
+            } else {
                 $(particBox).removeClass('hidden');
-            {% endif %}
+            }
 
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
@@ -343,9 +348,19 @@
                 video: true,
                 frameRate: 15
             });
+
+            var name = '{{ request.user.JOSProfile.jos_name }}';
+            var incog = '{{ incognito }}';
+            if (incog === 'True') {
+                name = name + ', incognito';
+            }
+
+            console.log('check name: ' + name);
+
             JOSSkylink.setUserData({
-                name: '{{ request.user.JOSProfile.jos_name }}'
+                name: name
             });
+
         }
     });
 
