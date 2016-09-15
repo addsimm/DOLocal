@@ -20,11 +20,11 @@
 
     .videoContainer {
         background-color: transparent;
-        height: 180px;
+        height: 144px;
         margin: 0;
-        outline: 7px solid rgb(65, 45, 120);
+        outline: 5px solid rgb(65, 45, 120);
         padding: 0;
-        width: 240px;
+        width: 176px;
     }
 
     .nameContainer {
@@ -93,10 +93,9 @@
         </button><br>
     {% endif %}
 
-{#    incognito: {{ incognito }}#}
     <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
 
-        <video id="sharedvideo" style="height: 650px; max-width: 800px; border: 5px solid rgb(65, 45, 120);" autoplay></video>
+        <video id="sharedvideo" style="height: 700px; max-width: 800px; border: 5px solid rgb(65, 45, 120);" autoplay></video>
 
     </div>
 
@@ -285,7 +284,32 @@
             vidBox.muted = true;
         }
 
-        attachMediaStream(vidBox, stream);
+
+        if (shrscrn === -1) {
+
+            JOSSkylink.getUserMedia({
+                audio: true,
+                video: {
+                    resolution: JOSSkylink.VIDEO_RESOLUTION.HQVGA,
+                    frameRate: 3
+                }
+            }, function (error, success) {
+                console.log('getUserMedia error: ' + error);
+                console.log('getUserMedia success: ' + JSON.stringify(success));
+                if (incog > 0) {
+                    vidBox.muted = true;
+                } else {
+                    attachMediaStream(vidBox, success);
+                }
+
+                var pinfo = JSON.stringify(JOSSkylink.getPeerInfo(peerId)).replace(/,/g, "\n");
+                console.log('XXXXXXXXXX getPeerInfo: ' + pinfo);
+            });
+
+        } else {
+
+            attachMediaStream(vidBox, stream);
+        }
     });
 
     // Peer Joined
@@ -345,8 +369,10 @@
             JOSSkylink.joinRoom('my_room', {
                 audioFallback: true,
                 audio: true,
-                video: true,
-                frameRate: 15
+                video: {
+                    resolution: JOSSkylink.VIDEO_RESOLUTION.HQVGA,
+                    frameRate: 15
+                }
             });
 
             var name = '{{ request.user.JOSProfile.jos_name }}';
@@ -442,7 +468,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //
+                $(newParticBox).addClass('col-xs-3 text-center particbox '); //hidden
                 newParticBox.id = 'box_' + pstn;
 
                 var videoBoxId = 'vid_' + pstn + '_empty';
