@@ -87,22 +87,40 @@
 {# HTML #}
 <div>
 <div id="videoSection" class="row">
-    {% if request.user.is_staff %}
-        <button id="shareButton" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
-            Share screen
-        </button><br>
-    {% endif %}
 
-    <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
+    <div class="col-xs-2">
+        <div id='box_fcl' class='col-xs-3 text-center particbox'>
 
-        <video id="sharedvideo" style="height: 700px; max-width: 800px; border: 5px solid rgb(65, 45, 120);" autoplay></video>
+            <div class='row'>
+
+                <video id="vidBox_fcl" class='videoContainer' autoplay='autoplay'>
+                </video>
+
+            </div>
+
+            <div class="row">
+                <div id="nameBox_fcl" class='text-center nameContainer'></div>
+            </div>
+        </div>
+
+        {% if request.user.is_staff %}
+            <button id="shareButton" class="josstaffbutton" style="width: 150px;" onclick="controlShare()">
+                Share screen
+            </button><br>
+        {% endif %}
 
     </div>
 
-    <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 300px;">
+    <div class="col-xs-10">
+        <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
+            <video id="sharedvideo" style="height: 700px;
+                                           max-width: 800px;
+                                           border: 5px solid rgb(65, 45, 120);" autoplay>
+            </video>
+        </div>
 
+        <div id="audienceContainer" class="col-xs-12" style="padding: 0 15px; min-height: 300px;"></div>
     </div>
-
 </div>
 
 <div id="messagesSection" class="row" style="background-color: rgba(65, 45, 120, .2); padding-bottom: 15px;">
@@ -164,7 +182,7 @@
         var name = 'missing';
         if (sbut.innerText == "Share screen") {
             sbut.innerText = "Stop share";
-            name = JOSSkylink.getUserData()['name'] + ', screenshare';
+            name = JOSSkylink.getUserData()['name'] + ', shrscrn';
 
             JOSSkylink.setUserData({
                 name: name
@@ -176,7 +194,7 @@
             sbut.innerText = "Share screen";
             name = JOSSkylink.getUserData()['name'].slice(0, -13);
             JOSSkylink.setUserData({
-                name: name + ', stopshare'
+                name: name + ', stpshr'
             });
 
             JOSSkylink.stopScreen();
@@ -191,7 +209,6 @@
 // Main
 // ----
 
-
     // Incoming Stream
     JOSSkylink.on("incomingStream", function (peerId, stream, isSelf) {
         var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
@@ -200,7 +217,7 @@
         var ac = document.getElementById('audienceContainer');
         var ss = document.getElementById('screenShare');
 
-        var stpshr = peerJOSName.indexOf("stopshare");
+        var stpshr = peerJOSName.indexOf("stpshr");
         if (stpshr > 0) {
             peerJOSName = peerJOSName.slice(0, -11);
 
@@ -209,27 +226,34 @@
             addMessage(usr = 'Mod', cntnt = 'stopped share', clssnm = 'action');
         }
 
-        var shrscrn= peerJOSName.indexOf("screenshare");
+        var shrscrn= peerJOSName.indexOf("shrscrn");
         if (shrscrn === -1) {
+            var particBox, nameBox, vidBox
+            var fcl = peerJOSName.indexOf("*");
+            if (fcl > 0) {
+                particBox = document.getElementById('box_fcl');
+                nameBox = document.getElementById('vidBox_fcl');
+                vidBox = document.getElementById('nameBox_fcl');
+            } else {
 
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_empty';
-                if ($(testId).length) {
-                    var nextEmptyID = testId.substr(1);
-                    break;
+                for (c = 1; c < 13; c++) {
+                    var testId = '#vid_' + c + '_empty';
+                    if ($(testId).length) {
+                        var nextEmptyID = testId.substr(1);
+                        break;
+                    }
                 }
+
+                vidBox = document.getElementById(nextEmptyID);
+                vidBox.id = nextEmptyID.slice(0, -5) + peerId;
+
+                nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
+                nameBox = document.getElementById(nameBoxID);
             }
 
-            var vidBox = document.getElementById(nextEmptyID);
-            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
-
-            var nameBoxID = 'name_' + vidBox.id.split('_')[1].toString();
-            var nameBox = document.getElementById(nameBoxID);
             nameBox.innerHTML = peerJOSName;
 
-            var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-
-            var incog = peerJOSName.indexOf("incognito");
+            var incog = peerJOSName.indexOf("ncgn");
             if (incog > 0) {
                 vidBox.muted = true;
             } else {
@@ -240,6 +264,7 @@
             if (isSelf) {
                 $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
             }
+
 
         } else {
 
@@ -295,7 +320,6 @@
                 }
             }, function (error, success) {
                 console.log('getUserMedia error: ' + error);
-                console.log('getUserMedia success: ' + JSON.stringify(success));
                 if (incog > 0) {
                     vidBox.muted = true;
                 } else {
@@ -303,7 +327,7 @@
                 }
 
                 var pinfo = JSON.stringify(JOSSkylink.getPeerInfo(peerId)).replace(/,/g, "\n");
-                console.log('XXXXXXXXXX getPeerInfo: ' + pinfo);
+                console.log('XXX getPeerInfo: ' + pinfo);
             });
 
         } else {
@@ -330,32 +354,36 @@
         if (!isSelf) {
                 var reclaimedID = ' ';
 
-                for (c = 1; c < 13; c++) {
+                for (c = 1; c < 14; c++) {
                     var testId = '#vid_' + c + '_' + peerId;
                     if ($(testId).length) {
                         reclaimedID = testId.substr(1);
                         break;
+                    } else if (c == 14) {
+                        reclaimedID = 'x_0_x';
                     }
                 }
 
                 var pstn = reclaimedID.split('_')[1].toString();
 
-                reParticBox = document.getElementById('box_' + pstn);
-                $(reParticBox).addClass('hidden');
-                var videoBoxId = 'vid_' + pstn + '_empty';
-                var nameBoxId = 'name_' + pstn;
+                if (pstn > 0) {
+                    reParticBox = document.getElementById('box_' + pstn);
+                    $(reParticBox).addClass('hidden');
+                    var videoBoxId = 'vid_' + pstn + '_empty';
+                    var nameBoxId = 'name_' + pstn;
 
-                var particBoxLayout = [
-                    "<div class='row'>",
-                    "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                    "    </video>",
-                    "</div>",
-                    '<div class="row">',
-                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                    '</div>'
-                ].join('\n');
+                    var particBoxLayout = [
+                        "<div class='row'>",
+                        "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                        "    </video>",
+                        "</div>",
+                        '<div class="row">',
+                        "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                        '</div>'
+                    ].join('\n');
 
-                $(reParticBox).html(particBoxLayout);
+                    $(reParticBox).html(particBoxLayout);
+                }
                 addMessage(usr = peerJOSName, cntnt = 'has left chat', clssnm = 'action');
             }
     });
@@ -377,8 +405,11 @@
 
             var name = '{{ request.user.JOSProfile.jos_name }}';
             var incog = '{{ incognito }}';
+            var fcl = name.indexOf("dam");
             if (incog === 'True') {
-                name = name + ', incognito';
+                name = name + ', ncgn';
+            } else if (fcl > 0) {
+                name = name + ' *';
             }
 
             console.log('check name: ' + name);
