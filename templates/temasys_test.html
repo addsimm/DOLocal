@@ -19,11 +19,11 @@
 
         .videoContainer {
             background-color: transparent;
-            height: 144px;
+            height: 180px;
             margin: 0;
-            outline: 5px solid rgb(65, 45, 120);
+            outline: 7px solid rgb(65, 45, 120);
             padding: 0;
-            width: 176px;
+            width: 240px;
         }
 
         .nameContainer {
@@ -91,9 +91,10 @@
                 </button><br>
             {% endif %}
 
+            {#    incognito: {{ incognito }}#}
             <div id="screenShare" class="col-xs-12 text-center hidden" style="padding: 15px;;">
 
-                <video id="sharedvideo" style="height: 700px; max-width: 800px; border: 5px solid rgb(65, 45, 120);"
+                <video id="sharedvideo" style="height: 650px; max-width: 800px; border: 5px solid rgb(65, 45, 120);"
                        autoplay></video>
 
             </div>
@@ -147,11 +148,14 @@
     {# Scripts #}
     <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
     <script charset="utf-8">
+
         LayoutVideoContainers();
+
         var JOSSkylink = new Skylink();
         var composeInput = document.getElementById('composeInput');
         var mc = document.getElementById('messagesContainer');
         var newMessageButton = document.getElementById('newMessageButton');
+
         // SCREEN SHARE - MOSTLY WORKING
         function controlShare() {
             sbut = document.getElementById('shareButton');
@@ -175,9 +179,11 @@
                 });
             }
         }
+
         // ----
         // Main
         // ----
+
         // Incoming Stream
         JOSSkylink.on("incomingStream", function (peerId, stream, isSelf) {
             var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
@@ -248,28 +254,9 @@
             if (isSelf) {
                 vidBox.muted = true;
             }
-            if (shrscrn === -1) {
-                JOSSkylink.getUserMedia({
-                    audio: true,
-                    video: {
-                        resolution: JOSSkylink.VIDEO_RESOLUTION.HQVGA,
-                        frameRate: 3
-                    }
-                }, function (error, success) {
-                    console.log('getUserMedia error: ' + error);
-                    console.log('getUserMedia success: ' + JSON.stringify(success));
-                    if (incog > 0) {
-                        vidBox.muted = true;
-                    } else {
-                        attachMediaStream(vidBox, success);
-                    }
-                    var pinfo = JSON.stringify(JOSSkylink.getPeerInfo(peerId)).replace(/,/g, "\n");
-                    console.log('XXXXXXXXXX getPeerInfo: ' + pinfo);
-                });
-            } else {
-                attachMediaStream(vidBox, stream);
-            }
+            attachMediaStream(vidBox, stream);
         });
+
         // Peer Joined
         JOSSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined: ' + peerId);
@@ -279,6 +266,7 @@
                 addMessage(usr = peerJOSName, cntnt = 'has joined chat', clssnm = 'action');
             }
         });
+
         // Peer left
         JOSSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
             var peerJOSName = JOSSkylink.getUserData(peerId)['name'];
@@ -310,6 +298,7 @@
                 addMessage(usr = peerJOSName, cntnt = 'has left chat', clssnm = 'action');
             }
         });
+
         // ENCRYPT ROOM NAME
         JOSSkylink.init('{{ JOSKey }}', function (error, success) {
             // do a check for error or success
@@ -319,12 +308,10 @@
                 JOSSkylink.joinRoom('my_room', {
                     audioFallback: true,
                     audio: true,
-                    video: {
-                        resolution: JOSSkylink.VIDEO_RESOLUTION.HQVGA,
-                        frameRate: 15
-                    }
+                    video: true,
+                    frameRate: 15
                 });
-                var name = '{{ request.user.JOSProfile.jos_name }}';
+                var name = '{{ JOSName }}';
                 var incog = '{{ incognito }}';
                 if (incog === 'True') {
                     name = name + ', incognito';
@@ -335,6 +322,7 @@
                 });
             }
         });
+
         // ----
         // Chat
         // ----
@@ -388,6 +376,7 @@
             }
             addMessage(usr = user, cntnt = message.content, clssnm = className);
         });
+
         // Layout
         function LayoutVideoContainers() {
             for (i = 0; i < 3; i++) {
@@ -398,7 +387,7 @@
                 for (j = 1; j < 5; j++) {
                     var pstn = (i * 4) + j;
                     var newParticBox = document.createElement('div');
-                    $(newParticBox).addClass('col-xs-3 text-center particbox '); //hidden
+                    $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //
                     newParticBox.id = 'box_' + pstn;
                     var videoBoxId = 'vid_' + pstn + '_empty';
                     var nameBoxId = 'name_' + pstn;
@@ -416,10 +405,12 @@
                 }
             }
         }
+
         // Unused
         // JOSSkylink.on("readyStateChange", function (state, room) {
         //     console.log("Room (" + room + ") state: ", room);
         // });
+
     </script>
 
 {% endblock all_content %}
