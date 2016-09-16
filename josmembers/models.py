@@ -31,7 +31,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
     def jos_name(request):
         first_name = request.user.get_short_name()[:8]
         last_initial = request.user.last_name[:1].upper()
-        jos_name = first_name + " " + last_initial + "."
+        jos_name = first_name + "_" + last_initial
         return jos_name
 
 

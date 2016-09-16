@@ -6,6 +6,8 @@ from django.contrib import admin
 
 from mezzanine.conf import settings
 
+from josprojects.views import *
+
 _slash = "/" if settings.APPEND_SLASH else ""
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
 
@@ -37,10 +39,11 @@ urlpatterns += patterns('',
     url(r'^tracking/', include('tracking.urls')),
 
     # Video conference
-    url("workshopconnect$", "josprojects.views.workshop_connect", name="workshop_connect"),
+    url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
-    url("temasystest/incognito/$", "josprojects.views.temasystest", {'incognito': True}, name="temasystest"),
-    url("temasystest$", "josprojects.views.temasystest", name="temasystest"),
+    url("temasystest/incognito/$", temasystest, {'incognito': True}, name="temasystest"),
+
+    url("temasystest/(?P<josname>.*)/", temasystest, name="temasystest"),
 
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),

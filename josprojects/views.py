@@ -121,6 +121,34 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
 
     return TemplateResponse(request, template, context)
 
+def temasystest(request, incognito=False, josname='???', template="temasys_test.html"):
+    JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
+    # JOSKey = 'zzm006z7hzxv4'
+    context = {
+        'JOSKey': JOSKey,
+        'JOSName': josname,
+        'incognito': incognito
+    }
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+def workshop_connect(request, template="workshop_connect.html"):
+
+    context = {  }
+
+    return TemplateResponse(request, template, context)
+
+
+# @login_required
+# def community_room(request, template="community_room.html"):
+#     APIKey = '45616422'
+#
+#     context = {
+#         'apikey': APIKey,
+#     }
+#
+#     return TemplateResponse(request, template, context)
 
 # def tokboxtest(request, template="tokboxtest.html"):
 #     APIKey = '45616422'
@@ -142,36 +170,6 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
 #         'session_id': session_id,
 #         'token':      token,
 #         'connectionMetadata': connectionMetadata
-#     }
-#
-#     return TemplateResponse(request, template, context)
-
-
-@login_required
-def temasystest(request, incognito=False, template="temasys_test.html"):
-    JOSKey = '441543cd-a1c5-4d93-a25c-3339daa9b959'
-
-    context = {
-        'JOSKey': JOSKey,
-        'incognito': incognito
-    }
-    return TemplateResponse(request, template, context)
-
-
-@login_required
-def workshop_connect(request, template="workshop_connect.html"):
-
-    context = {  }
-
-    return TemplateResponse(request, template, context)
-
-
-# @login_required
-# def community_room(request, template="community_room.html"):
-#     APIKey = '45616422'
-#
-#     context = {
-#         'apikey': APIKey,
 #     }
 #
 #     return TemplateResponse(request, template, context)
