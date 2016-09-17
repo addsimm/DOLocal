@@ -14,7 +14,7 @@ from josmessages.models import Message, JOSMessageThread
 
 from .models import CKRichTextHolder, JOSStory
 
-from opentok import OpenTok
+## from opentok import OpenTok
 
 # Create your views here.
 
@@ -121,6 +121,8 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
 
     return TemplateResponse(request, template, context)
 
+
+@login_required
 def temasystest(request, incognito=False, josname='???', template="temasys_test.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
     # JOSKey = 'zzm006z7hzxv4'
