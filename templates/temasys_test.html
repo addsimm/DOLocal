@@ -163,7 +163,7 @@
         if (shrBt.innerText == "Share screen") {
             shrBt.innerText = "Stop share";
 
-            name = josSkylink.getUserData()['name'] + ', screenshare';
+            name = josSkylink.getUserData()['name'] + ', shar';
             josSkylink.setUserData({
                 name: name
             });
@@ -173,9 +173,9 @@
         } else {
 
             shrBt.innerText = "Share screen";
-            name = josSkylink.getUserData()['name'].slice(0, -13);
+            name = josSkylink.getUserData()['name'].slice(0, -6);
             josSkylink.setUserData({
-                name: name + ', stopshare'
+                name: name + ', stps'
             });
 
             josSkylink.stopScreen();
@@ -190,14 +190,14 @@
         var peerJOSName = josSkylink.getUserData(peerId)['name'];
         console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
 
-        var stpshr = peerJOSName.indexOf("stopshare");
+        var stpshr = peerJOSName.indexOf("stps");
         if (stpshr > 0) {
-            peerJOSName = peerJOSName.slice(0, -11);
+            peerJOSName = peerJOSName.slice(0, -6);
             $(scrnShrCntnr).addClass('hidden');
             $(adncCntnr).removeClass('hidden');
-            addMessage(usr = 'Mod', cntnt = 'stopped share', clssnm = 'action');
+            addMessage(usr = 'Guide', cntnt = 'stopped share', clssnm = 'action');
         }
-        var shrscrn = peerJOSName.indexOf("screenshare");
+        var shrscrn = peerJOSName.indexOf("shar");
         if (shrscrn == -1) {
             for (c = 1; c < 13; c++) {
                 var testId = '#vid_' + c + '_empty';
@@ -249,7 +249,7 @@
                 '</div>'
             ].join('\n');
             $(reParticBox).html(particBoxLayout);
-            addMessage(usr = 'Mod', cntnt = 'started share', clssnm = 'action');
+            addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');
             vidBox = document.getElementById('shared_video');
         }
         if (isSelf) {
@@ -399,7 +399,7 @@
         if (!isSelf) {
             user = josSkylink.getUserData(peerId)['name'];
         }
-        addMessage(user, message.content, 'action');
+        addMessage(user, message.content, className);
     });
 
 </script>
