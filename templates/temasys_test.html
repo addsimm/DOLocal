@@ -27,11 +27,13 @@
 
     .videoContainer {
         background-color: transparent;
-        height: 180px;
+
         margin: 0;
         outline: 7px solid rgb(65, 45, 120);
         padding: 0;
-        width: 240px;
+        height: 120px;
+        width: 160px;
+
     }
 
     .nameContainer {
@@ -99,6 +101,7 @@
 </style>
 
 {# HTML #}
+<div>
 <div id="video_section" class="row">
     {% if request.user.is_staff %}
         <button id="share_button" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
@@ -139,6 +142,7 @@
             </tr>
         </table>
     </div>
+</div>
 </div>
 
 {# Scripts #}
@@ -213,9 +217,7 @@
             var nameBox = document.getElementById(nameBoxID);
             nameBox.innerHTML = peerJOSName;
             var particBox = document.getElementById('box_' + vidBox.id.split('_')[1].toString());
-            {% if not incognito %}
-                $(particBox).removeClass('hidden');
-            {% endif %}
+
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
                 $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
@@ -255,7 +257,33 @@
         if (isSelf) {
             vidBox.muted = true;
         }
-        attachMediaStream(vidBox, stream);
+
+        if (peerJOSName !== '???') {
+            $(particBox).removeClass('hidden');
+            // josSkylink.getUserMedia(function (error, success) {
+                // if (error) return;
+                // attachMediaStream(vidBox, success);
+            // });
+            attachMediaStream(vidBox, stream);
+        }
+    });
+
+    // ENCRYPT ROOM NAME
+    josSkylink.init({
+        apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
+        defaultRoom: 'Main'
+    }, function () {
+
+        console.log('init incognito: ' + '{{ incognito }}');
+        josSkylink.joinRoom({
+            audioFallback: true,
+            audio: true,
+            video: true
+        });
+
+        josSkylink.setUserData({
+            name: '{{ JOSName }}'
+        });
     });
 
     // Peer Joined
@@ -302,21 +330,6 @@
         }
     });
 
-    // ENCRYPT ROOM NAME
-    josSkylink.init({
-             apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
-             defaultRoom: 'Main'
-    }, function () {
-        josSkylink.joinRoom({
-            audioFallback: true,
-            audio: true,
-            video: true
-        });
-
-        josSkylink.setUserData({
-            name: '{{ JOSName }}'
-        });
-    });
 
     // Layout
     function layoutVideoContainers() {
@@ -328,7 +341,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox'); // hidden
+                $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //
                 newParticBox.id = 'box_' + pstn;
                 var videoBoxId = 'vid_' + pstn + '_empty';
                 var nameBoxId = 'name_' + pstn;
