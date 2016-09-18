@@ -34,6 +34,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
 
     return TemplateResponse(request, template, context)
 
+
 @login_required
 def mystory_list(request, template="josprojects/mystory_list.html", extra_context=None):
     stories = JOSStory.objects.filter(author=request.user)
@@ -42,6 +43,7 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
+
 
 @login_required
 @csrf_exempt
@@ -135,11 +137,32 @@ def temasystest(request, incognito=False, josname='???', template="temasys_test.
 
 
 @login_required
+def cowork_test(request, incognito=False, josname='???', template="cowork.html"):
+    JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
+    context = {
+        'JOSKey':    JOSKey,
+        'JOSName':   josname,
+        'incognito': incognito
+    }
+    return TemplateResponse(request, template, context)
+
+
+@login_required
 def workshop_connect(request, template="workshop_connect.html"):
 
     context = {  }
 
     return TemplateResponse(request, template, context)
+
+
+
+
+
+
+
+
+
+
 
 
 # @login_required

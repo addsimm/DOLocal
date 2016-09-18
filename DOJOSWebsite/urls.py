@@ -38,12 +38,21 @@ urlpatterns += patterns('',
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
 
+
+
+
+
     # Video conference
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
     url("temasystest/incognito/$", temasystest, {'incognito': True}, name="temasystest"),
 
     url("temasystest/(?P<josname>.*)/", temasystest, name="temasystest"),
+
+    url("cowork/$", cowork_test, name="cowork_test"),
+
+
+
 
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),

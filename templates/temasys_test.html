@@ -103,6 +103,10 @@
 {# HTML #}
 <div>
 <div id="video_section" class="row">
+
+    <video id="myvideo" muted autoplay></video>
+    <img id="mypic" src="">
+
     {% if request.user.is_staff %}
         <button id="share_button" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
             Share screen
@@ -145,49 +149,42 @@
 </div>
 </div>
 
+<canvas id="photo" style="display: none;" width="160" height="120"></canvas>
+<audio id="alert" src="/static" style="display: none;"></audio>
+
 {# Scripts #}
-<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.min.js"></script>
+<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
 <script charset="utf-8">
 
     layoutVideoContainers();
 
-    var adncCntnr = document.getElementById('audience_container');
-    var scrnShrCntnr= document.getElementById('screen_share_container');
-    var cmpsNpt = document.getElementById('compose_input');
-    var mssgCntnr = document.getElementById('messages_container');
-    var nwMssgBt = document.getElementById('new_message_button');
-    var shrBt = document.getElementById('share_button');
+    var user = {},
+        peer_pics = {},
+        peer_audios = [],
+        audioTimeouts = {},
+        last_pic = null,
+        capture_timeout = null,
+        click_timeout = null,
+        online = false,
+        focussed = true,
+        mediaOK = null,
+        muted = false,
+
+        hash = location.hash.substr(1).replace('_', '-'),
+        room = location.hash.length > 1 ? location.hash : 'the public hallway';
+
+    var adncCntnr = document.getElementById('audience_container'),
+        scrnShrCntnr= document.getElementById('screen_share_container'),
+        cmpsNpt = document.getElementById('compose_input'),
+        mssgCntnr = document.getElementById('messages_container'),
+        nwMssgBt = document.getElementById('new_message_button'),
+        shrBt = document.getElementById('share_button');
 
     var josSkylink = new Skylink();
 
-    // SCREEN SHARE
-    function controlShare() {
+    josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
+    josSkylink.setDebugMode(true);
 
-        var name = 'missing';
-        if (shrBt.innerText == "Share screen") {
-            shrBt.innerText = "Stop share";
-
-            name = josSkylink.getUserData()['name'] + ', shar';
-            josSkylink.setUserData({
-                name: name
-            });
-
-            josSkylink.shareScreen();
-
-        } else {
-
-            shrBt.innerText = "Share screen";
-            name = josSkylink.getUserData()['name'].slice(0, -6);
-            josSkylink.setUserData({
-                name: name + ', stps'
-            });
-
-            josSkylink.stopScreen();
-            josSkylink.setUserData({
-                name: name
-            });
-        }
-    }
 
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
@@ -268,22 +265,13 @@
         }
     });
 
-    // ENCRYPT ROOM NAME
-    josSkylink.init({
-        apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
-        defaultRoom: 'Main'
-    }, function () {
-
-        console.log('init incognito: ' + '{{ incognito }}');
-        josSkylink.joinRoom({
-            audioFallback: true,
-            audio: true,
-            video: true
-        });
-
-        josSkylink.setUserData({
-            name: '{{ JOSName }}'
-        });
+    // Incoming Message
+    josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
+        var user = 'Me', className = 'message';
+        if (!isSelf) {
+            user = josSkylink.getUserData(peerId)['name'];
+        }
+        addMessage(user, message.content, className);
     });
 
     // Peer Joined
@@ -330,6 +318,24 @@
         }
     });
 
+    // Init: ENCRYPT ROOM NAME
+    josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
+
+        josSkylink.joinRoom({
+            audioFallback: true,
+            audio: true,
+            video: true
+        });
+
+        josSkylink.setUserData({
+            name: '{{ JOSName }}'
+        });
+    });
+
+
+
+
+
 
     // Layout
     function layoutVideoContainers() {
@@ -341,7 +347,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //
+                $(newParticBox).addClass('col-xs-3 text-center particbox'); // hidden
                 newParticBox.id = 'box_' + pstn;
                 var videoBoxId = 'vid_' + pstn + '_empty';
                 var nameBoxId = 'name_' + pstn;
@@ -361,59 +367,82 @@
     }
 
     // Chat
-    mssgCntnr.onscroll = function () {
-        var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
-        if (isAtBottom) {
+    {
+        mssgCntnr.onscroll = function () {
+            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
+            if (isAtBottom) {
+                $(nwMssgBt).addClass('invisible').prop("disabled", true);
+            }
+        };
+
+        function goToNewMessages() {
+            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
             $(nwMssgBt).addClass('invisible').prop("disabled", true);
         }
-    };
 
-    function goToNewMessages() {
-        mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
-        $(nwMssgBt).addClass('invisible').prop("disabled", true);
+        function addMessage(usr, cntnt, clssnm) {
+            var div = document.createElement('table');
+            $(div).addClass('table ' + clssnm);
+            var cntntClass = 'cntnt';
+            if (usr == 'Me') {
+                cntntClass = 'cntnt me';
+            }
+            chatMessage = [
+                "<tr class='chat-message'>",
+                "    <td class='usr' style='overflow-x: hidden; width: 12%; padding-left: 10px;'>" + usr + "</td>",
+                "    <td class='" + cntntClass + "' style='overflow-x: hidden;'> '" + cntnt + "'</td>",
+                "</tr>"
+            ].join('\n');
+            div.innerHTML = chatMessage;
+            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
+            mssgCntnr.appendChild(div);
+            if (isAtBottom) {
+                mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
+            } else {
+                $(nwMssgBt).removeClass('invisible').prop("disabled", false);
+            }
+        }
+
+        function sendMessage() {
+            josSkylink.sendP2PMessage(cmpsNpt.value);
+            cmpsNpt.value = '';
+        }
+
+        $(cmpsNpt).keypress(function (e) {  // sends message on return
+            if (e.which == 13) {
+                sendMessage();
+            }
+        });
     }
 
-    function addMessage(usr, cntnt, clssnm) {
-        var div = document.createElement('table');
-        $(div).addClass('table ' + clssnm);
-        var cntntClass = 'cntnt';
-        if (usr == 'Me') {
-            cntntClass = 'cntnt me';
-        }
-        chatMessage = [
-            "<tr class='chat-message'>",
-            "    <td class='usr' style='overflow-x: hidden; width: 12%; padding-left: 10px;'>" + usr + "</td>",
-            "    <td class='" + cntntClass + "' style='overflow-x: hidden;'> '" + cntnt + "'</td>",
-            "</tr>"
-        ].join('\n');
-        div.innerHTML = chatMessage;
-        var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
-        mssgCntnr.appendChild(div);
-        if (isAtBottom) {
-            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
+    // Screen share
+    function controlShare() {
+
+        var name = 'missing';
+        if (shrBt.innerText == "Share screen") {
+            shrBt.innerText = "Stop share";
+
+            name = josSkylink.getUserData()['name'] + ', shar';
+            josSkylink.setUserData({
+                name: name
+            });
+
+            josSkylink.shareScreen();
+
         } else {
-            $(nwMssgBt).removeClass('invisible').prop("disabled", false);
+
+            shrBt.innerText = "Share screen";
+            name = josSkylink.getUserData()['name'].slice(0, -6);
+            josSkylink.setUserData({
+                name: name + ', stps'
+            });
+
+            josSkylink.stopScreen();
+            josSkylink.setUserData({
+                name: name
+            });
         }
     }
-
-    function sendMessage() {
-        josSkylink.sendP2PMessage(cmpsNpt.value);
-        cmpsNpt.value = '';
-    }
-
-    $(cmpsNpt).keypress(function (e) {  // sends message on return
-        if (e.which == 13) {
-            sendMessage();
-        }
-    });
-
-    josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
-        var user = 'Me', className = 'message';
-        if (!isSelf) {
-            user = josSkylink.getUserData(peerId)['name'];
-        }
-        addMessage(user, message.content, className);
-    });
 
 </script>
 
