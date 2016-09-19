@@ -27,12 +27,11 @@
 
     .videoContainer {
         background-color: transparent;
-
         margin: 0;
         outline: 7px solid rgb(65, 45, 120);
         padding: 0;
-        height: 120px;
-        width: 160px;
+        height: 240px;
+        width: 320px;
 
     }
 
@@ -102,6 +101,9 @@
 
 {# HTML #}
 <div>
+
+TEMASSYS_TEST.HTML
+
 <div id="video_section" class="row">
 
     <video id="myvideo" muted autoplay></video>
@@ -184,6 +186,28 @@
 
     josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
     josSkylink.setDebugMode(true);
+
+    // media AccessS uccess
+    josSkylink.on('mediaAccessSuccess', function (stream) {
+        console.log('mediaAccessSuccess');
+
+        /*
+        attachMediaStream($video, stream);
+        if (!user.name) {
+            capture_timeout = setTimeout(capture, 2000);
+            addMessage("Thanks. May I now know your name?", 'bot');
+            $msg.select();
+            mediaOK = true;
+        }*/
+    });
+
+    // media Access Error
+    josSkylink.on('mediaAccessError', function (stream) {
+        console.log('mediaAccessError');
+        /* addMessage("If you don't want to share your camera and microphone, I'll make you a bot like me. Can I have your name tho?", 'bot');
+        $msg.select();
+        mediaOK = false; */
+    });
 
 
     // Incoming Stream

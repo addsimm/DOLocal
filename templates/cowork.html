@@ -96,7 +96,19 @@
             },
             audio: true
         });
-        addMessage("Hey. welcome to the coworking space. Please share your camera and microphone above so I can see you. <br/><br/> The coworking office is a hangout for remote workers to collaborate. It's an audio live-chat where you can see each other through pictures that update every 5 seconds. Additionally there are a few more things you can do: <ul><li>Your picture will blur to give you a little privacy if you're not actively following this browser tab or your window is inactive</li><li>/mute and /unmute do what you'd expect to your audio and give you more privacy. It'll convert your picture into grayscale to indicate to others you're muted.</li><li>Click on somebodies picture to hail that person</li><li>Type /hail to alert everybody in the office</li><li>Double-click somebodies picture to invite that person into a real-time audio/video meeting room</li><li>Type /clear to empty your local chat history</li><li>Try '/share coffee' or other keywords to post random pictures of Flickr</li><li>The chat supports <a href='https://help.github.com/articles/github-flavored-markdown/' target='_blank'>Github flavored markdown</a></li><li>Join a room by typing /join roomname</li></ul>The coworking office uses WebRTC with <a href='http://temasys.github.io' target='_blank'>Skylink</a> and we don't record pictures or messages. They are send peer-to-peer directly to the other coworkers. This is a public space, so please be respectful to others.<br/><br/><b>You're entering " + room + ".</b>", 'bot');
+        addMessage("Welcome" +
+                "Please share your camera and microphone" +
+                "pictures that update every 5 seconds. " +
+                "Additionally there are a few more things you can do: " +
+                "Your picture will blur to give you a little privacy if you're not actively following " +
+                "/mute and /unmute do what you'd expect to your audio and give you more privacy. " +
+                "It'll convert your picture into grayscale to indicate to others you're muted." +
+                "Click on somebodies picture to hail that person" +
+                "Type /hail to alert everybody in the office" +
+                "Double-click somebodies picture to invite that person into a real-time audio/video meeting room<" +
+                "Type /clear to empty your local chat history" +
+                "Try '/share coffee' or other keywords to post random pictures of Flickr</" +
+                "Join a room by typing /join roomname", 'bot');
     });
 
     //// Not in
@@ -119,23 +131,7 @@
         }
     });
 
-    //// Not in
-    skylink.on('mediaAccessSuccess', function (stream) {
-        attachMediaStream($video, stream);
-        if (!user.name) {
-            capture_timeout = setTimeout(capture, 2000);
-            addMessage("Thanks. May I now know your name?", 'bot');
-            $msg.select();
-            mediaOK = true;
-        }
-    });
 
-    //// Not in
-    skylink.on('mediaAccessError', function (stream) {
-        addMessage("If you don't want to share your camera and microphone, I'll make you a bot like me. Can I have your name tho?", 'bot');
-        $msg.select();
-        mediaOK = false;
-    });
 
 
 
@@ -177,59 +173,32 @@
         return $img;
     }
 
-    function addMessage(message, className, peerId, isSelf) {
-        var id = (new Date()).getTime();
-        var $div = document.createElement('div');
-        $div.className = className + (isSelf ? 'isself' : '');
-        $div.id = 'msg_' + id;
 
-        var $img = document.createElement('img');
-        if (className === 'bot') {
-            $img.src = 'bot.png';
-        }
-        else {
-            $img.src = isSelf ? last_pic : peer_pics[peerId];
-        }
 
-        if ($img.src) {
-            $div.appendChild($img);
-        }
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        var $span_name = document.createElement('span');
-        $span_name.className = "name";
-        $span_name.textContent = className === 'bot' ? "Bot" : skylink.getPeerInfo(peerId).userData.name;
-        $div.appendChild($span_name);
 
-        var $span = document.createElement('span');
-        if (className === 'action') {
-            $span.innerHTML = message;
-        }
-        else {
-            $span.innerHTML = marked(message);
-        }
-        $div.appendChild($span);
 
-        if (className !== 'bot') {
-            localStorage[hash + '_' + id] = $div.outerHTML;
-        }
 
-        $chatbox.appendChild($div);
 
-        $chatcontainer.scrollTop = $chatcontainer.scrollHeight;
-    }
 
-    function replay() {
-        for (var i = 0, len = localStorage.length; i < len; i++) {
-            var key = localStorage.key(i),
-                    arr = key.split('_');
-            if (arr.length === 2 && arr[0] === hash && arr[1] > (new Date()).getTime() - 1000 * 60 * 60 * 24 * 5) {
-                var $div = document.createElement('div');
-                $div.innerHTML = localStorage[key];
-                $chatbox.appendChild($div.children[0]);
-            }
-        }
-        $chatcontainer.scrollTop = $chatcontainer.scrollHeight;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function capture() {
         if (mediaOK !== true) {
@@ -264,26 +233,26 @@
         capture_timeout = setTimeout(capture, 5000);
     }
 
-    /*function adjustVolume($audio, to) {
-     if(!$audio) {
-     return;
-     }
+    function adjustVolume($audio, to) {
+        if (!$audio) {
+            return;
+        }
 
-     clearTimeout(audioTimeouts[$audio.id]);
+        clearTimeout(audioTimeouts[$audio.id]);
 
-     $audio.volume = $audio.volume < to ? $audio.volume += 0.05 : $audio.volume -= 0.05;
+        $audio.volume = $audio.volume < to ? $audio.volume += 0.05 : $audio.volume -= 0.05;
 
-     if(Math.abs($audio.volume - to) > 0.05) {
-     audioTimeouts[$audio.id] = setTimeout(function() {
-     adjustVolume($audio, to);
-     }, 50);
-     }
-     }*/
+        if (Math.abs($audio.volume - to) > 0.05) {
+            audioTimeouts[$audio.id] = setTimeout(function () {
+                adjustVolume($audio, to);
+            }, 50);
+        }
+    }
 
     function adjustAllVolume(to) {
         for (i in peer_audios) {
             peer_audios[i].volume = to;
-            //adjustVolume(peer_audios[i], to);
+            adjustVolume(peer_audios[i], to);
         }
     }
 
