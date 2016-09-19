@@ -2,237 +2,6 @@
 <body>
 <script>
 
-    skylink.on('incomingStream', function (peerId, stream, isSelf) {
-        if (isSelf) {
-            attachMediaStream($video, stream);
-        }
-        else {
-
-            var $audio = document.createElement('audio');
-            $audio.id = "audio_" + peerId;
-            $audio.autoplay = true;
-            $audio.volume = focussed ? 1 : 0.15;
-            $users.appendChild($audio);
-            attachMediaStream($audio, stream);
-            peer_audios.push($audio);
-        }
-    });
-
-    skylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
-        if (message.content.substr(0, 1) === '/') {
-            var msg = message.content.substr(1);
-            if (msg === 'hail') {
-                $alert.play();
-                var $img = document.getElementById("img_" + peerId);
-                $img.className = "hailing";
-                setTimeout(function () {
-                    $img.className = "";
-                }, 5000);
-
-                if (!isSelf) {
-                    addMessage('hailed you', 'action', peerId);
-                }
-            }
-            else if (msg.substr(0, 8) === 'getaroom') {
-                var roomPeerId = msg.substr(9);
-                var name = isSelf ? skylink.getPeerInfo(roomPeerId).userData.name : peerInfo.userData.name;
-
-                addMessage('<a href="http://getaroom.io/' + roomPeerId + '" target="_blank">Get an audio/video meeting room with ' + name + '</a>',
-                        'action', isSelf ? roomPeerId : peerId);
-            }
-        }
-        else {
-            addMessage(message.content, "message", peerId, isSelf);
-        }
-    });
-
-    skylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-        if (isSelf) {
-            online = true;
-            skylink.setUserData(user);
-            replay();
-            if (mediaOK === false) {
-                $pic.src = last_pic = "http://robohash.org/" + peerId;
-                $pic.style.display = "inline";
-            }
-            addMessage('Welcome to ' + room + ', ' + user.name + '.', 'bot');
-        }
-        else {
-            var info = skylink.getPeerInfo(peerId);
-            var $img = addUserImage(peerId, info.userData.name);
-            $img.src = peer_pics[peerId] = "http://robohash.org/" + peerId;
-            addMessage('is in ' + room, 'action', peerId, false);
-        }
-    });
-
-    skylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
-        if (isSelf) {
-            online = false;
-            addMessage('Bye', 'bot');
-        }
-        else {
-            var $img = document.getElementById("img_" + peerId);
-            var $span = document.getElementById("span_" + peerId);
-            var $audio = document.getElementById("audio_" + peerId);
-            $users.removeChild($img);
-            $users.removeChild($span);
-            $users.removeChild($audio);
-            addMessage('left ' + room, 'action', peerId, false);
-        }
-
-    });
-
-    skylink.init({
-        //apiKey: '48f72309-6dd1-47bb-9dd2-aa43f4a6a14a',
-        apiKey: '774b477f-dc20-4374-ba13-3eda09414c28',
-        defaultRoom: hash
-    }, function () {
-        skylink.getUserMedia({
-            video: {
-                resolution: {
-                    width: 160,
-                    height: 120
-                }
-            },
-            audio: true
-        });
-        addMessage("Welcome" +
-                "Please share your camera and microphone" +
-                "pictures that update every 5 seconds. " +
-                "Additionally there are a few more things you can do: " +
-                "Your picture will blur to give you a little privacy if you're not actively following " +
-                "/mute and /unmute do what you'd expect to your audio and give you more privacy. " +
-                "It'll convert your picture into grayscale to indicate to others you're muted." +
-                "Click on somebodies picture to hail that person" +
-                "Type /hail to alert everybody in the office" +
-                "Double-click somebodies picture to invite that person into a real-time audio/video meeting room<" +
-                "Type /clear to empty your local chat history" +
-                "Try '/share coffee' or other keywords to post random pictures of Flickr</" +
-                "Join a room by typing /join roomname", 'bot');
-    });
-
-    //// Not in
-    skylink.on('dataTransferState', function (state, transferId, peerId, transferInfo, error) {
-        if (state === skylink.DATA_TRANSFER_STATE.UPLOAD_REQUEST) {
-            skylink.respondBlobRequest(peerId, true);
-            console.log("Incoming Request from " + peerId);
-        }
-        else if (state === skylink.DATA_TRANSFER_STATE.DOWNLOAD_COMPLETED) {
-            console.log("Download completed from " + peerId);
-            var $img = document.getElementById("img_" + peerId);
-
-            blob2dataURL(transferInfo.data, function (data) {
-                peer_pics[peerId] = data;
-                $img.src = data;
-            });
-        }
-        else if (error && error.message) {
-            console.log(error.message);
-        }
-    });
-
-
-
-
-
-
-    function addUserImage(peerId, name) {
-        var $img = document.createElement('img');
-        $img.id = "img_" + peerId;
-        $users.appendChild($img);
-
-        var $span = document.createElement('span');
-        $span.id = "span_" + peerId;
-        $span.textContent = name;
-
-        $span.onclick = function () {
-            clearTimeout(click_timeout);
-
-            var hail = function () {
-                skylink.sendMessage('/hail', peerId);
-                $img.className = "hailing";
-                setTimeout(function () {
-                    $img.className = "";
-                }, 5000);
-                console.log("Hailing " + peerId);
-            }
-
-            click_timeout = setTimeout(hail, 400);
-            return false
-        }
-        $span.ondblclick = function () {
-            clearTimeout(click_timeout);
-
-            skylink.sendMessage('/getaroom ' + peerId, peerId);
-            console.log("Get a room invite to " + peerId);
-            return false;
-        }
-
-        $users.appendChild($span);
-
-        return $img;
-    }
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function capture() {
-        if (mediaOK !== true) {
-            return;
-        }
-
-        clearTimeout(capture_timeout);
-
-        var ctx = $photo.getContext("2d");
-        ctx.drawImage($video, 0, 0, 160, 120);
-
-        if (!focussed) {
-            stackBlurCanvasRGB(ctx, 0, 0, 160, 120, 35);
-        }
-
-        if (muted) {
-            convertToGrayscale(ctx, 0, 0, 160, 120)
-        }
-
-        last_pic = $photo.toDataURL('image/jpeg', 0.8);
-
-        $pic.src = last_pic;
-        $pic.style.display = "inline";
-
-        var blob = dataURL2Blob(last_pic);
-
-        skylink.sendBlobData(blob, {
-            size: blob.size,
-            name: (new Date()).toString()
-        });
-
-        capture_timeout = setTimeout(capture, 5000);
-    }
-
     function adjustVolume($audio, to) {
         if (!$audio) {
             return;
@@ -256,6 +25,7 @@
         }
     }
 
+    // Chat function
     $msg.onkeydown = function (e) {
         if (!e.altKey && e.keyCode === 13 && mediaOK !== null) {
             if (online) {
@@ -360,7 +130,7 @@
      WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
      FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
      OTHER DEALINGS IN THE SOFTWARE.
-     */
+     */ //stackblur
 
     var mul_table = [
         512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512,
@@ -380,7 +150,6 @@
         332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292,
         289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259];
 
-
     var shg_table = [
         9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17,
         17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
@@ -398,7 +167,6 @@
         24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
         24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
         24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24];
-
 
     function stackBlurCanvasRGB(context, top_x, top_y, width, height, radius) {
         if (isNaN(radius) || radius < 1) return;
@@ -2016,9 +1784,7 @@
         }
         xhr.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=' + encodeURIComponent(tags) + '&api_key=' + apiKey + '&format=json&safe_search=1&content_type=1&sort=relevance&per_page=10', true);
         xhr.send(null);
-    }
-    ;
-
+    };
 
 </script>
 

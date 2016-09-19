@@ -40,8 +40,6 @@ urlpatterns += patterns('',
 
 
 
-
-
     # Video conference
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
@@ -49,8 +47,8 @@ urlpatterns += patterns('',
 
     url("temasystest/(?P<josname>.*)/", temasystest, name="temasystest"),
 
-    url("cowork/$", cowork_test, name="cowork_test"),
-
+    url("community_room/(?P<josname>.*)/", community_room, name="community_room"),
+    url("community_room", community_room, name="community_room"),
 
 
 

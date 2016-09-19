@@ -135,9 +135,9 @@ def temasystest(request, incognito=False, josname='???', template="temasys_test.
     return TemplateResponse(request, template, context)
 
 
-@login_required
-def cowork_test(request, incognito=False, josname='???', template="cowork.html"):
+def community_room(request, incognito=False, josname='???', template="community_room.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
+    # JOSKey = 'zzm006z7hzxv4'
     context = {
         'JOSKey':    JOSKey,
         'JOSName':   josname,
@@ -148,22 +148,9 @@ def cowork_test(request, incognito=False, josname='???', template="cowork.html")
 
 @login_required
 def workshop_connect(request, template="workshop_connect.html"):
-
-    context = {  }
+    context = {}
 
     return TemplateResponse(request, template, context)
-
-
-
-# @login_required
-# def community_room(request, template="community_room.html"):
-#     APIKey = '45616422'
-#
-#     context = {
-#         'apikey': APIKey,
-#     }
-#
-#     return TemplateResponse(request, template, context)
 
 # def tokboxtest(request, template="tokboxtest.html"):
 #     APIKey = '45616422'
