@@ -125,6 +125,8 @@
         <div id="audience_container" class="col-xs-12" style="padding: 0 15px; min-height: 100px;">
             <div class="col-xs-3">
                 <video id="myvideo" muted autoplay></video>
+            </div>
+            <div class="col-xs-3">
                 <img id="mypic" src="">
             </div>
         </div>
@@ -215,10 +217,10 @@
                 'peer_info: ' + JSON.stringify(prInf).split(',').join('\n'));
         attachMediaStream($video, stream);
         if (!user.name) {
-            capture_timeout = setTimeout(capture, 2000);
-            addMessage('Guide', "Thanks. May I now know your name?", 'action' );
+            capture_timeout = setTimeout(capture, 1000);
+            addMessage('Guide', "Media Access Success. Thanks", 'action' );
             //$msg.select();
-            mediaOK = true;
+            mediaOK = true; ////////////
         }
     });
 
@@ -232,14 +234,13 @@
 
     });
 
-
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
         var peerJOSName = josSkylink.getUserData(peerId)['name'];
         console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
 
         if (isSelf) {
-            attachMediaStream($video, stream);
+            //// attachMediaStream($video, stream);
         }
         else {
             var $audio = document.createElement('audio');
@@ -349,10 +350,14 @@
     josSkylink.init({
                 apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'
             },
-            function () {
+            function (error, success) {
+                if (error) {
+                    console.log('skylink init error: ' + error);
+                    return;
+                }
 
-                console.log('josSkylink.init called');
-                josSkylink.setUserData({ //// PROBLEM?  in other place in cowork.
+                console.log('josSkylink.init success: ') // + JSON.stringify(success).split(',').join('\n'));
+                josSkylink.setUserData({    //// PROBLEM?  in other place in cowork.
                     name: '{{ JOSName }}'
                 });
                 josSkylink.getUserMedia({
@@ -363,18 +368,24 @@
                         },
                         frameRate: 5
                     },
-                    audio: true
+                    audio: true,
                 });
 
                 josSkylink.joinRoom();
 
-                addMessage('Guide', 'Hi ' + ' {{ JOSName }} ' + ' ---- please share your cam, if asked.', 'action');
+                addMessage('Guide', 'init: Hi ' + ' {{ JOSName }} ' + ' ---- please share your cam, if asked.', 'action');
             });
 
 
+    josSkylink.on('dataChannelState', function (state) {
+        console.log('dataChannelState state: ' + state);
+    });
+
     josSkylink.on('dataTransferState', function (state, transferId, peerId, transferInfo, error) {
         console.log('dataTransferState called');
+
         if (state === josSkylink.DATA_TRANSFER_STATE.UPLOAD_REQUEST) {
+            console.log('dataTransferState UPLOAD_REQUEST called');
             josSkylink.respondBlobRequest(peerId, true);
             console.log("Incoming Request from " + peerId);
         }
@@ -426,33 +437,62 @@
         var ctx = $photo.getContext("2d");
         ctx.drawImage($video, 0, 0, 160, 120);
 
-        if (!focused) {
-            stackBlurCanvasRGB(ctx, 0, 0, 160, 120, 35);
-        }
-
-        if (muted) {
-            convertToGrayscale(ctx, 0, 0, 160, 120)
-        }
-
         last_pic = $photo.toDataURL('image/jpeg', 0.8);
 
         $pic.src = last_pic;
-        $pic.style.display = "inline";
 
-        //////////////////////////////////
-        ////////////////////////////////// add random thing; find $photo
-        //////////////////////////////////
 
         var blob = dataURL2Blob(last_pic);
+
+        console.log("blob.size: " + blob.size);
 
         josSkylink.sendBlobData(blob, {
             size: blob.size,
             name: (new Date()).toString()
         });
 
-        capture_timeout = setTimeout(capture, 5000);
+        capture_timeout = setTimeout(capture, 10000);
     }
 
+
+    function dataURL2Blob(dataURL) {
+
+        // console.log("dataURL2Blob dataURL: " + dataURL);
+
+        var parts, contentType, raw;
+        var BASE64_MARKER = ';base64,';
+        if (dataURL.indexOf(BASE64_MARKER) == -1) {
+            parts = dataURL.split(',');
+            contentType = parts[0].split(':')[1];
+            raw = decodeURIComponent(parts[1]);
+
+            return new Blob([raw], {type: contentType});
+        }
+
+        parts = dataURL.split(BASE64_MARKER);
+        contentType = parts[0].split(':')[1];
+        raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+
+        var uInt8Array = new Uint8Array(rawLength);
+
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+
+        return new Blob([uInt8Array], {type: contentType});
+    }
+
+    function blob2dataURL(blob, callback) {
+
+        console.log("blob2dataURL blob: " + blob);
+
+        var fr = new FileReader();
+        fr.readAsDataURL(blob);
+        fr.onloadend = function () {
+            callback(fr.result);
+        }
+    }
 
     // Chat
     {
@@ -571,38 +611,7 @@
         }
     }
 
-    function dataURL2Blob(dataURL) {
-        var BASE64_MARKER = ';base64,';
-        if (dataURL.indexOf(BASE64_MARKER) == -1) {
-            var parts = dataURL.split(',');
-            var contentType = parts[0].split(':')[1];
-            var raw = decodeURIComponent(parts[1]);
 
-            return new Blob([raw], {type: contentType});
-        }
-
-        var parts = dataURL.split(BASE64_MARKER);
-        var contentType = parts[0].split(':')[1];
-        var raw = window.atob(parts[1]);
-        var rawLength = raw.length;
-
-        var uInt8Array = new Uint8Array(rawLength);
-
-        for (var i = 0; i < rawLength; ++i) {
-            uInt8Array[i] = raw.charCodeAt(i);
-        }
-
-        return new Blob([uInt8Array], {type: contentType});
-    }
-
-    function blob2dataURL(blob, callback) {
-        var fr = new FileReader();
-        fr.readAsDataURL(blob);
-        fr.onloadend = function () {
-            callback(fr.result);
-        }
-
-    }
 
 </script>
 

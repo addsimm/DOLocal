@@ -8,7 +8,7 @@
 <style>
 
     #video_section {
-        margin-top: -65px;
+        margin-top: -75px;
         padding: 0 0 10px 0;
         border-top: 3px solid rgba(65, 45, 120, .2);
         border-bottom: 3px solid rgba(65, 45, 120, .2);
@@ -22,17 +22,16 @@
     }
 
     .particbox {
+        background-color: transparent;
         margin-top: 20px;
     }
 
     .videoContainer {
-        background-color: transparent;
         margin: 0;
-        outline: 7px solid rgb(65, 45, 120);
+        outline: 4px solid rgb(65, 45, 120);
         padding: 0;
-        height: 240px;
-        width: 320px;
-
+        width: 220px;
+        height: 165px;
     }
 
     .nameContainer {
@@ -102,18 +101,14 @@
 {# HTML #}
 <div>
 
-TEMASSYS_TEST.HTML
+<div id="video_section" class="row" style=" ">
 
-<div id="video_section" class="row">
 
-    <video id="myvideo" muted autoplay></video>
-    <img id="mypic" src="">
-
-    {% if request.user.is_staff %}
-        <button id="share_button" class="josstaffbutton" style="width: 300px;" onclick="controlShare()">
+    {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
+        <button id="share_button" class="josstaffbutton" style="margin-right: 15px; width: 200px;" onclick="controlShare()">
             Share screen
-        </button><br>
-    {% endif %}
+        </button>
+    {% endif %}<br>
 
     <div id="screen_share_container" class="col-xs-12 text-center hidden" style="padding: 15px;;">
         <video id="shared_video" autoplay></video>
@@ -160,21 +155,6 @@ TEMASSYS_TEST.HTML
 
     layoutVideoContainers();
 
-    var user = {},
-        peer_pics = {},
-        peer_audios = [],
-        audioTimeouts = {},
-        last_pic = null,
-        capture_timeout = null,
-        click_timeout = null,
-        online = false,
-        focussed = true,
-        mediaOK = null,
-        muted = false,
-
-        hash = location.hash.substr(1).replace('_', '-'),
-        room = location.hash.length > 1 ? location.hash : 'the public hallway';
-
     var adncCntnr = document.getElementById('audience_container'),
         scrnShrCntnr= document.getElementById('screen_share_container'),
         cmpsNpt = document.getElementById('compose_input'),
@@ -184,31 +164,33 @@ TEMASSYS_TEST.HTML
 
     var josSkylink = new Skylink();
 
-    josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
-    josSkylink.setDebugMode(true);
+    //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
+    //// josSkylink.setDebugMode(true);
 
-    // media AccessS uccess
+    // media Access Required
+    josSkylink.on('mediaAccessRequired', function (stream) {
+        console.log('mediaAccessRequired');
+        josSkylink.getUserMedia({
+            video: {
+                resolution: {
+                    width: 160,
+                    height: 120
+                },
+                frameRate: 3
+            },
+            audio: true
+        });
+    });
+
+    // media Access Success
     josSkylink.on('mediaAccessSuccess', function (stream) {
         console.log('mediaAccessSuccess');
-
-        /*
-        attachMediaStream($video, stream);
-        if (!user.name) {
-            capture_timeout = setTimeout(capture, 2000);
-            addMessage("Thanks. May I now know your name?", 'bot');
-            $msg.select();
-            mediaOK = true;
-        }*/
     });
 
     // media Access Error
     josSkylink.on('mediaAccessError', function (stream) {
         console.log('mediaAccessError');
-        /* addMessage("If you don't want to share your camera and microphone, I'll make you a bot like me. Can I have your name tho?", 'bot');
-        $msg.select();
-        mediaOK = false; */
     });
-
 
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
@@ -344,21 +326,18 @@ TEMASSYS_TEST.HTML
 
     // Init: ENCRYPT ROOM NAME
     josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
-
+        console.log('Joining room');
         josSkylink.joinRoom({
             audioFallback: true,
             audio: true,
-            video: true
+            video: true,
+            manualGetUserMedia: true
         });
 
         josSkylink.setUserData({
             name: '{{ JOSName }}'
         });
     });
-
-
-
-
 
 
     // Layout
@@ -371,7 +350,7 @@ TEMASSYS_TEST.HTML
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox'); // hidden
+                $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
                 newParticBox.id = 'box_' + pstn;
                 var videoBoxId = 'vid_' + pstn + '_empty';
                 var nameBoxId = 'name_' + pstn;
