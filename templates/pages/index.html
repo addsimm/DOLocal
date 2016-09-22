@@ -35,32 +35,25 @@
 
 
 {# FREE BANNER #}
-<div class="row" style="background-color: white;
-                        padding-top: 15px;
-                        position: fixed;
-                        top: 53px;
-                        width: 1170px;
-                        z-index: 90;">
+<div class="row" style="background-color: white; padding-top: 10px; position: fixed; top: 53px; width: 1170px; z-index: 90;">
 
-    <div class="col-xs-12" style="background-color: rgb(65, 45, 120);">
+    <div class="col-xs-12" style="background-color: rgb(65, 45, 120); padding: 15px 0 0;">
 
-        <div class="row text-center" >
-            <span style="color: white; font-family: 'Abril Fatface', Serif; font-size: 60pt;">
-                Totally free - no ads*
-            </span>
+        <div class="row text-center" style="color: white; font-family: 'Abril Fatface', Serif; font-size: 60pt;">
+            Totally free - no ads*
         </div>
 
-        <div class="row text-center" style="padding: 30px 0;">
+        <div class="row text-center" style="padding: 35px 0;">
 
             <a class="joslargelinkbutton"
                href="{% url "josmembers:josreservespace" %}"
-               style="font-size: 20pt; padding: 10px 25px; border-radius: 20px;"
+               style="font-size: 20pt; padding: 12px 25px; border-radius: 20px;"
             >
                 {% trans "Click now to reserve your place!" %}
             </a>
 
         </div>
-        <div class="row float-right" style="font-size: 12pt; height: 45px; background-color: white;">
+        <div class="row" style="margin: 0; font-size: 12pt; height: 35px; background-color: white; ">
             <a class="secret-button"
                style="color: rgb(65, 45, 120);
                       border: none;
@@ -79,29 +72,29 @@
     </div>
 </div>
 
-<div id="landing_page text-center" style="margin-left: 20px; margin-top: 150px; width: 1160px; z-index: 80;">
+<div id="landing_page text-center" style="margin-top: 170px; width: 1170px; z-index: 5;">
 
     {# VIDEO #}
-    <div class="row" style="margin-top: 0;">
-        <div class="col-xs-12 text-center" style="background-color: transparent;">
-            <p style="font-size: 24pt;">
-                Click to play this short introduction:<br>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <p style="font-size: 24pt; padding-bottom: 10px;">
+                Click the triangle to play a short introduction:<br>
             </p>
-            <video width="754" height="424" style="margin-top: 10px; outline: 5px solid rgb(65, 45, 120);" controls>
+            <video width="754" height="424" style="outline: 5px solid rgb(65, 45, 120);" controls>
                 <source src="/static/media/PROMO-911-480p.mov" type="video/mp4">
                 Sorry, your device won't play this video. Please call the number below.
             </video>
         </div>
     </div>
 
-
     {# CENTER #}
-    <div class="row text-center" style="margin-top: 65px; padding-top: 60px; border-top: 20px solid rgba(65,45,120,.2);">
+    <div class="row" style="margin-top: 65px; padding-top: 60px; width: 100%; border-top: 25px solid rgba(65,45,120,.2);">
+
         <div class="col-xs-4 text-center">
             <img class="img" style="height: 250px;" src="/static/img/3enjoy_4.5.png">
         </div>
 
-        <div class="col-xs-4 text-center" style="border-left: 1px solid rgba(65,45,120,.2); border-right: 1px
+        <div class="col-xs-4 text-center" style="border-left: 2px solid rgba(65,45,120,.2); border-right: 2px
              solid rgba(65,45,120,.2); background-color: transparent;">
             <img class="img" style="height: 250px;" src="/static/img/3share-4.5.png">
         </div>
@@ -111,17 +104,17 @@
         </div>
 
     </div>
-    <div class="row text-center" style="margin-top: 15px;">
+    <div class="row" style="width: 100%;">
         <div class="col-xs-4 text-center">
             <span class="homehead">Enjoy</span><br><br>
             <span class="hometext">
-                our growing collection<br>of original stories.
+                a growing collection<br>of original stories.
             </span>
         </div>
 
-        <div class="col-xs-4 text-center" style="border-left: 1px solid rgba(65,45,120,.2); border-right: 1px solid rgba(65,45,120,.2);">
+        <div class="col-xs-4 text-center" style="border-left: 2px solid rgba(65,45,120,.2); border-right: 2px solid rgba(65,45,120,.2);">
             <span class="homehead">Create</span><br><br>
-            <span class="hometext">stories that express your uniqueness.</span>
+            <span class="hometext">stories that express your experinces and individuality.</span>
         </div>
 
         <div class="col-xs-4 text-center">
@@ -132,9 +125,10 @@
         </div>
 
     </div>
-    {# VIDEO #}
-    <div class="row" style="margin-top: 70px; padding-top: 60px; margin-bottom: 70px; border-top: 20px solid rgba(65,45,120,.2);">
-        <div class="col-xs-12 text-center" style="background-color: transparent;">
+
+    {# TRAILBLAZER VIDEO #}
+    <div class="row" style="margin-top: 70px; padding-top: 60px; margin-bottom: 40px;  width: 100%; border-top: 20px solid rgba(65,45,120,.2);">
+        <div class="col-xs-12 text-center">
 
             <p style="font-size: 22pt;">
                 Trailblazers, please watch this:<br>

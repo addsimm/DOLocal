@@ -48,47 +48,55 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
-<div class="container" style="background-color: white; margin-left: 20px; position: fixed; top:0; z-index: 100;">
-
-    <div class="row">
-        <!-- JOS LOGO -->
-        <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
-            {% block joslogo %}
+<div class="container" style="width: 1170px; padding: 0; left: 20px; position: fixed; top:0; background-color: white; z-index: 100;">
+    <div class="row" style="margin: 0; height: 96px; width:100%; background-color: transparent">
+        <div class="col-xs-12 text-center" style="margin-top: 15px;padding: 0; background-color: transparent;">
+            {% block logo %}
                 <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-                    {% else %}href="/"{% endif %} class="pull-left" style="outline: none; padding: 0">
-                    <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
+                   {% else %}href="/"{% endif %}
+                   style="
+                       background-image:url(https://www.joinourstory.com/static/img/JOSLogo121615.png);
+                       background-size: 146px 86px;
+                       height:86px;
+                       outline: none;
+                       padding:0;
+                       position: fixed; top: 10px; left: 20px;
+                       width:146px;">
+
                 </a>
-            {% endblock joslogo %}
-        </div>
+            {% endblock logo %}
 
-        <div class="hidden-xs col-sm-12 col-md-6">
-            {% nevercache %}{% if messages %}
-                <!-- MESSAGES -->
-                <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">
-                    <div class="col-xs-1" style=" " >
-                        <img src="/static/img/peeky-123115.png" height="40px">
-                    </div>
-                    <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
-                        {% for message in messages %}
-                            {{ message | striptags }}<br>
-                        {% endfor %}
-                    </div>
-                </div>
+
+            {% if request.user.is_authenticated %}
+                <a class="btn btn-default pull-right"
+                   style="width: 150px;"
+                   href="{% url "logout" %}?next={{ request.path }}">
+                    {% trans "Log out " %}
+                </a>
             {% else %}
-                <!-- SLOGAN -->
-                {% block slogan %}
-                    <div class="hometext text-center" style="margin-left: 105px; margin-top: 22px;">
-                        A storytelling community for<br>happier souls and healthier minds.
-                    </div>
-                {% endblock slogan %}
-            {% endif %}{% endnevercache %}
-        </div>
+                <a class="btn btn-default  pull-right"
+                   style="width: 150px;"
+                   href="{% url "login" %}">
+                    {% trans "Members" %}
+                </a>
+            {% endif %}
 
-        <!-- USER PANEL -->
-        <div class="col-sm-12 col-md-4" style="background-color: transparent; margin-top: 10px;">
-            {% include "accounts/user_panel.html" %}
+            {% if request.user.is_staff %}
+
+                <a class="josstaffbutton  pull-right"
+                   style="font-size: 14pt;"
+                   href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
+                    {% trans "> Staff <" %}
+                </a>
+
+            {% endif %}
+
+            {% block slogan %}
+                <span style="margin-left: 150px;">A storytelling community for happier souls and healthier minds.</span>
+            {% endblock slogan %}
         </div>
     </div>
+
 
     <!-- BREADCRUMB -->
     {% block outer_breadcrumb %}
@@ -100,6 +108,32 @@
     {% block extra_bar %}{% endblock extra_bar %}
 
 </div>
+
+
+
+
+
+{#        <!-- MESSAGES -->#}
+{#        {% if messages %}{% nevercache %}#}
+{##}
+{#            <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">#}
+{#                <div class="col-xs-1" style=" ">#}
+{#                    <img src="/static/img/peeky-123115.png" style="height: 40px">#}
+{#                </div>#}
+{#                <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">#}
+{#                    {% for message in messages %}#}
+{#                        {{ message | striptags }}<br>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endnevercache %}#}
+{#        {% endif %}#}
+{##}
+{#        <!-- USER PANEL -->#}
+{#        <div class="col-xs-4" style="background-color: lightblue; margin-top: 10px;">#}
+{#            {% include "accounts/user_panel.html" %}#}
+{#        </div>#}
+
 
 {% block center_content %}{% endblock %}
 

@@ -1,6 +1,6 @@
 {% load i18n mezzanine_tags accounts_tags %}
 
-{% if request.user.is_authenticated %}
+
 
     <div class="row" style=" ">
 
@@ -9,34 +9,6 @@
             {#<a href="/contact" class="btn btn-default" style="width: 115px;">#}
             {#    {% trans "Contact Us" %}#}
             {#</a>#}
-
-            {% if request.user.is_staff %}
-
-                <a class="josstaffbutton"
-                   style="font-size: 14pt;"
-                   href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
-                    {% trans "> Staff <" %}
-                </a>
-
-            {% else %}
-
-                <button class="btn btn-warning"
-                        style="width: 85px;"
-                        onclick="goBack()">
-                    Back
-                </button>
-
-                <script>function goBack() {
-                    window.history.back();
-                }</script>
-
-            {% endif %}
-
-            <a class="btn btn-default"
-               style="margin-left: 10px; width: 150px;"
-               href="{% url "logout" %}?next={{ request.path }}">
-                {% trans "Log out " %}
-            </a>
 
         </div>
     </div>
@@ -48,17 +20,15 @@
         </div>
     </div>
 
-{% else %}
+
 
     <div class="row" style="background-color: transparent;">
         <div class="col-xs-12  text-right" style="padding-right: 0;">
 
-            <a href="{% url "login" %}" class="btn btn-default" style="width: 150px;">
-                {% trans "Members" %}</a>
 
         </div>
     </div>
 
-{% endif %}
+
 
 
