@@ -72,7 +72,7 @@ def password_reset(request, template="accounts/account_password_reset.html", for
         user = form.save()
         send_verification_mail(request, user, "password_reset_verify")
         info(request, _("Email with password reset link sent."))
-    context = {"form": form, "title": _("Password Reset")}
+    context = {"form": form, "title": _("Reset Password")}
     context.update(extra_context or {})
     return TemplateResponse(request, template, context)
 

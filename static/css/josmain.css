@@ -53,12 +53,6 @@ a:hover {
     text-decoration: none;
 }
 
-.messages {
-    background-color: lightgreen;
-    font-size: 18pt;
-    font-weight: bold;
-}
-
 .joscursive {
     font-family: 'Stalemate', cursive;
     font-size: 48pt;

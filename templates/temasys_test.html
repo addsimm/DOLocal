@@ -8,7 +8,7 @@
 <style>
 
     #video_section {
-        margin-top: -75px;
+        margin-top: -40px;
         padding: 0 0 10px 0;
         border-top: 3px solid rgba(65, 45, 120, .2);
         border-bottom: 3px solid rgba(65, 45, 120, .2);
@@ -19,28 +19,6 @@
         width: 100%;
         padding: 10px;
         border: 3px solid rgb(65, 45, 120);
-    }
-
-    .particbox {
-        background-color: transparent;
-        margin-top: 20px;
-    }
-
-    .videoContainer {
-        margin: 0;
-        outline: 4px solid rgb(65, 45, 120);
-        padding: 0;
-        width: 220px;
-        height: 165px;
-    }
-
-    .nameContainer {
-        color: green;
-        font-family: "Open Sans", sans-serif;
-        font-size: 18pt;
-        margin-left: 0;
-        margin-top: 5px;
-        padding: 0;
     }
 
     .action {
@@ -146,8 +124,49 @@
 </div>
 </div>
 
-<canvas id="photo" style="display: none;" width="160" height="120"></canvas>
-<audio id="alert" src="/static" style="display: none;"></audio>
+<style>
+    .nameContainer {
+        background-color: white;
+        color: rgb(112, 154, 109);
+        font-family: "Open Sans", sans-serif;
+        font-size: 16pt;
+        font-weight: bold;
+        left: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 2px 0 2px 8px;
+        position: absolute;
+        text-align: left;
+        width: 100%;
+    }
+
+    .particbox {
+        background-color: red;
+        border: 4px solid rgb(65, 45, 120);
+        margin: 0;
+    }
+
+    .videoContainer {
+        margin: 0;
+        padding: 0;
+        width: 280px;
+        height: 210px;
+    }
+
+    .mute-button {
+        color: white;
+        background-color: rgb(112, 154, 109);
+        border: none;
+        height: 43px;
+        outline: none;
+        padding: 0 20px;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: 199;
+    }
+
+</style>
 
 {# Scripts #}
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
@@ -155,18 +174,27 @@
 
     layoutVideoContainers();
 
-    var adncCntnr = document.getElementById('audience_container'),
-        scrnShrCntnr= document.getElementById('screen_share_container'),
-        cmpsNpt = document.getElementById('compose_input'),
-        mssgCntnr = document.getElementById('messages_container'),
-        nwMssgBt = document.getElementById('new_message_button'),
-        shrBt = document.getElementById('share_button');
+    // Vars
+    {
+        var adncCntnr = document.getElementById('audience_container'),
+            scrnShrCntnr = document.getElementById('screen_share_container'),
+            cmpsNpt = document.getElementById('compose_input'),
+            mssgCntnr = document.getElementById('messages_container'),
+            nwMssgBt = document.getElementById('new_message_button'),
+            shrBt = document.getElementById('share_button');
 
-    var josSkylink = new Skylink();
+        var josSkylink = new Skylink();
 
-    //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
-    //// josSkylink.setDebugMode(true);
+        //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
+        //// josSkylink.setDebugMode(true);
+    }
 
+    function mutePeer() {
+        alert('mute');
+    }
+
+    // Events
+    {
     // media Access Required
     josSkylink.on('mediaAccessRequired', function (stream) {
         console.log('mediaAccessRequired');
@@ -176,7 +204,7 @@
                     width: 160,
                     height: 120
                 },
-                frameRate: 3
+                frameRate: 10
             },
             audio: true
         });
@@ -338,7 +366,7 @@
             name: '{{ JOSName }}'
         });
     });
-
+    }
 
     // Layout
     function layoutVideoContainers() {
@@ -350,7 +378,7 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox hidden');
+                $(newParticBox).addClass('col-xs-3 text-center particbox');
                 newParticBox.id = 'box_' + pstn;
                 var videoBoxId = 'vid_' + pstn + '_empty';
                 var nameBoxId = 'name_' + pstn;
@@ -359,8 +387,10 @@
                     "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
                     "    </video>",
                     "</div>",
-                    '<div class="row">',
-                    "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+                    "<button class = 'btn mute-button' onclick='mutePeer();'>Mute</button>",
+                    "<div class='row'>",
+                    "   <div id=" + nameBoxId + " class='text-center nameContainer'>",
+                    "   </div>",
                     '</div>'
                 ].join('\n');
                 $(newParticBox).html(particBoxLayout);
@@ -369,7 +399,7 @@
         }
     }
 
-    // Chat
+    // Chat & Screen share
     {
         mssgCntnr.onscroll = function () {
             var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
@@ -416,35 +446,35 @@
                 sendMessage();
             }
         });
-    }
 
-    // Screen share
-    function controlShare() {
+        function controlShare() {
 
-        var name = 'missing';
-        if (shrBt.innerText == "Share screen") {
-            shrBt.innerText = "Stop share";
+            var name = 'missing';
+            if (shrBt.innerText == "Share screen") {
+                shrBt.innerText = "Stop share";
 
-            name = josSkylink.getUserData()['name'] + ', shar';
-            josSkylink.setUserData({
-                name: name
-            });
+                name = josSkylink.getUserData()['name'] + ', shar';
+                josSkylink.setUserData({
+                    name: name
+                });
 
-            josSkylink.shareScreen();
+                josSkylink.shareScreen();
 
-        } else {
+            } else {
 
-            shrBt.innerText = "Share screen";
-            name = josSkylink.getUserData()['name'].slice(0, -6);
-            josSkylink.setUserData({
-                name: name + ', stps'
-            });
+                shrBt.innerText = "Share screen";
+                name = josSkylink.getUserData()['name'].slice(0, -6);
+                josSkylink.setUserData({
+                    name: name + ', stps'
+                });
 
-            josSkylink.stopScreen();
-            josSkylink.setUserData({
-                name: name
-            });
+                josSkylink.stopScreen();
+                josSkylink.setUserData({
+                    name: name
+                });
+            }
         }
+
     }
 
 </script>

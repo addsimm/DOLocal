@@ -5,6 +5,14 @@
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
 
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ title }}
+    </div></div>
+
+{% endblock %}
+
 {% block all_content %}
 
     <div class="row">
@@ -181,10 +189,5 @@
 
 
 {% endblock all_content %}
-
-input_id_webcam
-input_id_phone_text
-
-input_id_browser
 
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
-{% load pages_tags mezzanine_tags i18n staticfiles %}
+{% load pages_tags mezzanine_tags i18n staticfiles inbox %}
 
 <head>
     <meta content="text/html">
@@ -46,36 +46,153 @@
 
 </head>
 
+<style>
+
+    #fixed-top-bar .joslargelinkbutton {
+        margin-left: 10px;
+        width: 130px;
+    }
+
+</style>
+
 <body id="{% block body_id %}body{% endblock %}">
 
-<div class="container" style="width: 1170px; padding: 0; left: 20px; position: fixed; top:0; background-color: white; z-index: 100;">
-    <div class="row" style="margin: 0; height: 96px; width:100%; background-color: transparent">
-        <div class="col-xs-12 text-center" style="margin-top: 15px;padding: 0; background-color: transparent;">
-            {% block logo %}
-                <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-                   {% else %}href="/"{% endif %}
-                   style="
+<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; z-index: 100;">
+
+    {% block logo %}
+        <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
+           {% else %}href="/"{% endif %}
+           style="
                        background-image:url(https://www.joinourstory.com/static/img/JOSLogo121615.png);
-                       background-size: 146px 86px;
-                       height:86px;
+                       background-size: 219px 129px;
+                       height:129px;
                        outline: none;
                        padding:0;
-                       position: fixed; top: 10px; left: 20px;
-                       width:146px;">
+                       position: absolute; top: -5px; left: 0;
+                       width:219px;">
 
+        </a>
+    {% endblock logo %}
+
+
+
+    <!-- MESSAGES -->
+{#    {% if messages %}#}
+    {% nevercache %}
+
+    <div id="messageBox" class="row hidden"
+         style="
+            background-color: lightgreen;
+            border: 1px solid rgb(65,45,120);
+            font-size: 18pt;
+            font-weight: bold;
+            height: 115px;
+            left: 250px;
+            outline: 4px solid white;
+            padding: 10px 15px;
+            position: absolute;
+            top: 10px;
+            width: 745px;
+            z-index: 150;
+            ">
+        <div class="col-xs-1" style="padding: 15px 0 0 5px;">
+            <img src="/static/img/peeky-123115.png" style="height: 60px">
+        </div>
+        <div id="messageSpace" class="col-xs-11"
+             style="
+                display: block;
+                padding: 0 0 0 15px;
+                max-width: 100%;
+                height: 100%;
+                overflow-y: scroll;
+                word-wrap: break-word;
+                ">
+            {% for message in messages %}
+                <input type="hidden" id="isMessage" name="isMessage" value="{{ message | striptags }}">
+                <script>
+
+                    messageBox = document.getElementById('messageBox');
+                    messageSpace = document.getElementById('messageSpace');
+                    var message = document.getElementById("isMessage").value;
+                    if (message) {
+                        $(messageBox).removeClass('hidden');
+                        $(messageBox).delay(3500).fadeOut(1000);
+                        $(messageSpace).text(message);
+                    }
+
+                </script>
+            {% endfor %}
+        </div>
+    </div>
+    {% endnevercache %}
+{# {% endif %}#}
+
+    <!-- NAV BUTTONS -->
+    <div class="row" style="margin: 0; height: 85px; width:100%; background-color: transparent">
+        <div class="col-xs-12 text-center" style="margin-top: 0; padding: 15px 3px 15px 15px; background-color: transparent;">
+
+            {% block top-nav %}
+
+                <button class="btn btn-warning pull-left"
+                        style="margin-left: 230px; width: 70px; height: 47px; text-align: center"
+                        onclick="goBack()">
+                    Back
+                </button>
+
+                <script>function goBack() {
+                    window.history.back();
+                }</script>
+
+                {% if request.user.is_authenticated %}
+
+                <a class="joslargelinkbutton pull-left"
+                   href="{% url "personaldesk" %}/{{ request.user.id }}">
+                    <i class="fa fa-home fa-fw"></i>
+                    Desk
                 </a>
-            {% endblock logo %}
 
+                <a class="joslargelinkbutton pull-left" style="padding: 0; width: 135px;"
+                   href="{% url "josmessages:messages_redirect" %}">
+                    <div class="pull-left" style="margin: 8px 15px;">
+                        <i class="fa fa-envelope fa-fw"></i>
+                        Mail
+                    </div>
+
+                    {% inbox_count as my_var %}
+                    {% if my_var >= 1 %}
+                        <div class="pull-right"
+                             style="color: white; background-color: red; height: 47px; padding: 8px 5px; text-align: center;">
+                            {{ my_var }}
+                        </div>
+                    {% else %}
+                        <div class="pull-right"
+                             style="height: 47px; padding: 8px 5px;">
+                            &nbsp&nbsp
+                        </div>
+                    {% endif %}
+                </a>
+
+                <a class="joslargelinkbutton pull-left"
+                   href="{% url "josmembers:josmembers_list" %}">
+                    <span style="margin: 0 4px;">
+                        <i class="fa fa-heart  fa-fw"></i>
+                        Friend
+                    </span>
+                </a>
+
+            {% endif %}
+
+            {% endblock top-nav %}
 
             {% if request.user.is_authenticated %}
                 <a class="btn btn-default pull-right"
-                   style="width: 150px;"
+                   style="width: 150px; margin: -5px 0 0 0;"
                    href="{% url "logout" %}?next={{ request.path }}">
                     {% trans "Log out " %}
                 </a>
             {% else %}
                 <a class="btn btn-default  pull-right"
-                   style="width: 150px;"
+                   style="width: 150px; margin: -5px 0 0 0;"
                    href="{% url "login" %}">
                     {% trans "Members" %}
                 </a>
@@ -84,19 +201,15 @@
             {% if request.user.is_staff %}
 
                 <a class="josstaffbutton  pull-right"
-                   style="font-size: 14pt;"
+                   style="font-size: 14pt; margin-right: 10px;"
                    href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
                     {% trans "> Staff <" %}
                 </a>
 
             {% endif %}
 
-            {% block slogan %}
-                <span style="margin-left: 150px;">A storytelling community for happier souls and healthier minds.</span>
-            {% endblock slogan %}
         </div>
     </div>
-
 
     <!-- BREADCRUMB -->
     {% block outer_breadcrumb %}
@@ -109,36 +222,18 @@
 
 </div>
 
-
-
-
-
-{#        <!-- MESSAGES -->#}
-{#        {% if messages %}{% nevercache %}#}
-{##}
-{#            <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">#}
-{#                <div class="col-xs-1" style=" ">#}
-{#                    <img src="/static/img/peeky-123115.png" style="height: 40px">#}
-{#                </div>#}
-{#                <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">#}
-{#                    {% for message in messages %}#}
-{#                        {{ message | striptags }}<br>#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endnevercache %}#}
-{#        {% endif %}#}
-{##}
-{#        <!-- USER PANEL -->#}
-{#        <div class="col-xs-4" style="background-color: lightblue; margin-top: 10px;">#}
-{#            {% include "accounts/user_panel.html" %}#}
-{#        </div>#}
-
-
 {% block center_content %}{% endblock %}
 
 <!-- ALL CONTENT -->
-<div class="container" style="background-color: transparent; margin-top: 50px; margin-left: 20px; min-height: 450px; z-index: 50;">
+<div class="container"
+     style="
+            width: 1170px;
+            margin-left: 20px;
+            min-height: 350px;
+            padding: 25px;
+            z-index: 1;
+            ">
+
     {% block all_content %}
 
         <div class="row" style="margin-top: 150px;">
@@ -189,5 +284,8 @@
     </div>
     {% include "includes/footer_scripts.html" %}
 </footer>
+
+
+
 </body>
 </html>

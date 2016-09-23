@@ -16,19 +16,18 @@ from request.models import Request
 
 def staffgallery(request, template="josstaff/staffgallery.html", extra_context= None):
     staff = JOSStaffMember.objects.all()
-    context = {'staff': staff}
+    context = {'staff': staff,
+               'title': 'Join Our Story - Our Mission and Team'}
     return render(request, template, context)
 
 
 def legals(request, template="josstaff/legals.html", extra_context=None):
-    staff = JOSStaffMember.objects.all()
-    context = {}
+    context = {'title': 'Join Our Story - Terms and Conditions'}
     return render(request, template, context)
 
 
 def community_rules(request, template="josstaff/community_rules.html", extra_context=None):
-    staff = JOSStaffMember.objects.all()
-    context = {}
+    context = {'title': 'Join Our Story - Community Rules'}
     return render(request, template, context)
 
 
