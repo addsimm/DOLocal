@@ -168,6 +168,10 @@ footer {
     width: 100px;
 }
 
+.btn:focus {
+    outline: none;
+}
+
 .btn-default, .btn-default:visited,
 .btn-primary:visited, .btn-primary:focus {
     background-color: rgb(231, 209, 222);
@@ -179,12 +183,14 @@ footer {
     background-color: #5cb85c;
     color: white;
     border-color: #5cb85c;
+    -webkit-focus-ring-color: none;
 }
 
 .btn-info:visited, .btn-info:focus {
     background-color: #5bc0de;
     color: white;
     border-color: #5bc0de;
+    -webkit-focus-ring-color: none;
 }
 
 .btn-warning:visited, .btn-warning:focus {
