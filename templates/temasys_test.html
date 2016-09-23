@@ -74,6 +74,41 @@
         overflow-y: auto;
     }
 
+    .nameContainer {
+        background-color: white;
+        color: rgb(112, 154, 109);
+        font-family: "Open Sans", sans-serif;
+        font-size: 16pt;
+        font-weight: bold;
+        left: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 2px 0 2px 8px;
+        position: absolute;
+        text-align: left;
+        width: 100%;
+    }
+
+    .particbox {
+        background-color: red;
+        border: 4px solid rgb(65, 45, 120);
+        margin: 0;
+    }
+
+    .videoContainer {
+        margin: 0;
+        padding: 0;
+        width: 280px;
+        height: 210px;
+    }
+
+    .mute-button {
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: 199;
+    }
+
 </style>
 
 {# HTML #}
@@ -122,45 +157,8 @@
         </table>
     </div>
 </div>
+
 </div>
-
-<style>
-    .nameContainer {
-        background-color: white;
-        color: rgb(112, 154, 109);
-        font-family: "Open Sans", sans-serif;
-        font-size: 16pt;
-        font-weight: bold;
-        left: 0;
-        bottom: 0;
-        margin: 0;
-        padding: 2px 0 2px 8px;
-        position: absolute;
-        text-align: left;
-        width: 100%;
-    }
-
-    .particbox {
-        background-color: red;
-        border: 4px solid rgb(65, 45, 120);
-        margin: 0;
-    }
-
-    .videoContainer {
-        margin: 0;
-        padding: 0;
-        width: 280px;
-        height: 210px;
-    }
-
-    .mute-button {
-        right: 0;
-        bottom: 0;
-        position: absolute;
-        z-index: 199;
-    }
-
-</style>
 
 {# Scripts #}
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
@@ -183,47 +181,84 @@
         //// josSkylink.setDebugMode(true);
     }
 
-    function mutePeer(buttonId) {
-        peerId = buttonId.slice(4);
-        console.log('mute peerInfo: ', JSON.stringify(josSkylink.getPeerInfo(peerId)).split(',').join('\n'));
-        mtBttn = document.getElementById(buttonId);
-        if ($(mtBttn).hasClass('btn-success')) {
-            $(mtBttn).removeClass('btn-success').addClass('btn-danger').text('Unmute');
-        } else {
-            $(mtBttn).removeClass('btn-danger').addClass('btn-success').text('Mute');
-        }
 
-    }
 
     // Events
     {
-    // media Access Required
-    josSkylink.on('mediaAccessRequired', function (stream) {
-        console.log('mediaAccessRequired');
-        josSkylink.getUserMedia({
-            video: {
-                resolution: {
-                    width: 160,
-                    height: 120
+        // media Access Required
+        josSkylink.on('mediaAccessRequired', function (stream) {
+            console.log('mediaAccessRequired: ' + stream);
+            josSkylink.getUserMedia({
+                video: {
+                    resolution: {
+                        width: 160,
+                        height: 120
+                    },
+                    frameRate: 2
                 },
-                frameRate: 2
-            },
-            audio: true
+                audio: true
+            });
         });
-    });
 
-    // media Access Success
-    josSkylink.on('mediaAccessSuccess', function (stream) {
-        console.log('mediaAccessSuccess');
-    });
+        // media Access Success
+        josSkylink.on('mediaAccessSuccess', function (stream) {
+            console.log('mediaAccessSuccess: ' + stream);
+        });
 
-    // media Access Error
-    josSkylink.on('mediaAccessError', function (stream) {
-        console.log('mediaAccessError');
-    });
+        // media Access Error
+        josSkylink.on('mediaAccessError', function (stream) {
+            console.log('mediaAccessError: ' + stream);
+        });
+
+        // Incoming Message
+        josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
+            var user = 'Me', className = 'message';
+            if (!isSelf) {
+                user = josSkylink.getUserData(peerId)['name'];
+            }
+            addMessage(user, message.content, className);
+        });
+
+        // Peer Joined
+        josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
+            console.log('peerJoined: ' + peerId);
+            peerJOSName = 'Me';
+            if (!isSelf) {
+
+                peerJOSName = josSkylink.getUserData(peerId)['name'];
+                addMessage(peerJOSName, 'has joined chat', 'action');
+            }
+        });
+
+        // Peer left
+        josSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
+            console.log('peerLeft peerId: ' + peerId);
+            if (!isSelf) {
+
+                reclaimSlot(peerId);
+                addMessage(peerJOSName, 'has left chat', 'action');
+            }
+        });
+
+        // Init: ENCRYPT ROOM NAME
+        josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
+            console.log('Joining room');
+            josSkylink.joinRoom({
+                audioFallback: true,
+                audio: true,
+                video: true,
+                manualGetUserMedia: true
+            });
+
+            josSkylink.setUserData({
+                name: '{{ JOSName }}'
+            });
+        });
+    }
 
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
+        var pstn;
         var peerJOSName = josSkylink.getUserData(peerId)['name'];
         console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
 
@@ -236,12 +271,33 @@
         }
 
         var shrscrn = peerJOSName.indexOf("shar");
-        if (shrscrn == -1) {
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_empty';
-                if ($(testId).length) {
-                    var nextEmptyID = testId.substr(1);
-                    break;
+        if (shrscrn > 0) {
+            $(adncCntnr).addClass('hidden');
+            $(scrnShrCntnr).removeClass('hidden');
+            addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');
+            vidBox = document.getElementById('shared_video');
+        }
+        else {
+            if (isSelf) {
+                nextEmptyID = 'vid_2_empty';
+            }
+
+            if (peerJOSName == "Celeste_D") {
+                nextEmptyID = 'vid_1_empty';
+            }
+
+            if (peerJOSName == "Adam_S") {
+                nextEmptyID = 'vid_12_empty';
+            }
+
+            else {
+
+                for (c = 3; c < 12; c++) {
+                    var testId = '#vid_' + c + '_empty';
+                    if ($(testId).length) {
+                        var nextEmptyID = testId.substr(1);
+                        break;
+                    }
                 }
             }
 
@@ -251,49 +307,17 @@
             var nameBox = document.getElementById('name_' + pstn);
             nameBox.innerHTML = peerJOSName;
             var particBox = document.getElementById('box_' + pstn);
-            var muteBut = document.getElementById('but_' + pstn);
-            muteBut.id = 'but_' + peerId;
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
                 $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
             }
-
-        } else {
-
-            $(adncCntnr).addClass('hidden');
-            $(scrnShrCntnr).removeClass('hidden');
-            var reclaimedID = ' ';
-            for (c = 1; c < 13; c++) {
-                var othtestId = '#vid_' + c + '_' + peerId;
-                if ($(othtestId).length) {
-                    reclaimedID = othtestId.substr(1);
-                    break;
-                }
-            }
-
-            var pstn = reclaimedID.split('_')[1].toString();
-            reParticBox = document.getElementById('box_' + pstn);
-            $(reParticBox).addClass('hidden');
-            var videoBoxId = 'vid_' + pstn + '_empty';
-            var nameBoxId = 'name_' + pstn;
-            var muteButId = 'but_' + pstn;
-            var particBoxLayout = [
-                "<div class='row'>",
-                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                "    </video>",
-                "</div>",
-                "<button id=" + muteButId + " class='btn mute-button btn-success btn-xs' onclick='mutePeer(this.id);'>Mute</button>",
-                '<div class="row">',
-                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                '</div>'
-            ].join('\n');
-            $(reParticBox).html(particBoxLayout);
-            addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');
-            vidBox = document.getElementById('shared_video');
         }
 
         if (isSelf) {
             vidBox.muted = true;
+            bttn = document.getElementById('hidden_' + pstn);
+            $(bttn).replaceWith("<button id='but_" + peerId + "' onclick='mutePeer(this.id);'>Mute</button>");
+            $('#but_' + peerId).addClass('btn mute-button btn-success btn-xs');
         }
 
         if (peerJOSName !== '???') {
@@ -302,75 +326,31 @@
         }
     });
 
-    // Incoming Message
-    josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
-        var user = 'Me', className = 'message';
-        if (!isSelf) {
-            user = josSkylink.getUserData(peerId)['name'];
-        }
-        addMessage(user, message.content, className);
-    });
-
-    // Peer Joined
-    josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-        console.log('peerJoined: ' + peerId);
-        peerJOSName = 'Me';
-        if (!isSelf) {
-
-            peerJOSName = josSkylink.getUserData(peerId)['name'];
-            addMessage(peerJOSName, 'has joined chat', 'action');
-        }
-    });
-
-    // Peer left
-    josSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
-        console.log('peerLeft peerId: ' + peerId);
-        if (!isSelf) {
-
-            var reclaimedID = ' ';
-            for (c = 1; c < 13; c++) {
-                var testId = '#vid_' + c + '_' + peerId;
-                if ($(testId).length) {
-                    reclaimedID = testId.substr(1);
-                    break;
-                }
+    function reclaimSlot(peerId) {
+        for (c = 1; c < 13; c++) {
+            var othtestId = '#vid_' + c + '_' + peerId;
+            if ($(othtestId).length) {
+                reclaimedID = othtestId.substr(1);
+                break;
             }
-
-            var pstn = reclaimedID.split('_')[1].toString();
-            reParticBox = document.getElementById('box_' + pstn);
-            $(reParticBox).addClass('hidden');
-            var videoBoxId = 'vid_' + pstn + '_empty';
-            var nameBoxId = 'name_' + pstn;
-            var muteButId = 'but_' + pstn;
-            var particBoxLayout = [
-                "<div class='row'>",
-                "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-                "    </video>",
-                "</div>",
-                "<button id=" + muteButId + " class='btn mute-button btn-success btn-xs' onclick='mutePeer(this.id);'>Mute</button>",
-                '<div class="row">',
-                "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
-                '</div>'
-            ].join('\n');
-            $(reParticBox).html(particBoxLayout);
-            addMessage(peerJOSName, 'has left chat', 'action');
         }
-    });
 
-    // Init: ENCRYPT ROOM NAME
-    josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
-        console.log('Joining room');
-        josSkylink.joinRoom({
-            audioFallback: true,
-            audio: true,
-            video: true,
-            manualGetUserMedia: true
-        });
-
-        josSkylink.setUserData({
-            name: '{{ JOSName }}'
-        });
-    });
+        var pstn = reclaimedID.split('_')[1].toString();
+        reParticBox = document.getElementById('box_' + pstn);
+        $(reParticBox).addClass('hidden');
+        var videoBoxId = 'vid_' + pstn + '_empty';
+        var nameBoxId = 'name_' + pstn;
+        var particBoxLayout = [
+            "<div class='row'>",
+            "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+            "    </video>",
+            "</div>",
+            "<div id='hidden_" + pstn + "'></div>",
+            "<div class='row'>",
+            "   <div id=" + nameBoxId + " class='text-center nameContainer'></div>",
+            "</div>"
+        ].join('\n');
+        $(reParticBox).html(particBoxLayout);
     }
 
     // Layout
@@ -383,21 +363,20 @@
             for (j = 1; j < 5; j++) {
                 var pstn = (i * 4) + j;
                 var newParticBox = document.createElement('div');
-                $(newParticBox).addClass('col-xs-3 text-center particbox'); //hidden
+                $(newParticBox).addClass('col-xs-3 text-center particbox hidden'); //hidden
                 newParticBox.id = 'box_' + pstn;
                 var videoBoxId = 'vid_' + pstn + '_empty';
                 var nameBoxId = 'name_' + pstn;
-                var muteButId = 'but_' + pstn;
                 var particBoxLayout = [
                     "<div class='row'>",
                     "    <video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
                     "    </video>",
                     "</div>",
-                    "<button id=" + muteButId + " class='btn mute-button btn-success btn-xs' onclick='mutePeer(this.id);'>Mute</button>",
+                    "<div id='hidden_" + pstn + "'></div>",
                     "<div class='row'>",
                     "   <div id=" + nameBoxId + " class='text-center nameContainer'>",
                     "   </div>",
-                    '</div>'
+                    "</div>"
                 ].join('\n');
                 $(newParticBox).html(particBoxLayout);
                 rowI.appendChild(newParticBox);
@@ -405,8 +384,28 @@
         }
     }
 
-    // Chat & Screen share
+    // Chat & Screen share & Mute
     {
+        function mutePeer(buttonId) {
+            peerId = buttonId.slice(4);
+            console.log('mute peerInfo: ', JSON.stringify(josSkylink.getPeerInfo(peerId)).split(',').join('\n'));
+            mtBttn = document.getElementById(buttonId);
+            if ($(mtBttn).hasClass('btn-success')) {
+                $(mtBttn).removeClass('btn-success').addClass('btn-danger').text('Unmute');
+                josSkylink.muteStream({
+                    audioMuted: true,
+                    videoMuted: false
+                });
+            } else {
+                $(mtBttn).removeClass('btn-danger').addClass('btn-success').text('Mute');
+                josSkylink.muteStream({
+                    audioMuted: false,
+                    videoMuted: false
+                });
+            }
+            // alert('Microphone changed');
+        }
+
         mssgCntnr.onscroll = function () {
             var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;
             if (isAtBottom) {
