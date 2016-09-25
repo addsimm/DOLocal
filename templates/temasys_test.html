@@ -5,63 +5,23 @@
 
 {% block extra_bar %}
 
-    <style>
-        p {
-            margin: 0;
-        }
-
-        #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
-            background-color: rgb(0, 155, 175);
-        }
-
-        #progress_bar .joslargelinkbutton:focus, #progress_bar .joslargelinkbutton:hover {
-            background-color: white;
-            outline: 1px dashed rgb(0, 155, 175);
-        }
-
-    </style>
-
-    <div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5);
-                        padding-bottom: 15px;
-                        padding-top: 15px;">
+    <div class="row" style="padding-top: 45px;">
 
         <div class="col-xs-12">
-
-            <div id="progress_bar" class="row" style="padding-top: 10px;">
-
-                <div class="col-xs-12">
-
-                    {% for hout in "xxxxxx" %}
-
-                        <div style="display: inline; font-size: 12pt; margin: 5px;">
-                            <span style="margin: 0 3px;">{{ hout }}</span>
-                        </div>
-                        {% if not forloop.last %}
-                            <i class="fa fa-arrow-right"
-                               style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;"
-                               aria-hidden="true"></i>
-                        {% endif %}
-
-                    {% endfor %}
-
-                </div>
-            </div>
+            <span id="time_clock"></span>
+            <span id="workshop_progress_bar"></span>
         </div>
     </div>
 
 {% endblock extra_bar %}
-
-
-
 
 {% block all_content %}
 
 <style>
 
     #video_section {
-        margin-top: -40px;
+        margin-top: 15px;
         padding: 0 0 10px 0;
-        border-top: 3px solid rgba(65, 45, 120, .2);
         border-bottom: 3px solid rgba(65, 45, 120, .2);
     }
 
@@ -160,10 +120,23 @@
         z-index: 199;
     }
 
+    .segment {
+        display: inline-block;
+        font-size: 20pt;
+        margin-left: 20px;
+        padding: 3px 0;
+        width: 135px;
+        text-align: center;
+        border: 2px solid rgba(65,45,120,.2);
+    }
+
+    .segment-active {
+        color: white;
+        background-color: rgb(65,45,120);
+    }
+
+
 </style>
-
-
-
 
 {# HTML #}
 <div>
@@ -171,14 +144,12 @@
 <div id="video_section" class="row" style=" ">
 
     {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
-        <button id="share_button" class="josstaffbutton" style="margin-right: 15px; width: 200px;" onclick="controlShare()">
+        <button id="share_button" class="josstaffbutton" style="margin-right: 15px; width: 150px;" onclick="controlShare()">
             Share screen
         </button>
     {% endif %}<br>
 
-    <div id="time_clock" style="background-color: red">xxx</div>
-
-    <div id="screen_share_container" class="col-xs-12 text-center hidden" style="padding: 15px;;">
+       <div id="screen_share_container" class="col-xs-12 text-center hidden" style="padding: 15px;;">
         <video id="shared_video" autoplay></video>
     </div>
 
@@ -215,18 +186,53 @@
 
 </div>
 
-{# Scripts #}
+
+    {# Scripts #}
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
 <script charset="utf-8">
 
+    var segments = ['Welcome', 'Agenda', 'Share', 'Break', 'Video', 'Template', 'Exercise'];
+    var current_segment = 0;
+    // var intervals = [10, 25, 10, 10, 8, 12];
+    var intervals = [1, 2, 1, 3, 2, 1, 1];
+    var workshop_time = 59;
+    var cur_interval = 0;
+
+    function drawProgressBar() {
+
+        var wpb = document.getElementById('workshop_progress_bar');
+        for (var i in segments) {
+            var segment = document.createElement("p");
+            $(segment).addClass('segment');
+            segment.textContent = segments[i];
+            segment.id = 'segment_' + i;
+            wpb.appendChild(segment);
+        }
+    }drawProgressBar();
+
+
     var tc = (function timeClock() {
+
         var today = new Date();
         var h = today.getHours();
+        if (h > 12) {h = h - 12;}
         var min = today.getMinutes();
-        var s = today.getSeconds();
-        m = min < 10 ? "0" + min : min;
-        document.getElementById('time_clock').innerHTML = h + ":" + m + ":" + s;
-        var t = setTimeout(timeClock, 30000);
+        var m = min < 10 ? "0" + min : min;
+
+
+
+        document.getElementById('time_clock').innerHTML = h + ":" + m;
+        var t = setTimeout(timeClock, 10000);
+        var ws = workshop_time;
+        var icurn = intervals[cur_interval];
+         if (min =  (ws + icurn)) {
+            var cs = document.getElementById('segment_' + current_segment);
+            $(cs).addClass('segment-active');
+            workshop_time = workshop_time + intervals[cur_interval];
+            workshop_time = workshop_time > 60 ? workshop_time - 60 : workshop_time;
+            current_segment = current_segment + 1;
+            cur_interval = cur_interval + 1;
+        }
     }());
 
     layoutVideoContainers();
