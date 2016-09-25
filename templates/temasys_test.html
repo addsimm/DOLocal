@@ -3,6 +3,57 @@
 
 {% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
 
+{% block extra_bar %}
+
+    <style>
+        p {
+            margin: 0;
+        }
+
+        #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
+            background-color: rgb(0, 155, 175);
+        }
+
+        #progress_bar .joslargelinkbutton:focus, #progress_bar .joslargelinkbutton:hover {
+            background-color: white;
+            outline: 1px dashed rgb(0, 155, 175);
+        }
+
+    </style>
+
+    <div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5);
+                        padding-bottom: 15px;
+                        padding-top: 15px;">
+
+        <div class="col-xs-12">
+
+            <div id="progress_bar" class="row" style="padding-top: 10px;">
+
+                <div class="col-xs-12">
+
+                    {% for hout in "xxxxxx" %}
+
+                        <div style="display: inline; font-size: 12pt; margin: 5px;">
+                            <span style="margin: 0 3px;">{{ hout }}</span>
+                        </div>
+                        {% if not forloop.last %}
+                            <i class="fa fa-arrow-right"
+                               style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;"
+                               aria-hidden="true"></i>
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock extra_bar %}
+
+
+
+
 {% block all_content %}
 
 <style>
@@ -111,17 +162,21 @@
 
 </style>
 
+
+
+
 {# HTML #}
 <div>
 
 <div id="video_section" class="row" style=" ">
-
 
     {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
         <button id="share_button" class="josstaffbutton" style="margin-right: 15px; width: 200px;" onclick="controlShare()">
             Share screen
         </button>
     {% endif %}<br>
+
+    <div id="time_clock" style="background-color: red">xxx</div>
 
     <div id="screen_share_container" class="col-xs-12 text-center hidden" style="padding: 15px;;">
         <video id="shared_video" autoplay></video>
@@ -164,6 +219,16 @@
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
 <script charset="utf-8">
 
+    var tc = (function timeClock() {
+        var today = new Date();
+        var h = today.getHours();
+        var min = today.getMinutes();
+        var s = today.getSeconds();
+        m = min < 10 ? "0" + min : min;
+        document.getElementById('time_clock').innerHTML = h + ":" + m + ":" + s;
+        var t = setTimeout(timeClock, 30000);
+    }());
+
     layoutVideoContainers();
 
     // Vars
@@ -180,8 +245,6 @@
         //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
         //// josSkylink.setDebugMode(true);
     }
-
-
 
     // Events
     {
