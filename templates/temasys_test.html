@@ -6,10 +6,13 @@
 {% block extra_bar %}
 
     <div class="row" style="padding-top: 45px;">
-
         <div class="col-xs-12">
-            <span id="time_clock"></span>
+            <span id="time_clock" style="font-size: 18pt;"></span>
             <span id="workshop_progress_bar"></span>
+            <button class="btn btn-default" style="width: 150px; margin-left: 30px;"
+                onclick="window.open('www.joinourstory.com/personaldesk/{{ JOSId }}', '_blank');">New window
+            </button>
+
         </div>
     </div>
 
@@ -20,7 +23,7 @@
 <style>
 
     #video_section {
-        margin-top: 15px;
+        margin-top: 25px;
         padding: 0 0 10px 0;
         border-bottom: 3px solid rgba(65, 45, 120, .2);
     }
@@ -122,10 +125,10 @@
 
     .segment {
         display: inline-block;
-        font-size: 20pt;
-        margin-left: 20px;
+        font-size: 18pt;
+        margin-left: 18px;
         padding: 3px 0;
-        width: 135px;
+        width: 130px;
         text-align: center;
         border: 2px solid rgba(65,45,120,.2);
     }
@@ -186,17 +189,11 @@
 
 </div>
 
-
-    {# Scripts #}
+{# Scripts #}
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
 <script charset="utf-8">
 
-    var segments = ['Welcome', 'Agenda', 'Share', 'Break', 'Video', 'Template', 'Exercise'];
-    var current_segment = 0;
-    // var intervals = [10, 25, 10, 10, 8, 12];
-    var intervals = [1, 2, 1, 3, 2, 1, 1];
-    var workshop_time = 59;
-    var cur_interval = 0;
+    var segments = ['Welcome', 'Share', 'Break', 'Lit Tip', 'Template', 'Exercise'];
 
     function drawProgressBar() {
 
@@ -210,29 +207,38 @@
         }
     }drawProgressBar();
 
-
     var tc = (function timeClock() {
-
         var today = new Date();
-        var h = today.getHours();
-        if (h > 12) {h = h - 12;}
+        var hrs = today.getHours();
         var min = today.getMinutes();
-        var m = min < 10 ? "0" + min : min;
+        if (hrs > 12) {hrs = hrs - 12;}
+        var workshop_minutes = (hrs * 60) + min;
+        if (min < 10) {min = "0" + min;}
 
+        document.getElementById('time_clock').innerHTML = hrs + ":" + min;
 
+        var offset = (9*60)+30;
 
-        document.getElementById('time_clock').innerHTML = h + ":" + m;
-        var t = setTimeout(timeClock, 10000);
-        var ws = workshop_time;
-        var icurn = intervals[cur_interval];
-         if (min =  (ws + icurn)) {
-            var cs = document.getElementById('segment_' + current_segment);
-            $(cs).addClass('segment-active');
-            workshop_time = workshop_time + intervals[cur_interval];
-            workshop_time = workshop_time > 60 ? workshop_time - 60 : workshop_time;
-            current_segment = current_segment + 1;
-            cur_interval = cur_interval + 1;
+        if (workshop_minutes > offset) {
+            $('#segment_0').addClass('segment-active');
         }
+        if (workshop_minutes > offset + 10) {
+            $('#segment_1').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 35) {
+            $('#segment_2').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 45) {
+            $('#segment_3').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 55) {
+            $('#segment_4').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 63) {
+            $('#segment_5').addClass('segment-active');
+        }
+
+        var t = setTimeout(timeClock, 10000);
     }());
 
     layoutVideoContainers();

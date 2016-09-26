@@ -44,13 +44,7 @@ urlpatterns += patterns('',
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
     url("temasystest/incognito/$", temasystest, {'incognito': True}, name="temasystest"),
-
-    url("temasystest/(?P<josname>.*)/", temasystest, name="temasystest"),
-
-    url("community_room/(?P<josname>.*)/", community_room, name="community_room"),
-    url("community_room", community_room, name="community_room"),
-
-
+    url("temasystest/(?P<josid>\d+)", temasystest, name="temasystest"),
 
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),
