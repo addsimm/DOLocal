@@ -8,7 +8,6 @@
 {% block title %}
     {{ user.JOSProfile.jos_name }} Mail
 {% endblock %}
-
 {% block breadcrumb_menu %}
 
     {{ block.super }}
@@ -43,16 +42,7 @@
                 </span>
             </a>
 
-            {#<a class="joslargelinkbutton"#}
-            {#   style=" "#}
-            {#   href="{% url 'josmessages:messages_trash' %} ">#}
-            {#    <span style="margin-left: 5px; margin-right: 5px;">#}
-            {#        <i class="fa fa-trash fa-fw" style=" "></i>#}
-            {#        Deleted#}
-            {#    </span>#}
-            {#</a>#}
-
-            <span class="josinstructions" style="margin-left: 40px;">Hint: to send messages, use:</span>
+            <span class="josinstructions" style="margin-left: 40px;">To send messages, use:</span>
             <a class="joslargelinkbutton" style="margin-left: 15px;"
                href="{% url "josmembers:josmembers_list" %}">
                 <span style="margin-left: 5px; margin-right: 5px;">

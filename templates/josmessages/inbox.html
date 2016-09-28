@@ -20,11 +20,11 @@
         <table data-toggle="table">
             <thead>
                 <tr>
-                    <th data-sortable="true">New / Reply:</th>
+                    <th data-sortable="true">Status</th>
                     <th order="asc" data-sortable="true" >Received:</th>
                     <th data-sortable="true">From:</th>
                     <th data-sortable="true">Subject:</th>
-                    <th>Action:</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,18 +33,16 @@
                         <td>
                             {% if message.new %}
                                 &nbsp&nbsp&nbsp
-                                &nbsp&nbsp&nbsp
                                 <span class=" " style="color: green;">New</span>
                             {% elif message.replied %}
                                 &nbsp&nbsp&nbsp
-                                &nbsp&nbsp&nbsp
-                                <span class=" " style="color: black;">Reply sent</span>
+                                <span class=" " style="color: black;">Replied</span>
                             {% endif %}
                         </td>
-                        <td>{{ message.sent_at | time:"f A" }} - {{ message.sent_at | date:"D, M d" }}</td>
+                        <td>{{ message.sent_at | time:"f A" }}; {{ message.sent_at | date:"M d" }}</td>
                         <td>{{ message.sender.JOSProfile.jos_name }}</td>
                         <td>
-                            {{ message.subject }}
+                            {{ message.subject | truncatechars:20 }}
                         </td>
                         <td>
                             <a class="btn btn-default"
