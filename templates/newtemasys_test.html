@@ -225,9 +225,7 @@
 
         var offset = (9*60)+30;
 
-        if (workshop_minutes > offset) {
-            $('#segment_0').addClass('segment-active');
-        }
+        $('#segment_0').addClass('segment-active');
         if (workshop_minutes > offset + 10) {
             $('#segment_1').addClass('segment-active');
         }
@@ -272,10 +270,10 @@
             josSkylink.getUserMedia({
                 video: {
                     resolution: {
-                        width: 160,
-                        height: 120
+                        width: 384,
+                        height: 240
                     },
-                    frameRate: 1
+                    frameRate: 2
                 },
                 audio: true
             });
@@ -387,7 +385,7 @@
                 }
             }
 
-            console.log('nextEmptyID: ' + nextEmptyID);
+            console.log('nextEmptyID: ' +  nextEmptyID);
 
             vidBox = document.getElementById(nextEmptyID);
             vidBox.id = nextEmptyID.slice(0, -5) + peerId;
@@ -518,9 +516,9 @@
                 "</tr>"
             ].join('\n');
             div.innerHTML = chatMessage;
-{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
             mssgCntnr.appendChild(div);
             mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
+{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
 {#            if (isAtBottom) {#}
 {#                mssgCntnr.scrollTop = mssgCntnr.scrollHeight;#}
 {#            } else {#}
