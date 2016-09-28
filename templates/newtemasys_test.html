@@ -1,0 +1,573 @@
+{% extends "josstaff/staff_base.html" %}
+{% load i18n tz pages_tags mezzanine_tags staticfiles %}
+
+{% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
+
+{% block extra_bar %}
+
+    <div class="row" style="padding-top: 45px;">
+        <div class="col-xs-12">
+            <span id="time_clock" style="font-size: 18pt;"></span>
+            <span id="workshop_progress_bar"></span>
+            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 30px;"
+                    onclick="location.reload();">Refresh
+            </button>
+            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 10px;"
+                onclick="window.open('www.joinourstory.com/personaldesk/{{ JOSId }}', '_blank');">New tab
+            </button>
+
+        </div>
+    </div>
+
+{% endblock extra_bar %}
+
+{% block all_content %}
+
+<style>
+
+    #video_section {
+        margin-top: 15px;
+        padding: 0 0 10px 0;
+        border-bottom: 3px solid rgba(65, 45, 120, .2);
+    }
+
+    #compose_input {
+        font-size: 14pt;
+        width: 100%;
+        padding: 10px;
+        border: 3px solid rgb(65, 45, 120);
+    }
+
+    .action {
+        color: #28a4c9;
+        font-style: italic;
+        margin-left: 80px;
+    }
+
+    .cntnt {
+    }
+
+    .usr {
+        color: green;
+    }
+
+    .me {
+        color: red;
+    }
+
+    td {
+        border: none;
+        padding: 0;
+    }
+
+    tr:hover {
+        background-color: inherit;
+    }
+
+    .table {
+        background-color: white;
+        font-family: "Open Sans", sans-serif;
+        margin: 0 10px;
+        width: 97%;
+    }
+
+    .table > tbody > tr > td {
+        border: none;
+        border-top: 1px dashed rgb(65, 45, 120);
+        line-height: normal;
+        padding: 5px 0;
+    }
+
+    #shared_video {
+        height: 650px;
+        max-width: 800px;
+        border: 5px solid rgb(65, 45, 120);
+    }
+
+    #messages_container {
+        margin-top: 15px;
+        height: 135px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .nameContainer {
+        background-color: rgba(255, 255, 255, .8);;
+        bottom: 0;
+        color: rgb(112, 154, 109);
+        font-family: "Open Sans", sans-serif;
+        font-size: 16pt;
+        font-weight: bold;
+        height: 35px;
+        left: 0;
+        margin: 0;
+        padding: 3px 0 0 12px;
+        position: absolute;
+        text-align: left;
+        width: 352px;
+    }
+
+    .particbox {
+        background-color: rgb(65, 45, 120);
+        border: none;
+        margin: 10px 0 0 20px;
+        outline: 2px solid rgb(65, 45, 120);
+        padding: 0;
+        width: 352px;
+
+    }
+
+    .videoContainer {
+        margin: 0;
+        padding: 0;
+        height: 240px;
+    }
+
+    .mute-button {
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: 199;
+    }
+
+    .segment {
+        display: inline-block;
+        margin-left: 15px;
+        padding: 3px 0;
+        width: 125px;
+        text-align: center;
+        border: 2px solid rgba(65,45,120,.2);
+    }
+
+    .segment-active {
+        color: white;
+        background-color: rgb(65,45,120);
+    }
+
+
+</style>
+
+{# HTML #}
+<div>
+
+<div id="video_section" class="row" style=" ">
+
+    {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
+        <button id="share_button" class="josstaffbutton" style="margin-right: 15px; width: 150px;" onclick="controlShare()">
+            Share screen
+        </button>
+    {% endif %}<br>
+
+       <div id="screen_share_container" class="col-xs-12 text-center hidden" style="padding: 15px;;">
+        <video id="shared_video" autoplay></video>
+    </div>
+
+    <div id="audience_container" class="col-xs-12" style="padding: 0 15px; min-height: 300px;"></div>
+</div>
+
+<div id="messages_section" class="row" style="background-color: rgba(65, 45, 120, .2); padding-bottom: 15px;">
+    <div id="messages_container" class="col-xs-12 text-center"></div>
+</div>
+
+<div id="compose_section" class="row" style="padding-bottom: 15px; border: 3px solid rgba(65, 45, 120, .2); ">
+    <div class="col-xs-12 text-center">
+{#        <button id='new_message_button'#}
+{#                class="btn btn-warning invisible"#}
+{#                style="font-size: 14pt; width: 98%;"#}
+{#                onclick="goToNewMessages()"#}
+{#                disabled>#}
+{#            New message - click here to scroll down.#}
+{#        </button>#}
+        <table style="margin: 10px 0 0 15px;">
+            <tr>
+                <td style="width: 70%;">
+                    <input id="compose_input" type="text" placeholder="Add your thought to the chat!">
+                </td>
+                <td>
+                    <button class="btn btn-default" style="margin-left: 10px;" onclick="sendMessage()">
+                        Send
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</div>
+
+{# Scripts #}
+<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
+<script charset="utf-8">
+
+    var segments = ['Welcome', 'Share', 'Break', 'Lit Tip', 'Template', 'Exercise'];
+
+    function drawProgressBar() {
+
+        var wpb = document.getElementById('workshop_progress_bar');
+        for (var i in segments) {
+            var segment = document.createElement("p");
+            $(segment).addClass('segment');
+            segment.textContent = segments[i];
+            segment.id = 'segment_' + i;
+            wpb.appendChild(segment);
+        }
+    }drawProgressBar();
+
+    var tc = (function timeClock() {
+        var today = new Date();
+        var hrs = today.getHours();
+        var min = today.getMinutes();
+        if (hrs > 12) {hrs = hrs - 12;}
+        var workshop_minutes = (hrs * 60) + min;
+        if (min < 10) {min = "0" + min;}
+
+        document.getElementById('time_clock').innerHTML = hrs + ":" + min;
+
+        var offset = (9*60)+30;
+
+        if (workshop_minutes > offset) {
+            $('#segment_0').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 10) {
+            $('#segment_1').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 35) {
+            $('#segment_2').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 45) {
+            $('#segment_3').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 55) {
+            $('#segment_4').addClass('segment-active');
+        }
+        if (workshop_minutes > offset + 63) {
+            $('#segment_5').addClass('segment-active');
+        }
+
+        var t = setTimeout(timeClock, 10000);
+    }());
+
+    layoutVideoContainers();
+
+    // Vars
+    {
+        var adncCntnr = document.getElementById('audience_container'),
+            scrnShrCntnr = document.getElementById('screen_share_container'),
+            cmpsNpt = document.getElementById('compose_input'),
+            mssgCntnr = document.getElementById('messages_container'),
+            nwMssgBt = document.getElementById('new_message_button'),
+            shrBt = document.getElementById('share_button');
+
+        var josSkylink = new Skylink();
+
+        //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
+        //// josSkylink.setDebugMode(true);
+    }
+
+    // Events
+    {
+        // media Access Required
+        josSkylink.on('mediaAccessRequired', function (stream) {
+            console.log('mediaAccessRequired: ' + stream);
+            josSkylink.getUserMedia({
+                video: {
+                    resolution: {
+                        width: 160,
+                        height: 120
+                    },
+                    frameRate: 1
+                },
+                audio: true
+            });
+        });
+
+        // media Access Success
+        josSkylink.on('mediaAccessSuccess', function (stream) {
+            console.log('mediaAccessSuccess: ' + stream);
+        });
+
+        // media Access Error
+        josSkylink.on('mediaAccessError', function (stream) {
+            console.log('mediaAccessError: ' + stream);
+        });
+
+        // Incoming Message
+        josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
+            var user = 'Me', className = 'message';
+            if (!isSelf) {
+                user = josSkylink.getUserData(peerId)['name'];
+            }
+            addMessage(user, message.content, className);
+        });
+
+        // Peer Joined
+        josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
+            console.log('peerJoined: ' + peerId);
+            peerJOSName = 'Me';
+            if (!isSelf) {
+
+                peerJOSName = josSkylink.getUserData(peerId)['name'];
+                addMessage(peerJOSName, 'has joined chat', 'action');
+            }
+        });
+
+        // Peer left
+        josSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
+            console.log('peerLeft peerId: ' + peerId);
+            if (!isSelf) {
+
+                reclaimSlot(peerId);
+                addMessage(peerJOSName, 'has left chat', 'action');
+            }
+        });
+
+        // Init: ENCRYPT ROOM NAME
+        josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
+            console.log('Joining room');
+            josSkylink.joinRoom({
+                audioFallback: true,
+                audio: true,
+                video: true,
+                manualGetUserMedia: true
+            });
+
+            josSkylink.setUserData({
+                name: '{{ JOSName }}'
+            });
+        });
+    }
+
+    // Incoming Stream
+    josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
+        var pstn;
+        var peerJOSName = josSkylink.getUserData(peerId)['name'];
+        var vidBox;
+        var nextEmptyID = 'xxx';
+        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
+
+        var stpshr = peerJOSName.indexOf("stps");
+        if (stpshr > 0) {
+            peerJOSName = peerJOSName.slice(0, -6);
+            $(scrnShrCntnr).addClass('hidden');
+            $(adncCntnr).removeClass('hidden');
+            location.reload();
+            return
+        }
+
+        var shrscrn = peerJOSName.indexOf("shar");
+        if (shrscrn > 0) {
+            $(adncCntnr).addClass('hidden');
+            $(scrnShrCntnr).removeClass('hidden');
+            addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');
+            vidBox = document.getElementById('shared_video');
+        }
+
+        else {
+
+            if (isSelf) {
+                nextEmptyID = 'vid_2_empty';
+            }
+
+            if (peerJOSName == "Celeste_D") {
+                nextEmptyID = 'vid_1_empty';
+            }
+
+            if (peerJOSName == "Adam_S") {
+                nextEmptyID = 'vid_9_empty';
+            }
+
+            if (nextEmptyID === 'xxx') {
+
+                for (c = 3; c < 9; c++) {
+                    var testId = '#vid_' + c + '_empty';
+                    if ($(testId).length) {
+                        nextEmptyID = testId.substr(1);
+                        break;
+                    }
+                }
+            }
+
+            console.log('nextEmptyID: ' + nextEmptyID);
+
+            vidBox = document.getElementById(nextEmptyID);
+            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
+            pstn = vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById('name_' + pstn);
+            nameBox.innerHTML = peerJOSName;
+            var particBox = document.getElementById('box_' + pstn);
+
+            if (isSelf) {
+                $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
+            }
+
+
+            if (isSelf) {
+                vidBox.muted = true;
+                bttn = document.getElementById('hidden_' + pstn);
+                $(bttn).replaceWith("<button id='but_" + peerId + "' onclick='mutePeer(this.id);'>Mute</button>");
+                $('#but_' + peerId).addClass('btn mute-button btn-success btn-xs');
+            }
+        }
+
+        vidBox.autoplay = 'autoplay';
+
+        if (peerJOSName !== '???') {
+            $(particBox).removeClass('hidden');
+            attachMediaStream(vidBox, stream);
+        }
+
+    });
+
+    function reclaimSlot(peerId) {
+        for (c = 1; c < 9; c++) {
+            var othtestId = '#vid_' + c + '_' + peerId;
+            if ($(othtestId).length) {
+                reclaimedID = othtestId.substr(1);
+                break;
+            }
+        }
+
+        var pstn = reclaimedID.split('_')[1].toString();
+        reParticBox = document.getElementById('box_' + pstn);
+        $(reParticBox).addClass('hidden');
+        var videoBoxId = 'vid_' + pstn + '_empty';
+        var nameBoxId = 'name_' + pstn;
+        var particBoxLayout = [
+            "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+            "</video>",
+            "<div id='hidden_" + pstn + "'></div>",
+            "<div id=" + nameBoxId + " class='text-center nameContainer'></div>"
+        ].join('\n');
+        $(reParticBox).html(particBoxLayout);
+    }
+
+    // Layout
+    function layoutVideoContainers() {
+        for (i = 0; i < 3; i++) {
+            var rowI = document.createElement('div');
+            $(rowI).addClass('row');
+            rowI.id = 'row_' + i;
+            document.getElementById('audience_container').appendChild(rowI);
+            for (j = 1; j < 4; j++) {
+                var pstn = (i * 3) + j;
+                var newParticBox = document.createElement('div');
+                $(newParticBox).addClass('col-xs-4 text-center particbox hidden'); //// hidden
+                newParticBox.id = 'box_' + pstn;
+                var videoBoxId = 'vid_' + pstn + '_empty';
+                var nameBoxId = 'name_' + pstn;
+                var particBoxLayout = [
+                    "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                    "</video>",
+                    "<div id='hidden_" + pstn + "'></div>",
+                    "<div id=" + nameBoxId + " class='text-center nameContainer'>",
+                    "</div>"
+                ].join('\n');
+                $(newParticBox).html(particBoxLayout);
+                rowI.appendChild(newParticBox);
+            }
+        }
+    }
+
+    // Chat & Screen share & Mute
+    {
+        function mutePeer(buttonId) {
+            var peerId = buttonId.slice(4);
+            var vidId = 'video[id*="' + peerId + '"]';
+
+            mtBttn = document.getElementById(buttonId);
+            if ($(mtBttn).hasClass('btn-success')) {
+                $(mtBttn).removeClass('btn-success').addClass('btn-danger').text('Unmute');
+                josSkylink.muteStream({
+                    audioMuted: true,
+                    videoMuted: false
+                });
+                $(vidId).css('border', '10px dotted red');
+            } else {
+                $(mtBttn).removeClass('btn-danger').addClass('btn-success').text('Mute');
+                josSkylink.muteStream({
+                    audioMuted: false,
+                    videoMuted: false
+                });
+                $(vidId).css('border', 'none');
+            }
+        }
+
+{#        mssgCntnr.onscroll = function () {#}
+{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
+{#            if (isAtBottom) {#}
+{#                $(nwMssgBt).addClass('invisible').prop("disabled", true);#}
+{#            }#}
+{#        };#}
+{##}
+{#        function goToNewMessages() {#}
+{#            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;#}
+{#            $(nwMssgBt).addClass('invisible').prop("disabled", true);#}
+{#        }#}
+
+        function addMessage(usr, cntnt, clssnm) {
+            var div = document.createElement('table');
+            $(div).addClass('table ' + clssnm);
+            var cntntClass = 'cntnt';
+            if (usr == 'Me') {
+                cntntClass = 'cntnt me';
+            }
+            chatMessage = [
+                "<tr class='chat-message'>",
+                "    <td class='usr' style='overflow-x: hidden; width: 12%; padding-left: 10px;'>" + usr + "</td>",
+                "    <td class='" + cntntClass + "' style='overflow-x: hidden;'> '" + cntnt + "'</td>",
+                "</tr>"
+            ].join('\n');
+            div.innerHTML = chatMessage;
+{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
+            mssgCntnr.appendChild(div);
+            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
+{#            if (isAtBottom) {#}
+{#                mssgCntnr.scrollTop = mssgCntnr.scrollHeight;#}
+{#            } else {#}
+{#                $(nwMssgBt).removeClass('invisible').prop("disabled", false);#}
+{#            }#}
+        }
+
+        function sendMessage() {
+            josSkylink.sendP2PMessage(cmpsNpt.value);
+            cmpsNpt.value = '';
+        }
+
+        $(cmpsNpt).keypress(function (e) {  // sends message on return
+            if (e.which == 13) {
+                sendMessage();
+            }
+        });
+
+        function controlShare() {
+            var name = 'missing';
+            if (shrBt.textContent == "Share screen") {
+                shrBt.textContent = "Stop share";
+
+                name = josSkylink.getUserData()['name'] + ', shar';
+                josSkylink.setUserData({
+                    name: name
+                });
+
+                josSkylink.shareScreen();
+
+            } else {
+
+                shrBt.textContent = "Share screen";
+                name = josSkylink.getUserData()['name'].slice(0, -6);
+                josSkylink.setUserData({
+                    name: name + ', stps'
+                });
+
+                josSkylink.stopScreen();
+                josSkylink.setUserData({
+                    name: name
+                });
+            }
+        }
+    }
+
+</script>
+
+{% endblock all_content %}
+
