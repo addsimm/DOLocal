@@ -18,9 +18,9 @@
 
 {% block all_content %}
 
-<div class="row" style="margin-top: 60px;">
+<div class="row" style="margin-top: 30px;">
 
-    <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
+    <div class="col-xs-12" style="padding: 0;">
 
         <div class="row" style="margin-bottom: 30px;">
             <!-- a class="joslargelinkbutton" href=" ">
@@ -33,7 +33,7 @@
                     Stories I've published
                </span>
             </a -->
-            <a class="btn btn-default" style="width: 200px;"
+            <a class="btn btn-default" style="margin-left: 50px; width: 200px;"
                href="{% url 'josstory' %}/0">
                     Create new story
             </a><br><br>
@@ -43,7 +43,11 @@
         {% if stories.count > 0 %}
             <span class="josinstructions">Please click a title to view:<br>&nbsp&nbsp&nbsp&nbsp- or create a new story!</span><br><br>
 
-            <table data-toggle="table">
+            <table data-toggle="table" width="100%">
+                <col style="width:49%;">
+                <col style="width:23%;">
+                <col style="width:23%;">
+                <col style="width:5%;">
                 <thead>
                     <tr>
                         <th data-sortable="true">Title</th>
@@ -58,16 +62,15 @@
                             <td>
                                 <a href="{% url 'josstory' %}/{{ story.id }}">
                                     <span style="margin-left: 5px; margin-right: 5px;">
-                                        {{ story.title | striptags | truncatechars:25 }}
+                                        {{ story.title | striptags | truncatechars:45 }}
                                     </span>
                                 </a>
                             </td>
-                            <td>{{ story.created }}</td>
-                            <td>{{ story.updated }}</td>
-                            <td>
+                            <td style="text-align:center;">{{ story.created | time:"f A" }}; {{ story.created | date:"M d" }}</td>
+                            <td style="text-align:center;">{{ story.updated | time:"f A" }}; {{ story.updated | date:"M d" }}</td>
+                            <td style="text-align:center;">
                                 {% if story.publish %}
-                                    &nbsp&nbsp&nbsp&nbsp&nbsp
-                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                    &nbsp&nbsp&nbsp
                                     <i class="fa fa-circle fa-fw" style="color: green;"></i>
                                 {% endif %}
                             </td>
