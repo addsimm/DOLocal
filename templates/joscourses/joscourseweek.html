@@ -11,7 +11,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {{ week.week_title | safe | truncatechars:25 }} - {{ handout.title }}
+    {{ week.week_title | safe | truncatechars:45 }}
     </div></div>
 
 {% endblock %}
@@ -30,49 +30,84 @@
         outline: 1px dashed rgb(0, 155, 175);
     }
 
+.week-box {
+    padding: 10px 0 0 0;
+    background-color: rgba(65, 45, 120, .2);
+    border: 1px solid rgb(65, 45, 120);
+    width: 90%;
+    float: none;
+    margin: 0 auto;
+}
+
+#week-boxes a {
+
+}
+
+
 </style>
 
-<div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5);
-                        padding-bottom: 15px;
-                        padding-top: 15px;">
+<div class="row text-center" style="padding: 20px 0; border-bottom: 3px solid rgba(65,45,120,.2);">
 
-    <div class="col-xs-12">
+    <div id="week-boxes" class="col-xs-12">
 
-        <div id="progress_bar" class="row" style="padding-top: 10px;">
+        <div class="row">
 
-            <div class="col-xs-12">
+            <div class="col-xs-6" style="">
 
-                {% for hout in handouts %}
+                <div class="row week-box" >
 
-                    <a class="joslargelinkbutton"
-                       style="font-size: 12pt; margin: 5px;
-                            {% if handout == hout %}
-                                background-color: rgb(65,45,120);
-                            {% endif %}"
-                       href="{% url "handout" %}/{{ hout.id }}">
-                        <span style="margin: 0 3px;">{{ hout.get_segment_type_display }}</span>
-                    </a>
-                    {% if not forloop.last %}
-                        <i class="fa fa-arrow-right" style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;" aria-hidden="true"></i>
-                    {% endif %}
+                    <div class="col-xs-12">
 
-                {% endfor %}
+                        <div class="row homehead" style="font-size: 24pt;">
+                            Part 1.
+                        </div>
 
-{#                BUG NEXT BUTTON: USE SEGMENT ORDER TO MAP ON TO NOT SEQUENTIAL IDs #}
-                {% if handout == handouts.last %}
-                    <a class="btn btn-warning"
-                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">
-                        {% trans "Last" %}
-                    </a>
-                {% else %}
-                    <a class="btn btn-warning pull-right"
-                       style="font-size: 12pt; width: 70px;"
-                       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">
-                        {% trans "Next" %}
-                    </a>
-                {% endif %}
+                        <div class="row" style="font-size: 18pt; padding: 10px 0 0 0;">
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Prepare
+                            </a>
 
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Workshop
+                            </a>
+
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Resources
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="col-xs-6">
+
+                <div class="row week-box">
+                    <div class="col-xs-12">
+
+                        <div class="row homehead" style="font-size: 24pt;">
+                            Part 2.
+                        </div>
+
+                        <div class="row" style="font-size: 18pt; padding: 10px 0 0 0;">
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Prepare
+                            </a>
+
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Workshop
+                            </a>
+
+                            <a class="col-xs-4" style="margin-left: 0;" href="https:/">
+                                Resources
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

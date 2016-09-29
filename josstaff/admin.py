@@ -23,7 +23,7 @@ admin.site.register(JOSStaffHoursEntry, JOSStaffHoursEntryAdmin)
 
 class JOSStaffMemberAdmin(admin.ModelAdmin):
     model = JOSStaffMember
-    list_display = ("first_name", "cumalative_hours", "_Hours_Entries_Total", "_Hours_Entries_Open")
+    list_display = ("first_name", "bio_image", "cumalative_hours", "_Hours_Entries_Total", "_Hours_Entries_Open")
     verbose_name = 'Staff member'
 
     inlines = [JOSStaffHoursEntryInLine]

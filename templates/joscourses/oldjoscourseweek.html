@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  %}
+
+{% block meta_title %}
+    {{ week.week_title | safe | truncatechars:25 }}
+{% endblock %}
+{% block title %}
+    {{ week.week_title | safe | truncatechars:25 }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ week.week_title | safe | truncatechars:25 }} - {{ handout.title }}
+    </div></div>
+
+{% endblock %}
+
+{% block extra_bar %}
+
+<style>
+    p {margin: 0;}
+
+    #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
+        background-color: rgb(0, 155, 175);
+    }
+
+    #progress_bar .joslargelinkbutton:focus, #progress_bar .joslargelinkbutton:hover {
+        background-color: white;
+        outline: 1px dashed rgb(0, 155, 175);
+    }
+
+</style>
+
+<div class="row" style="border-bottom: 3px solid rgba(65,45,120,.5);
+                        padding-bottom: 15px;
+                        padding-top: 15px;">
+
+    <div class="col-xs-12">
+
+        <div id="progress_bar" class="row" style="padding-top: 10px;">
+
+            <div class="col-xs-12">
+
+                {% for hout in handouts %}
+
+                    <a class="joslargelinkbutton"
+                       style="font-size: 12pt; margin: 5px;
+                            {% if handout == hout %}
+                                background-color: rgb(65,45,120);
+                            {% endif %}"
+                       href="{% url "handout" %}/{{ hout.id }}">
+                        <span style="margin: 0 3px;">{{ hout.get_segment_type_display }}</span>
+                    </a>
+                    {% if not forloop.last %}
+                        <i class="fa fa-arrow-right" style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;" aria-hidden="true"></i>
+                    {% endif %}
+
+                {% endfor %}
+
+{#                BUG NEXT BUTTON: USE SEGMENT ORDER TO MAP ON TO NOT SEQUENTIAL IDs #}
+                {% if handout == handouts.last %}
+                    <a class="btn btn-warning"
+                       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">
+                        {% trans "Last" %}
+                    </a>
+                {% else %}
+                    <a class="btn btn-warning pull-right"
+                       style="font-size: 12pt; width: 70px;"
+                       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">
+                        {% trans "Next" %}
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock extra_bar %}
+
