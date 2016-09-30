@@ -1,7 +1,12 @@
 from django.db import models
+
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from mezzanine.core.models import TimeStamped
+# from mezzanine.core.fields import FileField
+
+from mezzanine.utils.models import upload_to
 
 from embed_video.fields import EmbedVideoField
 
@@ -45,15 +50,16 @@ class JOSCourseStudent(TimeStamped, models.Model):
     def __unicode__(self):
         return 'Enrollee: ' + self.student.JOSProfile.jos_name()
 
-
 class JOSCourseWeek(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Courseweek'
         ordering = ("course", "weekno")
 
-    week_title = models.CharField(max_length=150, default="untitled")
-    weekno = models.IntegerField(default=0)
     course = models.ForeignKey(JOSCourse)
+
+    weekno = models.IntegerField(default=0)
+    week_title = models.CharField(max_length=150, default="untitled")
+
     video = EmbedVideoField(blank=True)  # same like models.URLField()
     publish = models.BooleanField(default=False)
 
@@ -61,9 +67,21 @@ class JOSCourseWeek(TimeStamped, models.Model):
         return 'Week #' + str(self.weekno) + ": " + self.week_title
 
 
+class JOSStoryActivity(TimeStamped, models.Model):
+    courseweek = models.ForeignKey(JOSCourseWeek)
+    activity_title = models.CharField(max_length=150, default="untitled")
+    activityno = models.IntegerField(default=0)
+    content = models.TextField(default="coming soon")
+    publish = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return 'Activity #' + str(self.activityno) + ": " + self.activity_title
+
+
 class JOSHandout(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Handout'
+        ordering = ("courseweek", "handoutno")
 
     SEGMENT_TYPE_CHOICES = (
         (0, "Re / Pre"),
@@ -80,26 +98,19 @@ class JOSHandout(TimeStamped, models.Model):
         (99, "Other"),
     )
 
+    courseweek = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
+
+    handoutno = models.IntegerField(default=0)
+
     segment_type = models.IntegerField(default=8, blank=True, null=True, choices=SEGMENT_TYPE_CHOICES)
     segment_order = models.IntegerField(default=0)
 
-    handoutno = models.IntegerField(default=0)
-    courseweek = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)
 
+    pdf_handout = models.FileField(upload_to=upload_to("joscourses-handouts.pdf_handout", "joscourses"),
+                          max_length=255, null=True, blank=True)
+
     def __unicode__(self):
         return 'Handout #'+str(self.handoutno)+": "+self.title
-
-
-class JOSStoryActivity(TimeStamped, models.Model):
-    courseweek = models.ForeignKey(JOSCourseWeek)
-    activity_title = models.CharField(max_length=150, default="untitled")
-    activityno = models.IntegerField(default=0)
-    content = models.TextField(default="coming soon")
-    publish = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return 'Activity #' + str(self.activityno) + ": " + self.activity_title
-

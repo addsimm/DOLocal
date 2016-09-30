@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-xs-6 col-xs-offset-1">
                 <span style="font-size: 20pt; margin-left: -50px;">
-                    {{ mess.sent_at | time:"f A" }} - {{ mess.sent_at | date:"D, M d" }}
+                    {{ mess.sent_at | date:"M d" }}; {{ mess.sent_at | time:"f A" }}
                 </span>
                 <a class="joslargelinkbutton" href="{% url "profile" mess.sender.id %}"
                    style="margin-left: 5px; margin-right: 10px;">
@@ -70,7 +70,7 @@
         <div class="row">
             <div class="col-xs-6 col-xs-offset-6">
                 <span style="font-size: 20pt; margin-left: 7px;">
-                    {{ mess.sent_at | time:"f A" }} - {{ mess.sent_at | date:"D, M d" }}
+                    {{ mess.sent_at | date:"M d" }}; {{ mess.sent_at | time:"f A" }}
                 </span>
                 <a class="joslargelinkbutton" href="{% url "profile" mess.sender.id %}"
                    style="margin-left: 5px; margin-right: 10px;">

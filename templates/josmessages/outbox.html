@@ -22,7 +22,8 @@
 
                     <tr>
                         <td>&nbsp&nbsp&nbsp&nbsp&nbsp
-                            {{ message.sent_at | time:"f A" }}; {{ message.sent_at | date:"M d" }}</td>
+                            {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
+                        </td>
                         <td>&nbsp&nbsp&nbsp
                             {{ message.recipient.JOSProfile.jos_name }}</td>
                         <td>&nbsp&nbsp&nbsp

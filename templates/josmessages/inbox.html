@@ -39,7 +39,7 @@
                                 <span class=" " style="color: black;">Replied</span>
                             {% endif %}
                         </td>
-                        <td>{{ message.sent_at | time:"f A" }}; {{ message.sent_at | date:"M d" }}</td>
+                        <td>{{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }};</td>
                         <td>{{ message.sender.JOSProfile.jos_name }}</td>
                         <td>
                             {{ message.subject | truncatechars:20 }}

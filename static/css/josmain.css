@@ -16,7 +16,7 @@ a, a:visited {
     color: rgb(112, 154, 109);
     font-weight: bold;
     outline: 2px dotted rgb(112, 154, 109);
-    padding: 3px;
+    padding: 3px 6px;
 }
 
 a:hover {
@@ -42,8 +42,8 @@ a:hover {
     color: white;
     font-size: 18pt;
     margin-left: 20px;
+    padding: 8px 10px;
     outline: none;
-    padding: 8px;
     width: 165px;
 }
 

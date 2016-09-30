@@ -37,7 +37,7 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
                           upload_to=upload_to("josstaff.staffgallery.bio_image", "josstaff"),
                           format="Image", max_length=255, null=True, blank=True)
 
-    cumalative_hours = models.PositiveSmallIntegerField(default=0)
+    cumulative_hours = models.PositiveSmallIntegerField(default=0)
 
     admin_thumb_field = "bio_image"
 

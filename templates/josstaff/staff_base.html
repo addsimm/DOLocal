@@ -28,62 +28,56 @@
             <a class="joslargelinkbutton"
                style=" "
                href="{% url "josstaff:referral" %}?firstname={{ user.get_short_name }}">
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-thumbs-up fa-fw" style=" "></i>
-                    Referral
-                </span>
+                <i class="fa fa-thumbs-up fa-fw" style=" "></i>
+                Referral
             </a>
 
             <a class="joslargelinkbutton"
                style=" "
                href="{% url "josstaff:josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-clock-o fa-fw" style=" "></i>
-                    Timekeeping
-                </span>
+                <i class="fa fa-clock-o fa-fw" style=" "></i>
+                Timekeeping
             </a>
 
             <a class="joslargelinkbutton"
                style=" "
                href="http://www.joinourstory.com/tokboxtest">
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-video-camera fa-fw" style=" "></i>
-                    Staff Video Test
-                </span>
+                <i class="fa fa-video-camera fa-fw" style=" "></i>
+                Staff Video Test
             </a>
 
-            {#{% block inner_content %}#}
-            {##}
-            {#    <div class="row">#}
-            {#        <div class="col-xs-6 col-lg-offset-3" style="margin-top: 150px; background-color: transparent;">#}
-            {#            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
-            {#               {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">#}
-            {#                <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">#}
-            {#            </a>#}
-            {#        </div>#}
-            {#    </div>#}
-            {##}
-            {#{% endblock inner_content %}#}
-
-            {#<a class="joslargelinkbutton"#}
-            {#   style=" "#}
-            {#   href="{% url 'josmessages:messages_trash' %} ">#}
-            {#    <span style="margin-left: 5px; margin-right: 5px;">#}
-            {#        <i class="fa fa-trash fa-fw" style=" "></i>#}
-            {#        Deleted#}
-            {#    </span>#}
-            {#</a>#}
-
-            {#<span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>#}
-            {#<a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">#}
-            {#    <span style="margin-left: 5px; margin-right: 5px;">#}
-            {#        <i class="fa fa-heart fa-fw" style=" "></i>#}
-            {#        Friends#}
-            {#    </span>#}
-            {#</a>#}
 
         </div>
     </div>
 
 {% endblock %}
 
+{#{% block inner_content %}#}
+{##}
+{#    <div class="row">#}
+{#        <div class="col-xs-6 col-lg-offset-3" style="margin-top: 150px; background-color: transparent;">#}
+{#            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
+{#               {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">#}
+{#                <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#{% endblock inner_content %}#}
+
+{#<a class="joslargelinkbutton"#}
+{#   style=" "#}
+{#   href="{% url 'josmessages:messages_trash' %} ">#}
+{#    <span style="margin-left: 5px; margin-right: 5px;">#}
+{#        <i class="fa fa-trash fa-fw" style=" "></i>#}
+{#        Deleted#}
+{#    </span>#}
+{#</a>#}
+
+{#<span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>#}
+{#<a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">#}
+{#    <span style="margin-left: 5px; margin-right: 5px;">#}
+{#        <i class="fa fa-heart fa-fw" style=" "></i>#}
+{#        Friends#}
+{#    </span>#}
+{#</a>#}

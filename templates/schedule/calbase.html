@@ -39,34 +39,26 @@
                 <a class="joslargelinkbutton"
                    style=" "
                    href="{% url 'josmessages:messages_inbox' %} ">
-                    <span style="margin-left: 5px; margin-right: 5px;">
-                        Create a Calendar
-                    </span>
+                    Create a Calendar
                 </a>
 
                 <a class="joslargelinkbutton"
                    style=" "
                    href="{% url 'josmessages:messages_outbox' %} ">
-                    <span style="margin-left: 5px; margin-right: 5px;">
-                        Your Calendars
-                    </span>
+                    Your Calendars
                 </a>
             {% endif %}
 
             <a class="joslargelinkbutton"
                style=" "
                href="{% url 'josmessages:messages_trash' %} ">
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    All Calendars
-                </span>
+                All Calendars
             </a><br><br>
 
             <span class="josinstructions" style="margin-left: 15px;">For a new message, use:</span>
             <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">
-                <span style="margin-left: 5px; margin-right: 5px;">
-                    <i class="fa fa-heart fa-fw" style=" "></i>
-                    Friends
-                </span>
+                <i class="fa fa-heart fa-fw" style=" "></i>
+                Friends
             </a>
 
         </div>
