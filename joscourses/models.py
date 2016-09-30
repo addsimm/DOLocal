@@ -64,7 +64,7 @@ class JOSCourseWeek(TimeStamped, models.Model):
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return 'Week #' + str(self.weekno) + ": " + self.week_title
+        return str(self.weekno) + ": " + self.week_title
 
 
 class JOSStoryActivity(TimeStamped, models.Model):
