@@ -57,6 +57,8 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
+{% block base-fixed-top-bar %}
+
 <div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; z-index: 100;">
 
     {% block logo %}
@@ -126,6 +128,7 @@
     </div>
     {% endnevercache %}
 {# {% endif %}#}
+
 
     <!-- NAV BUTTONS -->
     <div class="row" style="margin: 0; height: 85px; width:100%; background-color: transparent">
@@ -221,6 +224,8 @@
     {% block extra_bar %}{% endblock extra_bar %}
 
 </div>
+
+{% endblock base-fixed-top-bar %}
 
 {% block center_content %}{% endblock %}
 
