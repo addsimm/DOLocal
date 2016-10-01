@@ -8,11 +8,16 @@
 {% if handout.segment_type == 3 %}
 
     <div class="row text-center" style="margin: 50px 0 0 0;">
-        <iframe src="{{ week.video }}"
-                width="960" height="540"
-                frameborder="0"
-                webkitallowfullscreen mozallowfullscreen allowfullscreen>
-        </iframe>
+
+        <video width="960" height="540" style="margin-top: 10px; outline: 1px solid rgb(65, 45, 120);" controls>
+            <source src="/static/media/trailblazer-orientation.mov" type="video/mp4">
+        </video>
+{#        <iframe#}
+{#                src="{{ week.video }}" #}
+{#                width="960" height="540"#}
+{#                frameborder="0"#}
+{#                webkitallowfullscreen mozallowfullscreen allowfullscreen>#}
+{#        </iframe>#}
     </div>
 
 {% else %}
@@ -25,7 +30,7 @@
                 onload="changeTitle(this);"
                 src="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
                 width="815px" height="1100px">
-            <p>Your web browser doesn't support iframes; please call.</p>
+            Your web browser doesn't support iframes; please call.
         </iframe>
 
     </div>
