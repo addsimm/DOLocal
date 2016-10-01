@@ -40,26 +40,29 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
     handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, publish=True).order_by('segment_order')
 
 
-    publish_handout = request.GET.get('pub', None)
-    if publish_handout != None:
-        if publish_handout == 'publish':
-            handout.publish = True
-            info(request, handout.title + " -- has been shared!")
-        elif publish_handout == 'remove':
-            handout.publish = False
-            info(request, handout.title + " -- is now hidden.")
-        handout.save()
+    # publish_handout = request.GET.get('pub', None)
+    # if publish_handout != None:
+    #     if publish_handout == 'publish':
+    #         handout.publish = True
+    #         info(request, handout.title + " -- has been shared!")
+    #     elif publish_handout == 'remove':
+    #         handout.publish = False
+    #         info(request, handout.title + " -- is now hidden.")
+    #     handout.save()
+    #
+    # if request.method == 'POST':
+    #     nucontent = request.POST['nucontent']
+    #     field_to_edit = request.POST['field_to_edit']
+    #
+    #     setattr(handout, field_to_edit, nucontent)
+    #     handout.save()
+    #
+    #     edit = False
 
-    if request.method == 'POST':
-        nucontent = request.POST['nucontent']
-        field_to_edit = request.POST['field_to_edit']
+    context = {'week': handout.courseweek,
+               'handouts': handouts,
+               'handout': handout}
 
-        setattr(handout, field_to_edit, nucontent)
-        handout.save()
-
-        edit = False
-
-    context = {'week': handout.courseweek, 'handouts': handouts, 'handout': handout, 'edit': edit}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

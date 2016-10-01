@@ -2,10 +2,10 @@
 {% load i18n mezzanine_tags accounts_tags  %}
 
 {% block meta_title %}
-    {{ week.week_title | safe | truncatechars:25 }}
+    {{ week.week_title | safe | truncatechars:20 }}
 {% endblock %}
 {% block title %}
-    {{ week.week_title | safe | truncatechars:25 }}
+    {{ week.week_title | safe | truncatechars:20 }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -19,7 +19,9 @@
 {% block extra_bar %}
 
 <style>
-    p {margin: 0;}
+    p {
+        margin: 0;
+    }
 
     #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
         background-color: rgb(0, 155, 175);
@@ -32,8 +34,38 @@
 
 </style>
 
-<div class="row text-center" style="padding: 20px 0; border-bottom: 3px solid rgba(65,45,120,.2);">
+<div id="progress_bar" class="row" style="margin: 0; padding: 15px; width: 1170px; border-bottom: 1px solid rgba(65,45,120,.5);">
 
+        {% for hout in handouts %}
+
+            <a class="joslargelinkbutton"
+               style="font-size: 12pt; margin: 5px;
+                       {% if handout == hout %}
+                           background-color: rgb(65,45,120);
+                       {% endif %}"
+               href="{% url "handout" %}/{{ hout.id }}">
+                <span style="margin: 0 3px;">{{ hout.get_segment_type_display }}</span>
+            </a>
+            {% if not forloop.last %}
+                <i class="fa fa-arrow-right"
+                   style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;"
+                   aria-hidden="true"></i>
+            {% endif %}
+
+        {% endfor %}
+
+        {#{% if handout == handouts.last %}#}
+        {#    <a class="btn btn-warning"#}
+        {#       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">#}
+        {#        {% trans "Last" %}#}
+        {#    </a>#}
+        {#{% else %}#}
+        {#    <a class="btn btn-warning pull-right"#}
+        {#       style="font-size: 12pt; width: 70px;"#}
+        {#       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">#}
+        {#        {% trans "Next" %}#}
+        {#    </a>#}
+        {#{% endif %}#}
 
 </div>
 
