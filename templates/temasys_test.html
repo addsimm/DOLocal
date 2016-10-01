@@ -9,10 +9,10 @@
         <div class="col-xs-12">
             <span id="time_clock" style="font-size: 18pt;"></span>
             <span id="workshop_progress_bar"></span>
-            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 15px;"
+            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 30px;"
                     onclick="location.reload();">Refresh
             </button>
-            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 5px;"
+            <button class="btn btn-default btn-xs" style="width: 100px; margin-left: 10px;"
                 onclick="window.open('www.joinourstory.com/personaldesk/{{ JOSId }}', '_blank');">New tab
             </button>
 
@@ -133,8 +133,7 @@
 
     .segment {
         display: inline-block;
-        font-size: 14pt;
-        margin-left: 10px;
+        margin-left: 15px;
         padding: 3px 0;
         width: 100px;
         text-align: center;
@@ -205,7 +204,7 @@
 
     // Clock
     {
-        var segments = ['Welcome', 'Rev/Prev', 'Intros', 'Video', 'Break', 'Activity', 'Template', 'Assign'];
+        var segments = ['Welcome', 'Rev/Prev', 'Intros', 'Video', 'Break', 'Activity', 'Assign'];
 
         function drawProgressBar() {
 
@@ -255,9 +254,6 @@
             }
             if (workshopMinutes > offset + 68) {
                 $('#segment_6').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 73) {
-                $('#segment_7').addClass('segment-active');
             }
 
             var t = setTimeout(timeClock, 10000);
