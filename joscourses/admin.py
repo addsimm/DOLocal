@@ -28,7 +28,6 @@ class JOSCourseWeekAdmin(admin.ModelAdmin):
     verbose_name = 'Week'
     readonly_fields = ('created', 'updated',)
 
-
 admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)
 
 

@@ -59,15 +59,25 @@
         margin: 0 auto;
     }
 
-    #better-storytelling .homehead {
-        font-size: 20pt;
-    }
-
     #week-boxes .homehead {
-        font-size: 14pt;
+        font-size: 24pt;
     }
 
     #better-storytelling a, #better-storytelling a:visited {
+    }
+
+    .part-click, .part-click:visited {
+        color: rgb(65, 45, 120);
+        outline: 1px solid rgb(65, 45, 120);
+        background-color: white;
+        width: 15%;
+        padding: 20px 0;
+        margin: -20px 20px 0 20px;
+        height: 85px;
+    }
+
+    .part-click:hover, .part-click:focus {
+        color: orange;
     }
 
 </style>
@@ -107,86 +117,63 @@
     </div>
 </div>
 
-<div id='better-storytelling' class="row" style="margin: 20px 0;">
+<div class="row text-center" style="margin: 40px 0 0 0;">
+    <span class="homehead" style="font-size: 42pt;">Better Storytelling</span>
+</div>
 
-    <span class="homehead">Better storytelling:</span><br>
+<div id='better-storytelling' class="row" style="margin: 30px 0 0 0;">
 
     {% for week in weeks %}
 
-        <div class="row" style="margin: 25px 0 0 0; padding-bottom: 15px; border-bottom: 2px solid rgba(65, 45, 120, .2);">
+        <div id="week-boxes" class="row" style="margin: 25px 0 0 60px; padding: 20px 0 20px 30px; width: 1000px; border-bottom: 2px solid rgba(65, 45, 120, .2);">
 
-        <div class="col-xs-3 homehead" style="padding: 0;">
-            {{ week.week_title }}
-        </div>
-
-        <div id="week-boxes" class="col-xs-9 text-center">
-
-            <div class="row text-center">
-
-                <div class="col-xs-6" style="padding: 0;">
-
-                    <div class="row week-box">
-
-                        <div class="col-xs-12">
-
-{#                            <div class="row homehead">#}
-{#                                Part 1.#}
-{#                            </div>#}
-
-                            <div class="row" style="font-size: 18pt; padding: 0;">
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Prepare
-                                </a>
-
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Workshop
-                                </a>
-
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Resources
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-6" style="padding: 0;">
-
-                    <div class="row week-box">
-                        <div class="col-xs-12">
-
-{#                            <div class="row homehead">#}
-{#                                Part 2.#}
-{#                            </div>#}
-
-                            <div class="row" style="font-size: 18pt; padding: 0;">
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Prepare
-                                </a>
-
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Workshop
-                                </a>
-
-                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">
-                                    Resources
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-xs-2 text-right" style="margin: -20px 0 0 0;">
+                <img src="{{ STATIC_URL }}/img/ModIcon{{ week.icon_name }}.png" style="height: 85px;">
             </div>
+            <div class="col-xs-4 homehead" style="padding: 0 0 0 20px;">
+                {{ week.week_title }}
+            </div>
+
+            <a class="part-click col-xs-2 homehead text-center" href="/">
+                I
+            </a>
+
+            <a class="part-click col-xs-2 homehead text-center" href="/">
+                II
+            </a>
         </div>
 
-        </div>
+
     {% endfor %}
 
 </div>
 
 
 {% endblock %}
+
+
+{#                    <div class="row week-box">#}
+{##}
+{#                        <div class="col-xs-12">#}
+
+
+{##}
+{#                            <div class="row" style="font-size: 18pt; padding: 0;">#}
+{#                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">#}
+{#                                    Prepare#}
+{#                                </a>#}
+{##}
+{#                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">#}
+{#                                    Workshop#}
+{#                                </a>#}
+{##}
+{#                                <a class="col-xs-4" style="margin-left: 0;" href="https:/">#}
+{#                                    Resources#}
+{#                                </a>#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
 
 
 {#<div class="row" style="margin-top: 25px;">#}

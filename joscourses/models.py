@@ -59,6 +59,7 @@ class JOSCourseWeek(TimeStamped, models.Model):
 
     weekno = models.IntegerField(default=0)
     week_title = models.CharField(max_length=150, default="untitled")
+    icon_name = models.CharField(max_length=150, default="missing")
 
     video = EmbedVideoField(blank=True)  # same like models.URLField()
     publish = models.BooleanField(default=False)
