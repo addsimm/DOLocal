@@ -45,6 +45,7 @@
         padding: 0;
         width: 260px;
         height: 195px;
+        z-index: -1;
     }
 
     .nameContainer {
@@ -67,7 +68,7 @@
         right: 0;
         bottom: 0;
         position: absolute;
-        z-index: 199;
+        z-index: 1;
     }
 
     .action {
@@ -127,13 +128,26 @@
         background-position: 0;
     }
 
+{#    #audience_container:before {#}
+{#        content: "";#}
+{#        background: url('/static/img/JOSLogo121615.png');#}
+{#        background-repeat: no-repeat;#}
+{#        position: absolute;#}
+{#        top: 100px;#}
+{#        left: 75px;#}
+{#        width: 100%;#}
+{#        height: 100%;#}
+{#        opacity: .2;#}
+{#        z-index: -1;#}
+{#    }#}
+
 </style>
 
 {# HTML #}
 <div>
 
 {# Agenda Bar #}
-<div class="row" style="margin-top: -150px;">
+<div class="row" onload="chatInstruct();" style="margin-top: -150px;">
 
     <button class="btn btn-warning pull-left"
             style="margin: 0; padding: 5px; width: 60px; height: 39px; text-align: center"
@@ -145,7 +159,7 @@
         window.history.back();
     }</script>
 
-    <span id="time_clock" style="font-size: 20pt; margin: 0 5px 0 14px; padding-top: 15px;"></span>
+    <span id="time_clock" style="font-size: 20pt; margin: 0 5px 0 20px; padding-top: 15px;"></span>
 
     <span id="workshop_progress_bar"></span>
 
@@ -164,16 +178,17 @@
     </script>
 </div>
 
+{# Main Section #}
 <div class="row" style="padding: 10px 0 0 0;">
 
     {# video_section #}
-    <div style="margin: 5px 0 0 10px; width: 825px; padding: 0;">
+    <div style="margin: 5px 0 0 10px; min-height: 550px; width: 825px; padding: 0;">
 
-       <div id="screen_share_container" class="text-center hidden" style="padding: 0;">
-           <video id="shared_video" autoplay></video>
-       </div>
+        <div id="screen_share_container" class="text-center hidden" style="padding: 0;">
+            <video id="shared_video" autoplay></video>
+        </div>
 
-       <div id="audience_container" style="min-height: 550px;"></div>
+        <div id="audience_container"></div>
 
     </div>
 
@@ -184,7 +199,7 @@
         <div id="messages_container"
              class="text-center"
              style="margin: 0;
-                    height: 428px;
+                    height: 508px;
                     overflow-x: hidden;
                     overflow-y: auto;">
 
@@ -347,7 +362,7 @@
             if (!isSelf) {
 
                 peerJOSName = josSkylink.getUserData(peerId)['name'];
-                addMessage(peerJOSName, 'has joined chat', 'action');
+                addMessage(peerJOSName, 'joined chat', 'action');
             }
         });
 
@@ -357,7 +372,7 @@
             if (!isSelf) {
 
                 reclaimSlot(peerId);
-                addMessage(peerJOSName, 'has left chat', 'action');
+                addMessage(peerJOSName, 'left chat', 'action');
             }
         });
 
@@ -440,6 +455,11 @@
             bttn = document.getElementById('hidden_' + pstn);
             $(bttn).replaceWith("<button id='but_" + peerId + "' onclick='mutePeer(this.id);'>Mute</button>");
             $('#but_' + peerId).addClass('btn mute-button btn-success btn-xs');
+            $.confirm({
+                confirmButton: 'Will do!',
+                cancelButton: false,
+                content: "Please type 'hello'in the chat.&nbsp&nbsp&nbspIf there is no response, call us."
+            });
         }
 
         if (peerJOSName !== '???') {
@@ -447,29 +467,6 @@
             attachMediaStream(vidBox, stream);
         }
     });
-
-    function reclaimSlot(peerId) {
-        for (c = 1; c < 9; c++) {
-            var othtestId = '#vid_' + c + '_' + peerId;
-            if ($(othtestId).length) {
-                reclaimedID = othtestId.substr(1);
-                break;
-            }
-        }
-
-        var pstn = reclaimedID.split('_')[1].toString();
-        reParticBox = document.getElementById('box_' + pstn);
-        $(reParticBox).addClass('hidden');
-        var videoBoxId = 'vid_' + pstn + '_empty';
-        var nameBoxId = 'name_' + pstn;
-        var particBoxLayout = [
-            "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
-            "</video>",
-            "<div id='hidden_" + pstn + "'></div>",
-            "<div id=" + nameBoxId + " class='text-center nameContainer'></div>"
-        ].join('\n');
-        $(reParticBox).html(particBoxLayout);
-    }
 
     // Layout
     function layoutVideoContainers() {
@@ -498,8 +495,31 @@
         }
     }
 
-    // Chat & Screen share & Mute
+    // Reclaim / Mute / Chat / Screen share
     {
+        function reclaimSlot(peerId) {
+            for (c = 1; c < 9; c++) {
+                var othtestId = '#vid_' + c + '_' + peerId;
+                if ($(othtestId).length) {
+                    reclaimedID = othtestId.substr(1);
+                    break;
+                }
+            }
+
+            var pstn = reclaimedID.split('_')[1].toString();
+            reParticBox = document.getElementById('box_' + pstn);
+            $(reParticBox).addClass('hidden');
+            var videoBoxId = 'vid_' + pstn + '_empty';
+            var nameBoxId = 'name_' + pstn;
+            var particBoxLayout = [
+                "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                "</video>",
+                "<div id='hidden_" + pstn + "'></div>",
+                "<div id=" + nameBoxId + " class='text-center nameContainer'></div>"
+            ].join('\n');
+            $(reParticBox).html(particBoxLayout);
+        }
+
         function mutePeer(buttonId) {
             var peerId = buttonId.slice(4);
             var vidId = 'video[id*="' + peerId + '"]';

@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import activate
+from django.utils.translation import ugettext_lazy as _
 
 from joscourses.models import JOSCourseWeek
 from josmembers.models import JOSProfile
@@ -140,5 +141,5 @@ def temasystest(request, incognito=False, josid=0, template="temasys_test.html")
 @login_required
 def workshop_connect(request, template="workshop_connect.html"):
     context = {}
-
     return TemplateResponse(request, template, context)
+

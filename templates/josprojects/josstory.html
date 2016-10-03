@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block all_content %}
+
 <style>
     #author, #author:visited {
         background-color: white;
@@ -117,15 +118,8 @@
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- Side Panel -->
-{#<div id="editing_side_panel_hint"#}
-{#     class="col-xs-2 fixed hidden"#}
-{#     style="font-size: 18pt; margin-top: 90px;">#}
-{#    Hint:<br>Choose "Discard" or "Save" to exit editing mode#}
-{#</div>#}
 
 <div id="editing_side_panel" class="col-xs-2" style="width: 12%;">
 
@@ -275,62 +269,62 @@
 
         <div class="row" style="">
 
-        <div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
+            <div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
 
-            <div id='border_comment' class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 3px;">
+                <div id='border_comment' class="{% if edit %}edit_border{% endif %} edit_border_class"
+                     style="padding: 3px;">
 
-                <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px;">
+                    <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px;">
 
-                    <a id="edit_comment"
-                       class="btn btn-default edit_section_button"
-                       style="margin-top: 25px; margin-left: 100px; width: 250px;"
-                       onclick="manageCKEdit(this)"
-                       data-toggle="tooltip"
-                       title="Activates the word processor"
-                       data-placement="right">
-                        {% trans "Add your thought ..." %}
-                    </a>
+                        <a id="edit_comment"
+                           class="btn btn-default edit_section_button"
+                           style="margin-top: 25px; margin-left: 100px; width: 250px;"
+                           onclick="manageCKEdit(this)"
+                           data-toggle="tooltip"
+                           title="Activates the word processor"
+                           data-placement="right">
+                            {% trans "Add your thought ..." %}
+                        </a>
 
-                    <button id="save_comment"
-                            class="btn btn-success btn-xs pull-right"
-                            style="display: none; margin-left: 5px; width: 80px;"
-                            onclick="manageCKEdit(this)"
-                            data-toggle="tooltip"
-                            title="Will replace previous text"
-                            data-placement="bottom">
-                        <span style="font-size: 14pt;">Save</span>
-                    </button>
+                        <button id="save_comment"
+                                class="btn btn-success btn-xs pull-right"
+                                style="display: none; margin-left: 5px; width: 80px;"
+                                onclick="manageCKEdit(this)"
+                                data-toggle="tooltip"
+                                title="Will replace previous text"
+                                data-placement="bottom">
+                            <span style="font-size: 14pt;">Save</span>
+                        </button>
 
-                    <button id="discard_comment"
-                            class="btn btn-danger btn-xs pull-right"
-                            style="display: none; width: 80px;"
-                            onclick="manageCKEdit(this)"
-                            data-toggle="tooltip"
-                            title="Will NOT save changes!"
-                            data-placement="bottom">
-                        <span style="font-size: 14pt;">Discard</span>
-                    </button>
+                        <button id="discard_comment"
+                                class="btn btn-danger btn-xs pull-right"
+                                style="display: none; width: 80px;"
+                                onclick="manageCKEdit(this)"
+                                data-toggle="tooltip"
+                                title="Will NOT save changes!"
+                                data-placement="bottom">
+                            <span style="font-size: 14pt;">Discard</span>
+                        </button>
 
-                </div>
-
-                <form id='comment_form' method="post"
-                      {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-
-                    <div id='comment' class="col-xs-12">
-                        {{ comment.body | striptags }}<br>
                     </div>
 
-                    <input id="comment_holder" type="hidden" name='nucontent' value=" ">
-                    <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="comment">
+                    <form id='comment_form' method="post"
+                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
-                </form>
+                        <div id='comment' class="col-xs-12">
+                            {{ comment.body | striptags }}<br>
+                        </div>
 
+                        <input id="comment_holder" type="hidden" name='nucontent' value=" ">
+                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="comment">
+
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
-
-    </div>
+</div>
 </div>
 
 <script>
@@ -344,5 +338,11 @@
 
 {% endblock %}
 
+<!-- Side Panel -->
+{#<div id="editing_side_panel_hint"#}
+{#     class="col-xs-2 fixed hidden"#}
+{#     style="font-size: 18pt; margin-top: 90px;">#}
+{#    Hint:<br>Choose "Discard" or "Save" to exit editing mode#}
+{#</div>#}
 
 

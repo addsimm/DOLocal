@@ -46,6 +46,7 @@ body.jconfirm-noscroll {
   position: fixed;
   width: 1275px;
   top: 0;
+  z-index: 5;
 }
 .jconfirm .jconfirm-bg {
   position: fixed;
@@ -80,7 +81,13 @@ body.jconfirm-noscroll {
   border: 3px solid rgb(65, 45, 120);
   outline: none;
   padding: 40px 15px 0 40px;
+  z-index: 5;
 }
+
+.jconfirm-box-container {
+    z-index:5;
+}
+
 .jconfirm .jconfirm-box div.closeIcon {
   height: 20px;
   width: 20px;
