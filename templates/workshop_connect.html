@@ -18,28 +18,33 @@
 
 </style>
 
+<div id="center" class="row josinstructions" style="margin: 0 0 0 30px;">
 
-<div id="center" class="row josinstructions" style="margin: 0 0 0 50px;">
-
-    <div class="col-xs-12 text-center">
-        Instructions<br>
+    <div class="col-xs-12">
+        Important:<br>&nbsp&nbsp&nbspOnly Google's Chrome browser allows you to see everyone.<br>
+        &nbsp&nbsp&nbspStatus:&nbsp&nbsp&nbsp<span id="browser_status"></span>
     </div>
+
     <div class="col-xs-7" style="margin-top: 50px;">
-        Please click "Join" when ready.<br>
-        --&nbsp&nbspIf Chrome says this
+        Instructions:<br>
+        &nbsp&nbsp&nbspPlease click "Join" when ready.<br>
+        &nbsp&nbsp&nbspIf Chrome says this
+        <i class="fa fa-arrow-right" style="margin-left: 15px"></i>
+        <i class="fa fa-arrow-right" style="margin-left: 15px"></i>
         <i class="fa fa-arrow-right" style="margin-left: 15px"></i>
         <i class="fa fa-arrow-right" style="margin-left: 15px"></i><br>
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspclick "Share selected device"
+        &nbsp&nbsp&nbspthen, click "Share selected device"
     </div>
     <div class="col-xs-5" style="margin-top: 50px;">
         <img src="/static/img/chrome-cam-share.png" style='height: 156px; margin: 0 0 0 -50px; border: 3px solid black;'><br>
     </div>
 
     <div class="col-xs-12 text-center" style="margin-top: 50px">
-       Have fun!
+       Now have fun!
     </div>
-    <div class="col-xs-12  text-center" style="margin-top: 50px;">
-        <a class="btn btn-default btn-lg"
+    <div class="col-xs-12 text-center" style="margin-top: 50px;">
+        <a id='join_button'
+           class="btn btn-default btn-lg"
            style="width: 400px;"
            href="https://www.joinourstory.com/temasystest/{{ user.id }}">
             Join community room
@@ -54,11 +59,18 @@
     </div>
 </div>
 
-<script src="https://cdn.webrtc-experiment.com/DetectRTC.js"></script>
 <script>
 
     var x = navigator.appVersion;
-
+    var status_span = document.getElementById('browser_status');
+    var join_button = document.getElementById('join_button');
+    if (x.indexOf("hrome") > 0) {
+        $(status_span).html("Everything looks OK!").css('color', 'green');
+    }
+    else {
+        $(status_span).html("We don't detect Chrome; please call.").css('color', 'red');
+        $(join_button).addClass('disabled');
+    }
     console.log(x);
 
 </script>

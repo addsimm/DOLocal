@@ -246,7 +246,7 @@
 
     // Clock
     {
-        var segments = ['Welcome', 'RRobin', 'Video', 'Break', 'Update', 'Template', 'Next time'];
+        var segments = ['Welcome', 'Share', 'Video', 'Break', 'Update', 'Template', 'Next time'];
 
         function drawProgressBar() {
 
@@ -592,6 +592,7 @@
 
 {% endblock all_content %}
 
+<div>
 {#        mssgCntnr.onscroll = function () {#}
 {#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
 {#            if (isAtBottom) {#}
@@ -618,3 +619,4 @@
 {#                disabled>#}
 {#            New message - click here to scroll down.#}
 {#        </button>#}
+</div>

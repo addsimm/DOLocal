@@ -9,12 +9,11 @@ class CKRichTextHolderAdmin(admin.ModelAdmin):
     """
     Admin class for CKRichTextEditHolders.
     """
-    list_display = ("id", "author", "created", "parent_class", "parent_id", "field_edited")
+    list_display = ("id", "author", "updated", "parent_class", "parent_id", "field_edited")
 
     verbose_name = "CKEHolder"
 
     readonly_fields = ("created", "updated",)
-
 
 admin.site.register(CKRichTextHolder, CKRichTextHolderAdmin)
 
@@ -23,7 +22,7 @@ class JOSStoryAdmin(admin.ModelAdmin):
     """
     Admin class for JOSStory.
     """
-    list_display = ("id", "author", "publish", "created", "title", "content")
+    list_display = ("id", "author", "publish", "updated", "title", "content")
 
     verbose_name = "JOSStory"
 
