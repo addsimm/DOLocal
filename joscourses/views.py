@@ -1,8 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.messages import info
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from .models import JOSCourseWeek, JOSHandout
 
@@ -19,30 +17,37 @@ def course_week_list(request, template="###", extra_context=None):
 
 
 @login_required
-def course_week(request, weekid=0, template="joscourses/joscourseweek.html", extra_context=None):
+def course_week(request, weekid=0, part='none', template="joscourses/joscourseweek.html", extra_context=None):
+    if part == 'part1':
+        part_filter = 1
+    elif part == 'part2':
+        part_filter = 2
+    else:
+        part_filter = 0
     week = get_object_or_404(JOSCourseWeek, pk=weekid)
-    handouts = JOSHandout.objects.filter(courseweek=week, publish=True).order_by('segment_order')
+    handouts = JOSHandout.objects.filter(courseweek=week, part_no = part_filter, publish=True).order_by('segment_order')
     try:
         handout = handouts[0]
-        handno = str(handout.id)
+        hand_no = str(handout.id)
     except:
         handout = "missing"
-        handno = 0
+        hand_no = 0
 
-    return redirect("http://www.joinourstory.com/joscourses/handout/" + str(handno))
+    return redirect("http://www.joinourstory.com/joscourses/handout/" + str(hand_no))
 
 
 @login_required
-@csrf_exempt
-def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.html", extra_context=None):
+def handout(request, handout_id=0, edit=False, template="joscourses/joshandout.html", extra_context=None):
 
     # default_week = get_object_or_404(JOSCourseWeek, pk=10)
     try:
-        handout = get_object_or_404(JOSHandout, pk=handoutid)
+        handout = get_object_or_404(JOSHandout, pk=handout_id)
     except:
         handout = get_object_or_404(JOSHandout, pk=1)
 
-    handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, publish=True).order_by('segment_order')
+    part_filter = handout.part_no
+
+    handouts = JOSHandout.objects.filter(courseweek=handout.courseweek, part_no=part_filter, publish=True).order_by('segment_order')
 
     if not handout.pdf_handout:
         handout.pdf_handout = 'missing'
@@ -50,7 +55,7 @@ def handout(request, handoutid=0, edit=False, template="joscourses/joshandout.ht
     context = {'week': handout.courseweek,
                'handouts': handouts,
                'handout': handout,
-               'handoutid': handoutid}
+               'handout_id': handout_id}
 
     context.update(extra_context or {})
 
@@ -70,23 +75,3 @@ def nexthandout(request, extra_context=None):
         next_handout_id = str(handouts[0].id)
 
     return redirect("http://www.joinourstory.com/joscourses/handout/" + next_handout_id)
-
-
-    # publish_handout = request.GET.get('pub', None)
-    # if publish_handout != None:
-    #     if publish_handout == 'publish':
-    #         handout.publish = True
-    #         info(request, handout.title + " -- has been shared!")
-    #     elif publish_handout == 'remove':
-    #         handout.publish = False
-    #         info(request, handout.title + " -- is now hidden.")
-    #     handout.save()
-    #
-    # if request.method == 'POST':
-    #     nucontent = request.POST['nucontent']
-    #     field_to_edit = request.POST['field_to_edit']
-    #
-    #     setattr(handout, field_to_edit, nucontent)
-    #     handout.save()
-    #
-    #     edit = False

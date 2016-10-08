@@ -99,7 +99,14 @@ class JOSHandout(TimeStamped, models.Model):
         (99, "Other"),
     )
 
+    PART_NO_CHOICES = (
+        (0, "Not assigned"),
+        (1, "Part 1"),
+        (2, "Part 2"),
+    )
+
     courseweek = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
+    part_no = models.IntegerField(default=0, blank=True, choices=PART_NO_CHOICES)
 
     handoutno = models.IntegerField(default=0)
 
