@@ -24,12 +24,14 @@
     }
 
     #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
-        background-color: rgb(0, 155, 175);
+        color: rgb(65,45,120);
+        background-color: white;
+        border: 2px solid rgba(65, 45, 120, .2);
     }
 
     #progress_bar .joslargelinkbutton:focus, #progress_bar .joslargelinkbutton:hover {
         background-color: white;
-        outline: 1px dashed rgb(0, 155, 175);
+        border: 2px dashed rgb(65, 45, 120);
     }
 
 </style>
@@ -40,8 +42,9 @@
         {% for hout in handouts %}
 
             <a class="joslargelinkbutton"
-               style="font-size: 12pt; margin: 5px;
+               style="font-size: 14pt; margin: 5px;
                        {% if handout == hout %}
+                           color: white;
                            background-color: rgb(65,45,120);
                        {% endif %}"
                href="{% url "handout" %}/{{ hout.id }}">
@@ -49,7 +52,7 @@
             </a>
             {% if not forloop.last %}
                 <i class="fa fa-arrow-right"
-                   style="font-size: 12pt; color: rgb(0, 155, 175); margin-left: 3px;"
+                   style="font-size: 12pt; color: rgb(65,45,120); margin-left: 3px;"
                    aria-hidden="true"></i>
             {% endif %}
 

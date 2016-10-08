@@ -11,6 +11,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
+
 from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
@@ -45,8 +46,6 @@ else:
 
 
 class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
-    # user_id = forms.HiddenInput()
-    # fakeemail = forms.EmailField(label="Change for Account Email:")
     password1 = forms.CharField(label=_("Password"), widget=forms.TextInput())
     password2 = forms.CharField(label=_("Password (again)"), widget=forms.TextInput())
 

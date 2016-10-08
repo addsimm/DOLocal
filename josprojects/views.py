@@ -1,7 +1,7 @@
 import datetime
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import (login as auth_login, get_user_model)
 from django.contrib.messages import info
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
@@ -14,8 +14,6 @@ from josmembers.models import JOSProfile
 from josmessages.models import Message, JOSMessageThread
 
 from .models import CKRichTextHolder, JOSStory
-
-## from opentok import OpenTok
 
 # Create your views here.
 
@@ -73,12 +71,12 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
         story.save()
 
     if request.method == 'POST':
-        nucontent = request.POST['nucontent']
+        nu_content = request.POST['nu_content']
         field_to_edit = request.POST['field_to_edit']
 
         if field_to_edit == "comment":
             message = Message.objects.create(
-                body = nucontent,
+                body = nu_content,
                 is_last = True,
                 message_thread = comment_thread,
                 recipient = story.author,
@@ -94,16 +92,16 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
             info(request, "Great thought, thanks!")
 
         else:
-            ckrtfholder = CKRichTextHolder.objects.create(
+            ckrtf_holder = CKRichTextHolder.objects.create(
                 author = request.user,
                 parent_class = 'JOSStory',
                 parent_id = story.id,
                 field_edited = field_to_edit,
                 content = getattr(story, field_to_edit)
             )
-            ckrtfholder.save()
+            ckrtf_holder.save()
 
-            setattr(story, field_to_edit, nucontent)
+            setattr(story, field_to_edit, nu_content)
             info(request, "Changes saved!")
             story.save()
 
@@ -125,16 +123,20 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def temasystest(request, incognito=False, josid=0, template="temasys_test.html"):
+def temasystest(request, incognito=False, jos_id=0, template="temasys_test.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
-    user = get_object_or_404(User, pk=josid)
+    user = get_object_or_404(User, pk=jos_id)
     josname = user.JOSProfile.jos_name()
+    #### to login user:
+    # user.backend = 'django.contrib.auth.backends.ModelBackend'
+    # auth_login(request, user)
     context = {
         'JOSKey': JOSKey,
-        'JOSId': josid,
+        'JOSId': jos_id,
         'JOSName': josname,
         'incognito': incognito
     }
+
     return TemplateResponse(request, template, context)
 
 

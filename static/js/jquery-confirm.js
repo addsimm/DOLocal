@@ -470,6 +470,7 @@ var jconfirm, Jconfirm;
             var windowHeight = $(window).height();
             var boxHeight = this.$b.outerHeight() - paneHeight + contentHeight;
             var topMargin = (windowHeight - boxHeight) / 2;
+            topMargin = topMargin - 150;
             var minMargin = 100;
             if (boxHeight > (windowHeight - minMargin)) {
                 var style = {
