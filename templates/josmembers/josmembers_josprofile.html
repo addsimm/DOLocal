@@ -52,7 +52,7 @@
 
                 {% cloudinary_includes %}
 
-                <script src="http://widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+                <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
                 <script type="text/javascript">
                     var publicid = "{{ potentialNewProfileImageIdStr }}";
@@ -86,13 +86,15 @@
             {% endif %}
 
         </div>
+
         <div class="col-xs-7 text-center" style="margin-top: 80px;">
             <span class="joscursive" style="font-size: 72pt; font-weight: bold;">About {{ profile.user.get_short_name }}</span>
         </div>
+
     </div>
 
     <!-- Aboutme -->
-    <div class="row">
+    <div class="row" style="margin-top: 10px;">
 
             <div id='border_aboutme' class="{% if edit %}edit_border{% endif %} edit_border_class"
                  style="padding: 8px;">
@@ -143,7 +145,7 @@
            style="margin-top: 30px;"
                 {% if edit %}
            href="{% url "josmembers:josprofile" request.user.id %}">
-                    {% trans "Hide edit" %}
+                    {% trans "Hide" %}
                 {% else %}
                     href="{% url "josmembers:josprofile_edit" request.user.id %}">
                     {% trans "Edit" %}
