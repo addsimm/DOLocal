@@ -24,21 +24,22 @@ admin.site.register(JOSCourse, JOSCourseAdmin)
 
 
 class JOSCourseWeekAdmin(admin.ModelAdmin):
-    list_display = ("id", "weekno", "week_title", "course", "updated")
     verbose_name = 'Week'
+    list_display = ("id", "weekno", "week_title", "course", "updated")
     readonly_fields = ('created', 'updated',)
 
 admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)
 
 
 class JOSHandoutAdmin(admin.ModelAdmin):
-    list_display = ("id", "publish", "courseweek", "part_no", "pdf_handout", "updated",  "segment_type", "segment_order",)
-    list_editable = ("publish", "courseweek", "part_no", "pdf_handout", "segment_type", 'segment_order',)
     verbose_name = 'Handout'
+    list_display = ("id", "publish", "pdf_handout", "courseweek", "part_no", "segment_no",
+                    "element_no", "element_order", "updated",)
+    list_editable = ("publish", "pdf_handout", "courseweek", "part_no", "segment_no",
+                     "element_no", "element_order")
     readonly_fields = ('created', 'updated',)
 
-
-    list_filter = ("segment_type", "courseweek")
+    list_filter = ("courseweek", "segment_no", "element_no",)
 
 admin.site.register(JOSHandout, JOSHandoutAdmin)
 

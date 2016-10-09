@@ -82,43 +82,51 @@ class JOSStoryActivity(TimeStamped, models.Model):
 class JOSHandout(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Handout'
-        ordering = ("courseweek", "handoutno")
+        ordering = ("courseweek", "element_order")
 
-    SEGMENT_TYPE_CHOICES = (
-        (0, "Re / Pre"),
+    SEGMENT_CHOICES = (
+        (0, "Agenda"),
         (1, "Workshop"),
-        (2, "Goals"),
-        (3, "Video"),
-        (4, "Prompt"),
-        (5, "Activity"),
-        (6, "Summary"),
-        (7, "Transcript"),
-        (8, "Template"),
-        (9, "Lit Tip"),
-        (10, "Assign"),
+        (2, "Assign"),
+        (3, "Handouts"),
+        (4, "Resources"),
+        (9, "Other"),
+    )
+
+    PART_CHOICES = (
+        (1, "Part 1"),
+        (2, "Part 2"),
+        (9, "Other"),
+    )
+
+    ELEMENT_CHOICES = (
+        (0, "Activity"),
+        (1, "Assignment"),
+        (2, "Big story"),
+        (3, "Break"),
+        (4, "Exercise"),
+        (5, "Highlights"),
+        (6, "Prompts"),
+        (7, "Readings"),
+        (8, "Share"),
+        (9, "Storywheel"),
+        (10, "Tips"),
+        (11, "Template"),
+        (12, "Transcript"),
+        (13, "Video"),
         (99, "Other"),
     )
 
-    PART_NO_CHOICES = (
-        (0, "Not assigned"),
-        (1, "Part 1"),
-        (2, "Part 2"),
-    )
+    courseweek    = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
+    part_no       = models.IntegerField(default=9, blank=True, null=True, choices=PART_CHOICES)
+    segment_no    = models.IntegerField(default=9, blank=True, null=True, choices=SEGMENT_CHOICES)
+    element_no    = models.IntegerField(default=99, blank=True, null=True, choices=ELEMENT_CHOICES)
+    element_order = models.IntegerField(default=0)
 
-    courseweek = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
-    part_no = models.IntegerField(default=0, blank=True, choices=PART_NO_CHOICES)
-
-    handoutno = models.IntegerField(default=0)
-
-    segment_type = models.IntegerField(default=8, blank=True, null=True, choices=SEGMENT_TYPE_CHOICES)
-    segment_order = models.IntegerField(default=0)
-
-    title = models.TextField(default="Untitled")
-    content = models.TextField(default="Coming soon")
     publish = models.BooleanField(default=False)
 
     pdf_handout = models.FileField(upload_to=upload_to("joscourses-handouts.pdf_handout", "joscourses"),
                           max_length=255, null=True, blank=True)
 
     def __unicode__(self):
-        return 'Handout #'+str(self.handoutno)+": "+self.title
+        return 'Handout #'+str(self.id)
