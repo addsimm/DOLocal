@@ -199,7 +199,7 @@ footer {
     border-color: #f0ad4e;
 }
 
-.btn-danger:visited .btn-danger:focus {
+.btn-danger:visited, .btn-danger:focus {
     background-color: #d9534f;
     color: white;
     border-color: #d9534f;

@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import (login as auth_login, get_user_model)
 from django.contrib.messages import info
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import activate
@@ -26,7 +26,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
     activate('America/Los_Angeles')
 
     currentProfile = get_object_or_404(JOSProfile, user=user)
-    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('weekno') # retrives all weeks available
+    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('week_no') # retrives all weeks available
 
     context = {"profile": currentProfile, "weeks": weeks}
     context.update(extra_context or {})
@@ -70,6 +70,8 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
             info(request, story.title + " -- is now hidden.")
         story.save()
 
+        return redirect('joinourstory.com/josstory/' + str(story_id))
+
     if request.method == 'POST':
         nu_content = request.POST['nu_content']
         field_to_edit = request.POST['field_to_edit']
@@ -106,6 +108,8 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
             story.save()
 
         edit = False
+
+        return redirect('joinourstory.com/josstory/' + str(story_id))
 
     context = {'story': story, 'edit': edit, "comments": comments}
     context.update(extra_context or {})

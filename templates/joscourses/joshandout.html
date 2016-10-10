@@ -5,7 +5,15 @@
 
 <!-- Main Panel -->
 
-{% if handout_id != '0' %}
+<div style="color: red; margin: 30px;">
+    DEBUG: handout.part_no: {{ handout.part_no }} / handout.element_no: {{ handout.element_no }} / handout.pdf_handout::: {{ handout.pdf_handout }}
+</div>
+
+{% if handout.pdf_handout == 'missing' %}
+
+    <div class='text-center' style="margin-top: 150px">PDF is missing!</div>
+
+{% else %}
 
     {% if handout.segment_type == 3 %}
 
@@ -50,39 +58,9 @@
 
     {% endif %}
 
-{% else %}
-
-    <div class='text-center' style="margin-top: 150px">PDF is missing!</div>
-
 {% endif %}
 
-
 <script>
-
-/*    function changeTitle(t) {
-        var eltit = t.contentDocument;
-        // alert('eltit: ' + eltit);
-    }
-
-    jQuery(document).ready(function ($) {
-        function print(url) {
-            var _this = this,
-                    iframeId = 'iframeprint',
-                    $iframe = $('iframe#iframeprint');
-            $iframe.attr('src', url);
-
-            $iframe.load(function () {
-                _this.callPrint(iframeId);
-            });
-        }
-
-        //initiates print once content has been loaded into iframe
-        function callPrint(iframeId) {
-            var PDF = document.getElementById(iframeId);
-            PDF.focus();
-            PDF.contentWindow.print();
-        }
-    }); */
 
 </script>
 

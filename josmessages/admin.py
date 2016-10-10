@@ -15,6 +15,9 @@ class JOSMessageThreadAdmin(admin.ModelAdmin):
     Admin class for JOSMessageThread.
     """
     verbose_name = "Thread"
-    list_display = ("id", "subject", "message_count", "last_recipient", "last_message_id")
+    list_display = ("id", "subject", "message_count", "last_message_id", "updated",)
+    list_filter = ("last_recipient",)
+
+    readonly_fields = ("created", "updated",)
 
 admin.site.register(JOSMessageThread, JOSMessageThreadAdmin)

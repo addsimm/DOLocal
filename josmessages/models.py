@@ -35,7 +35,7 @@ class JOSMessageThreadManager(models.Manager):
 
 
 @python_2_unicode_compatible
-class JOSMessageThread(models.Model):
+class JOSMessageThread(TimeStamped, models.Model):
     ### fix views: inbox, outbox, trash Add: manager
     # A holder for messages in a thread
     objects = JOSMessageThreadManager()
@@ -47,7 +47,7 @@ class JOSMessageThread(models.Model):
     subject = models.CharField(_("subject"), max_length=255, blank=True)
 
     def __str__(self):
-        return self.subject + "_" + str(self.id)
+        return self.subject
 
     class Meta:
         ### ordering = ["-updated"]

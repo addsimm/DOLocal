@@ -53,19 +53,19 @@ class JOSCourseStudent(TimeStamped, models.Model):
 class JOSCourseWeek(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Courseweek'
-        ordering = ("course", "weekno")
+        ordering = ("course", "week_no")
 
     course = models.ForeignKey(JOSCourse)
 
-    weekno = models.IntegerField(default=0)
+    week_no = models.IntegerField(default=0)
     week_title = models.CharField(max_length=150, default="untitled")
     icon_name = models.CharField(max_length=150, default="missing")
 
-    video = EmbedVideoField(blank=True)  # same like models.URLField()
+    video = EmbedVideoField(blank=True)
     publish = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return str(self.weekno) + ": " + self.week_title
+        return str(self.week_no) + ": " + self.week_title
 
 
 class JOSStoryActivity(TimeStamped, models.Model):
@@ -118,9 +118,9 @@ class JOSHandout(TimeStamped, models.Model):
     )
 
     courseweek    = models.ForeignKey(JOSCourseWeek, blank=True, null=True)
-    part_no       = models.IntegerField(default=9, blank=True, null=True, choices=PART_CHOICES)
-    segment_no    = models.IntegerField(default=9, blank=True, null=True, choices=SEGMENT_CHOICES)
-    element_no    = models.IntegerField(default=99, blank=True, null=True, choices=ELEMENT_CHOICES)
+    part_no       = models.IntegerField(default=9, choices=PART_CHOICES)
+    segment_no    = models.IntegerField(default=9, choices=SEGMENT_CHOICES)
+    element_no    = models.IntegerField(default=99, choices=ELEMENT_CHOICES)
     element_order = models.IntegerField(default=0)
 
     publish = models.BooleanField(default=False)

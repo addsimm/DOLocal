@@ -25,7 +25,7 @@ admin.site.register(JOSCourse, JOSCourseAdmin)
 
 class JOSCourseWeekAdmin(admin.ModelAdmin):
     verbose_name = 'Week'
-    list_display = ("id", "weekno", "week_title", "course", "updated")
+    list_display = ("id", "week_no", "week_title", "course", "updated")
     readonly_fields = ('created', 'updated',)
 
 admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)

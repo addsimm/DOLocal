@@ -11,7 +11,8 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {{ week.week_title | safe | truncatechars:45 }} - Part {{ handouts.0.part_no }}
+    {{ week.week_title | safe | truncatechars:45 }}
+    - Part {{ handouts.0.part_no }}
     </div></div>
 
 {% endblock %}
@@ -41,8 +42,6 @@
     {% if handouts|length > 0 %}
         {% for hout in handouts %}
 
-            <!-- hout.title {{ hout.title }} / hout.part_no {{ hout.part_no }}<br> -->
-
             <a class="joslargelinkbutton"
                style="font-size: 14pt; margin: 5px;
                        {% if handout == hout %}
@@ -50,7 +49,7 @@
                            background-color: rgb(65,45,120);
                        {% endif %}"
                href="{% url "handout" %}/{{ hout.id }}">
-                <span style="margin: 0 3px;">{{ hout.get_segment_type_display }}</span>
+                <span style="margin: 0 3px;">{{ hout.get_segment_no_display }}</span>
             </a>
             {% if not forloop.last %}
                 <i class="fa fa-arrow-right"
@@ -75,7 +74,7 @@
 {#{% else %}#}
 {#    <a class="btn btn-warning pull-right"#}
 {#       style="font-size: 12pt; width: 70px;"#}
-{#       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">#}
+{#       href="{% url "next_handout" %}/?week_no={{ handout.courseweek.id }}&order={{ handout.element_order }}">#}
 {#        {% trans "Next" %}#}
 {#    </a>#}
 {#{% endif %}#}

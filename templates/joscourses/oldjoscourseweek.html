@@ -67,7 +67,7 @@
                 {% else %}
                     <a class="btn btn-warning pull-right"
                        style="font-size: 12pt; width: 70px;"
-                       href="{% url "nexthandout" %}/?weekid={{ handout.courseweek.id }}&order={{ handout.segment_order }}">
+                       href="{% url "next_handout" %}/?week_no={{ handout.courseweek.id }}&order={{ handout.element_order }}">
                         {% trans "Next" %}
                     </a>
                 {% endif %}

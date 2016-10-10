@@ -20,11 +20,11 @@ if "notification" in settings.INSTALLED_APPS and getattr(settings, "JOSMESSAGES_
 else:
     notification = None
 
+
 @login_required
 def inbox(request, template_name="josmessages/inbox.html"):
     """
-    Displays a list of rece
-    ived messages for the current user.
+    Displays a list of received messages for the current user.
     """
     activate('America/Los_Angeles')
 
@@ -35,6 +35,7 @@ def inbox(request, template_name="josmessages/inbox.html"):
     return render_to_response(template_name,
                               {"message_list": message_list},
                               context_instance=RequestContext(request))
+
 
 @login_required
 def outbox(request, template_name="josmessages/outbox.html"):
@@ -47,11 +48,12 @@ def outbox(request, template_name="josmessages/outbox.html"):
         "message_list": message_list,
     }, context_instance=RequestContext(request))
 
+
 @login_required
 def trash(request, template_name="josmessages/trash.html"):
     """
     Displays a list of deleted messages.
-    Hint: A Cron-Job could periodicly clean up old messages
+    Hint: A Cron-Job could periodically clean up old messages
     """
     activate('America/Los_Angeles')
     message_list = JOSMessageThread.objects.trash_for(request.user)
@@ -90,33 +92,6 @@ def delete(request, message_thread_id=0):
     return redirect('http://www.joinourstory.com/messages/inbox/')
 
 
-# @login_required
-# def undelete(request, message_id, success_url=None):
-#     """
-#     Recovers a message from trash. This is achieved by removing the
-#     ``(sender|recipient)_deleted_at`` from the model.
-#     """
-#     user = request.user
-#     message = get_object_or_404(Message, id=message_id)
-#     undeleted = False
-#     if success_url is None:
-#         success_url = reverse("josmessages:messages_inbox")
-#     if "next" in request.GET:
-#         success_url = request.GET["next"]
-#     if message.sender == user:
-#         message.sender_deleted_at = None
-#         undeleted = True
-#     if message.recipient == user:
-#         message.recipient_deleted_at = None
-#         undeleted = True
-#     if undeleted:
-#         message.save()
-#         messages.info(request, _(u"Message successfully recovered."))
-#         if notification:
-#             notification.send([user], "messages_recovered", {"message": message,})
-#         return HttpResponseRedirect(success_url)
-#     raise Http404
-
 ### JOS Messaging
 @login_required
 def jos_message_compose(request, id=None, form_class=JOSComposeForm,
@@ -131,7 +106,7 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
                        could be separated by a "+"
         ``form_class``: the form-class to use
         ``template_name``: the template to use
-        ``success_url``: where to redirect after successfull submission
+        ``success_url``: where to redirect after successfully submission
     """
 
     form = form_class()
@@ -155,6 +130,7 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
         "form": form,
         "recipient": recipient
     }, context_instance=RequestContext(request))
+
 
 @login_required
 def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
@@ -209,3 +185,31 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
                "message_thread_id": message_thread.id}
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+
+    # @login_required
+    # def undelete(request, message_id, success_url=None):
+    #     """
+    #     Recovers a message from trash. This is achieved by removing the
+    #     ``(sender|recipient)_deleted_at`` from the model.
+    #     """
+    #     user = request.user
+    #     message = get_object_or_404(Message, id=message_id)
+    #     undeleted = False
+    #     if success_url is None:
+    #         success_url = reverse("josmessages:messages_inbox")
+    #     if "next" in request.GET:
+    #         success_url = request.GET["next"]
+    #     if message.sender == user:
+    #         message.sender_deleted_at = None
+    #         undeleted = True
+    #     if message.recipient == user:
+    #         message.recipient_deleted_at = None
+    #         undeleted = True
+    #     if undeleted:
+    #         message.save()
+    #         messages.info(request, _(u"Message successfully recovered."))
+    #         if notification:
+    #             notification.send([user], "messages_recovered", {"message": message,})
+    #         return HttpResponseRedirect(success_url)
+    #     raise Http404
