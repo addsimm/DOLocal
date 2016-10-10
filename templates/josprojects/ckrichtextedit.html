@@ -70,7 +70,7 @@
         </div>
 
         <div class="col-xs-10" style="color: green; margin-left: 10px;">
-            {{ form.title.value | title | striptags }}<br>
+            {{ form.title.value | title | striptags | safe }}<br>
             {{ user.JOSProfile.jos_name }}<br>
             {{ form.field_to_edit.value | title }}<br><br>
         </div>

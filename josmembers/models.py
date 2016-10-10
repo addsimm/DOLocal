@@ -19,7 +19,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     about_me = models.TextField(default="Coming Soon!", null=True)
 
-    profile_image_idstr = models.CharField(max_length=150, default="noimage1")
+    profile_image_id_str = models.CharField(max_length=150, default="noimage1")
 
     def __str__(self):
         return self.user.username
@@ -62,12 +62,20 @@ EMAIL_FREQ_CHOICES = (
     (4, 'Never'),
 )
 
+STATUS_CHOICES = (
+    (0, 'None'),
+    (1, 'Emailed'),
+    (2, 'Called'),
+    (3, 'Talked'),
+    (4, 'Webcam'),
+    (5, 'Enrolled'),
+)
+
 class JOSReservation(TimeStamped, models.Model):
 
     class Meta:
         verbose_name = 'Reservation'
         ordering = ("-created",)
-
 
     first_name = models.CharField(max_length=200, default=None)
     last_name = models.CharField(max_length=200, default=None)
@@ -91,10 +99,7 @@ class JOSReservation(TimeStamped, models.Model):
     refer = models.TextField(blank=True, null=True, default=None)
 
     staff_notes = models.TextField(blank=True, null=True, default=None)
-    ready = models.NullBooleanField(blank=True, default=False)
-    confirmed = models.NullBooleanField(blank=True, default=False)
-
-
+    status = models.IntegerField(default=0, choices=STATUS_CHOICES)
 
 
 

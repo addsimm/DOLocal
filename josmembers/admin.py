@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-from copy import deepcopy
 
 from django.contrib import admin
 
@@ -43,15 +42,9 @@ class JOSReservationAdmin(admin.ModelAdmin):
     """
     verbose_name = 'Reservation'
 
-    list_display = ("id", "ready", "confirmed", "updated", "first_name", "last_name", "refer")
-    list_editable = ("ready", "confirmed")
+    list_display = ("id", "status", "updated", "first_name", "last_name", "refer")
+    list_editable = ("status",)
 
     readonly_fields = ('updated',)
-
-    # fieldsets = josprofile_fieldsets
-    # list_display = josprofile_list_display
-    # list_filter = josprofile_list_filter
-    # filter_horizontal = ("categories", "related_posts",)
-
 
 admin.site.register(JOSReservation, JOSReservationAdmin)

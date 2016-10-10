@@ -36,7 +36,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
 
 @login_required
 def mystory_list(request, template="josprojects/mystory_list.html", extra_context=None):
-    stories = JOSStory.objects.filter(author=request.user)
+    stories = JOSStory.objects.filter(author=request.user).order_by('-updated')
 
     context = {'stories': stories}
     context.update(extra_context or {})
@@ -46,10 +46,10 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 
 @login_required
 @csrf_exempt
-def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html", extra_context=None):
+def josstory(request, story_id=0, edit=False, template="josprojects/josstory.html", extra_context=None):
 
     try:
-        story = get_object_or_404(JOSStory, pk=storyid)
+        story = get_object_or_404(JOSStory, pk=story_id)
     except:
         story = JOSStory.objects.create(author=request.user, title="Untitled", content="Coming soon")
 
@@ -115,7 +115,7 @@ def josstory(request, storyid=0, edit=False, template="josprojects/josstory.html
 
 @login_required
 def story_gallery(request, template="josprojects/story_gallery.html", extra_context=None):
-    stories = JOSStory.objects.filter(publish=True).order_by('updated')
+    stories = JOSStory.objects.filter(publish=True).order_by('-updated')
 
     context = {'stories': stories}
     context.update(extra_context or {})
@@ -125,8 +125,12 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
 
 def temasystest(request, incognito=False, jos_id=0, template="temasys_test.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
-    user = get_object_or_404(User, pk=jos_id)
-    josname = user.JOSProfile.jos_name()
+    try:
+        user = get_object_or_404(User, pk=jos_id)
+        josname = user.JOSProfile.jos_name()
+    except:
+        josname = "???"
+
     #### to login user:
     # user.backend = 'django.contrib.auth.backends.ModelBackend'
     # auth_login(request, user)

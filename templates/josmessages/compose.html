@@ -15,8 +15,8 @@
     <div class="josinstructions" style="margin-top: 30px;">Send new message to<br>
 
         <img style="display: inline; height: 60px;" src="
-                        {% if profile.profile_image_idstr != "noimage1" %}
-https://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profile_image_idstr }}
+                        {% if profile.profile_image_id_str != "noimage1" %}
+https://res-4.cloudinary.com/desg88u7l/image/upload/{{ recipient.JOSProfile.profile_image_id_str }}
                         {% else %}
                             /static/img/coming-soon-profile.png
                         {% endif %}">

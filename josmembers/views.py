@@ -216,14 +216,14 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
 
     def getPotentialNewProfileImageIdStr():
         import re
-        oldProfileImageId = currentProfile.profile_image_idstr
+        oldProfileImageId = currentProfile.profile_image_id_str
         split = re.split('(\d.*)', oldProfileImageId)
         newnum = int(split[1]) + 1
         return username + str(newnum)
 
     new_image = request.GET.get('new_image', False)
     if new_image:
-        currentProfile.profile_image_idstr = getPotentialNewProfileImageIdStr()
+        currentProfile.profile_image_id_str = getPotentialNewProfileImageIdStr()
         currentProfile.save()
 
     if request.method == 'POST':

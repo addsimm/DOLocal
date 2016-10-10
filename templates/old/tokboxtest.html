@@ -71,7 +71,7 @@
 
     function connectToSession() {
         var name = '{{ request.user.JOSProfile.jos_name }}' + ',' +
-        '{{ request.user.JOSProfile.profile_image_idstr }}';
+        '{{ request.user.JOSProfile.profile_image_id_str }}';
         var publisher_jos_name = name.split(',')[0];
         var publisher_background_image = name.split(',')[1];
         var bckgrndImageURL = ' ';

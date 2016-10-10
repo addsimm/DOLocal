@@ -18,70 +18,66 @@
 
 {% block all_content %}
 
+<div class="row">
+
+    <div class="col-xs-3">
+
+        <a class="btn btn-default" style="width: 200px;"
+           href="{% url 'josstory' %}/0">
+            Create new story
+        </a>
+
+
+    </div>
+
+    <div class="col-xs-4 josinstructions" style="margin: 0 0 0 -60px;">
+            or, click a title to edit:
+    </div>
+</div>
+
 <div class="row" style="margin-top: 30px;">
-
     <div class="col-xs-12" style="padding: 0;">
+    {% if stories.count > 0 %}
 
-        <div class="row" style="margin-bottom: 30px;">
-            <!-- a class="joslargelinkbutton" href=" ">
-               <span style="margin-left: 5px; margin-right: 5px;">
-                    All my stories
-               </span>
-            </a -->
-            <!-- a class="joslargelinkbutton" href=" ">
-               <span style="margin-left: 5px; margin-right: 5px;">
-                    Stories I've published
-               </span>
-            </a -->
-            <a class="btn btn-default" style="margin-left: 50px; width: 200px;"
-               href="{% url 'josstory' %}/0">
-                    Create new story
-            </a><br><br>
-
-        </div>
-
-        {% if stories.count > 0 %}
-            <span class="josinstructions">Please click a title to view:<br>&nbsp&nbsp&nbsp&nbsp- or create a new story!</span><br><br>
-
-            <table data-toggle="table" width="100%">
-                <col style="width:49%;">
-                <col style="width:23%;">
-                <col style="width:23%;">
-                <col style="width:5%;">
-                <thead>
+        <table data-toggle="table" width="100%">
+            <col style="width:49%;">
+            <col style="width:23%;">
+            <col style="width:23%;">
+            <col style="width:5%;">
+            <thead>
+                <tr>
+                    <th data-sortable="true">Title</th>
+                    <th data-sortable="true">Created</th>
+                    <th>Last change</th>
+                    <th data-sortable="true">Publish?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in stories %}
                     <tr>
-                        <th data-sortable="true">Title</th>
-                        <th data-sortable="true">Created</th>
-                        <th data-sortable="true">Last change</th>
-                        <th data-sortable="true">Published</th>
+                        <td>
+                            <a href="{% url 'josstory' %}/{{ story.id }}">
+                                {{ story.title | striptags  | safe | truncatechars:45 }}
+                            </a>
+                        </td>
+                        <td style="text-align:center;">{{ story.created | date:"M d" }}; {{ story.created | time:"f A" }}</td>
+                        <td style="text-align:center;">{{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
+                        <td style="text-align:center;">
+                            {% if story.publish %}
+                                &nbsp&nbsp&nbsp
+                                <i class="fa fa-circle fa-fw" style="color: green;"></i>
+                            {% endif %}
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for story in stories %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'josstory' %}/{{ story.id }}">
-                                    {{ story.title | striptags | truncatechars:45 }}
-                                </a>
-                            </td>
-                            <td style="text-align:center;">{{ story.created | date:"M d" }}; {{ story.created | time:"f A" }}</td>
-                            <td style="text-align:center;">{{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
-                            <td style="text-align:center;">
-                                {% if story.publish %}
-                                    &nbsp&nbsp&nbsp
-                                    <i class="fa fa-circle fa-fw" style="color: green;"></i>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                {% endfor %}
+            </tbody>
+        </table>
 
-        {% else %}
+    {% else %}
 
-            <span style="font-size: 36pt;">Click "Create new story" to get started!</span>
+        <span style="font-size: 36pt;">Click "Create new story" to get started!</span>
 
-        {% endif %}
+    {% endif %}
 
     </div>
 </div>
