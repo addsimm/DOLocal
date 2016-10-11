@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import (login as auth_login, get_user_model)
 from django.contrib.messages import info
@@ -14,6 +15,8 @@ from josmembers.models import JOSProfile
 from josmessages.models import Message, JOSMessageThread
 
 from .models import CKRichTextHolder, JOSStory
+
+## from opentok import OpenTok
 
 # Create your views here.
 
@@ -73,7 +76,7 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
         return redirect('joinourstory.com/josstory/' + str(story_id))
 
     if request.method == 'POST':
-        nu_content = request.POST['nu_content']
+        nu_content = request.POST['nucontent']
         field_to_edit = request.POST['field_to_edit']
 
         if field_to_edit == "comment":
