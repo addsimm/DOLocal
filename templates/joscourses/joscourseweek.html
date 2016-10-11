@@ -38,17 +38,17 @@
 </style>
 
 <div id="progress_bar" class="row" style="margin: 0; padding: 15px; width: 1170px; border-bottom: 1px solid rgba(65,45,120,.5);">
-
+    SEGMENTS:
     {% if segments|length > 0 %}
         {% for seg in segments %}
 
             <a class="joslargelinkbutton"
                style="font-size: 14pt; margin: 5px;
-                       {% if seg == current_segment %}
+                       {% if seg.segment_no == handout.segment_no %}
                            color: white;
                            background-color: rgb(65,45,120);
                        {% endif %}"
-{#               href="{% url "course" %}/{{ hout.id }}"#}>
+               href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
                 <span style="margin: 0 3px;">{{ seg.get_segment_no_display }}</span>
             </a>
 
@@ -67,18 +67,18 @@
 
 <div id="progress_bar" class="row"
      style="margin: 0; padding: 15px; width: 1170px; border-bottom: 1px solid rgba(65,45,120,.5);">
-
+    ELEMENTS:
     {% if segments|length > 0 %}
-        {% for seg in segments %}
+        {% for hand in handouts %}
 
             <a class="joslargelinkbutton"
                style="font-size: 14pt; margin: 5px;
-                       {% if seg == current_segment %}
+                       {% if hand.element_no == handout.element_no %}
                            color: white;
                            background-color: rgb(65,45,120);
                        {% endif %}"
-                    {#               href="{% url "course" %}/{{ hout.id }}"#}>
-                <span style="margin: 0 3px;">{{ seg.get_segment_no_display }}</span>
+               href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ hand.segment_no }}/{{ hand.id }}">
+                <span style="margin: 0 3px;">{{ hand.get_element_no_display }}</span>
             </a>
 
             {% if not forloop.last %}
