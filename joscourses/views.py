@@ -19,7 +19,7 @@ def course_week_list(request, template="###", extra_context=None):
 @login_required
 def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1", template="joscourses/joshandout.html", extra_context=None):
 
-    week = get_object_or_404(JOSCourseWeek, week_no=1)
+    week = get_object_or_404(JOSCourseWeek, week_no=int(week_no))
     week_handouts = JOSHandout.objects.filter(courseweek=week, part_no = int(part_no), publish=True)
     week_segments = week_handouts.distinct('segment_no').order_by('segment_no')
 
