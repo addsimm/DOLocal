@@ -39,18 +39,48 @@
 
 <div id="progress_bar" class="row" style="margin: 0; padding: 15px; width: 1170px; border-bottom: 1px solid rgba(65,45,120,.5);">
 
-    {% if handouts|length > 0 %}
-        {% for hout in handouts %}
+    {% if segments|length > 0 %}
+        {% for seg in segments %}
 
             <a class="joslargelinkbutton"
                style="font-size: 14pt; margin: 5px;
-                       {% if handout == hout %}
+                       {% if seg == current_segment %}
                            color: white;
                            background-color: rgb(65,45,120);
                        {% endif %}"
-               href="{% url "handout" %}/{{ hout.id }}">
-                <span style="margin: 0 3px;">{{ hout.get_segment_no_display }}</span>
+{#               href="{% url "course" %}/{{ hout.id }}"#}>
+                <span style="margin: 0 3px;">{{ seg.get_segment_no_display }}</span>
             </a>
+
+            {% if not forloop.last %}
+                <i class="fa fa-arrow-right"
+                   style="font-size: 12pt; color: rgb(65,45,120); margin-left: 3px;"
+                   aria-hidden="true"></i>
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+        No published handouts
+    {% endif %}
+
+</div>
+
+<div id="progress_bar" class="row"
+     style="margin: 0; padding: 15px; width: 1170px; border-bottom: 1px solid rgba(65,45,120,.5);">
+
+    {% if segments|length > 0 %}
+        {% for seg in segments %}
+
+            <a class="joslargelinkbutton"
+               style="font-size: 14pt; margin: 5px;
+                       {% if seg == current_segment %}
+                           color: white;
+                           background-color: rgb(65,45,120);
+                       {% endif %}"
+                    {#               href="{% url "course" %}/{{ hout.id }}"#}>
+                <span style="margin: 0 3px;">{{ seg.get_segment_no_display }}</span>
+            </a>
+
             {% if not forloop.last %}
                 <i class="fa fa-arrow-right"
                    style="font-size: 12pt; color: rgb(65,45,120); margin-left: 3px;"

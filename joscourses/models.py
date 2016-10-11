@@ -84,18 +84,18 @@ class JOSHandout(TimeStamped, models.Model):
         verbose_name = 'Handout'
         ordering = ("courseweek", "element_order")
 
+    PART_CHOICES = (
+        (1, "Part 1"),
+        (2, "Part 2"),
+        (9, "Other"),
+    )
+
     SEGMENT_CHOICES = (
         (0, "Agenda"),
         (1, "Workshop"),
         (2, "Assign"),
         (3, "Handouts"),
         (4, "Resources"),
-        (9, "Other"),
-    )
-
-    PART_CHOICES = (
-        (1, "Part 1"),
-        (2, "Part 2"),
         (9, "Other"),
     )
 

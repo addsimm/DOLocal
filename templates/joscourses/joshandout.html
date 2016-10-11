@@ -6,16 +6,33 @@
 <!-- Main Panel -->
 
 <div style="color: red; margin: 30px;">
-    DEBUG: handout.part_no: {{ handout.part_no }} / handout.element_no: {{ handout.element_no }} / handout.pdf_handout::: {{ handout.pdf_handout }}
+    DEBUG:<br>
+
+    week: {{ week }} / segments: {{ segments }} / handouts: {{ handouts }} / handout: {{ handout }} <br><br><br>
+
+    handout.part_no: {{ handout.part_no }} / handout.element_no: {{ handout.element_no }} / handout.pdf_handout::: {{ handout.pdf_handout }}
 </div>
 
 {% if handout.pdf_handout == 'missing' %}
 
-    <div class='text-center' style="margin-top: 150px">PDF is missing!</div>
-
+    <div class="row" style="margin-top: 80px;">
+        <div class="col-xs-5 col-xs-offset-1">
+            Sorry, this PDF is missing - <br>
+            Click:
+            <button class="btn btn-warning btn "
+                    style="border-radius: 15px; margin: 20px 10px;width: 80px;"
+                    onclick="goBack()">
+                Back
+            </button>
+            <script>function goBack() {
+                window.history.back();
+            }</script>
+            and call us for help.
+        </div>
+    </div>
 {% else %}
 
-    {% if handout.segment_type == 3 %}
+    {% if handout.segment_no == 3 %}
 
         <div class="row text-center" style="margin: 50px 0 0 0;">
 
