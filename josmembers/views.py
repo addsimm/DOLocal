@@ -11,6 +11,7 @@ from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import activate
+from collections import defaultdict
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -117,21 +118,23 @@ def members_list(request, template="josmembers/josmembers_members_list.html", ex
 
     # List of user's teams
     teams = request.user.JOSProfile.teams.all()
-    team_users_lists = []
+    teams_list = []
     for team in teams:
-
+        team_dict = {}
+        team_dict.update({'name': team.name })
         team_users = []
         for team_member in team.member_id_list():
             team_users.append(User.objects.get(pk=team_member))
 
-        team_users_lists.append(team_users)
+        team_dict.update({'users': team_users})
+        teams_list.append(team_dict)
+
 
     # team_user_list = []
     # for team_members_id_list in teams_member_id_lists:
 
     context = {
-               "teams": teams,
-               "teams_users": team_users_lists,
+               "teams_list": teams_list,
                "following": following
                }
     context.update(extra_context or {})
