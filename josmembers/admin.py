@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from josmembers.models import JOSProfile, JOSReservation
+from josmembers.models import JOSProfile, JOSReservation, JOSTeam
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 # from notification.models import NoticeQueueBatch, NoticeSetting, NoticeType
@@ -27,6 +27,7 @@ class JOSProfileAdmin(admin.ModelAdmin):
     verbose_name = 'Member profile'
 
     readonly_fields = ('created', 'updated',)
+    filter_horizontal = ('teams',)
 
     # fieldsets = josprofile_fieldsets
     # list_display = josprofile_list_display
@@ -34,6 +35,20 @@ class JOSProfileAdmin(admin.ModelAdmin):
     # filter_horizontal = ("categories", "related_posts",)
 
 admin.site.register(JOSProfile, JOSProfileAdmin)
+
+
+class JOSTeamAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSReservations.
+    """
+    verbose_name = 'Team'
+
+    list_display = ("id", "name", "member_id_list")
+
+    readonly_fields = ("member_id_list", 'created', 'updated',)
+
+
+admin.site.register(JOSTeam, JOSTeamAdmin)
 
 
 class JOSReservationAdmin(admin.ModelAdmin):
