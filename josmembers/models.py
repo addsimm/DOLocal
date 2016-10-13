@@ -52,7 +52,7 @@ class JOSTeam(TimeStamped, models.Model):
 
     class Meta:
         verbose_name = 'Team'
-        ordering = ("-created",)
+        ordering = ("name",)
 
     name = models.CharField(max_length=250, default='missing')
     description = models.CharField(max_length=250, default='missing')

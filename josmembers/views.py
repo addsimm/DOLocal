@@ -21,15 +21,14 @@ from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
 
 from josprojects.models import CKRichTextHolder
-from .models import JOSProfile
+from .models import JOSProfile, JOSTeam
 from .forms import JOSSignupForm, JOSNewPasswordForm, JOSReserveSpaceForm
 
 User = get_user_model()
 
 ### Login & Passwords:
 
-def login(request, template="accounts/account_login.html",
-          form_class=LoginForm, extra_context=None):
+def login(request, template="accounts/account_login.html", form_class=LoginForm, extra_context=None):
         """
         Login form.
         """
@@ -116,8 +115,11 @@ def members_list(request, template="josmembers/josmembers_members_list.html", ex
     # List of who this user is following
     following = Follow.objects.following(request.user)
 
-    profiles = JOSProfile.objects.all()
-    context = {"profiles":  profiles,
+    # List of user's teams
+    #### teams = JOSTeam.objects.filter(request.user.JOSProfile.teams)
+
+    context = {
+        #### "teams": teams,
                "following": following
                }
     context.update(extra_context or {})
