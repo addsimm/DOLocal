@@ -148,15 +148,15 @@
 
                 {% if request.user.is_authenticated %}
 
-                <a class="joslargelinkbutton pull-left" style="width: 140px;"
+                <a class="joslargelinkbutton pull-left" style="width: 150px;"
                    href="{% url "personaldesk" %}/{{ request.user.id }}">
                     <i class="fa fa-home fa-fw"></i>
                     My desk
                 </a>
 
-                <a class="joslargelinkbutton pull-left" style="padding: 0; width: 140px;"
+                <a class="joslargelinkbutton pull-left" style="padding: 0; width: 150px;"
                    href="{% url "josmessages:messages_redirect" %}">
-                    <div class="pull-left" style="margin: 8px 4px;">
+                    <div class="pull-left" style="margin: 8px 9px;">
                         <i class="fa fa-envelope fa-fw"></i>
                         Inbox
                     </div>
@@ -165,7 +165,7 @@
                     {% if my_var >= 1 %}
                         <div class="pull-right"
                              style="color: white; background-color: red; height: 47px; padding: 8px 5px; text-align: center;">
-                            {{ my_var }}
+                            99{{ my_var }}
                         </div>
                     {% else %}
                         <div class="pull-right"
@@ -175,7 +175,7 @@
                     {% endif %}
                 </a>
 
-                <a class="joslargelinkbutton pull-left" style="padding: 8px 0;  width: 140px;"
+                <a class="joslargelinkbutton pull-left" style="padding: 8px 0;  width: 150px;"
                    href="{% url "josmembers:josmembers_list" %}">
                         Community
                 </a>
