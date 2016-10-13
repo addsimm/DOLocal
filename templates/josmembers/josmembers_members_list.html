@@ -19,64 +19,74 @@
     <div class="josinstructions" style="margin-top: 30px;"><b>My teams:</b></div>
 
     <div class="row">
-        <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
-            {% if  request.user.JOSProfile.teams.count > 0 %}
-                <table>
-                    <tbody>
-                    {% for team in request.user.JOSProfile.teams.all %}
+        teams: {{ teams }}<br>
+        teams_users: {{ teams_users }}<br>
+        <div class="col-xs-12" style="margin-top: 15px;">
 
-                        {{ team.name }}: {{ team.member_id_list }}<br>
-
-                    {% endfor %}
-
-                    {#                        <tr>#}
-                    {#                            <td style="width: 15%;">#}
-                    {#                                {% if favorite.JOSProfile.profile_image_id_str != "noimage1" %}#}
-                    {#                                    <img class="img-responsive" style="display: inline; max-height: 75px;"#}
-                    {#                                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ favorite.JOSProfile.profile_image_id_str }}">#}
-                    {#                                {% else %}#}
-                    {#                                    <img class="img-responsive"#}
-                    {#                                         style="background-color: white; display: inline; max-height: 75px;"#}
-                    {#                                         src="/static/img/coming-soon-profile.png">#}
-                    {#                                {% endif %}#}
-                    {#                            </td>#}
-                    {#                            <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">#}
-                    {#                                {{ favorite.JOSProfile.jos_name }}#}
-                    {#                            </td>#}
-                    {#                            <td style="width: 60%;">#}
-                    {#                                <a class="btn btn-default"#}
-                    {#                                   style="margin-left: 10px; width: 150px;"#}
-                    {#                                   href="{% url "profile" favorite.id %}">#}
-                    {#                                    View profile#}
-                    {#                                </a>#}
-                    {##}
-                    {#                                <a class="btn btn-default"#}
-                    {#                                   style="margin-left: 10px; width: 150px;"#}
-                    {#                                   href="{% url 'josmessages:messages_compose' favorite.id %}">#}
-                    {#                                    Message#}
-                    {#                                </a>#}
-                    {##}
-                    {#                                <a class="btn btn-default"#}
-                    {#                                   style="margin-left: 10px; width: 150px;"#}
-                    {#                                   href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">#}
-                    {#                                    Unfavorite#}
-                    {#                                </a>#}
-                    {##}
-                    {#                            </td>#}
-                    {#                        </tr>#}
-                    {#                    {% endfor %}#}
-                    </tbody>
-                </table>
-            {% else %}
-                -- Join a team?
-            {% endif %}
+{#            {% if  request.user.JOSProfile.teams.count > 0 %}#}
+{#                <table>#}
+{#                <tbody>#}
+{#                {% for team in request.user.JOSProfile.teams.all %}#}
+{##}
+{#                    {{ team.name }}: {{ team.member_id_list }}<br>#}
+{##}
+{#                    <tr>#}
+{#                        <td style="width: 15%;">#}
+{##}
+{#                            {{ team.name | title }}:#}
+{##}
+{#                        </td>#}
+{#                        <td style="color: rgb(65,45,120); width: 25%;">#}
+{#                            {{ team.member_id_list }}#}
+{#                        #}
+{#                            {% for id in team.member_id_list %}#}
+{#                                {% if favorite.JOSProfile.profile_image_id_str != "noimage1" %}#}
+{#                                    <img class="img-responsive" style="display: inline; max-height: 75px;"#}
+{#                                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ favorite.JOSProfile.profile_image_id_str }}">#}
+{#                                {% else %}#}
+{#                                    <img class="img-responsive"#}
+{#                                         style="background-color: white; display: inline; max-height: 75px;"#}
+{#                                         src="/static/img/coming-soon-profile.png">#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
+{#                        #}
+{#                        #}
+{#                            {{ favorite.JOSProfile.jos_name }}#}
+{#                        </td>#}
+{#                        <td style="width: 60%;">#}
+{#                            <a class="btn btn-default"#}
+{#                               style="margin-left: 10px; width: 150px;"#}
+{#                               href="{% url "profile" favorite.id %}">#}
+{#                                View profile#}
+{#                            </a>#}
+{##}
+{#                            <a class="btn btn-default"#}
+{#                               style="margin-left: 10px; width: 150px;"#}
+{#                               href="{% url 'josmessages:messages_compose' favorite.id %}">#}
+{#                                Message#}
+{#                            </a>#}
+{##}
+{#                            <a class="btn btn-default"#}
+{#                               style="margin-left: 10px; width: 150px;"#}
+{#                               href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">#}
+{#                                Unfavorite#}
+{#                            </a>#}
+{##}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#                </table>#}
+{#            {% else %}#}
+{#                -- Join a team?#}
+{#            {% endif %}#}
         </div>
     </div>
 
     <div class="josinstructions" style="margin-top: 30px;"><b>My friends:</b></div>
 
     <div class="row">
-        <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
+        <div class="col-xs-12" style="margin-top: 15px;">
 
             {% if  following.count > 0 %}
                 <table>
@@ -126,8 +136,6 @@
             {% endif %}
         </div>
     </div>
-
-
 
     <div class="josinstructions" style="margin-top: 30px;"><b>Search for friends:</b></div>
 

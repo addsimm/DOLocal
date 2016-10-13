@@ -151,25 +151,25 @@
                 <a class="joslargelinkbutton pull-left" style="width: 150px;"
                    href="{% url "personaldesk" %}/{{ request.user.id }}">
                     <i class="fa fa-home fa-fw"></i>
-                    My desk
+                    &nbspMy desk
                 </a>
 
                 <a class="joslargelinkbutton pull-left" style="padding: 0; width: 150px;"
                    href="{% url "josmessages:messages_redirect" %}">
                     <div class="pull-left" style="margin: 8px 9px;">
                         <i class="fa fa-envelope fa-fw"></i>
-                        Inbox
+                        &nbspMail
                     </div>
 
                     {% inbox_count as my_var %}
                     {% if my_var >= 1 %}
                         <div class="pull-right"
                              style="color: white; background-color: red; height: 47px; padding: 8px 5px; text-align: center;">
-                            99{{ my_var }}
+                            {{ my_var }}
                         </div>
                     {% else %}
                         <div class="pull-right"
-                             style="height: 47px; padding: 8px 5px;">
+                             style="background-color: white; height: 47px; padding: 8px 5px;">
                             &nbsp&nbsp
                         </div>
                     {% endif %}
@@ -190,6 +190,10 @@
                    href="{% url "logout" %}?next={{ request.path }}">
                     {% trans "Log out " %}
                 </a>
+
+                <div class="pull-right" style=" color: green; font-family: 'Stalemate', cursive; font-size: 26pt; font-weight: bold; margin-right: 15px;">
+                    {{ request.user.JOSProfile.jos_name }}
+                </div>
             {% else %}
                 <a class="btn btn-default  pull-right"
                    style="width: 150px; margin: -5px 0 0 0;"

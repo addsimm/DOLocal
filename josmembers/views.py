@@ -116,10 +116,22 @@ def members_list(request, template="josmembers/josmembers_members_list.html", ex
     following = Follow.objects.following(request.user)
 
     # List of user's teams
-    #### teams = JOSTeam.objects.filter(request.user.JOSProfile.teams)
+    teams = request.user.JOSProfile.teams.all()
+    team_users_lists = []
+    for team in teams:
+
+        team_users = []
+        for team_member in team.member_id_list():
+            team_users.append(User.objects.get(pk=team_member))
+
+        team_users_lists.append(team_users)
+
+    # team_user_list = []
+    # for team_members_id_list in teams_member_id_lists:
 
     context = {
-        #### "teams": teams,
+               "teams": teams,
+               "teams_users": team_users_lists,
                "following": following
                }
     context.update(extra_context or {})
