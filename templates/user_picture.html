@@ -1,0 +1,50 @@
+
+
+<style>
+
+    .particbox {
+        background-color: rgb(65, 45, 120);
+        border: none;
+        margin: 15px 0 0 20px;
+        outline: 2px solid rgb(65, 45, 120);
+        padding: 0;
+        width: 260px;
+    }
+
+    .pictureBox {
+        background-color: white;
+        margin: 0;
+        padding: 0;
+        height: xxxpx;
+        z-index: -1;
+    }
+
+    .nameContainer {
+        background-color: rgba(255, 255, 255, .8);;
+        bottom: 0;
+        color: rgb(112, 154, 109);
+        font-family: "Open Sans", sans-serif;
+        font-size: 14pt;
+        font-weight: bold;
+        height: 35px;
+        left: 0;
+        margin: 0;
+        padding: 5px 0 0 9px;
+        position: absolute;
+        text-align: left;
+        width: 260px;
+    }
+
+</style>
+
+
+<div id=" + nameBoxId + " class='text-center nameContainer'>
+</div>
+
+<img class='pictureBox' style="height: {{ height }}px "
+    {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
+             src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
+    {% else %}
+             src="/static/img/coming-soon-profile.png">
+    {% endif %}
+>
