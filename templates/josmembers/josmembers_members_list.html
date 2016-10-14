@@ -16,85 +16,70 @@
 
 {% block all_content %}
 
-    <div class="josinstructions" style="margin-top: 30px;"><b>My teams:</b></div>
+    <style>
+
+        .particBox {
+            background-color: white;
+            display: inline-block;
+            margin: 0 0 0 20px;
+            outline: 2px solid rgb(65, 45, 120);
+            padding: 0;
+            z-index: -1;
+        }
+
+        .pictureBox {
+            background-color: white;
+
+        }
+
+        .nameBox {
+            background-color: rgba(255, 255, 255, .8);
+            color: green;
+            text-align: center;
+            height: auto;
+            width: auto;
+        }
+
+    </style>
+
+    <div class="josinstructions" style="margin-top: 15px;"><b>My teams:</b></div>
 
     <div class="row">
 
-        <div class="col-xs-12" style="margin-top: 15px;">
-            teams_list: {{ teams_list }}<br><br>
+        <div class="col-xs-12">
 
-            {% for team_dict in teams_list %}
-                name: {{ team_dict.name }}<br>
-                {% for user in team_dict.users %}
-                    user: {{ user }}<br>
-                {% endfor %}<br>
+            {% if teams_list %}
+                {% for team_dict in teams_list %}
 
-            {% endfor %}
+                    <div class="row" style="margin-top: 20px;
+                                            padding: 10px 0;
+                                            border: solid 1px rgba(65,45, 120, .2);
+                                            {% if forloop.counter|divisibleby:2 %}
+                                                background-color: rgba(65,45, 120, .2);
+                                            {% endif %}">
+                        <div class="col-xs-2 text-center" style="font-size: 24pt; font-weight: bold; margin-left: -30px; padding: 40px 0 0 0;">
+                            {{ team_dict.name }}
+                        </div>
+
+                        <div class="col-xs-8" style="margin-left: -30px; padding: 0;">
+
+                            {% for usr in team_dict.users %}
+                                {% include "user_picture.html" with user=usr height=100 %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                {% endfor %}
 
 
-{#            {% if teams.count > 0 %}#}
-{#                <table>#}
-{#                <tbody>#}
-{#                {% for team in teams %}#}
-{##}
-{#                    {{ team.name }}: {{ team.member_id_list }}<br>#}
-{##}
-{#                    {% for user in team_users %}#}
-{##}
-{#                    <tr>#}
-{#                        <td style="width: 15%;">#}
-{##}
-{#                            {{ team.name | title }}:#}
-{##}
-{#                        </td>#}
-{#                        <td style="color: rgb(65,45,120); width: 25%;">#}
-{#                            {{ team.member_id_list }}#}
-{##}
-{#                            {% for id in team.member_id_list %}#}
-{#                                {% if favorite.JOSProfile.profile_image_id_str != "noimage1" %}#}
-{#                                    <img class="img-responsive" style="display: inline; max-height: 75px;"#}
-{#                                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ favorite.JOSProfile.profile_image_id_str }}">#}
-{#                                {% else %}#}
-{#                                    <img class="img-responsive"#}
-{#                                         style="background-color: white; display: inline; max-height: 75px;"#}
-{#                                         src="/static/img/coming-soon-profile.png">#}
-{#                                {% endif %}#}
-{#                            {% endfor %}#}
-{##}
-{##}
-{#                            {{ favorite.JOSProfile.jos_name }}#}
-{#                        </td>#}
-{#                        <td style="width: 60%;">#}
-{#                            <a class="btn btn-default"#}
-{#                               style="margin-left: 10px; width: 150px;"#}
-{#                               href="{% url "profile" favorite.id %}">#}
-{#                                View profile#}
-{#                            </a>#}
-{##}
-{#                            <a class="btn btn-default"#}
-{#                               style="margin-left: 10px; width: 150px;"#}
-{#                               href="{% url 'josmessages:messages_compose' favorite.id %}">#}
-{#                                Message#}
-{#                            </a>#}
-{##}
-{#                            <a class="btn btn-default"#}
-{#                               style="margin-left: 10px; width: 150px;"#}
-{#                               href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">#}
-{#                                Unfavorite#}
-{#                            </a>#}
-{##}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#                </tbody>#}
-{#                </table>#}
-{#            {% else %}#}
-{#                -- Join a team?#}
-{#            {% endif %}#}
+            {% else %}
+                -- Join a team?
+            {% endif %}
         </div>
     </div>
 
-    <div class="josinstructions" style="margin-top: 30px;"><b>My friends:</b></div>
+    <div class="josinstructions" style="margin-top: 30px;"><b>My favorites:</b></div>
 
     <div class="row">
         <div class="col-xs-12" style="margin-top: 15px;">
@@ -107,7 +92,7 @@
 
                         <tr>
                             <td style="width: 15%;">
-                                {% include "user_picture.html" with user=favorite height=100 %}
+                                {% include "user_picture.html" with user=favorite height=120 %}
                             </td>
                             <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
                                 {{ favorite.JOSProfile.jos_name }}
