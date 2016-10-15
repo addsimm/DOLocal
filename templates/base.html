@@ -191,7 +191,7 @@
                     {% trans "Log out " %}
                 </a>
 
-                <div class="pull-right" style=" color: green; font-family: 'Stalemate', cursive; font-size: 26pt; font-weight: bold; margin-right: 15px;">
+                <div class="pull-right" style=" color: green; font-family: 'Stalemate', cursive; font-size: 34pt; font-weight: bold; margin: -10px 20px 0 0;">
                     {{ request.user.JOSProfile.jos_name }}
                 </div>
             {% else %}
@@ -205,7 +205,7 @@
             {% if request.user.is_staff %}
 
                 <a class="josstaffbutton  pull-right"
-                   style="font-size: 14pt; margin-right: 10px;"
+                   style="font-size: 14pt; margin-right: 15px;"
                    href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
                     {% trans "> Staff <" %}
                 </a>

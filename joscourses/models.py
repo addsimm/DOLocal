@@ -115,6 +115,7 @@ class JOSHandout(TimeStamped, models.Model):
         (12, "Template"),
         (13, "Transcript"),
         (14, "Video"),
+        (15, "Sample"),
         (99, "Other"),
     )
 
