@@ -53,16 +53,19 @@
 .slider.slider-horizontal .slider-handle {
   margin-left: -10px;
 }
-.slider.slider-horizontal .slider-tick.triangle,
-.slider.slider-horizontal .slider-handle.triangle {
+.slider.slider-horizontal .slider-tick.triangle {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   border-width: 0 10px 10px 10px;
   width: 0;
   height: 0;
-  border-bottom-color: #0480be;
+  border-bottom-color: transparent;
   margin-top: 0;
+}
+
+.slider.slider-horizontal .slider-handle.triangle {
+    border-bottom-color: rgb(65,45,120);
 }
 .slider.slider-horizontal .slider-tick-container {
   white-space: nowrap;
@@ -81,13 +84,13 @@
   text-align: center;
 }
 .slider.slider-vertical {
-  height: 210px;
-  width: 20px;
+  height: 120px;
+  width: 30px;
 }
 .slider.slider-vertical .slider-track {
-  width: 10px;
+  width: 20px;
   height: 100%;
-  left: 25%;
+  left: 0;
   top: 0;
 }
 .slider.slider-vertical .slider-selection {
@@ -106,13 +109,16 @@
 .slider.slider-vertical .slider-handle {
   margin-top: -10px;
 }
-.slider.slider-vertical .slider-tick.triangle,
-.slider.slider-vertical .slider-handle.triangle {
+.slider.slider-vertical .slider-tick.triangle {
   border-width: 10px 0 10px 10px;
   width: 1px;
   height: 1px;
-  border-left-color: #0480be;
+  border-left-color: transparent;
   margin-left: 0;
+}
+
+.slider.slider-vertical .slider-handle.triangle {
+    border-left-color: rgb(65,45,120);
 }
 .slider.slider-vertical .slider-tick-label-container {
   white-space: nowrap;
@@ -151,40 +157,23 @@
 .slider-track {
   position: absolute;
   cursor: pointer;
-  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #f9f9f9 100%);
-  background-image: -o-linear-gradient(top, #f5f5f5 0%, #f9f9f9 100%);
-  background-image: linear-gradient(to bottom, #f5f5f5 0%, #f9f9f9 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  background-image: none;
+  background-color: white;
 }
 .slider-selection {
   position: absolute;
-  background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: -o-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#fff5f5f5', GradientType=0);
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+  background-image: none;
+  background-color: rgb(231, 209, 222);
   box-sizing: border-box;
   border-radius: 4px;
 }
 .slider-selection.tick-slider-selection {
-  background-image: -webkit-linear-gradient(top, #89cdef 0%, #81bfde 100%);
-  background-image: -o-linear-gradient(top, #89cdef 0%, #81bfde 100%);
-  background-image: linear-gradient(to bottom, #89cdef 0%, #81bfde 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff89cdef', endColorstr='#ff81bfde', GradientType=0);
+  background-color: rgb(231, 209, 222);
 }
 .slider-track-low,
 .slider-track-high {
   position: absolute;
-  background: transparent;
+  background: #f0ad4e;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -195,45 +184,33 @@
   top: 0;
   width: 20px;
   height: 20px;
-  background-color: #337ab7;
-  background-image: -webkit-linear-gradient(top, #149bdf 0%, #0480be 100%);
-  background-image: -o-linear-gradient(top, #149bdf 0%, #0480be 100%);
-  background-image: linear-gradient(to bottom, #149bdf 0%, #0480be 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf', endColorstr='#ff0480be', GradientType=0);
+  background-color: rgb(65, 45, 120);
+  background-image: none;
   filter: none;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: none;
   border: 0px solid transparent;
 }
 .slider-handle.round {
   border-radius: 50%;
 }
 .slider-handle.triangle {
-  background: transparent none;
+  background: rgb(65, 45, 120);
 }
 .slider-handle.custom {
   background: transparent none;
 }
 .slider-handle.custom::before {
-  line-height: 20px;
-  font-size: 20px;
-  content: '\2605';
-  color: #726204;
+  line-height: 1px;
+  font-size: 1px;
+  content: ' ';
+  color: transparent;
 }
 .slider-tick {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: -o-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
+  background-image: none;
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#fff5f5f5', GradientType=0);
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   filter: none;
   opacity: 0.8;
@@ -249,16 +226,9 @@
   background: transparent none;
 }
 .slider-tick.custom::before {
-  line-height: 20px;
-  font-size: 20px;
-  content: '\2605';
-  color: #726204;
+  line-height: 1px;
+  font-size: 1px;
+  content: ' ';
+  color: transparent;
 }
-.slider-tick.in-selection {
-  background-image: -webkit-linear-gradient(top, #89cdef 0%, #81bfde 100%);
-  background-image: -o-linear-gradient(top, #89cdef 0%, #81bfde 100%);
-  background-image: linear-gradient(to bottom, #89cdef 0%, #81bfde 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff89cdef', endColorstr='#ff81bfde', GradientType=0);
-  opacity: 1;
-}
+

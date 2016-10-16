@@ -28,27 +28,6 @@
         overflow-y: scroll;
     }
 
-    .slider-selection {
-        background: #81bfde;
-    }
-
-    .slider-rangeHighlight {
-        background: #f70616;
-    }
-
-    .slider-handle.custom {
-        background: transparent none;
-        /* You can customize the handle and set a background image */
-    }
-
-    /* Or display content like unicode characters or fontawesome icons */
-    .slider-handle.custom::before {
-        line-height: 20px;
-        font-size: 20px;
-        content: '\2605'; /*unicode star character*/
-        color: rgb(65, 45, 120);
-    }
-
 </style>
 
 <div class="row" style="margin-top: 0;">
@@ -175,8 +154,8 @@
                 {% endif %}
         </a><br>
 
-        <div class='row text-center' style="margin-top: 200px;">
-            Share
+        <div class='row text-center' style="margin-top: 170px;">
+            <span class="homehead" style="font-size: 20pt;">Share<br>slider</span>
 
             <form class='text-left' style="margin: 30px 0 0 30px;">
 
@@ -365,16 +344,15 @@
 
         $("#ex13").slider({
             id: "slider13",
-            min: 1,
+            handle: 'triangle',
             max: 3,
-            step: 1,
-            value: 1,
-            snap_bounds: 30,
+            min: 1,
             orientation: "vertical",
+            snap_bounds: 20,
+            step: 1,
             ticks: [1, 2, 3],
-            ticks_labels: ["Me", "My team", "Public"],
-            rangeHighlights:   [{"start": 2, "end": 3}],
-            handle: "custom"
+            ticks_labels: ["Only me", "My team", "Public"],
+            value: 1
         });
     });
 
