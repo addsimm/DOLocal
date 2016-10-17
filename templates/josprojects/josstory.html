@@ -28,12 +28,20 @@
         overflow-y: scroll;
     }
 
+    .desk-button {
+        display: block;
+        font-size: 16pt;
+        min-height: 50px;
+        margin-top: 20px;
+        padding-top: 10px;
+    }
+
 </style>
 
 <div class="row" style="margin-top: 0;">
 
 <!-- Main Panel -->
-<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120); height: 950px; width: 88%;">
+<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120); height: 950px;">
 
     <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
 
@@ -114,26 +122,22 @@
     </div>
 </div>
 
-
-<div id="editing_side_panel" class="col-xs-2" style="width: 12%;">
-
-    <div style="height: 70px; text-align: center;">
-        {% if not edit %}
-            <span class="joshint"
-                  data-toggle="tooltip"
-                  title="The story column on left scrolls"
-                  data-placement="bottom">
-                Hint: Story scrolls
-            </span>
-        {% endif %}
-    </div>
+<!-- Side Panel Controls -->
+<div id="editing_side_panel" class="col-xs-2" style=" ">
 
     {% include "updated.html" with myobj=story %}<br>
 
+    <!-- Discuss -->
+    <a class="btn pull-right btn-default"
+       style="margin-top: 20px;" href="#discuss">
+        {% trans "Discuss" %}
+    </a><br>
+
     {% if story.author == request.user %}
 
+        <!-- Edit -->
         <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px;"
+           style="margin-top: 20px;"
                 {% if edit %}
                     href="{% url "josstory" story.id %}">
                     {% trans "Hide" %}
@@ -143,54 +147,23 @@
                 {% endif %}
         </a><br>
 
-        <a class="btn pull-right {% if story.publish %}btn-danger{% else %}btn-success{% endif %}"
-           style="margin-top: 30px;"
-                {% if story.publish %}
-           href="{% url "josstory" story.id %}/?pub=remove">
-                    {% trans "Unshare" %}
-                {% else %}
-                    href="{% url "josstory" story.id %}/?pub=publish">
-                    {% trans "Share" %}
-                {% endif %}
-        </a><br>
+        <!-- Share slider -->
+        <div class='row text-center' style="margin-top: 150px;">
+            <span class="homehead" style="font-size: 20pt;">Sharing</span>
 
-        <div class='row text-center' style="margin-top: 170px;">
-            <span class="homehead" style="font-size: 20pt;">Share<br>slider</span>
+            <div class='text-left' style="margin: 30px 0 0 30px;">
 
-            <form class='text-left' style="margin: 30px 0 0 30px;">
+                <input name="permission_slider" title='permission_slider' id="ex13">
 
-                <input id="ex13" name="permission_slider">
-
-            </form>
+            </div>
 
         </div>
 
-        <a class="btn pull-right btn-warning"
-           style="margin-top: 50px;"
-           href="{% url "mystory_list" %}">
-            {% trans "Stories" %}
-        </a>
-
-    {% endif %}<br>
-
-    {% if story.author != request.user %}
-
-        <a class="btn pull-right btn-warning"
-           style="margin-top: 30px;"
-           href="{% url "story_gallery" %}">
-            {% trans "Gallery" %}
-        </a><br>
-
     {% endif %}
 
-    {# discuss #}
-    <a class="btn pull-right btn-default"
-       style="margin-top: 90px;" href="#discuss">
-        {% trans "Discuss" %}
-    </a><br>
+    {% include 'library_include.html' %}
 
 </div>
-
 
 <!-- Discussion -->
 <div class="row">
@@ -336,24 +309,26 @@
 
 <script>
 
+    $("#ex13").slider({
+                id: "slider13",
+                handle: 'triangle',
+                max: 3,
+                min: 1,
+                orientation: "vertical",
+                snap_bounds: 20,
+                step: 1,
+                ticks: [1, 2, 3],
+                ticks_labels: ["Only me", "My team", "Public"],
+                value: {{ story.publish_permission }}
+            })
+            .on('slideStop', function (slideStopEvt) {
+                // alert('slider: ' + slideStopEvt.value);
+                window.location.href = "{% url "josstory" story.id %}/?pubperm=" + slideStopEvt.value;
+            });
+
     $(document).ready(function () {
-
         CKEDITOR.disableAutoInline = true;
-
         $('[data-toggle="tooltip"]').tooltip();
-
-        $("#ex13").slider({
-            id: "slider13",
-            handle: 'triangle',
-            max: 3,
-            min: 1,
-            orientation: "vertical",
-            snap_bounds: 20,
-            step: 1,
-            ticks: [1, 2, 3],
-            ticks_labels: ["Only me", "My team", "Public"],
-            value: 1
-        });
     });
 
 </script>
@@ -361,11 +336,6 @@
 
 {% endblock %}
 
-<!-- Side Panel -->
-{#<div id="editing_side_panel_hint"#}
-{#     class="col-xs-2 fixed hidden"#}
-{#     style="font-size: 18pt; margin-top: 90px;">#}
-{#    Hint:<br>Choose "Discard" or "Save" to exit editing mode#}
-{#</div>#}
+
 
 

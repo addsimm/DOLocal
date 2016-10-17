@@ -34,7 +34,7 @@ class JOSStory(TimeStamped, models.Model):
     author = models.ForeignKey(User)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
-    publish = models.BooleanField(default=False)
+    publish_permission = models.IntegerField(default=1)
     tags = TaggableManager()
 
     def get_jos_name(author):

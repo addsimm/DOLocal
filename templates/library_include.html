@@ -1,0 +1,29 @@
+<div class="row text-center" style="margin: 40px 0 -15px 0;">
+    <span class="homehead" style="font-size: 20pt;">Library</span>
+</div>
+
+<a class="desk-button text-center" href="{% url "story_gallery" %}">
+    Published
+</a>
+
+<div style="border-top: 1px solid rgb(45,25,160); margin: 20px 0 -10px 0;"></div>
+
+{% for team in user.JOSProfile.teams.all %}
+
+    <a class="desk-button text-center" href="{% url "story_gallery" %}/?team={{ team.id }}">
+        Team: {{ team }}
+    </a>
+
+{% endfor %}
+
+<div style="border-top: 1px solid rgb(45,25,160); margin: 10px 0 0 0;"></div>
+
+<a class="desk-button text-center" href="{% url "mystory_list" %}">
+    My stories
+</a>
+
+<a class="btn btn-default"
+   style="margin-top: 20px; width: 100%;"
+   href="{% url 'josstory' %}/0">
+    New story
+</a>
