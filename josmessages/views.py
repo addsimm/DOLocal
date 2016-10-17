@@ -9,9 +9,12 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.timezone import activate
 from django.db.models import Q
+
 from josmessages.models import Message, JOSMessageThread
 from josmessages.forms import JOSComposeForm, JOSReplyForm
 from josmessages.utils import get_user_model
+
+from josmembers.models import JOSTeam
 
 User = get_user_model()
 
@@ -109,17 +112,31 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
         ``success_url``: where to redirect after successfully submission
     """
 
+
+    recipients = []
+    team_name = request.GET.get('team', None)
+    if team_name != None:
+        team = get_object_or_404(JOSTeam, name=team_name)
+        team_member_ids = team.member_id_list()
+        if len(team_member_ids) > 0:
+            for member_id in team_member_ids:
+                recipient = User.objects.get(id=member_id)
+                recipients.append(recipient)
+    else:
+        recipient = User.objects.get(id=id)
+        recipients.append(recipient)
+
     form = form_class()
-    recipient = User.objects.get(id=id)
+
     if request.method == "POST":
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             mt = JOSMessageThread.objects.create(
                 subject = request.POST["subject"],
-                last_recipient = recipient,
+                last_recipients = recipients,
                 message_count = 1)
 
-            msg = form.save(sender=request.user, recipient=recipient, message_thread=mt)
+            msg = form.save(sender=request.user, recipients=recipients, message_thread=mt)
             mt.last_message_id = msg.id
             mt.save()
             messages.info(request, _(u"Message successfully sent."))
@@ -128,7 +145,7 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
 
     return render_to_response(template_name, {
         "form": form,
-        "recipient": recipient
+        "recipients": recipients
     }, context_instance=RequestContext(request))
 
 

@@ -100,7 +100,7 @@
                  style="padding: 8px;">
 
                 <!-- Buttons -->
-                {% include "jos_editor.html" with section='aboutme' %}
+                {% include "josprojects/jos_editor.html" with section='aboutme' %}
 
                 <div class="row">
                     <form id='aboutme_form' method="post"
@@ -137,7 +137,7 @@
         </span>
     </div>
 
-    {% include "updated.html" with myobj=profile %}
+    {% include "josprojects/updated.html" with myobj=profile %}
 
     {% if profile.user == request.user %}
 

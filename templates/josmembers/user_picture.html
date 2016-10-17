@@ -1,38 +1,36 @@
-
+{% load static %}
 <style>
 
     .particBox {
-        background-color: white;
+        background-color: transparent;
         display: inline-block;
         margin: 0 0 0 20px;
-        outline: 2px solid rgb(65, 45, 120);
         padding: 0;
-        z-index: -1;
+        text-align: center;
     }
 
     .pictureBox {
         background-color: white;
-
+        outline: 1px solid rgb(65, 45, 120);
     }
 
     .nameBox {
-        background-color: rgba(255, 255, 255, .8);
+        background-color: transparent;
         color: green;
-        text-align: center;
         height: auto;
         width: auto;
     }
 
 </style>
 
-<div class="particBox" style="width: {{ height }}px; height: {{ height }}px;">
+<div class="particBox" style="width: {{ height |add:20 }}px; height: {{ height }}px;">
 
     <img class='pictureBox' style="width: {{ height }}px; height: {{ height }}px;"
         {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
                  src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
         {% else %}
                  src="/static/img/coming-soon-profile.png"
-        {% endif %}>
+        {% endif %}><br>
 
     <div class='nameBox'>
         {{ user.JOSProfile.jos_name }}

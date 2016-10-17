@@ -26,6 +26,7 @@ class JOSProfileAdmin(admin.ModelAdmin):
 
     verbose_name = 'Member profile'
 
+    list_display = ("id", "user",)
     readonly_fields = ('created', 'updated',)
     filter_horizontal = ('teams',)
 

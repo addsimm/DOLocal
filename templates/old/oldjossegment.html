@@ -36,7 +36,7 @@
                  style="padding: 3px;">
 
                 <!-- Title Edit Buttons -->
-                {% include "jos_editor.html" with section='title' %}
+                {% include "josprojects/jos_editor.html" with section='title' %}
 
                 <div class="row">
                     <form id='title_form'
@@ -65,7 +65,7 @@
                  style="padding: 3px;">
 
                 <!-- Content Edit Buttons -->
-                {% include "jos_editor.html" with section='content' %}
+                {% include "josprojects/jos_editor.html" with section='content' %}
 
                 <div class="row">
                     <form id='content_form' method="post"
@@ -106,7 +106,7 @@
         {% endif %}
     </div>
 
-    {% include "updated.html" with myobj=handout %}<br>
+    {% include "josprojects/updated.html" with myobj=handout %}<br>
 
     {% if request.user.is_staff %}
 

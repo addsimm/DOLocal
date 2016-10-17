@@ -7,6 +7,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.models import TimeStamped
+from josmessages.fields import CommaSeparatedUserField
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
@@ -42,6 +43,7 @@ class JOSMessageThread(TimeStamped, models.Model):
 
     is_deleted = models.BooleanField(verbose_name=_("Deleted"), default=False)
     last_message_id = models.IntegerField(null=True, blank=True, default=0)
+    last_recipients = CommaSeparatedUserField(label=_(u"Last_recipients"))
     last_recipient = models.ForeignKey(AUTH_USER_MODEL, null=True, blank=True, verbose_name=_("Last recipient"))
     message_count = models.IntegerField(default=0)
     subject = models.CharField(_("subject"), max_length=255, blank=True)

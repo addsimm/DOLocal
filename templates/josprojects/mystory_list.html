@@ -51,7 +51,7 @@
                     <th data-sortable="true">Title</th>
                     <th data-sortable="true">Created</th>
                     <th>Last change</th>
-                    <th data-sortable="true">Publish?</th>
+                    <th data-sortable="true">Share</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,11 +64,16 @@
                         </td>
                         <td style="text-align:center;">{{ story.created | date:"M d" }}; {{ story.created | time:"f A" }}</td>
                         <td style="text-align:center;">{{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
-                        <td style="text-align:center;">
-                            {% if story.publish %}
-                                &nbsp&nbsp&nbsp
-                                <i class="fa fa-circle fa-fw" style="color: green;"></i>
+                        <td style=" ">
+
+                            {% if story.publish_permission == 1 %}
+                                <span style="color: red">Me</span>
+                            {% elif story.publish_permission == 2 %}
+                                <span style="color: yellow">My team</span>
+                            {% else %}
+                                <span style="color: green">All</span>
                             {% endif %}
+
                         </td>
                     </tr>
                 {% endfor %}

@@ -63,7 +63,7 @@
                  style="padding: 3px;">
 
                 <!-- Title Edit Buttons -->
-                {% include "jos_editor.html" with section='title' %}
+                {% include "josprojects/jos_editor.html" with section='title' %}
 
                 <div class="row">
                     <form id='title_form'
@@ -103,7 +103,7 @@
                  style="padding: 3px;">
 
                 <!-- Content Edit Buttons -->
-                {% include "jos_editor.html" with section='content' %}
+                {% include "josprojects/jos_editor.html" with section='content' %}
 
                 <div class="row">
                     <form id='content_form' method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
@@ -125,7 +125,7 @@
 <!-- Side Panel Controls -->
 <div id="editing_side_panel" class="col-xs-2" style=" ">
 
-    {% include "updated.html" with myobj=story %}<br>
+    {% include "josprojects/updated.html" with myobj=story %}<br>
 
     <!-- Discuss -->
     <a class="btn pull-right btn-default"
@@ -161,7 +161,7 @@
 
     {% endif %}
 
-    {% include 'library_include.html' %}
+    {% include 'josprojects/library_include.html' %}
 
 </div>
 

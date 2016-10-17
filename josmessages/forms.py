@@ -64,9 +64,9 @@ from josmessages.fields import CommaSeparatedUserField
 
 class JOSComposeForm(forms.Form):
     """
-    A jos message form that hides sender.
+    A jos compose message form that hides sender and fixes the recipients.
     """
-    recipient = CommaSeparatedUserField(label=_(u"Recipient"))
+    recipients = CommaSeparatedUserField(label=_(u"Recipients"))
     subject = forms.CharField(label=_(u"Subject"), max_length=120)
     body = forms.CharField(label=_(u"Body"),
                            widget=forms.Textarea(attrs={'rows': '15', 'cols': '65'}))
@@ -75,27 +75,28 @@ class JOSComposeForm(forms.Form):
         recipient_filter = kwargs.pop('recipient_filter', None)
         super(JOSComposeForm, self).__init__(*args, **kwargs)
         if recipient_filter is not None:
-            self.fields['recipient']._recipient_filter = recipient_filter
+            self.fields['recipients']._recipient_filter = recipient_filter
 
-        self.fields['recipient'].requred = False
+        self.fields['recipients'].requred = False
         self.fields['subject'].required = True
         self.fields['body'].required = True
         self.fields['body'].label = "Message"
 
-    def save(self, sender=None, recipient=None, message_thread=None):
+    def save(self, sender=None, recipients=None, message_thread=None):
         body = self.cleaned_data['body']
-        msg = Message.objects.create(
-            body=body,
-            message_thread=message_thread,
-            sender=sender,
-            recipient=recipient,
-            sent_at=timezone.now()
-        )
-        msg.save()
+        for recipient in recipients:
+            msg = Message.objects.create(
+                body=body,
+                message_thread=message_thread,
+                sender=sender,
+                recipient=recipient,
+                sent_at=timezone.now()
+            )
+            msg.save()
 
         if notification:
             notification.send([sender], "messages_sent", {'message': msg,})
-            notification.send([recipient], "messages_received", {'message': msg,})
+            notification.send([recipients], "messages_received", {'message': msg,})
         return msg
 
 
