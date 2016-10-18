@@ -156,7 +156,7 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def temasystest(request, incognito=False, jos_id=0, template="temasys_test.html"):
+def temasystest(request, incognito=False, jos_id=0, template="josprojects/temasys_test.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
     try:
         user = get_object_or_404(User, pk=jos_id)
@@ -178,7 +178,7 @@ def temasystest(request, incognito=False, jos_id=0, template="temasys_test.html"
 
 
 @login_required
-def workshop_connect(request, template="workshop_connect.html"):
+def workshop_connect(request, template="josprojects/workshop_connect.html"):
     context = {}
     return TemplateResponse(request, template, context)
 
