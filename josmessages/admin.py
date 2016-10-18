@@ -4,7 +4,7 @@ from josmessages.models import Message, JOSMessageThread
 
 class MessageAdmin(admin.ModelAdmin):
 
-    list_display = ("id", "message_thread", "sender", "recipient", "body", "sent_at", "read_at", "replied_at")
+    list_display = ("id", "message_thread", "sender", "recipient", "subject", "sent_at")
     list_filter  = ("message_thread", "sent_at")
 
 admin.site.register(Message, MessageAdmin)

@@ -114,10 +114,12 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
 
 
     recipients = []
+    recip_ids =[]
     team_name = request.GET.get('team', None)
     if team_name != None:
         team = get_object_or_404(JOSTeam, name=team_name)
         team_member_ids = team.member_id_list()
+        recip_ids = team_member_ids
         if len(team_member_ids) > 0:
             for member_id in team_member_ids:
                 recipient = User.objects.get(id=member_id)
@@ -125,27 +127,24 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
     else:
         recipient = User.objects.get(id=id)
         recipients.append(recipient)
+        recip_ids.append(id)
 
     form = form_class()
 
     if request.method == "POST":
-        form = form_class(request.POST, recipient_filter=recipient_filter)
-        if form.is_valid():
-            mt = JOSMessageThread.objects.create(
-                subject = request.POST["subject"],
-                last_recipients = recipients,
-                message_count = 1)
+        recipients = request.POST.get('recipient_ids_submit', 'missing')
 
-            msg = form.save(sender=request.user, recipients=recipients, message_thread=mt)
-            mt.last_message_id = msg.id
-            mt.save()
-            messages.info(request, _(u"Message successfully sent."))
+        form = form_class(request.POST)
+        if form.is_valid():
+            form.save(sender=request.user, recip_ids=recip_ids)
+            messages.info(request, "Message successfully sent.")
 
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     return render_to_response(template_name, {
         "form": form,
-        "recipients": recipients
+        "recipients": recipients,
+        "recip_ids": recip_ids
     }, context_instance=RequestContext(request))
 
 

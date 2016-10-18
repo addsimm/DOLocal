@@ -14,34 +14,26 @@
     <div class="josinstructions" style="margin: 50px 0 15px 0;">Send new message to:</div>
 
     {% for recipient in recipients %}
-
         {% include "josmembers/user_picture.html" with user=recipient height=60 %}
-
     {% endfor %}
 
     <div class="row" style="margin: 30px 0 0 0">
-
     <form action="" method="post">
         {% csrf_token %}
 
         <div style="margin-left: 60px;">
-
+            <input id="id_recipients" type='hidden' value="{{ recip_ids }}" name="recipient_ids_submit">
             {% for field in form %}
-                {% if field.label == "Recipient" %}
-                    {{ field.as_hidden }}
-                    <input id="id_recipients"
-                           type="hidden" value="{{ recipients }}"
-                           name="recipients_submit">
-                {% else %}
-                    <div class="form-group input_{{ field.id_for_label }}
-                                                         {{ field.field.type }}
-                                                         {% if field.errors %}
-                                                            has-error
-                                                         {% endif %}">
+
+                    <div class="form-group input_
+                                {{ field.id_for_label }}
+                                {{ field.field.type }}
+                                {% if field.errors %}has-error{% endif %}">
+
                         {# field.name #}
                         {% if field.label %}
-                            <label class="control-label"
-                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label | title }}
+                            </label>
                         {% endif %}
 
                         {{ field }}
@@ -52,7 +44,6 @@
                                     {% if not forloop.first %} / {% endif %}{{ e }}
                                 {% endfor %}
                             </p>
-
                         {% elif field.help_text %}
                             <p class="help-block">
                                 {{ field.help_text }}
@@ -60,7 +51,7 @@
                         {% endif %}
 
                     </div>
-                {% endif %}
+
             {% endfor %}
 
             <a class="btn btn-warning"
@@ -71,15 +62,13 @@
 
             <input class="btn btn-default"
                    style="margin-left: 10px; width: 100px;"
-                   type="submit" value="Send">
+                   type="submit"
+                   value="Send">
 
         </div>
-
     </form>
-
     </div>
 </div>
-
 </div>
 
 
