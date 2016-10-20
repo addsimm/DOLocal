@@ -3,20 +3,16 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.timezone import activate
-from django.db.models import Q
+from django.contrib.auth.models import User
 
 from josmessages.models import Message, JOSMessageThread
 from josmessages.forms import JOSComposeForm, JOSReplyForm
-from josmessages.utils import get_user_model
 
 from josmembers.models import JOSTeam
-
-User = get_user_model()
 
 if "notification" in settings.INSTALLED_APPS and getattr(settings, "JOSMESSAGES_NOTIFY", True):
     from notification import models as notification
@@ -91,13 +87,14 @@ def delete(request, message_thread_id=0):
         message.recipient_deleted_at = now
         message.save()
 
-    messages.info(request, _(u"Message successfully deleted."))
+    messages.info(request, "Message successfully deleted.")
     return redirect('http://www.joinourstory.com/messages/inbox/')
 
 
 ### JOS Messaging
 @login_required
-def jos_message_compose(request, id=None, form_class=JOSComposeForm,
+def jos_message_compose(request, id=None,
+                        form_class=JOSComposeForm,
                         template_name="josmessages/compose.html",
                         recipient_filter=None):
     """
@@ -112,10 +109,11 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
         ``success_url``: where to redirect after successfully submission
     """
 
-
-    recipients = []
     recip_ids =[]
+    recipients = []
+
     team_name = request.GET.get('team', None)
+
     if team_name != None:
         team = get_object_or_404(JOSTeam, name=team_name)
         team_member_ids = team.member_id_list()
@@ -132,19 +130,43 @@ def jos_message_compose(request, id=None, form_class=JOSComposeForm,
     form = form_class()
 
     if request.method == "POST":
-        recipients = request.POST.get('recipient_ids_submit', 'missing')
+        if request.method == "POST":
+            form = JOSReplyForm(request.POST)
+            if form.is_valid():
+                body = request.POST["body"]
+                subject = request.POST["subject"]
 
-        form = form_class(request.POST)
-        if form.is_valid():
-            form.save(sender=request.user, recip_ids=recip_ids)
-            messages.info(request, "Message successfully sent.")
+                mt = JOSMessageThread.objects.create(subject=subject)
+                mt.save()
 
-            return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
+                for recip_id in recip_ids:
+                    try:
+                        recipient = get_object_or_404(User, pk=recip_id)
+                    except:
+                        continue
+                    msg = Message.objects.create(
+                            body=body,
+                            message_thread=mt,
+                            sender=request.user,
+                            recipient=recipient,
+                            sent_at=timezone.now()
+                    )
+
+                    msg.save()
+
+                messages.info(request, "Message successfully sent.")
+
+                if notification:
+                    # notification.send([sender], "messages_sent", {'message': msg,})
+                    # notification.send([recipients], "messages_received", {'message': msg,})
+                    # return msg
+                    pass
+
+                return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     return render_to_response(template_name, {
         "form": form,
-        "recipients": recipients,
-        "recip_ids": recip_ids
+        "recipients": recipients
     }, context_instance=RequestContext(request))
 
 
@@ -155,49 +177,43 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     """
     activate('America/Los_Angeles')
     message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    last_message = get_object_or_404(Message, id=message_thread.last_message_id)
-    last_message.read_at = timezone.now()
-    last_message.is_last = False
-    if last_message.sender != request.user:
-        recipient = last_message.sender
-    else:
-        recipient = last_message.recipient
-    last_message.save()
+    messages = message_thread.messages.filter(recipient=request.user).order_by("sent_at")
+    for message in messages:
+        if not message.read_at:
+            message.read_at = timezone.now()
+            message.save()
 
+    recipients = message_thread.recipients
     form = JOSReplyForm({"message_thread_id": message_thread.id})
-    bodies = Message.objects.filter(message_thread=message_thread).order_by("sent_at")
 
     if request.method == "POST":
         form = JOSReplyForm(request.POST)
         if form.is_valid():
-            last_message.replied_at = timezone.now()
-            last_message.save()
-            mtid = request.POST["message_thread_id"]
+            for message in messages:
+                if not message.replied_at:
+                    message.replied_at = timezone.now()
+
+            mt_id = request.POST["message_thread_id"]
             body = request.POST["body"]
-            mt = get_object_or_404(JOSMessageThread, pk=mtid)
+            mt = get_object_or_404(JOSMessageThread, pk=mt_id)
 
-            message = Message.objects.create(
-                message_thread=mt,
-                body=body,
-                sender=request.user,
-                recipient =recipient,
-                sent_at=timezone.now(),
-                is_last=True)
-            message.save()
+            for recipient in recipients:
+                message = Message.objects.create(
+                    message_thread=mt,
+                    body=body,
+                    sender=request.user,
+                    recipient =recipient,
+                    sent_at=timezone.now()
+                )
+                message.save()
 
-            mt_count = mt.message_count
-            mt.message_count = mt_count + 1
-            mt.last_message_id = message.id
-            mt.last_recipient = recipient
-            mt.save()
-
-            messages.info(request, _(u"Message successfully sent."))
+            messages.info(request, "Message successfully sent.")
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     context = {"form": form,
                "subject": message_thread.subject,
-               "recipient": recipient,
-               "bodies": bodies,
+               "recipients": recipients,
+               "messages": messages,
                "message_thread_id": message_thread.id}
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
