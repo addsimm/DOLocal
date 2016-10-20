@@ -4,9 +4,8 @@
 
 
 {% block inner_breadcrumb_menu %}
-    <span style="font-size: 18pt;">Messaging about:</span> {{ subject }}
+    <span style="font-size: 18pt;">Subject:</span> {{ subject }}
 {% endblock %}
-
 
 {% block all_content %}
 
@@ -15,23 +14,26 @@
 <div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
 
     <span class="josinstructions">Subject:</span>
-    <span class="homehead"style="margin-left: 10px;">{{ subject }}</span><br><br>
+    <span class="homehead" style="margin-left: 15px;">{{ subject }}</span><br><br>
 
-{% for mess in bodies %}
 
-{% if mess.sender != request.user %}
+
+
+{% for msg in messages %}
+
+{% if msg.sender != request.user %}
 
     <div class="row" style="margin-top: 30px;">
 
         <div class="row">
             <div class="col-xs-6 col-xs-offset-1">
                 <span style="font-size: 20pt; margin-left: -50px;">
-                    {{ mess.sent_at | date:"M d" }}; {{ mess.sent_at | time:"f A" }}
+                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
                 </span>
-                <a class="joslargelinkbutton" href="{% url "profile" mess.sender.id %}"
+                <a class="joslargelinkbutton" href="{% url "profile" msg.sender.id %}"
                    style="margin-left: 5px; margin-right: 10px;">
                     <span style="font-size: 20pt; margin: 0 0 0 5px;">
-                        {{ mess.sender.JOSProfile.jos_name }}
+                        {{ msg.sender.JOSProfile.jos_name }}
                     </span>
                 </a>said:
             </div>
@@ -44,11 +46,11 @@
 
             <div class="col-xs-1">
 
-                {% if "noimage" in mess.sender.JOSProfile.profile_image_id_str %}
+                {% if "noimage" in msg.sender.JOSProfile.profile_image_id_str %}
                     <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/coming-soon-profile.png">
                 {% else %}
                     <img class="img-responsive" style="display: inline; height: 60px;"
-                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_id_str }}">
+                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ msg.sender.JOSProfile.profile_image_id_str }}">
                 {% endif %}
 
             </div>
@@ -58,7 +60,7 @@
                      font-size: 20pt;
                      padding: 15px;">
 
-                "{{ mess.body | striptags | safe }}"
+                "{{ msg.body | striptags | safe }}"
 
             </div>
         </div>
@@ -70,12 +72,12 @@
         <div class="row">
             <div class="col-xs-6 col-xs-offset-6">
                 <span style="font-size: 20pt; margin-left: 7px;">
-                    {{ mess.sent_at | date:"M d" }}; {{ mess.sent_at | time:"f A" }}
+                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
                 </span>
-                <a class="joslargelinkbutton" href="{% url "profile" mess.sender.id %}"
+                <a class="joslargelinkbutton" href="{% url "profile" msg.sender.id %}"
                    style="margin-left: 5px; margin-right: 10px;">
                         <span style="font-size: 20pt; margin: 0 0 0 5px;">
-                            {{ mess.sender.JOSProfile.jos_name }}
+                            {{ msg.sender.JOSProfile.jos_name }}
                         </span>
                 </a>said:
             </div>
@@ -87,15 +89,15 @@
 
             <div class="col-xs-10 col-xs-offset-1"
                  style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
-                "{{ mess.body | striptags | safe }}"
+                "{{ msg.body | striptags | safe }}"
             </div>
 
             <div class="col-xs-1">
-                {% if "noimage" in mess.sender.JOSProfile.profile_image_id_str.profile_image_id_str %}
+                {% if "noimage" in msg.sender.JOSProfile.profile_image_id_str.profile_image_id_str %}
                     <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/coming-soon-profile.png">
                 {% else %}
                     <img class="img-responsive" style="display: inline; height: 60px;"
-                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ mess.sender.JOSProfile.profile_image_id_str }}">
+                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ msg.sender.JOSProfile.profile_image_id_str }}">
                 {% endif %}
             </div>
         </div>
@@ -113,10 +115,7 @@
             <div style="margin-left: 60px;">
 
                 {% for field in form %}
-                    {% if field.name == "recipient" %}
-                        {{ field.as_hidden }}
-                        <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
-                    {% elif field.name == "message_thread_id" %}
+                    {% if field.name == "message_thread_id" %}
                         {{ field.as_hidden }}
                         <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
                     {% else %}
@@ -151,19 +150,11 @@
                 {% endfor %}
 
                 <button id="#button_cancel"
+                        type="button"
                         class="btn btn-warning"
                         style=" "
-                        onclick="cancel()">Cancel
+                        onclick="cancel_reply();">Cancel
                 </button>
-
-                <script>function cancel() {
-                    $('#button_cancel').addClass('hidden');
-                    $('#button_send').addClass('hidden');
-                    $('#reply_thread_form').addClass('hidden');
-                    $('#button_reply').removeClass('hidden');
-                    $('#button_inbox').removeClass('hidden');
-                    $('#button_delete').removeClass('hidden');
-                }</script>
 
                 <input id="#button_send"
                        class="btn btn-default"
@@ -212,6 +203,15 @@
 
 
 <script>
+
+    function cancel_reply() {
+        $('#button_cancel').addClass('hidden');
+        $('#button_send').addClass('hidden');
+        $('#reply_thread_form').addClass('hidden');
+        $('#button_reply').removeClass('hidden');
+        $('#button_inbox').removeClass('hidden');
+        $('#button_delete').removeClass('hidden');
+    }
 
     function activateCKEdit() {
         $('#reply_thread_form').removeClass('hidden');

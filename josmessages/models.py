@@ -18,19 +18,6 @@ class MessageManager(models.Manager):
                 sender_deleted_at__isnull=True,
         )
 
-# class JOSMessageThreadManager(models.Manager):
-#
-#     def trash_for(self, user):
-#         """
-#         Returns all messages that were either received or sent by the given
-#         user and are marked as deleted.
-#         """
-#         return self.filter(
-#             last_recipient=user,
-#             is_deleted=True,
-#         )
-
-
 @python_2_unicode_compatible
 class JOSMessageThread(TimeStamped, models.Model):
     # A holder for messages in a thread
@@ -46,8 +33,8 @@ class JOSMessageThread(TimeStamped, models.Model):
         return Message.objects.filter(message_thread=self)
 
     @property
-    def recipients(self):
-        return Message.objects.filter(message_thread=self).values('recipient').distinct()
+    def messages_distinct_recipients(self):
+        return Message.objects.filter(message_thread=self).distinct('recipient').order_by('recipient')
 
     def __str__(self):
         return self.subject
@@ -112,3 +99,14 @@ if "notification" not in settings.INSTALLED_APPS and getattr(settings, "JOSMESSA
     signals.post_save.connect(new_message_email, sender=Message)
 
 
+# class JOSMessageThreadManager(models.Manager):
+#
+#     def trash_for(self, user):
+#         """
+#         Returns all messages that were either received or sent by the given
+#         user and are marked as deleted.
+#         """
+#         return self.filter(
+#             last_recipient=user,
+#             is_deleted=True,
+#         )

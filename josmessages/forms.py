@@ -20,7 +20,7 @@ else:
 
 class JOSComposeForm(forms.Form):
     """
-    A jos compose message form that hides sender and fixes the recipients.
+    Validates body and subject
     """
     subject = forms.CharField(label=_(u"Subject"), max_length=120)
     body = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '15', 'cols': '65'}))
@@ -36,9 +36,8 @@ class JOSReplyForm(forms.Form):
     """
     Validates body
     """
-    message_thread_id = forms.IntegerField(label=_(u"message_thread"))
-    body = forms.CharField(label=_(u"Body"),
-                           widget=forms.Textarea(attrs={'rows': '15', 'cols': '65'}))
+    message_thread_id = forms.IntegerField(label= "message_thread_id")
+    body = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '15', 'cols': '65'}))
     def __init__(self, *args, **kwargs):
         super(JOSReplyForm, self).__init__(*args, **kwargs)
 

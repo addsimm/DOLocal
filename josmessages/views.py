@@ -27,9 +27,8 @@ def inbox(request, template_name="josmessages/inbox.html"):
     """
     activate('America/Los_Angeles')
 
-    pot_message_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).order_by('-sent_at')
-
-    message_list = pot_message_list.order_by('message_thread__subject').distinct('message_thread__subject')
+    message_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
+        'message_thread__subject').order_by('message_thread__subject', '-sent_at')
 
     return render_to_response(template_name,
                               {"message_list": message_list},
@@ -93,10 +92,7 @@ def delete(request, message_thread_id=0):
 
 ### JOS Messaging
 @login_required
-def jos_message_compose(request, id=None,
-                        form_class=JOSComposeForm,
-                        template_name="josmessages/compose.html",
-                        recipient_filter=None):
+def jos_message_compose(request, id=None, template_name="josmessages/compose.html", recipient_filter=None):
     """
     Displays and handles the ``form_class`` form to compose new messages.
     Required Arguments: None
@@ -127,11 +123,11 @@ def jos_message_compose(request, id=None,
         recipients.append(recipient)
         recip_ids.append(id)
 
-    form = form_class()
+    form = JOSComposeForm()
 
     if request.method == "POST":
         if request.method == "POST":
-            form = JOSReplyForm(request.POST)
+            form = JOSComposeForm(request.POST)
             if form.is_valid():
                 body = request.POST["body"]
                 subject = request.POST["subject"]
@@ -166,7 +162,8 @@ def jos_message_compose(request, id=None,
 
     return render_to_response(template_name, {
         "form": form,
-        "recipients": recipients
+        "recipients": recipients,
+        "recip_ids": recip_ids
     }, context_instance=RequestContext(request))
 
 
@@ -176,44 +173,47 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     Shows a single message thread with reply option.
     """
     activate('America/Los_Angeles')
-    message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    messages = message_thread.messages.filter(recipient=request.user).order_by("sent_at")
-    for message in messages:
-        if not message.read_at:
-            message.read_at = timezone.now()
-            message.save()
 
-    recipients = message_thread.recipients
+    message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
+    all_thread_messages = message_thread.messages
+
+    for msg in all_thread_messages.filter(recipient=request.user):
+        if not msg.read_at:
+            msg.read_at = timezone.now()
+            msg.save()
+
+    msgs = all_thread_messages.distinct('body').order_by('body', '-sent_at')
     form = JOSReplyForm({"message_thread_id": message_thread.id})
 
     if request.method == "POST":
         form = JOSReplyForm(request.POST)
         if form.is_valid():
-            for message in messages:
-                if not message.replied_at:
-                    message.replied_at = timezone.now()
+            for msg in msgs:
+                if not msg.replied_at:
+                    msg.replied_at = timezone.now()
+                    msg.save()
 
             mt_id = request.POST["message_thread_id"]
             body = request.POST["body"]
             mt = get_object_or_404(JOSMessageThread, pk=mt_id)
+            msgs_distinct_recipients = mt.messages_distinct_recipients
 
-            for recipient in recipients:
-                message = Message.objects.create(
+            for msg in msgs_distinct_recipients:
+                send_message = Message.objects.create(
                     message_thread=mt,
                     body=body,
                     sender=request.user,
-                    recipient =recipient,
+                    recipient =msg.recipient,
                     sent_at=timezone.now()
                 )
-                message.save()
+                send_message.save()
 
             messages.info(request, "Message successfully sent.")
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     context = {"form": form,
                "subject": message_thread.subject,
-               "recipients": recipients,
-               "messages": messages,
+               "messages": msgs,
                "message_thread_id": message_thread.id}
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
