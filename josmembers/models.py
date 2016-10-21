@@ -65,7 +65,7 @@ class JOSTeam(TimeStamped, models.Model):
 
     def member_id_list(self):
 
-        members = JOSProfile.objects.values_list('user').filter(teams=self)
+        members = JOSProfile.objects.values_list('user').filter(teams=self).order_by('-user')
 
         member_id_list = []
         for item in members:

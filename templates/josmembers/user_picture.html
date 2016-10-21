@@ -4,7 +4,7 @@
     .particBox {
         background-color: transparent;
         display: inline-block;
-        margin: 0 0 0 20px;
+        margin: 0;
         padding: 0;
         text-align: center;
     }
@@ -32,7 +32,7 @@
                  src="/static/img/coming-soon-profile.png"
         {% endif %}><br>
 
-    <div class='nameBox'>
+    <div class='nameBox' style="width: {{ height |add:20 }}px;">
         {{ user.JOSProfile.jos_name }}
     </div>
 

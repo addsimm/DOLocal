@@ -32,21 +32,24 @@
                                             {% if forloop.counter|divisibleby:2 %}
                                                 background-color: rgba(65,45, 120, .2);
                                             {% endif %}">
-                        <div class="col-xs-2 text-center" style="font-size: 24pt; font-weight: bold; margin-left: -30px; padding: 40px 0 0 0;">
-                            {{ team_dict.name }}
-                        </div>
-
-                        <div class="col-xs-8" style="margin-left: -30px; padding: 0;">
-
-                            {% for usr in team_dict.users %}
-                                {% include "josmembers/user_picture.html" with user=usr height=100 %}
-                            {% endfor %}
+                        <div class="col-xs-3 text-center" style="font-size: 24pt; font-weight: bold; margin-left: -50px; padding: 0;">
+                            {{ team_dict.name }}<br>
 
                             <a class="btn btn-default"
-                               style="margin: -135px 0 0 20px; width: 150px;"
+                               style="margin: 15px 0 0 0; width: 125px;"
                                href="{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}">
                                 Message
                             </a>
+
+                        </div>
+
+                        <div class="col-xs-9" style="margin-left: -60px; padding: 0;">
+
+                            {% for usr in team_dict.users %}
+                                <a href="{% url "profile" favorite.id %}">
+                                    {% include "josmembers/user_picture.html" with user=usr height=90 %}
+                                </a>
+                            {% endfor %}
 
                         </div>
                     </div>
@@ -67,41 +70,34 @@
         <div class="col-xs-12" style="margin-top: 15px;">
 
             {% if  following.count > 0 %}
-                <table>
-                    <tbody>
+
                     {% for favorite in following %}
 
-                        <tr>
-                            <td style="width: 15%;">
-                                {% include "josmembers/user_picture.html" with user=favorite height=120 %}
-                            </td>
-                            <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
-                                {{ favorite.JOSProfile.jos_name }}
-                            </td>
-                            <td style="width: 60%;">
-                                <a class="btn btn-default"
-                                   style="margin-left: 10px; width: 150px;"
+                        <div class="col-xs-3" style="padding: 10px; border: 1px solid rgb(65,45,120);">
+                            <div class="row">
+                                <a class="col-xs-6 text-center"
+                                   style="position: relative; left: 20px; top: 0; padding: 0; border-width: 2px;"
                                    href="{% url "profile" favorite.id %}">
-                                    View profile
+                                    {% include "josmembers/user_picture.html" with user=favorite height=120 %}
                                 </a>
 
-                                <a class="btn btn-default"
-                                   style="margin-left: 10px; width: 150px;"
-                                   href="{% url 'josmessages:messages_compose' favorite.id %}">
-                                    Message
-                                </a>
+                                <div class="col-xs-6 text-right">
+                                    <a class="btn btn-default btn-xs"
+                                       style="margin: 10px 0 0 0;"
+                                       href="{% url 'josmessages:messages_compose' favorite.id %}">
+                                        Message
+                                    </a><br>
 
-                                <a class="btn btn-default"
-                                   style="margin-left: 10px; width: 150px;"
-                                   href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">
-                                    Unfavorite
-                                </a>
-
-                            </td>
-                        </tr>
+                                    <a class="btn btn-default btn-xs"
+                                       style="margin: 10px 0 0 0px;"
+                                       href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">
+                                        Unfavor
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     {% endfor %}
-                    </tbody>
-                </table>
+
             {% else %}
                 -- Favorite someone?
             {% endif %}
