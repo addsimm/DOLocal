@@ -24,75 +24,105 @@
         margin: 0;
     }
 
-    #progress_bar .joslargelinkbutton, #progress_bar .joslargelinkbutton:visited {
-        display: inline-block;
-        font-size: 22pt;
-        margin: 0;
-        padding: 6px 0;
-        width: 170px;
+    #work_tabs a, #work_tabs a:visited {
+        border: 3px dotted rgb(112, 154, 109);
+        color: rgb(112, 154, 109);
+        font-family: "Abril Fatface", cursive;
+        font-size: 24pt;
+        font-weight: normal;
+        outline:none;
+        padding: 5px 15px;
     }
 
-    #progress_bar_two .joslargelinkbutton, #progress_bar_2 .joslargelinkbutton:visited {
-        display: inline-block;
-        font-size: 16pt;
-        margin: 0;
-        padding: 3px 0;
-        width: 110px;
+    #work_tabs a:hover, #work_tabs a:focus {
+        color: rgb(240, 173, 78);
+        border-color: rgb(240, 173, 78);
+        background-color: white;
+    }
+
+    #two_work_tabs a, #two_work_tabs a:visited {
+        border: 3px dotted rgb(112, 154, 109);
+        color: white;
+        font-size: 18pt;
+        font-weight: bold;
+        margin: 0 0 0 15px; !important;
+        outline: none;
+        padding: 5px 15px;
+        width: 150px !important;
+    }
+
+    #two_work_tabs a:hover, #two_work_tabs a:focus {
+        color: rgb(240, 173, 78);
+        border-color: rgb(240, 173, 78);
+        background-color: white;
     }
 
 </style>
 
-<div id="progress_bar" class="row" style="margin: 0; padding: 15px 10px; width: 1170px; border-bottom: 1px dashed rgba(65,45,120,.5);">
+<div class="row" style="margin: 0 0 0 -15px; padding-top: 25px; width: 1170px;">
 
-    <div class="col-xs-12" style="margin: 0; padding: 0;">
+    <div class="col-xs-12 text-center" style=" ">
+
         {% if segments|length > 0 %}
-        {% for seg in segments %}
 
-            <a class="joslargelinkbutton text-center"
-               style=" {% if seg.segment_no == handout.segment_no %}
-                           color: white;
-                           background-color: rgb(65,45,120);
-                       {% endif %}"
-               href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
-                {{ seg.get_segment_no_display }}
-            </a>
+            <ul id="work_tabs" class="nav nav-tabs nav-justified">
 
-            {% if not forloop.last %}
-                <i class="fa fa-arrow-right"
-                   style="font-size: 22pt; color: rgb(112, 154, 109); margin: 0 9px;"
-                   aria-hidden="true"></i>
-            {% endif %}
+                {% for seg in segments %}
+                    <li><a style="
+                               {% if seg.segment_no == handout.segment_no %}
+                                   position: relative;
+                                   bottom: -3px;
+                                   color: rgb(65,45,120);
+                                   background-color: rgba(65,45,120, .2);
+                                   border: 3px solid rgb(65,45,120);
+                                   border-bottom: 3px solid rgb(217,213,229);
+                                   z-index: 50;
+                               {% endif %}"
+                           href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
+                        {{ seg.get_segment_no_display }}
+                    </a></li>
+                {% endfor %}
 
-        {% endfor %}
-    {% else %}
-        No published handouts
-    {% endif %}
+            </ul>
+
+        {% else %}
+            Content coming soon!
+        {% endif %}
     </div>
 </div>
 
-<div id="progress_bar_two" class="row"
-     style="margin: 0; padding: 15px 0; width: 1170px; border-bottom: 2px solid rgba(65,45,120,.5);">
+<div class="row" style="margin: 0 0 0 -15px; width: 1170px;">
 
-    <div class="col-xs-12 text-center" style=" ">
+    <div class="col-xs-12 text-center"
+         style="margin-left: 15px;
+         padding: 15px 0 0 0;
+         width: 1140px;
+         background-color: rgba(65,45,120, .2);
+         border: 3px solid rgb(65,45,120);">
+
+
+
         {% if segments|length > 0 %}
-            {% for hand in handouts %}
 
-                <a class="joslargelinkbutton"
-                   style="{% if hand.element_no == handout.element_no %}
-                               color: white;
-                               background-color: rgb(65,45,120);
-                          {% endif %}"
-                   href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ hand.segment_no }}/{{ hand.id }}">
-                        {{ hand.get_element_no_display }}
-                </a>
+            <ul id="two_work_tabs" class="nav nav-tabs">
+                {% for hand in handouts %}
 
-                {% if not forloop.last %}
-                    <i class="fa fa-arrow-right fa-fw"
-                       style="font-size: 12pt; color: rgb(112, 154, 109); margin: 0 3px;"
-                       aria-hidden="true"></i>
-                {% endif %}
+                    <li><a class="joslargelinkbutton"
+                       style="{% if hand.element_no == handout.element_no %}
+                                   background-color: white;
+                                   border: 3px solid rgb(65,45,120);
+                                   border-bottom-color: white;
+                                   bottom: -3px;
+                                   color: rgb(65,45,120);
+                                   position: relative;
+                                   z-index: 50;
+                              {% endif %}"
+                       href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ hand.segment_no }}/{{ hand.id }}">
+                            {{ hand.get_element_no_display }}
+                    </a></li>
 
-            {% endfor %}
+                {% endfor %}
+            </ul>
         {% else %}
             No published handouts
         {% endif %}
@@ -101,15 +131,4 @@
 
 {% endblock extra_bar %}
 
-{#{% if handout == handouts.last %}#}
-{#    <a class="btn btn-warning"#}
-{#       style="font-size: 12pt; background-color: white; border-color: white; margin-left: 15px; width: 70px;">#}
-{#        {% trans "Last" %}#}
-{#    </a>#}
-{#{% else %}#}
-{#    <a class="btn btn-warning pull-right"#}
-{#       style="font-size: 12pt; width: 70px;"#}
-{#       href="{% url "next_handout" %}/?week_no={{ handout.courseweek.id }}&order={{ handout.element_order }}">#}
-{#        {% trans "Next" %}#}
-{#    </a>#}
-{#{% endif %}#}
+

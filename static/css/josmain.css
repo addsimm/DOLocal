@@ -17,6 +17,7 @@ a, a:visited {
     font-weight: bold;
     outline: 2px dotted rgb(112, 154, 109);
     padding: 3px 6px;
+    border-radius: 4px;
 }
 
 a:hover {
@@ -39,12 +40,13 @@ a:hover {
 
 .joslargelinkbutton, .joslargelinkbutton:visited {
     background-color: rgb(112, 154, 109);
+    border-radius: 4px;
     color: white;
-    font-size: 18pt;
-    margin-left: 20px;
-    padding: 8px 10px;
+    font-size: 16pt;
+    margin-left: 15px;
+    padding: 6px 9px;
     outline: none;
-    width: 165px;
+    width: 135px;
 }
 
 .joslargelinkbutton:hover, .joslargelinkbutton:focus {
