@@ -3,9 +3,10 @@
 
 {% block all_content %}
 
+{{ block.super }}
 <!-- Main Panel -->
 
-<div class='hidden' style="color: rgb(217, 83, 79) ; ) ; ; margin: 150px 30px;">
+<div class='hidden' style="color: rgb(217, 83, 79) ; ) ; ; margin: 30px 30px;">
     DEBUG:<br>
 
     week: {{ week }}<br>
@@ -32,7 +33,7 @@
     pdf_missing: {{ pdf_missing }}<br><br>
 </div>
 
-<div class="row text-center" style="margin-top: 150px;">
+<div class="row text-center" style="margin-top: 30px;">
 
     {% if handout.element_no == 14 %}
 
