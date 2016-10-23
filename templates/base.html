@@ -75,7 +75,14 @@
      width: 1100px;
      z-index: 148;
      ">
-    Help:
+    <ul id="help_nav_tabs" class="nav nav-tabs nav-justified" style="position: absolute; top: 447px; height: 40px">
+
+            <li><a style = " "
+                   href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
+                xxx
+            </a></li>
+
+    </ul>
 </div>
 
 {% block help_button %}
@@ -206,18 +213,18 @@
                 {% endif %}
 
             </div>
-            {% endblock top-nav %}
 
-                <a class="btn btn-default pull-right"
-                   style="width: 115px; margin: -50px 5px 0 0;"
-                   {% if request.user.is_authenticated %}
-                       href="{% url "logout" %}?next={{ request.path }}">
-                       Log out
-                   {% else %}
-                       href="{% url "login" %}">
-                       Members
-                   {% endif %}
-                </a><br>
+            <a class="btn btn-default pull-right"
+               style="width: 115px; margin: -50px 5px 0 0;"
+               {% if request.user.is_authenticated %}
+                   href="{% url "logout" %}?next={{ request.path }}">
+                   Log out
+               {% else %}
+                   href="{% url "login" %}">
+                   Members
+               {% endif %}
+            </a><br>
+            {% endblock top-nav %}
 
             {% if request.user.is_staff %}
 
@@ -258,7 +265,7 @@
             margin-left: 20px;
             min-height: 350px;
             padding: 25px;
-            transition: .6s linear all;
+            transition: .6s ease-in-out all;
             z-index: 1;
             ">
 
@@ -316,7 +323,8 @@
 <script>
 
     function help_button(t) {
-        $('#help_screen').slideToggle("slow");
+        $('#help_screen').slideToggle('slow');
+
         if ($("#help_button").hasClass("btn-danger")) {
             $("#help_button").text("Done").removeClass("btn-danger").addClass("btn-success");
             $("#main_container").addClass('moveDown');
