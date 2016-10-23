@@ -1,39 +1,36 @@
 {% load static %}
 <style>
 
-    .particBox {
-        background-color: transparent;
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-    }
+    .particBox:hover {
+        outline: 2px solid #f0ad4e;
 
-    .pictureBox {
-        background-color: white;
-        outline: 1px solid rgb(65, 45, 120);
-    }
 
-    .nameBox {
-        background-color: transparent;
-        color: green;
-        height: auto;
-        width: auto;
+
+
     }
 
 </style>
 
-<div class="particBox" style="width: {{ height |add:20 }}px; height: {{ height }}px;">
+<a class="particBox row"
+   href="{% url "profile" user.id %}"
+   style= "background-color: white;
+           display: inline-block;
+           padding: 5px 0 0 0;
+           margin: 0 10px 0 0;
+           width: {{ height|add:50 }}px;
+           ">
 
-    <img class='pictureBox' style="width: {{ height }}px; height: {{ height }}px;"
-        {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
-                 src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
-        {% else %}
-                 src="/static/img/coming-soon-profile.png"
-        {% endif %}><br>
+    <div class="col-xs-12 text-center" style="padding: 0;">
+        <img class='pictureBox' style="width: {{ height }}px; height: {{ height }}px;"
+            {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
+                     src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
+            {% else %}
+                     src="/static/img/peeky-102216.png"
+            {% endif %}>
+    </div>
 
-    <div class='nameBox' style="width: {{ height |add:20 }}px;">
+    <div class="col-xs-12 text-center" style="color: rgb(0, 128, 0); padding: 0 0 3px 0;">
         {{ user.JOSProfile.jos_name }}
     </div>
 
-</div>
+</a>
