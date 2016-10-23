@@ -59,6 +59,12 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
+<!-- help screen -->
+<div id="help_screen" class=" "
+     style="position: fixed; top: -5px; left: 50px; display: none; background-color: rgb(255, 215, 150); height: 500px; width: 1100px; z-index: 149;">
+    xxx
+</div>
+
 {% block base-fixed-top-bar %}
 
 <div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; z-index: 100;">
@@ -135,13 +141,9 @@
 
                 <button class="btn btn-warning pull-left text-center"
                         style="font-size: 14pt; margin-left: 230px; width: 65px; height: 39px;"
-                        onclick="goBack()">
+                        onclick=" window.history.back();">
                     Back
                 </button>
-
-                <script>function goBack() {
-                    window.history.back();
-                }</script>
 
                 {% if request.user.is_authenticated %}
 
@@ -179,6 +181,14 @@
 
             {% endif %}
 
+                {% block help_button %}
+
+                    <button id="help_button" class="btn btn-warning"
+                            style="font-size: 28pt; margin: -20px 0 0 0; width: 180px; height: 70px;">
+                        Help&nbsp<i class="fa fa-arrow-down fa-fw"></i>
+                    </button>
+
+                {% endblock help_button %}
             {% endblock top-nav %}
 
 
@@ -285,6 +295,15 @@
     </div>
     {% include "includes/footer_scripts.html" %}
 </footer>
+
+<script>
+    $(document).ready(function () {
+        $("#help_button").on('click', function () {
+                $('#help_screen').slideToggle("slow");
+        });
+    });
+</script>
+
 
 </body>
 </html>
