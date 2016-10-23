@@ -36,7 +36,7 @@
 }
 
 .ot-textchat .ot-message-sender {
-    color: green;
+    color: rgb(112, 154, 109) ;
     font-size: 12pt;
     margin-right: 10px;
 }
