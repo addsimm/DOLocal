@@ -60,21 +60,24 @@
     }
 
     #help_nav_tabs a, #help_nav_tabs a:visited {
-        border: 3px dotted rgb(112, 154, 109);
         color: rgb(112, 154, 109);
+        border: 3px dotted rgb(112, 154, 109);
         font-size: 18pt;
         font-weight: bold;
+        height: 50px;
         margin: 0 0 0 15px;
-    !important;
-        outline: none;
         padding: 5px 15px;
+        outline: none;
         width: 150px !important;
     }
 
     #help_nav_tabs a:hover, #help_nav_tabs a:focus {
         color: rgb(240, 173, 78);
         border-color: rgb(240, 173, 78);
-        background-color: white;
+    }
+
+    li {
+        text-align: center;
     }
 
 </style>
@@ -94,24 +97,43 @@
          width: 1100px;
          z-index: 148;
      ">
-    <ul id="help_nav_tabs" class="nav nav-tabs nav-justified" style="position: absolute; top: 453px; height: 40px">
 
-            <li><a style = " "
-                   href="{% url "course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
-                xxx
-            </a></li>
+    <ul id="help_nav_tabs" class="nav nav-tabs" style="position: relative; top: 450px;">
+
+        <li><a href="/">
+            To do
+        </a></li>
+
+        <li><a href="/">
+            How do I?
+        </a></li>
+
+        <li><a href="/">
+            My notes
+        </a></li>
 
     </ul>
 </div>
 
-<!-- HELP SYSTEM -->
+<!-- FIXED HELP / LOG -->
 {% block help_button %}
 
     <button id="help_button" class="btn btn-danger"
-            style="position: fixed; top: -5px; left: 850px; font-size: 16pt; width: 100px; height: 39px; z-index: 149;"
+            style="position: fixed; top: -5px; left: 860px; font-size: 16pt; width: 100px; height: 39px; z-index: 149;"
             onclick="help_button();">
         HELP!
     </button>
+
+    <a class="btn btn-default pull-right"
+       style="position: fixed; top: 20px; left: 1070px; width: 115px;  z-index: 149;"
+            {% if request.user.is_authenticated %}
+       href="{% url "logout" %}?next={{ request.path }}">
+                Log out
+            {% else %}
+                href="{% url "login" %}">
+                Members
+            {% endif %}
+    </a>
 
 {% endblock help_button %}
 
@@ -235,22 +257,12 @@
 
             </div>
 
-            <a class="btn btn-default pull-right"
-               style="width: 115px; margin: -50px 5px 0 0;"
-               {% if request.user.is_authenticated %}
-                   href="{% url "logout" %}?next={{ request.path }}">
-                   Log out
-               {% else %}
-                   href="{% url "login" %}">
-                   Members
-               {% endif %}
-            </a><br>
             {% endblock top-nav %}
 
             {% if request.user.is_staff %}
 
                 <a class="josstaffbutton  pull-right"
-                   style="position: fixed; top: 85px; left: 1090px; font-size: 14pt; margin-right: 15px;"
+                   style="position: fixed; top: 85px; left: 1105px; font-size: 14pt; margin-right: 15px;"
                    href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
                     {% trans "> Staff <" %}
                 </a>
