@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.contrib.auth.views import login as login_view, logout, password_reset
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render, get_object_or_404
@@ -62,7 +62,7 @@ def register(request, registration_form=RegistrationForm):
         if not request.is_limited and form.is_valid():
             user = form.save()
             send_activation_email(request, user)
-            messages.info(
+            response_messages.info(
                 request,
                 _("We have sent you an email to %(email)s "
                   "so you can activate your account!")
@@ -91,7 +91,7 @@ def registration_activation(request, pk, token):
         user.st.is_verified = True
         user.is_active = True
         user.save()
-        messages.info(request, _("Your account has been activated!"))
+        response_messages.info(request, _("Your account has been activated!"))
 
     return redirect(reverse('spirit:user:auth:login'))
 
@@ -110,7 +110,7 @@ def resend_activation_email(request):
             send_activation_email(request, user)
 
         # TODO: show if is_valid only
-        messages.info(request, _("If you don't receive an email, please make sure you've entered "
+        response_messages.info(request, _("If you don't receive an email, please make sure you've entered "
                                  "the address you registered with, and check your spam folder."))
         return redirect(reverse('spirit:user:auth:login'))
     else:

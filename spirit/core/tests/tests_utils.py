@@ -16,7 +16,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.timezone import utc
 from django.utils.http import urlunquote
 from django.contrib.auth import get_user_model
@@ -186,12 +186,12 @@ class UtilsTemplateTagTests(TestCase):
         class MockMessage:
             def __init__(self, level, message):
                 self.level = level
-                self.tags = messages.DEFAULT_TAGS[level]
+                self.tags = response_messages.DEFAULT_TAGS[level]
                 self.message = message
 
-        m1 = MockMessage(messages.constants.ERROR, 'error 1')
-        m2 = MockMessage(messages.constants.ERROR, 'error 2')
-        m3 = MockMessage(messages.constants.INFO, 'info 3')
+        m1 = MockMessage(response_messages.constants.ERROR, 'error 1')
+        m2 = MockMessage(response_messages.constants.ERROR, 'error 2')
+        m3 = MockMessage(response_messages.constants.INFO, 'info 3')
         res = render_messages([m1, m2, m3])
         self.assertDictEqual(dict(res['messages_grouped']), {'error': [m1, m2],
                                                              'info': [m3, ]})

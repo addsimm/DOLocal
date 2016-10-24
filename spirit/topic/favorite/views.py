@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
-from django.contrib import messages
+from django.contrib import messages as response_messages
 
 from .models import TopicFavorite
 from .forms import FavoriteForm
@@ -23,7 +23,7 @@ def create(request, topic_id):
     if form.is_valid():
         form.save()
     else:
-        messages.error(request, utils.render_form_errors(form))
+        response_messages.error(request, utils.render_form_errors(form))
 
     return redirect(request.POST.get('next', topic.get_absolute_url()))
 

@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.http import HttpResponsePermanentRedirect
 from django.conf import settings
 
@@ -119,7 +119,7 @@ def create_access(request, topic_id):
         form.save()
         notify_access(user=form.get_user(), topic_private=topic_private)
     else:
-        messages.error(request, utils.render_form_errors(form))
+        response_messages.error(request, utils.render_form_errors(form))
 
     return redirect(request.POST.get('next', topic_private.get_absolute_url()))
 

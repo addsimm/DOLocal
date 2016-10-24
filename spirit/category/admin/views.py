@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 
 from ...core.utils.decorators import administrator_required
@@ -47,7 +47,7 @@ def update(request, category_id):
 
         if form.is_valid():
             form.save()
-            messages.info(request, _("The category has been updated!"))
+            response_messages.info(request, _("The category has been updated!"))
             return redirect(reverse("spirit:admin:category:index"))
     else:
         form = CategoryForm(instance=category)

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 
 from djconfig import config
@@ -24,7 +24,7 @@ def detail(request, pk):
 
         if form.is_valid():
             form.save()
-            messages.info(request, _("The flag has been moderated!"))
+            response_messages.info(request, _("The flag has been moderated!"))
             return redirect(reverse("spirit:admin:flag:index"))
     else:
         form = CommentFlagForm(instance=flag)

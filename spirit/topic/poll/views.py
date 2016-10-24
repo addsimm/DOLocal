@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
 
@@ -72,5 +72,5 @@ def vote(request, pk):
         topic_poll_post_vote.send(sender=poll.__class__, poll=poll, user=request.user)
         return redirect(request.POST.get('next', poll.get_absolute_url()))
 
-    messages.error(request, utils.render_form_errors(form))
+    response_messages.error(request, utils.render_form_errors(form))
     return redirect(request.POST.get('next', poll.get_absolute_url()))

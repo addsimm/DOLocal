@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 from django.http import HttpResponsePermanentRedirect
 
@@ -32,7 +32,7 @@ def update(request):
         if all([uform.is_valid(), form.is_valid()]):  # TODO: test!
             uform.save()
             form.save()
-            messages.info(request, _("Your profile has been updated!"))
+            response_messages.info(request, _("Your profile has been updated!"))
             return redirect(reverse('spirit:user:update'))
     else:
         uform = UserForm(instance=request.user)
@@ -54,7 +54,7 @@ def password_change(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            messages.info(request, _("Your password has been changed!"))
+            response_messages.info(request, _("Your password has been changed!"))
             return redirect(reverse('spirit:user:update'))
     else:
         form = PasswordChangeForm(user=request.user)
@@ -71,7 +71,7 @@ def email_change(request):
 
         if form.is_valid():
             send_email_change_email(request, request.user, form.get_email())
-            messages.info(request, _("We have sent you an email so you can confirm the change!"))
+            response_messages.info(request, _("We have sent you an email so you can confirm the change!"))
             return redirect(reverse('spirit:user:update'))
     else:
         form = EmailChangeForm()
@@ -93,10 +93,10 @@ def email_change_confirm(request, token):
         if form.is_valid():
             user.email = form.get_email()
             user.save()
-            messages.info(request, _("Your email has been changed!"))
+            response_messages.info(request, _("Your email has been changed!"))
             return redirect(reverse('spirit:user:update'))
 
-    messages.error(request, _("Sorry, we were not able to change your email."))
+    response_messages.error(request, _("Sorry, we were not able to change your email."))
     return redirect(reverse('spirit:user:update'))
 
 

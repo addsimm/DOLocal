@@ -1,12 +1,11 @@
-import datetime
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 from django.utils.timezone import activate
+from django.views.decorators.csrf import csrf_exempt
 
 from joscourses.models import JOSCourseWeek
 from josmembers.models import JOSProfile
@@ -27,10 +26,10 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
 
     activate('America/Los_Angeles')
 
-    currentProfile = get_object_or_404(JOSProfile, user=user)
-    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('week_no') # retrives all weeks available
+    current_profile = get_object_or_404(JOSProfile, user=user)
+    weeks = JOSCourseWeek.objects.filter(publish=True).order_by('week_no') # retrieves all weeks available
 
-    context = {"profile": currentProfile, "weeks": weeks}
+    context = {"profile": current_profile, "weeks": weeks}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -55,12 +54,19 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
     try:
         story = get_object_or_404(JOSStory, pk=story_id)
     except:
-        story = JOSStory.objects.create(author=request.user, title="Untitled", content="Coming soon")
+        story = JOSStory.objects.create(author=request.user, title="- untitled -", content="- content goes here -")
 
     try:
         comment_thread = get_object_or_404(JOSMessageThread, subject='Comments: ' + str(story.id))
     except:
-        comment_thread = JOSMessageThread.objects.create(subject='Comments: '+ str(story.id))
+        comment_thread = 'missing'
+
+    if comment_thread == 'missing':
+        try:
+            comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
+        except:
+            comment_thread = JOSMessageThread.objects.create(subject='On: ' + story.title)
+            comment_thread.save()
 
     comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
 
@@ -84,20 +90,15 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
         field_to_edit = request.POST['field_to_edit']
 
         if field_to_edit == "comment":
-            message = Message.objects.create(
+            send_message = Message.objects.create(
                 body = nu_content,
-                is_last = True,
                 message_thread = comment_thread,
                 recipient = story.author,
                 sender = request.user,
-                sent_at = datetime.datetime.now().time()
+                sent_at =timezone.now()
             )
-            message.save()
-            ct_mc = comment_thread.message_count
-            comment_thread.last_message_id = message.id
-            comment_thread.last_recipient = story.author
-            comment_thread.message_count = ct_mc + 1
-            comment_thread.save()
+            send_message.save()
+
             info(request, "Great thought, thanks!")
 
         else:

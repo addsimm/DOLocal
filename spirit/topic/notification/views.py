@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.http import Http404, HttpResponse
 from django.conf import settings
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.html import escape
 
 from djconfig import config
@@ -31,7 +31,7 @@ def create(request, topic_id):
     if form.is_valid():
         form.save()
     else:
-        messages.error(request, utils.render_form_errors(form))
+        response_messages.error(request, utils.render_form_errors(form))
 
     return redirect(request.POST.get('next', topic.get_absolute_url()))
 
@@ -45,7 +45,7 @@ def update(request, pk):
     if form.is_valid():
         form.save()
     else:
-        messages.error(request, utils.render_form_errors(form))
+        response_messages.error(request, utils.render_form_errors(form))
 
     return redirect(request.POST.get('next', notification.topic.get_absolute_url()))
 

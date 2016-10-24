@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 from django.contrib.auth import get_user_model
 
@@ -27,7 +27,7 @@ def config_basic(request):
 
         if form.is_valid():
             form.save()
-            messages.info(request, _("Settings updated!"))
+            response_messages.info(request, _("Settings updated!"))
             return redirect(request.GET.get("next", request.get_full_path()))
     else:
         form = BasicConfigForm()

@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.http import Http404
 
 from djconfig import config
@@ -107,7 +107,7 @@ def move(request, topic_id):
             comment_posted(comment=comment, mentions=None)
             topic.decrease_comment_count()
     else:
-        messages.error(request, render_form_errors(form))
+        response_messages.error(request, render_form_errors(form))
 
     return redirect(request.POST.get('next', topic.get_absolute_url()))
 

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import functools
 
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 
 from .ratelimit import RateLimit
@@ -22,7 +22,7 @@ def ratelimit(method=None, field=None, rate='5/5m'):
             request.is_limited = rl.is_limited()
 
             if request.is_limited:
-                messages.error(request, _("Too many submissions, wait %(time)s.") % {'time': rate.split('/')[1], })
+                response_messages.error(request, _("Too many submissions, wait %(time)s.") % {'time': rate.split('/')[1], })
 
             return func(request, *args, **kwargs)
 

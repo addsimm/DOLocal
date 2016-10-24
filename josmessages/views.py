@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.urlresolvers import reverse
@@ -86,7 +86,7 @@ def delete(request, message_thread_id=0):
         message.recipient_deleted_at = now
         message.save()
 
-    messages.info(request, "Message successfully deleted.")
+    response_messages.info(request, "Message successfully deleted.")
     return redirect('http://www.joinourstory.com/messages/inbox/')
 
 
@@ -150,7 +150,7 @@ def jos_message_compose(request, id=None, template_name="josmessages/compose.htm
 
                     msg.save()
 
-                messages.info(request, "Message successfully sent.")
+                response_messages.info(request, "Message successfully sent.")
 
                 if notification:
                     # notification.send([sender], "messages_sent", {'message': msg,})
@@ -174,16 +174,16 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     """
     activate('America/Los_Angeles')
 
-    message_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    all_thread_messages = message_thread.messages
+    msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
+    all_thread_msgs = msg_thread.messages
 
-    for msg in all_thread_messages.filter(recipient=request.user):
+    for msg in all_thread_msgs.filter(recipient=request.user):
         if not msg.read_at:
             msg.read_at = timezone.now()
             msg.save()
 
-    msgs = all_thread_messages.distinct('body').order_by('body', '-sent_at')
-    form = JOSReplyForm({"message_thread_id": message_thread.id})
+    msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
+    form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
     if request.method == "POST":
         form = JOSReplyForm(request.POST)
@@ -199,22 +199,22 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
             msgs_distinct_recipients = mt.messages_distinct_recipients
 
             for msg in msgs_distinct_recipients:
-                send_message = Message.objects.create(
+                send_msg = Message.objects.create(
                     message_thread=mt,
                     body=body,
                     sender=request.user,
                     recipient =msg.recipient,
                     sent_at=timezone.now()
                 )
-                send_message.save()
+                send_msg.save()
 
-            messages.info(request, "Message successfully sent.")
+            response_messages.info(request, "Message successfully sent.")
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     context = {"form": form,
-               "subject": message_thread.subject,
-               "messages": msgs,
-               "message_thread_id": message_thread.id}
+               "subject": msg_thread.subject,
+               "emails": msgs,
+               "message_thread_id": msg_thread.id}
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
@@ -240,7 +240,7 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     #         undeleted = True
     #     if undeleted:
     #         message.save()
-    #         messages.info(request, _(u"Message successfully recovered."))
+    #         response_messages(request, _(u"Message successfully recovered."))
     #         if notification:
     #             notification.send([user], "messages_recovered", {"message": message,})
     #         return HttpResponseRedirect(success_url)

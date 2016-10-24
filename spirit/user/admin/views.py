@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
-from django.contrib import messages
+from django.contrib import messages as response_messages
 from django.utils.translation import ugettext as _
 
 from djconfig import config
@@ -27,7 +27,7 @@ def edit(request, user_id):
         if all([uform.is_valid(), form.is_valid()]):
             uform.save()
             form.save()
-            messages.info(request, _("This profile has been updated!"))
+            response_messages.info(request, _("This profile has been updated!"))
             return redirect(request.GET.get("next", request.get_full_path()))
     else:
         uform = UserForm(instance=user)
