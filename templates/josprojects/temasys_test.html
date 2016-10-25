@@ -236,7 +236,7 @@
 
     // Clock
     {
-        var segments = ['Welcome', 'Share', 'Video', 'Break', 'Update', 'Template', 'Next time'];
+        var segments = ['Share 1', 'Prompt', 'Share2', 'Template'];
 
         function drawProgressBar() {
 
@@ -268,24 +268,17 @@
 
             var offset = (9 * 60) + 30;
 
-            $('#segment_0').addClass('segment-active');
-            if (workshopMinutes > offset + 5) {
+            if (workshopMinutes > offset + 10) {
+                $('#segment_0').addClass('segment-active');
+            }
+            if (workshopMinutes > offset + 30) {
                 $('#segment_1').addClass('segment-active');
             }
-            if (workshopMinutes > offset + 35) {
+            if (workshopMinutes > offset + 40) {
                 $('#segment_2').addClass('segment-active');
             }
-            if (workshopMinutes > offset + 42) {
+            if (workshopMinutes > offset + 60) {
                 $('#segment_3').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 52) {
-                $('#segment_4').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 62) {
-                $('#segment_5').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 67) {
-                $('#segment_6').addClass('segment-active');
             }
 
             var t = setTimeout(timeClock, 10000);

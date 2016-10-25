@@ -107,15 +107,16 @@ class JOSHandout(TimeStamped, models.Model):
         (4, "Break"),
         (5, "Exercise"),
         (6, "Highlights"),
-        (7, "Prompts"),
+        (7, "Prompt"),
         (8, "Readings"),
-        (9, "Share"),
+        (9, "Share 1"),
         (10, "Wheel"),
         (11, "Tips"),
         (12, "Template"),
         (13, "Transcript"),
         (14, "Video"),
         (15, "Sample"),
+        (16, "Share 2"),
         (99, "Other"),
     )
 
