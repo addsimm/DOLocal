@@ -30,14 +30,15 @@
 
 <a class="secret-button"
    style="border: none;
-             color: rgb(65, 45, 120);
-             display: block;
-             font-size: 12pt;
-             left: 10px;
-             outline: none;
-             position: fixed;
-             top: 10px;
-             width: 100%;"
+         color: rgb(65, 45, 120);
+         display: block;
+         font-size: 12pt;
+         left: 10px;
+         outline: none;
+         position: fixed;
+         top: 10px;
+         width: 31%;
+         z-index: 148;"
    href=" {% if request.user.id > 0 %}
                 {% url 'personaldesk' %}/{{ request.user.id }}
             {% else %}
