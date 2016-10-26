@@ -104,33 +104,33 @@ INSTALLED_APPS = (
     'mezzanine.accounts',
     ### NOT IMPLEMENTED 'mezzanine.mobile',
 
-    'spirit',
-    'spirit.core',
-    'spirit.admin',
-    'spirit.search',
-    'spirit.user',
-    'spirit.user.admin',
-    'spirit.user.auth',
-    'spirit.category',
-    'spirit.category.admin',
-    'spirit.topic',
-    'spirit.topic.admin',
-    'spirit.topic.favorite',
-    'spirit.topic.moderate',
-    'spirit.topic.notification',
-    'spirit.topic.poll',  # todo: remove in Spirit v0.5
-    'spirit.topic.private',
-    'spirit.topic.unread',
-    'spirit.comment',
-    'spirit.comment.bookmark',
-    'spirit.comment.flag',
-    'spirit.comment.flag.admin',
-    'spirit.comment.history',
-    'spirit.comment.like',
-    'spirit.comment.poll',
+    # 'spirit',
+    # 'spirit.core',
+    # 'spirit.admin',
+    # 'spirit.search',
+    # 'spirit.user',
+    # 'spirit.user.admin',
+    # 'spirit.user.auth',
+    # 'spirit.category',
+    # 'spirit.category.admin',
+    # 'spirit.topic',
+    # 'spirit.topic.admin',
+    # 'spirit.topic.favorite',
+    # 'spirit.topic.moderate',
+    # 'spirit.topic.notification',
+    # 'spirit.topic.poll',  # todo: remove in Spirit v0.5
+    # 'spirit.topic.private',
+    # 'spirit.topic.unread',
+    # 'spirit.comment',
+    # 'spirit.comment.bookmark',
+    # 'spirit.comment.flag',
+    # 'spirit.comment.flag.admin',
+    # 'spirit.comment.history',
+    # 'spirit.comment.like',
+    # 'spirit.comment.poll',
     # 'spirit.core.tests'
 
-    'djconfig',
+    # 'djconfig',
     'request',
     'floppyforms',
     'haystack',
@@ -170,7 +170,7 @@ TEMPLATES = [
                 'mezzanine.conf.context_processors.settings',
                 'mezzanine.pages.context_processors.page',
 
-                'djconfig.context_processors.config',
+                # 'djconfig.context_processors.config',
                 'josmessages.context_processors.inbox',
             ]
         },
@@ -190,7 +190,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mezzanine.conf.context_processors.settings',
     'mezzanine.pages.context_processors.page',
 
-    'djconfig.context_processors.config',
+    # 'djconfig.context_processors.config',
     'josmessages.context_processors.inbox',
 )
 
@@ -218,12 +218,12 @@ MIDDLEWARE_CLASSES = (
     'mezzanine.pages.middleware.PageMiddleware',
     # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
 
-    'djconfig.middleware.DjConfigMiddleware',
-    'spirit.core.middleware.PrivateForumMiddleware',
-    'spirit.user.middleware.ActiveUserMiddleware',
-    'spirit.user.middleware.LastIPMiddleware',
-    'spirit.user.middleware.LastSeenMiddleware',
-    'spirit.user.middleware.TimezoneMiddleware',
+    # 'djconfig.middleware.DjConfigMiddleware',
+    # 'spirit.core.middleware.PrivateForumMiddleware',
+    # 'spirit.user.middleware.ActiveUserMiddleware',
+    # 'spirit.user.middleware.LastIPMiddleware',
+    # 'spirit.user.middleware.LastSeenMiddleware',
+    # 'spirit.user.middleware.TimezoneMiddleware',
     # 'spirit.core.middleware.XForwardedForMiddleware',
 
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -319,7 +319,7 @@ DEFAULT_FROM_EMAIL = 'joinus@joinourstory.com'
 #########
 # FORUM #
 #########
-from spirit.settings import *
+# from spirit.settings import *
 
 ##########
 # SEARCH #

@@ -14,8 +14,7 @@ class MessageManager(models.Manager):
         marked as deleted.
         """
         return self.filter(
-                sender=user,
-                sender_deleted_at__isnull=True,
+                sender=user
         )
 
 @python_2_unicode_compatible

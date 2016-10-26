@@ -41,7 +41,6 @@ class DeleteTestCase(TestCase):
                             subject='Subject Text 1', body='Body Text 1')
         self.msg2 = Message(sender=self.user1, recipient=self.user2,
                             subject='Subject Text 2', body='Body Text 2')
-        self.msg1.sender_deleted_at = timezone.now()
         self.msg2.recipient_deleted_at = timezone.now()
         self.msg1.save()
         self.msg2.save()

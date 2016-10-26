@@ -178,12 +178,12 @@
 .slider-selection {
   position: absolute;
   background-image: none;
-  background-color: rgb(231, 209, 222);
+  background-color: rgb(209,209,209);
   box-sizing: border-box;
   border-radius: 4px;
 }
 .slider-selection.tick-slider-selection {
-  background-color: rgb(231, 209, 222);
+  background-color: rgb(209,209,209);
 }
 .slider-track-low,
 .slider-track-high {

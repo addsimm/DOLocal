@@ -53,7 +53,7 @@ def logout(request):
     Log the user out.
     """
     auth_logout(request)
-    info(request, _("Successfully logged out - come back soon!"))
+    # info(request, _("Successfully logged out - come back soon!"))
     return redirect("/")
 
 

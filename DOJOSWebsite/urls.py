@@ -29,7 +29,7 @@ urlpatterns = i18n_patterns("",
 #         url('^i18n/$', 'django.views.i18n.set_language', name='set_language'),
 #     )
 
-import spirit.urls
+# import spirit.urls
 
 urlpatterns += patterns('',
     # EDITABLE HOMEPAGE
@@ -37,8 +37,6 @@ urlpatterns += patterns('',
 
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
-
-
 
     # Video conference
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
@@ -60,8 +58,8 @@ urlpatterns += patterns('',
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
 
     ### Forums, Messaging, Etc. ###
-    url(r'^spirit/', include(spirit.urls)),
-    #url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
+    # url(r'^spirit/', include(spirit.urls)),
+    # url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
     url(r'^messages/', include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
 
     # NOT IMPLEMENTED: url(r'^calendar/', include('schedule.urls')),

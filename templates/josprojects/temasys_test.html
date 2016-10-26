@@ -4,6 +4,8 @@
 {% block meta_title %}Comm. Room{% endblock %}
 {% block title %}Comm. Room{% endblock %}
 
+{% block logout %}{% endblock logout %}
+{% block help_buttons %}{% endblock help_buttons %}
 {% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
 
 {% block all_content %}
@@ -20,7 +22,7 @@
         padding: 3px 0;
         width: 100px;
         text-align: center;
-        border: 2px solid rgb(231, 209, 222);
+        border: 2px solid rgb(209,209,209);
     }
 
     .segment-active {
@@ -97,9 +99,9 @@
     }
 
     tr {
-        border-top: 1px solid rgb(231, 209, 222);
-        border-left: 1px solid rgb(231, 209, 222);
-        border-right: 1px solid rgb(231, 209, 222);
+        border-top: 1px solid rgb(209,209,209);
+        border-left: 1px solid rgb(209,209,209);
+        border-right: 1px solid rgb(209,209,209);
     }
 
     tr:hover {
@@ -133,7 +135,7 @@
 
 </style>
 
-{% block help_buttons %}{% endblock help_buttons %}
+
 
 {# HTML #}
 <div>
@@ -188,7 +190,7 @@
 
     {# chat_section #}
     <div id="messages_section"
-        style="position: absolute; top: 80px; left: 860px; background-color: rgb(231, 209, 222); padding: 0; width: 335px;">
+        style="position: absolute; top: 80px; left: 860px; background-color: rgb(209,209,209); padding: 0; width: 335px;">
 
         <div id="messages_container"
              class="text-center"
