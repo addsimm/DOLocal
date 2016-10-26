@@ -11,7 +11,6 @@ from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import activate
-from collections import defaultdict
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -22,7 +21,8 @@ from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
 
 from josprojects.models import CKRichTextHolder
-from .models import JOSProfile, JOSTeam
+from .models import JOSProfile
+
 from .forms import JOSSignupForm, JOSNewPasswordForm, JOSReserveSpaceForm
 
 User = get_user_model()

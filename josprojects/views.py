@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.timezone import activate
@@ -13,8 +14,6 @@ from josmessages.models import Message, JOSMessageThread
 
 from josmembers.models import JOSTeam
 from .models import CKRichTextHolder, JOSStory
-
-## from opentok import OpenTok
 
 # Create your views here.
 
@@ -32,7 +31,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
     context = {"profile": current_profile, "weeks": weeks}
     context.update(extra_context or {})
 
-    return TemplateResponse(request, template, context)
+    return render(request, template, context)
 
 
 @login_required
@@ -183,3 +182,13 @@ def workshop_connect(request, template="josprojects/workshop_connect.html"):
     context = {}
     return TemplateResponse(request, template, context)
 
+
+@login_required
+@csrf_exempt
+def help_update(request):
+    if not request.is_ajax() or not request.method == 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    help_position = request.POST.get("help_position", 'missing')
+    request.session["help_position"] = help_position
+    return HttpResponse('ok')

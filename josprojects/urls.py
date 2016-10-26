@@ -1,8 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from .views import personaldesk, josstory, mystory_list, story_gallery
-
-from mezzanine.conf import settings
+from .views import personaldesk, josstory, mystory_list, story_gallery, help_update
 
 urlpatterns = patterns('',
 
@@ -19,5 +17,9 @@ urlpatterns = patterns('',
    url("josstory/*$", josstory, {'story_id': 0, 'edit': False}, name="josstory"),
 
    url("story_gallery", story_gallery, name="story_gallery"),
+
+   url("help_update", help_update, name="help_update"),
+
+
 
 )

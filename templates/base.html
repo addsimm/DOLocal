@@ -56,7 +56,7 @@
     }
 
     .moveDown {
-        margin-top: 355px;
+        margin-top: 505px;
     }
 
     #help_nav_tabs a, #help_nav_tabs a:visited {
@@ -84,6 +84,16 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
+
+{% block help %}
+
+<!-- help button -->
+<button id="help_button" class="btn btn-danger"
+        style="position: fixed; top: -5px; left: 860px; font-size: 16pt; width: 150px; height: 39px; z-index: 110;"
+        onclick="help_button(this);">
+    Open help
+</button>
+
 <!-- help screen -->
 <div id="help_screen" class=" "
      style="
@@ -95,7 +105,7 @@
          position: fixed;
          top: -5px;
          width: 1100px;
-         z-index: 148;
+         z-index: 105;
      ">
 
     <ul id="help_nav_tabs" class="nav nav-tabs" style="position: relative; top: 450px;">
@@ -113,12 +123,71 @@
         </a></li>
 
     </ul>
+
 </div>
+
+<!-- help script -->
+<script>
+
+    $(document).ready( function() {
+        hb = document.getElementById('help_button');
+        if ('{{ request.session.help_position }}' === 'down') {
+            $(hb).text("Close help").removeClass("btn-danger").addClass("btn-success");
+            $("#fixed-top-bar").addClass('moveDown');
+            $("#main_container").addClass('moveDown');
+            $("#help_screen").css("display", "block");
+        } else {
+            $(hb).text("Open help").removeClass("btn-success").addClass("btn-danger");
+            $("#fixed-top-bar").removeClass('moveDown');
+            $("#main_container").removeClass('moveDown');
+            $("#help_screen").css("display", "none");
+        }
+    });
+
+    function help_button(hlp_btn) {
+
+        hb = hlp_btn;
+        $('#help_screen').slideToggle('slow');
+
+        if ($(hb).hasClass("btn-danger")) {
+            updateHelpScreenStatus('down');
+            $(hb).text("Close help").removeClass("btn-danger").addClass("btn-success");
+            $("#fixed-top-bar").addClass('moveDown');
+            $("#main_container").addClass('moveDown');
+        } else {
+            updateHelpScreenStatus('up');
+            $(hb).text("Open help").removeClass("btn-success").addClass("btn-danger");
+            $("#fixed-top-bar").removeClass('moveDown');
+            $("#main_container").removeClass('moveDown');
+        }
+    }
+
+    function updateHelpScreenStatus(position) {
+        $.ajax({
+            type: "POST",
+            url: '/help_update/',
+            data: {
+                "help_position": position
+            },
+            success: function () {
+                if ('{{ request.session.help_position }}' !== position) {
+                    location.reload();
+                }
+
+                // console.log('set position to: ' + position);
+                // console.log('session position: ' + '{{ request.session.help_position }}');
+            }
+        });
+    }
+
+</script>
+
+{% endblock help %}
 
 {% block logout %}
 
     <a class="btn btn-default pull-right"
-       style="position: fixed; top: 5px; left: 1070px; width: 115px;  z-index: 101;"
+       style="position: fixed; top: 5px; left: 1070px; width: 115px;  z-index: 110;"
             {% if request.user.is_authenticated %}
        href="{% url "logout" %}?next={{ request.path }}">
                 Log out
@@ -130,20 +199,10 @@
 
 {% endblock logout %}
 
-{% block help %}
-
-    <button id="help_button" class="btn btn-danger"
-            style="position: fixed; top: -5px; left: 860px; font-size: 16pt; width: 100px; height: 39px; z-index: 101;"
-            onclick="help_button();">
-        HELP!
-    </button>
-
-{% endblock help %}
-
 <!-- Fixed Top Nav -->
 {% block base-fixed-top-bar %}
 
-<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; z-index: 100;">
+<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; transition: .6s ease-in-out all; z-index: 100;">
 
     {% block logo %}
         <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
@@ -313,6 +372,10 @@
             z-index: 1;
             ">
 
+    <!-- div style="margin-left: 50px;">
+        session_key: {{ session_key }}<br>
+        help_position: {{ help_position }}<br>
+    </div -->
     {% block all_content %}
 
         <div class="row" style="margin-top: 80px;">
@@ -363,22 +426,6 @@
     </div>
     {% include "includes/footer_scripts.html" %}
 </footer>
-
-<script>
-
-    function help_button(t) {
-        $('#help_screen').slideToggle('slow');
-
-        if ($("#help_button").hasClass("btn-danger")) {
-            $("#help_button").text("Done").removeClass("btn-danger").addClass("btn-success");
-            $("#main_container").addClass('moveDown');
-        } else {
-            $("#help_button").text("HELP!").removeClass("btn-success").addClass("btn-danger");
-            $("#main_container").removeClass('moveDown');
-        }
-    }
-
-</script>
 
 </body>
 </html>

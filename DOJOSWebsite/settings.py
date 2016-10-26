@@ -171,6 +171,7 @@ TEMPLATES = [
                 'mezzanine.pages.context_processors.page',
 
                 # 'djconfig.context_processors.config',
+                'josprojects.context_processors.help_sys',
                 'josmessages.context_processors.inbox',
             ]
         },
@@ -191,7 +192,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mezzanine.pages.context_processors.page',
 
     # 'djconfig.context_processors.config',
+    'josprojects.context_processors.help_sys',
     'josmessages.context_processors.inbox',
+
 )
 
 # Middleware. Order is important; request classes will be applied in order, response in reverse order.
