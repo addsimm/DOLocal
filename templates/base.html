@@ -140,10 +140,8 @@
 
 {% endblock help %}
 
-<!-- FIXED TOP NAV -->
+<!-- Fixed Top Nav -->
 {% block base-fixed-top-bar %}
-
-
 
 <div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; z-index: 100;">
 
@@ -266,10 +264,20 @@
 
             {% if request.user.is_staff %}
 
-                <a class="josstaffbutton  pull-right"
+                <a class="josstaffbutton"
                    style="position: fixed; top: 85px; left: 1105px; font-size: 14pt; margin-right: 15px;"
                    href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
                     {% trans "> Staff <" %}
+                </a>
+
+            {% endif %}
+
+            {% if request.user.is_superuser %}
+
+                <a class="josstaffbutton"
+                   style="position: fixed; top: 85px; left: 1030px; font-size: 14pt; margin-right: 15px;"
+                   href="/admin">
+                    {% trans "Admin" %}
                 </a>
 
             {% endif %}
