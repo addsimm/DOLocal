@@ -80,6 +80,7 @@ GEOIPV6_DATABASE = STATIC_ROOT + '/easy_timezones/GeoLiteCityv6.dat'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.humanize',
@@ -103,7 +104,6 @@ INSTALLED_APPS = (
     'mezzanine.accounts',
     ### NOT IMPLEMENTED 'mezzanine.mobile',
 
-    'djconfig',
     'spirit',
     'spirit.core',
     'spirit.admin',
@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'spirit.comment.poll',
     # 'spirit.core.tests'
 
+    'djconfig',
     'request',
     'floppyforms',
     'haystack',
@@ -330,6 +331,14 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+##################
+# LOCAL SETTINGS #
+##################
+# Instead of doing 'from .local_settings import *', we use exec for full access
+f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
+if os.path.exists(f):
+    exec (open(f, 'rb').read())
+
 ####################
 # DYNAMIC SETTINGS #
 ####################
@@ -340,14 +349,6 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
-
-##################
-# LOCAL SETTINGS #
-##################
-# Instead of doing 'from .local_settings import *', we use exec for full access
-f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
-if os.path.exists(f):
-    exec (open(f, 'rb').read())
 
 DEBUG = False
 

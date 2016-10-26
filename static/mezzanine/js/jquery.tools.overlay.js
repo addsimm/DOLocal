@@ -1,3 +1,14 @@
+// http://n33.co/2013/03/23/browser-on-jquery-19x-for-legacy-ie-detection
+jQuery.browser={};
+(function() {
+    jQuery.browser.msie = false;
+    jQuery.browser.version = 0;
+    if(navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+        jQuery.browser.msie = true;
+        jQuery.browser.version = RegExp.$1;
+    }
+})();
+
 /**
  * @license
  * jQuery Tools @VERSION Overlay - Overlay base. Extend it.
@@ -9,7 +20,7 @@
  * Since: March 2008
  * Date: @DATE
  */
-(function ($) {
+(function($) {
 
     // static constructs
     $.tools = $.tools || {version: '@VERSION'};
@@ -112,8 +123,8 @@
                 if (self.isOpened()) { return self; }
 
                 // find the effect
-                 var eff = effects[conf.effect];
-                 if (!eff) { throw "Overlay: cannot find effect : \"" + conf.effect + "\""; }
+                var eff = effects[conf.effect];
+                if (!eff) { throw "Overlay: cannot find effect : \"" + conf.effect + "\""; }
 
                 // close other instances?
                 if (conf.oneInstance) {
@@ -137,8 +148,8 @@
                 // position & dimensions
                 var top = conf.top,
                      left = conf.left,
-                     oWidth = overlay.outerWidth({margin:true}),
-                     oHeight = overlay.outerHeight({margin:true});
+                     oWidth = overlay.outerWidth(true),
+                     oHeight = overlay.outerHeight(true);
 
                 if (typeof top == 'string')  {
                     top = top == 'center' ? Math.max((w.height() - oHeight) / 2, 0) :
@@ -148,7 +159,7 @@
                 if (left == 'center') { left = Math.max((w.width() - oWidth) / 2, 0); }
 
 
-                 // load effect
+                // load effect
                 eff[0].call(self, {top: top, left: left}, function() {
                     if (opened) {
                         e.type = "onLoad";
@@ -290,4 +301,3 @@
     };
 
 })(jQuery);
-

@@ -133,6 +133,8 @@
 
 </style>
 
+{% block help_buttons %}{% endblock help_buttons %}
+
 {# HTML #}
 <div>
 
@@ -153,11 +155,7 @@
 
     <span id="workshop_progress_bar"></span>
 
-    <button class="btn btn-default btn-xs" style="width: 100px; margin: 0 0 0 30px;" onclick="location.reload();">
-        Refresh
-    </button>
-
-    <button class="btn btn-default btn-xs" style="width: 100px; margin: 0 0 0 8px;" onclick="newTab();">
+    <button class="btn btn-default btn-xs pull-right" style="width: 100px; margin: 0 0 0 8px;" onclick="newTab();">
         New tab
     </button>
 
@@ -166,6 +164,12 @@
             window.open('www.joinourstory.com/personaldesk/{{ JOSId }}', '_blank');
         }
     </script>
+
+    <button class="btn btn-default btn-xs pull-right" style="width: 100px; margin: 0 0 0 15px;"
+            onclick="location.reload();">
+        Refresh
+    </button>
+
 </div>
 
 {# Main Section #}
