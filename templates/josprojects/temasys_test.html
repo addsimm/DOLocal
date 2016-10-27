@@ -140,7 +140,7 @@
 {# HTML #}
 <div>
 
-{# Agenda Bar #}
+ Agenda Bar
 <div class="row" onload="chatInstruct();" style="margin-top: -150px;">
 
     <button class="btn btn-warning pull-left"
@@ -155,7 +155,7 @@
 
     <span id="time_clock" style="font-size: 20pt; margin: 0 5px 0 20px; padding-top: 15px;"></span>
 
-    <span id="workshop_progress_bar"></span>
+    <span id="workshop_progress_bar" style="display: none;"></span>
 
     <button class="btn btn-default btn-xs pull-right" style="width: 100px; margin: 0 0 0 8px;" onclick="newTab();">
         New tab
@@ -316,10 +316,10 @@
             josSkylink.getUserMedia({
                 video: {
                     resolution: {
-                        width: 160,
-                        height: 120
+                        width: 80,
+                        height: 60
                     },
-                    frameRate: 2
+                    frameRate: 1 ///// change to one
                 },
                 audio: true
             });
