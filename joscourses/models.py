@@ -100,7 +100,7 @@ class JOSHandout(TimeStamped, models.Model):
     )
 
     ELEMENT_CHOICES = (
-        (0, "Activity"),
+        (0, "Activity 1"),
         (1, "Agenda"),
         (2, "Assign"),
         (3, "Big story"),
@@ -117,6 +117,7 @@ class JOSHandout(TimeStamped, models.Model):
         (14, "Video"),
         (15, "Sample"),
         (16, "Share 2"),
+        (17, "Activity 2"),
         (99, "Other"),
     )
 

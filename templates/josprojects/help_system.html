@@ -1,0 +1,166 @@
+<style>
+
+    #help_nav_tabs a, #help_nav_tabs a:visited {
+        color: rgb(112, 154, 109);
+        border: 3px dotted rgb(112, 154, 109);
+        font-size: 18pt;
+        font-weight: bold;
+        height: 50px;
+        margin: 0 0 0 15px;
+        padding: 5px 15px;
+        outline: none;
+        width: 150px !important;
+    }
+
+    #help_nav_tabs a:hover, #help_nav_tabs a:focus {
+        color: rgb(240, 173, 78);
+        border-color: rgb(240, 173, 78);
+    }
+
+    .zzz {
+        background-color: rgb(255, 255, 224) !important;
+        border: 3px solid rgb(65, 45, 120) !important;
+        border-bottom-color: rgb(255, 255, 224) !important;
+        bottom: -3px !important;
+        color: rgb(65, 45, 120) !important;
+    }
+
+    li {
+        text-align: center;
+    }
+
+</style>
+
+<!-- help button -->
+<button id="help_button" class="btn btn-info"
+        style="position: fixed; top: -5px; left: 840px; font-size: 18pt; width: 135px; height: 45px; z-index: 110;"
+        onclick="help_button(this);">
+    Tool tray
+</button>
+
+<!-- help screen -->
+<div id="help_screen" class=" "
+     style="
+         background-color: white;
+         display: none;
+         height: 560px;
+         left: 30px;
+         padding: 0;
+         position: fixed;
+         top: -5px;
+         width: 1170px;
+         z-index: 104;
+     ">
+
+    <div id="help_inner"
+         style="
+             background-color: rgb(255, 255, 224);
+
+             height: 550px;
+             left: 50px;
+             outline: 3px solid rgb(65, 45, 120);
+             position: fixed;
+             top: -5px;
+             width: 1100px;
+             z-index: 105;
+         ">
+
+        <ul id="help_nav_tabs"
+            class="nav nav-tabs"
+            style="background-color: white; position: relative; top: -5px; padding-top: 15px; border-bottom: 3px solid rgb(65, 45, 120);">
+
+            <li><a id='to_do_btn' data-toggle="tab" href="#to_do">To do</a></li>
+
+            <li><a id='how_do_i_btn' data-toggle="tab" href="#how_do_i">How do I?</a></li>
+
+            <li><a id='my_notes_btn' data-toggle="tab" href="#my_notes">My notes</a></li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="tab-content">
+<div id="to_do" class="tab-pane fade" style="font-size: 90pt; position: fixed; top: 50px; left: 150px; z-index: 110;">
+    to_do
+</div>
+
+<div id="how_do_i" class="tab-pane fade" style="font-size: 90pt; position: fixed; top: 50px; left: 150px; z-index: 110;">
+    how_do_i
+</div>
+
+<div id="my_notes" class="tab-pane fade" style="font-size: 90pt; position: fixed; top: 50px; left: 150px; z-index: 110;">X
+{##}
+{#    <div id='border_title'#}
+{#         class="{% if edit %}edit_border{% endif %} edit_border_class"#}
+{#         style="padding: 3px;">#}
+{##}
+{#        {% include "josprojects/jos_editor.html" with section='title' %}#}
+{##}
+{#        <div class="row">#}
+{#            <form id='title_form'#}
+{#                  method="post"#}
+{#                  {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>#}
+{##}
+{#                <div id='title' class="col-xs-12 homehead text-center">#}
+{#                    Test<br>#}
+{#                </div>#}
+{##}
+{#                <input id="title_holder" type="hidden" name='nucontent' value=" ">#}
+{#                <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="title">#}
+{##}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+</div>
+</div>
+
+
+<!-- help script -->
+<script>
+
+    $(document).ready(function () {
+        hb = document.getElementById('help_button');
+        if ('{{ request.session.help_position }}' === 'down') {
+            $(hb).text("Close tray").removeClass("btn-info").addClass("btn-warning");
+            $("#fixed-top-bar").addClass('moveDown');
+            $("#main_container").addClass('moveDown');
+            $("#help_screen").slideDown("slow");
+            $('.nav-tabs a:first').tab('show')
+        } else {
+            $(hb).text("Tool tray").removeClass("btn-warning").addClass("btn-info");
+            $("#fixed-top-bar").removeClass('moveDown');
+            $("#main_container").removeClass('moveDown');
+            $("#help_screen").slideUp("slow");
+        }
+    });
+
+    function help_button(hlp_btn) {
+
+        var hb = hlp_btn;
+        var help_pos = 'up';
+        if ($(hb).hasClass("btn-info")) {
+            help_pos = 'down';
+        }
+        $.ajax({
+            type: "POST",
+            url: '/help_update/',
+            data: {
+                "help_position": help_pos
+            },
+            success: function () {
+                if ('{{ request.session.help_position }}' !== help_pos) {
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    $('.nav-tabs').on({
+        'shown.bs.tab': function (event) {
+            $(event.target).addClass('zzz');
+            $(event.relatedTarget).removeClass('zzz');
+        }
+    });
+
+
+</script>
