@@ -84,12 +84,11 @@
 
 <body id="{% block body_id %}body{% endblock %}">
 
-
 {% block help %}
 
 <!-- help button -->
 <button id="help_button" class="btn btn-danger"
-        style="position: fixed; top: -5px; left: 860px; font-size: 16pt; width: 150px; height: 39px; z-index: 110;"
+        style="position: fixed; top: -5px; left: 830px; font-size: 16pt; width: 150px; height: 39px; z-index: 110;"
         onclick="help_button(this);">
     Open help
 </button>
@@ -97,33 +96,45 @@
 <!-- help screen -->
 <div id="help_screen" class=" "
      style="
-         background-color: rgb(255, 225, 175);
+         background-color: white;
          display: none;
-         height: 500px;
-         left: 50px;
-         outline: 3px solid rgb(178, 150, 105);
+         height: 510px;
+         left: 30px;
+         padding: 0;
          position: fixed;
          top: -5px;
-         width: 1100px;
-         z-index: 105;
+         width: 1170px;
+         z-index: 104;
      ">
 
-    <ul id="help_nav_tabs" class="nav nav-tabs" style="position: relative; top: 450px;">
+    <div id="help_inner"
+         style="
+             background-color: rgb(255, 225, 175);
+             height: 500px;
+             left: 50px;
+             outline: 3px solid rgb(178, 150, 105);
+             position: fixed;
+             top: -5px;
+             width: 1100px;
+             z-index: 105;
+         ">
 
-        <li><a href="/">
-            To do
-        </a></li>
+        <ul id="help_nav_tabs" class="nav nav-tabs" style="position: relative; top: 450px;">
 
-        <li><a href="/">
-            How do I?
-        </a></li>
+            <li><a href="/">
+                To do
+            </a></li>
 
-        <li><a href="/">
-            My notes
-        </a></li>
+            <li><a href="/">
+                How do I?
+            </a></li>
 
-    </ul>
+            <li><a href="/">
+                My notes
+            </a></li>
 
+        </ul>
+    </div>
 </div>
 
 <!-- help script -->
@@ -135,50 +146,36 @@
             $(hb).text("Close help").removeClass("btn-danger").addClass("btn-success");
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
-            $("#help_screen").css("display", "block");
+            $("#help_screen").slideDown("slow");
         } else {
             $(hb).text("Open help").removeClass("btn-success").addClass("btn-danger");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
-            $("#help_screen").css("display", "none");
+            $("#help_screen").slideUp("slow");
         }
     });
 
     function help_button(hlp_btn) {
 
-        hb = hlp_btn;
-        $('#help_screen').slideToggle('slow');
-
+        var hb = hlp_btn;
+        var help_pos = 'up';
         if ($(hb).hasClass("btn-danger")) {
-            updateHelpScreenStatus('down');
-            $(hb).text("Close help").removeClass("btn-danger").addClass("btn-success");
-            $("#fixed-top-bar").addClass('moveDown');
-            $("#main_container").addClass('moveDown');
-        } else {
-            updateHelpScreenStatus('up');
-            $(hb).text("Open help").removeClass("btn-success").addClass("btn-danger");
-            $("#fixed-top-bar").removeClass('moveDown');
-            $("#main_container").removeClass('moveDown');
+            help_pos = 'down';
         }
-    }
-
-    function updateHelpScreenStatus(position) {
         $.ajax({
             type: "POST",
             url: '/help_update/',
             data: {
-                "help_position": position
+                "help_position": help_pos
             },
             success: function () {
-                if ('{{ request.session.help_position }}' !== position) {
+                if ('{{ request.session.help_position }}' !== help_pos) {
                     location.reload();
                 }
-
-                // console.log('set position to: ' + position);
-                // console.log('session position: ' + '{{ request.session.help_position }}');
             }
         });
     }
+
 
 </script>
 
