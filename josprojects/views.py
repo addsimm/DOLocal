@@ -190,5 +190,12 @@ def help_update(request):
         return HttpResponseNotAllowed(['POST'])
 
     help_position = request.POST.get("help_position", 'missing')
-    request.session["help_position"] = help_position
+    active_tab = request.POST.get("active_tab", 'missing')
+
+    if active_tab != 'missing':
+        request.session["active_tab"] = active_tab
+
+    if help_position != 'missing':
+        request.session["help_position"] = help_position
+
     return HttpResponse('ok')

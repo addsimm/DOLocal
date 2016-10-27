@@ -34,9 +34,14 @@
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
         style="position: fixed; top: -5px; left: 840px; font-size: 18pt; width: 135px; height: 45px; z-index: 110;"
-        onclick="help_button(this);">
-    Tool tray
+        onclick="session_data_update('help_position');">
+    My drawer
 </button>
+
+{#<div style="position: fixed; top: 60px; left: 840px; font-size: 18pt; width: 135px; z-index: 110;">#}
+{#    at: {{ request.session.active_tab }}<br>#}
+{#    hp: {{ request.session.help_position }}<br>#}
+{#</div>#}
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -118,37 +123,54 @@
 <!-- help script -->
 <script>
 
+
     $(document).ready(function () {
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
-            $(hb).text("Close tray").removeClass("btn-info").addClass("btn-warning");
+            $(hb).text("Close").removeClass("btn-info").addClass("btn-warning");
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
             $("#help_screen").slideDown("slow");
-            $('.nav-tabs a:first').tab('show')
+            var active_tab  =  '#to_do_btn';
+            if ('{{ request.session.active_tab }}' !== 'missing') {
+                active_tab = '#{{ request.session.active_tab }}'
+            }
+            $(active_tab).tab('show');
+
         } else {
-            $(hb).text("Tool tray").removeClass("btn-warning").addClass("btn-info");
+            $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
         }
     });
 
-    function help_button(hlp_btn) {
+    function session_data_update(element) {
+        var data = {};
+        if (element === 'help_position') {
+            var hlpBtn = document.getElementById('help_button');
+            var help_pos = 'up';
+            if ($(hlpBtn).hasClass("btn-info")) {
+                help_pos = 'down';
+            }
 
-        var hb = hlp_btn;
-        var help_pos = 'up';
-        if ($(hb).hasClass("btn-info")) {
-            help_pos = 'down';
+            data = {"help_position": help_pos};
+
+        } else {
+            // tab change
+            var active_tab = $('.nav-tabs .zzz').attr('id');
+            data = {"active_tab": active_tab};
         }
+
         $.ajax({
             type: "POST",
             url: '/help_update/',
-            data: {
-                "help_position": help_pos
-            },
+            data: data,
             success: function () {
-                if ('{{ request.session.help_position }}' !== help_pos) {
+                if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {
+                    location.reload();
+                }
+                if (element === 'active_tab' && '{{ request.session.active_tab }}' !== active_tab) {
                     location.reload();
                 }
             }
@@ -159,8 +181,8 @@
         'shown.bs.tab': function (event) {
             $(event.target).addClass('zzz');
             $(event.relatedTarget).removeClass('zzz');
+            session_data_update('active_tab');
         }
     });
-
 
 </script>
