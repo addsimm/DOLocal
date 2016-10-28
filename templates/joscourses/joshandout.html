@@ -6,33 +6,6 @@
 {{ block.super }}
 <!-- Main Panel -->
 
-<div class='hidden' style="color: rgb(217, 83, 79) ; ) ; ; margin: 30px 30px;">
-    DEBUG:<br>
-
-    week: {{ week }}<br>
-    part_no: {{ part_no }}<br>
-    segment_no: {{ segment_no }}<br>
-    element_no: {{ element_no }}<br><br>
-
-    segments:<br>
-    {% for seg in segments %}
-        segment: {{ forloop.counter }} / {{ seg }}<br>
-    {% endfor %}
-
-    <br><br>
-    handouts:<br>
-    {% for hand in handouts %}
-        hand: {{ forloop.counter }} / {{ hand }}<br>
-    {% endfor %}
-
-
-    <br><br>handout.segment_no: {{ handout.segment_no }}<br><br>
-
-    handout.part_no: {{ handout.part_no }} <br>
-    handout.element_no: {{ handout.element_no }}<br>
-    pdf_missing: {{ pdf_missing }}<br><br>
-</div>
-
 <div class="row text-center" style="margin-top: 30px;">
 
     {% if handout.element_no == 14 %}
@@ -62,18 +35,47 @@
 
         {% else %}
 
-            <iframe id="pdf_frame"
-                        title="PDF"
-                        name="PDF"
-                        src="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
-                        width="815px" height="1100px">
-                Your web browser doesn't support iframes; please call.
+            <iframe id="pdf_frame" title="PDF" name="PDF"
+                    src="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
+                    width="1170px" height="1500px"
+                    style="margin-left: -15px;">
+                Your web browser doesn't support 'iframes' - please call.
             </iframe>
 
         {% endif %}
-
     {% endif %}
 </div>
 
 {% endblock %}
+
+
+
+{#<div class='hidden' style="color: rgb(217, 83, 79) ; ) ; ; margin: 30px 30px;">#}
+{#    DEBUG:<br>#}
+{##}
+{#    week: {{ week }}<br>#}
+{#    part_no: {{ part_no }}<br>#}
+{#    segment_no: {{ segment_no }}<br>#}
+{#    element_no: {{ element_no }}<br><br>#}
+{##}
+{#    segments:<br>#}
+{#    {% for seg in segments %}#}
+{#        segment: {{ forloop.counter }} / {{ seg }}<br>#}
+{#    {% endfor %}#}
+{##}
+{#    <br><br>#}
+{#    handouts:<br>#}
+{#    {% for hand in handouts %}#}
+{#        hand: {{ forloop.counter }} / {{ hand }}<br>#}
+{#    {% endfor %}#}
+{##}
+{##}
+{#    <br><br>handout.segment_no: {{ handout.segment_no }}<br><br>#}
+{##}
+{#    handout.part_no: {{ handout.part_no }} <br>#}
+{#    handout.element_no: {{ handout.element_no }}<br>#}
+{#    pdf_missing: {{ pdf_missing }}<br><br>#}
+{#</div>#}
+
+
 
