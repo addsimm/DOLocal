@@ -136,15 +136,14 @@
 </style>
 
 
-
-{# HTML #}
+<!-- HTML -->
 <div>
 
- Agenda Bar
-<div class="row" onload="chatInstruct();" style="margin-top: -150px;">
+<!-- Top Nav -->
+<div class="row" onload="chatInstruct();" style="margin-top: -160px;">
 
     <button class="btn btn-warning pull-left"
-            style="margin: 0; padding: 5px; width: 60px; height: 39px; text-align: center"
+            style="margin: 0; padding: 2px; width: 60px; height: 36px; text-align: center"
             onclick="goBack()">
         Back
     </button>
@@ -153,7 +152,14 @@
         window.history.back();
     }</script>
 
-    <span id="time_clock" style="font-size: 20pt; margin: 0 5px 0 20px; padding-top: 15px;"></span>
+    <span id="time_clock" style="font-size: 20pt; margin: 3px 5px 0 20px; padding-top: 15px;"></span>
+
+    {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
+        <button id="share_button" class="josstaffbutton startshare" style="margin-left: 30px; width: 150px;"
+                onclick="controlShare('{{ JOSName }}')">
+            Share screen
+        </button>
+    {% endif %}
 
     <span id="workshop_progress_bar" style="display: none;"></span>
 
@@ -174,11 +180,11 @@
 
 </div>
 
-{# Main Section #}
+<!-- Main Section -->
 <div class="row" style="padding: 10px 0 0 0;">
 
     {# video_section #}
-    <div style="margin: 5px 0 0 10px; min-height: 550px; width: 825px; padding: 0;">
+    <div style="margin: 5px 0 0 10px; min-height: 600px; width: 825px; padding: 0;">
 
         <div id="screen_share_container" class="text-center hidden" style="padding: 0;">
             <video id="shared_video" autoplay></video>
@@ -190,12 +196,12 @@
 
     {# chat_section #}
     <div id="messages_section"
-        style="position: absolute; top: 80px; left: 860px; background-color: rgb(209,209,209); padding: 0; width: 335px;">
+        style="position: absolute; top: 60px; left: 860px; background-color: rgb(209,209,209); padding: 0; width: 335px;">
 
         <div id="messages_container"
              class="text-center"
              style="margin: 0;
-                    height: 508px;
+                    height: 552px;
                     overflow-x: hidden;
                     overflow-y: auto;">
 
@@ -222,18 +228,9 @@
                 </td>
             </tr>
         </table>
-
     </div>
 </div>
 
-<div class="row" style="margin: 10px 0 0 0;">
-    {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
-        <button id="share_button" class="josstaffbutton startshare" style="margin-right: 15px; width: 150px;"
-                onclick="controlShare('{{ JOSName }}')">
-            Share screen
-        </button>
-    {% endif %}
-</div>
 </div>
 
 {# Scripts #}
