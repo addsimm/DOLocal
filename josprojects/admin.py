@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CKRichTextHolder, JOSStory
+from .models import CKRichTextHolder, JOSStory, JOSHelpItem
 
 # Register your models here.
 
@@ -31,3 +31,17 @@ class JOSStoryAdmin(admin.ModelAdmin):
     list_editable = ("publish_permission",)
 
 admin.site.register(JOSStory, JOSStoryAdmin)
+
+
+class JOSHelpItemAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSHelpItem.
+    """
+    list_display = ("id", "title", "content")
+
+    verbose_name = "JOSHelpItem"
+
+    list_editable = ("title", "content")
+
+
+admin.site.register(JOSHelpItem, JOSHelpItemAdmin)
