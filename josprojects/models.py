@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from mezzanine.core.models import TimeStamped
+from mezzanine.core.models import TimeStamped, RichTextField
 from taggit.managers import TaggableManager
 
 from josmessages.models import JOSMessageThread
@@ -50,4 +50,4 @@ class JOSHelpItem(models.Model):
         verbose_name_plural = 'Help Items'
 
     title = models.CharField(max_length=255, default="missing")
-    content = models.CharField(max_length=255, default="missing")
+    content = RichTextField(default="missing")
