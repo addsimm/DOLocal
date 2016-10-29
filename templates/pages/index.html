@@ -50,18 +50,14 @@
         </div>
     </div>
 
-    <div id='reserve_button' class="text-center" style="margin: 25px 0 50px 0;">
 
-        <a class="joslargelinkbutton"
-           href="{% url "josmembers:josreservespace" %}"
-           style="font-size: 20pt; padding: 12px 25px; border-radius: 20px;">
-            Click here to join for free
-        </a><br><br>
 
+    <div id='disclaimer' class="text-center" style="margin-top: 50px;">
         <a class="secret-button"
            style=" border: none;
                      color: rgb(65, 45, 120);
-                     font-size: 12pt;
+                     font-size: 24pt;
+                     font-weight: normal;
                      outline: none;
                      width: 35%;
                      z-index: 148;"
@@ -70,20 +66,29 @@
             {% else %}
                 {% url 'josmembers:jossignup' %}
             {% endif %}">
-            Totally free; introductory offer. First-come, first-serve.
+            Forever free for those who join now. Don’t wait!
         </a>
-
     </div>
 
-    <!-- CENTER -->
-    <div class="row" style="margin-top: -15px; padding-top: 30px; width: 100%; border-top: 25px solid rgb(231, 209, 222);">
+    <div id='reserve_button' class="text-center" style="margin-top: 30px;">
 
-        <div class="col-xs-4 text-center" style="background-color: transparent;">
-            <img class="img" style="height: 250px;" src="static/img/3share-4.5.png">
-        </div>
+        <a class="joslargelinkbutton"
+           href="{% url "josmembers:josreservespace" %}"
+           style="font-size: 20pt; padding: 12px 25px; border-radius: 20px;">
+            Click here to join for free
+        </a>
+    </div>
+
+
+    <!-- CENTER -->
+    <div class="row" style="margin-top: 50px; padding-top: 30px; width: 100%; border-top: 25px solid rgb(231, 209, 222);">
 
         <div class="col-xs-4 text-center">
             <img class="img" style="height: 250px;" src="static/img/3create_4.5.png">
+        </div>
+
+        <div class="col-xs-4 text-center" style="background-color: transparent;">
+            <img class="img" style="height: 250px;" src="static/img/3share-4.5.png">
         </div>
 
         <div class="col-xs-4 text-center">
