@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils import timezone
+from django.utils.html import strip_tags
 from django.utils.timezone import activate
 from django.views.decorators.csrf import csrf_exempt
 
@@ -64,7 +65,7 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
         try:
             comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
         except:
-            comment_thread = JOSMessageThread.objects.create(subject='On: ' + story.title)
+            comment_thread = JOSMessageThread.objects.create(subject='On: ' + strip_tags(story.title))
             comment_thread.save()
 
     comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
@@ -109,6 +110,9 @@ def josstory(request, story_id=0, edit=False, template="josprojects/josstory.htm
                 content = getattr(story, field_to_edit)
             )
             ckrtf_holder.save()
+
+            if field_to_edit=='title':
+                nu_content = strip_tags(nu_content)
 
             setattr(story, field_to_edit, nu_content)
             info(request, "Changes saved!")

@@ -284,18 +284,20 @@
 <!-- FOOTER -->
 <footer>
     <div class="container" style="margin: 0 0 0 15px; padding: 0;">
-        <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
-            <span style="color: black;">
-                Remember, we are always here for you!&nbsp&nbsp&nbspPhone:
-            </span>
-            <b>(213) 465-0885</b>
-            <span style="color: black;">
-                or email:
-            </span>
-            <a style="color: #d9534f; outline-color: #d9534f; padding: 3px 10px;" href="mailto:Joinus@joinourstory.com">
-                joinus@joinourstory.com
-            </a>
-        </div>
+        {% block phone_number %}
+            <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
+                <span style="color: black;">
+                    We're always here to help:&nbsp&nbsp&nbspphone
+                </span>
+                <b>(213) 465-0885</b>
+                <span style="color: black;">
+                    or email:
+                </span>
+                <a style="color: #d9534f; outline-color: #d9534f; padding: 3px 10px;" href="mailto:Joinus@joinourstory.com">
+                    joinus@joinourstory.com
+                </a>
+            </div>
+        {% endblock phone_number %}
         {% page_menu "pages/menus/footer.html" %}
 
         <p class="text-left" style="font-size: 8pt; margin-top: 0;">

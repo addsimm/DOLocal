@@ -30,24 +30,10 @@
 
 </style>
 
-<a class="secret-button"
-   style="border: none;
-         color: rgb(65, 45, 120);
-         display: block;
-         font-size: 12pt;
-         left: 10px;
-         outline: none;
-         position: fixed;
-         top: 10px;
-         width: 31%;
-         z-index: 148;"
-   href=" {% if request.user.id > 0 %}
-                {% url 'personaldesk' %}/{{ request.user.id }}
-            {% else %}
-                {% url 'josmembers:jossignup' %}
-            {% endif %}">
-    *Totally free; introductory offer. First-come, first-serve.
-</a>
+    <div style="position: fixed; top: 15px; left: 30px; color: #d9534f; z-index: 155;">
+        <span style="color: black;">We're always here to help:&nbsp</span>
+        <b>(213) 465-0885</b>
+    </div>
 
 <div id="landing_page text-center" style="margin-top: -95px; width: 1170px; z-index: 5;">
 
@@ -55,7 +41,7 @@
     <div class="row">
         <div class="col-xs-12 text-center">
             <p style="font-size: 24pt; padding-bottom: 10px;">
-                Click play for a short introduction:<br>
+                Click play for an introduction:<br>
             </p>
             <video width="640" height="360" style="outline: 5px solid rgb(65, 45, 120);" controls>
                 <source src="static/media/PROMO-911-480p.mov" type="video/mp4">
@@ -69,22 +55,30 @@
         <a class="joslargelinkbutton"
            href="{% url "josmembers:josreservespace" %}"
            style="font-size: 20pt; padding: 12px 25px; border-radius: 20px;">
-            Click now to reserve your place*
+            Click here to join for free
+        </a><br><br>
+
+        <a class="secret-button"
+           style=" border: none;
+                     color: rgb(65, 45, 120);
+                     font-size: 12pt;
+                     outline: none;
+                     width: 35%;
+                     z-index: 148;"
+           href=" {% if request.user.id > 0 %}
+                {% url 'personaldesk' %}/{{ request.user.id }}
+            {% else %}
+                {% url 'josmembers:jossignup' %}
+            {% endif %}">
+            Totally free; introductory offer. First-come, first-serve.
         </a>
 
     </div>
 
-
-
     <!-- CENTER -->
-    <div class="row" style="margin-top: 5px; padding-top: 30px; width: 100%; border-top: 25px solid rgb(231, 209, 222);">
+    <div class="row" style="margin-top: -15px; padding-top: 30px; width: 100%; border-top: 25px solid rgb(231, 209, 222);">
 
-        <div class="col-xs-4 text-center">
-            <img class="img" style="height: 250px;" src="static/img/3enjoy_4.5.png">
-        </div>
-
-        <div class="col-xs-4 text-center" style="border-left: 2px solid rgb(231, 209, 222); border-right: 2px
-             solid rgb(231, 209, 222); background-color: transparent;">
+        <div class="col-xs-4 text-center" style="background-color: transparent;">
             <img class="img" style="height: 250px;" src="static/img/3share-4.5.png">
         </div>
 
@@ -92,16 +86,15 @@
             <img class="img" style="height: 250px;" src="static/img/3create_4.5.png">
         </div>
 
-    </div>
-    <div class="row" style="width: 100%;">
         <div class="col-xs-4 text-center">
-            <span class="homehead">Enjoy</span><br><br>
-            <span class="hometext">
-                a growing collection<br>of original stories.
-            </span>
+            <img class="img" style="height: 250px;" src="static/img/3enjoy_4.5.png">
         </div>
 
-        <div class="col-xs-4 text-center" style="border-left: 2px solid rgb(231, 209, 222); border-right: 2px solid rgb(231, 209, 222);">
+    </div>
+    <div class="row" style="width: 100%;">
+
+
+        <div class="col-xs-4 text-center" style=" ">
             <span class="homehead">Create</span><br><br>
             <span class="hometext">express your experiences and individuality.</span>
         </div>
@@ -110,6 +103,13 @@
             <span class="homehead">Share</span><br><br>
             <span class="hometext">
                 your stories as you make friends &amp lasting memories.
+            </span>
+        </div>
+
+        <div class="col-xs-4 text-center">
+            <span class="homehead">Enjoy</span><br><br>
+            <span class="hometext">
+                a growing collection<br>of original stories.
             </span>
         </div>
 
@@ -131,3 +131,5 @@
 </div>
 
 {% endblock all_content %}
+
+{% block phone_number %}{% endblock phone_number %}
