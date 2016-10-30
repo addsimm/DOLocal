@@ -119,65 +119,20 @@
 <div id="how_do_i" class="tab-pane fade josinstructions">
 
     <div class="row" style=" ">
+         To search for a term:
 
-        <div class="col-xs-12" style=" ">
-            <div class="josinstructions">To search: start typing a critical word; responses will start after two letters.</div>
-
-            <input id="help_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;"
-                   type="text" placeholder="Start typing here">
-            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;"
-               href="{% url "josmembers:josmembers_list" %}">
-                Start over
-            </a>
-
-            <script>function startOver() {
-                document.getElementById('member_search_text').value = "Start typing here";
-            }</script>
-
-            <div id="help_search_results"></div>
-
-        </div>
+        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
+               type="text" placeholder="start typing here">
+        <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;"
+           href=".">
+            Start over
+        </a>
     </div>
 
-    {% for help in help_items %}
-        <ul>
+    <div id="help_search_results" class="row">
+        {% include "josprojects/help_search_results.txt" %}
+    </div>
 
-            <li style="margin-top: 25px;">
-                <a style="padding: 5px 12px;" href="javascript:showHelpItem();">
-                    {{ help.title }}
-                </a></li>
-        </ul>
-
-        <div id="help_item_box" style="
-                    background-color: rgb(231, 209, 222);
-                    display: none;
-                    height: 450px;
-                    left: 65px;
-                    overflow-x: hidden;
-                    padding: 25px 55px;
-                    position: fixed;
-                    top: 75px;
-                    width: 1065px;
-                    z-index: 135;
-                    ">
-            <div class="row">
-
-                <button class="btn btn-warning btn-lg pull-right"
-                        style="display:block"
-                        onclick="showHelpItem();">
-                    Back
-                </button>
-
-            </div>
-
-            <div class="row" style="margin-top: 15px; margin-left: 40px;">
-
-                {{ help.content | safe }}
-
-            </div>
-        </div>
-
-    {% endfor %}
 </div>
 
 <div id="my_notes" class="tab-pane fade">my_notes
@@ -275,41 +230,41 @@
 
     function showHelpItem() {
         $('#help_item_box').slideToggle('slow');
-
     }
 }
 
     /* Before our JavaScript, the urls need to be set. */
-    var SUBMIT_URL = "{% url 'josmembers:search_member_list' %}";
+    var SUBMIT_URL = "{% url 'search_help' %}";
 
     /** Executes a search  */
     var processSearch = function () {
         //Get and trim the search text.
-        var searchText = $('#member_search_text').val().trim().toLowerCase();
+        var searchText = $('#help_search_text').val().trim().toLowerCase();
 
-        if (searchText.length < 2) {
+        if (searchText.length < 3) {
             //Too short. Ignore the submission, and erase any current results.
-            $('#member_search_results').html("<i>Keep typing ...</i>");
+            $('#help_search_results').html("<i>Keep typing ...</i>");
 
         } else {
+            console.log("SUBMIT_URL=" + SUBMIT_URL + "; help_search_text=" + searchText);
             // Execute the search.
             var processServerResponse = function (serverResponse_data,
                                                   textStatus_ignored,
                                                   jqXHR_ignored) {
-                /* alert("SUBMIT_URL=" + SUBMIT_URL +
-                 "; member_search_text=" + searchText +
+                console.log("SUBMIT_URL=" + SUBMIT_URL +
+                 "; help_search_text=" + searchText +
                  "; serverResponse_data=" + serverResponse_data +
                  "; textStatus_ignored=" + textStatus_ignored +
                  "; jqXHR_ignored=" + jqXHR_ignored
-                 ); */
-                $('#member_search_results').html(serverResponse_data);
+                 );
+                $('#help_search_results').html(serverResponse_data);
             };
 
             var config = {
                 type: "GET",
                 url: SUBMIT_URL,
                 data: {
-                    'member_search_text': searchText
+                    'help_search_text': searchText
                 },
                 dataType: 'html',
                 success: processServerResponse,
@@ -327,7 +282,7 @@
     var MILLS_TO_IGNORE_LIKES = 500;
     $(document).ready(function () {
         /* This attaches a listener. Calling this again would attach a *second* */
-        $('#member_search_text').keyup(_.debounce(processSearch,
+        $('#help_search_text').keyup(_.debounce(processSearch,
                 MILLS_TO_IGNORE_SEARCH, true));
     });
 </script>

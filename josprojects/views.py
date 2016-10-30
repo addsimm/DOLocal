@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.http import HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.html import strip_tags
@@ -14,7 +14,7 @@ from josmembers.models import JOSProfile
 from josmessages.models import Message, JOSMessageThread
 
 from josmembers.models import JOSTeam
-from .models import CKRichTextHolder, JOSStory
+from .models import CKRichTextHolder, JOSStory, JOSHelpItem
 
 # Create your views here.
 
@@ -205,31 +205,26 @@ def help_update(request):
     return HttpResponse('ok')
 
 
-#####################
 def ajax_help_search(request):
-    member_search_text = ""  # Assume no search
+    help_search_text = ""  # Assume no search
+    context ={}
+
+
 
     if (request.method == "GET"):
         """
         The search form has been submitted. Get the search text - must be GET.
         """
-        member_search_text = request.GET.get("member_search_text", "").strip().lower()
+        help_search_text = request.GET.get("help_search_text", "").strip().lower()
 
-    member_search_results = []
+    help_items = []
 
-    if (member_search_text != ""):
-        member_search_results = JOSProfile.objects.filter(user__username__contains=member_search_text).order_by(
-                'user__username')
+    if (help_search_text != ""):
+        help_items = JOSHelpItem.objects.filter(title__icontains=help_search_text)
 
-    # print('search_text="' + search_text + '", results=' + str(color_results))
-    # Add items to the context:
-
-    # The search text for display and result set
     context = {
-        "member_search_text":    member_search_text,
-        "member_search_results": member_search_results
+        'help_search_text': help_search_text,
+        'help_items': help_items
     }
 
-    return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
-
-    return
+    return render_to_response("josprojects/help_search_results.txt", context)
