@@ -120,15 +120,11 @@
         </div>
     </div>
 
-    <script type='text/javascript'
-            src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script language="javascript">
         /* Before our JavaScript, the urls need to be set. */
         var SUBMIT_URL = "{% url 'josmembers:search_member_list' %}";
-    </script>
 
-    <script language="javascript">
-        /** Executes a search for colors containing a substring. */
+            /** Executes a search  */
         var processSearch = function () {
             //Get and trim the search text.
             var searchText = $('#member_search_text').val().trim().toLowerCase();
@@ -167,12 +163,7 @@
             }
         };
 
-    </script>
-
-    <script language="javascript">
-
-        /** The Ajax "main" function. Attaches the listeners to the elements on page load,
-         each of which only take effect every MILLS_TO_IGNORE_LIKES seconds - requires importing underscore-min.js. Noy underscore-min.map */
+        /** The Ajax "main" function. */
 
         var MILLS_TO_IGNORE_SEARCH = 100;
         var MILLS_TO_IGNORE_LIKES = 500;

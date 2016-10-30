@@ -32,13 +32,16 @@ urlpatterns = i18n_patterns("",
 # import spirit.urls
 
 urlpatterns += patterns('',
-    # EDITABLE HOMEPAGE
+    ### EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
     ### Analytics ###
     url(r'^tracking/', include('tracking.urls')),
 
-    # Video conference
+    ### Search Help ###
+    url(r"^search_help/$", ajax_help_search, name="search_help"),
+
+    ### Video conference ###
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
     url("temasystest/incognito/$", temasystest, {'incognito': True}, name="temasystest"),

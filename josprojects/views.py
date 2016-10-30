@@ -203,3 +203,33 @@ def help_update(request):
         request.session["help_position"] = help_position
 
     return HttpResponse('ok')
+
+
+#####################
+def ajax_help_search(request):
+    member_search_text = ""  # Assume no search
+
+    if (request.method == "GET"):
+        """
+        The search form has been submitted. Get the search text - must be GET.
+        """
+        member_search_text = request.GET.get("member_search_text", "").strip().lower()
+
+    member_search_results = []
+
+    if (member_search_text != ""):
+        member_search_results = JOSProfile.objects.filter(user__username__contains=member_search_text).order_by(
+                'user__username')
+
+    # print('search_text="' + search_text + '", results=' + str(color_results))
+    # Add items to the context:
+
+    # The search text for display and result set
+    context = {
+        "member_search_text":    member_search_text,
+        "member_search_results": member_search_results
+    }
+
+    return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
+
+    return

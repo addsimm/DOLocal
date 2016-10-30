@@ -41,6 +41,6 @@ urlpatterns = patterns('',
    # friends AJAX search
 
     url("josmembers_list", members_list, name="josmembers_list"),
-    url(r"^search/$", submit_member_search_from_ajax, name="search_member_list"),
+    url(r"^search_friends/$", submit_member_search_from_ajax, name="search_member_list"),
 
 )

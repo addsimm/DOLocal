@@ -118,6 +118,27 @@
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
 
+    <div class="row" style=" ">
+
+        <div class="col-xs-12" style=" ">
+            <div class="josinstructions">To search: start typing a critical word; responses will start after two letters.</div>
+
+            <input id="help_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;"
+                   type="text" placeholder="Start typing here">
+            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;"
+               href="{% url "josmembers:josmembers_list" %}">
+                Start over
+            </a>
+
+            <script>function startOver() {
+                document.getElementById('member_search_text').value = "Start typing here";
+            }</script>
+
+            <div id="help_search_results"></div>
+
+        </div>
+    </div>
+
     {% for help in help_items %}
         <ul>
 
@@ -189,6 +210,8 @@
 <!-- help script -->
 <script>
 
+// Deployment and Status Tracking
+{
     $(document).ready(function () {
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
@@ -196,8 +219,8 @@
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
             $("#help_screen").slideDown("slow");
-            var active_tab  =  '#to_do_btn';
-            if ('{{ request.session.active_tab }}' !== 'missing') {
+            var active_tab = '#to_do_btn';
+            if ('{{ request.session.active_tab }}' !== '') {
                 active_tab = '#{{ request.session.active_tab }}'
             }
             $(active_tab).tab('show');
@@ -254,5 +277,57 @@
         $('#help_item_box').slideToggle('slow');
 
     }
+}
 
+    /* Before our JavaScript, the urls need to be set. */
+    var SUBMIT_URL = "{% url 'josmembers:search_member_list' %}";
+
+    /** Executes a search  */
+    var processSearch = function () {
+        //Get and trim the search text.
+        var searchText = $('#member_search_text').val().trim().toLowerCase();
+
+        if (searchText.length < 2) {
+            //Too short. Ignore the submission, and erase any current results.
+            $('#member_search_results').html("<i>Keep typing ...</i>");
+
+        } else {
+            // Execute the search.
+            var processServerResponse = function (serverResponse_data,
+                                                  textStatus_ignored,
+                                                  jqXHR_ignored) {
+                /* alert("SUBMIT_URL=" + SUBMIT_URL +
+                 "; member_search_text=" + searchText +
+                 "; serverResponse_data=" + serverResponse_data +
+                 "; textStatus_ignored=" + textStatus_ignored +
+                 "; jqXHR_ignored=" + jqXHR_ignored
+                 ); */
+                $('#member_search_results').html(serverResponse_data);
+            };
+
+            var config = {
+                type: "GET",
+                url: SUBMIT_URL,
+                data: {
+                    'member_search_text': searchText
+                },
+                dataType: 'html',
+                success: processServerResponse,
+                fail: function () {
+                    alert("Fail")
+                }
+            };
+            $.ajax(config);
+        }
+    };
+
+    /** The Ajax "main" function. */
+
+    var MILLS_TO_IGNORE_SEARCH = 100;
+    var MILLS_TO_IGNORE_LIKES = 500;
+    $(document).ready(function () {
+        /* This attaches a listener. Calling this again would attach a *second* */
+        $('#member_search_text').keyup(_.debounce(processSearch,
+                MILLS_TO_IGNORE_SEARCH, true));
+    });
 </script>
