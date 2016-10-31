@@ -47,10 +47,8 @@ a:hover {
     border-radius: 4px;
     color: white;
     font-size: 16pt;
-    margin-left: 15px;
     padding: 6px 9px;
     outline: none;
-    width: 135px;
 }
 
 .joslargelinkbutton:hover, .joslargelinkbutton:focus {
@@ -186,6 +184,15 @@ footer {
     color: rgb(65, 25, 140);
 }
 
+
+.btn-link, .btn-link:visited {
+    background-color: rgb(112, 154, 109);
+    border-color: rgb(112, 154, 109);
+    color: white;
+    -webkit-focus-ring-color: none;
+}
+
+
 .btn-success:visited, .btn-success:focus {
     background-color: #5cb85c;
     color: white;
@@ -213,6 +220,7 @@ footer {
 }
 
 .btn-default:hover,
+.btn-link:hover,
 .btn-primary:hover,
 .btn-success:hover,
 .btn-info:hover,
@@ -222,6 +230,7 @@ footer {
     border-color: black;
     color: black;
     opacity: .8;
+    text-decoration: none;
 }
 
 .edit_border {

@@ -51,11 +51,6 @@
 
 <style>
 
-    #fixed-top-bar .joslargelinkbutton {
-        margin-left: 10px;
-        width: 130px;
-    }
-
     .moveDown {
         margin-top: 555px;
     }
@@ -98,12 +93,31 @@
                        background-size: 219px 129px;
                        height:129px;
                        outline: none;
-                       padding:0;
                        position: absolute; top: -8px; left: -15px;
                        width:219px;">
 
         </a>
     {% endblock logo %}
+
+    {% if request.user.is_staff %}
+
+        <a class="josstaffbutton text-center"
+           style="position: fixed; top: 10px; left: 250px; font-size: 14pt; width: 100px;"
+           href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
+            {% trans "Staff" %}
+        </a>
+
+    {% endif %}
+
+    {% if request.user.is_superuser %}
+
+        <a class="josstaffbutton text-center"
+           style="position: fixed; top: 10px; left: 365px; font-size: 14pt; width: 100px;"
+           href="/admin">
+            {% trans "Admin" %}
+        </a>
+
+    {% endif %}
 
     <!-- MESSAGES -->
     {% nevercache %}
@@ -154,91 +168,82 @@
     </div>
     {% endnevercache %}
 
-    <!-- NAV BUTTONS -->
-    <div class="row" style="margin: 0; height: 85px; width:100%;">
-        <div class="col-xs-12 text-center" style="margin: 0 0 0 -15px; padding: 0;">
-            <div class="row" style="padding: 18px 0 0 28px;">
-
-            {% block top-nav %}
-
-                <button class="btn btn-warning pull-left text-center"
-                        style="font-size: 14pt; margin-left: 230px; width: 65px; height: 39px;"
-                        onclick=" window.history.back();">
-                    Back
-                </button>
-
-                {% if request.user.is_authenticated %}
-
-                    <a class="joslargelinkbutton pull-left" style="width:125px;"
-                       href="{% url "personaldesk" %}/{{ request.user.id }}">
-                        <i class="fa fa-home fa-fw"></i>
-                        My desk
-                    </a>
-
-                    <a class="joslargelinkbutton pull-left"
-                       href="{% url "josmembers:josmembers_list" %}">
-                        Community
-                    </a>
-
-                    <a class="joslargelinkbutton pull-left" style="padding: 0; width:125px;"
-                       href="{% url "josmessages:messages_redirect" %}">
-                        <div class="pull-left" style="padding: 6px 9px;">
-                            <i class="fa fa-envelope fa-fw"></i>
-                            &nbspMail
-                        </div>
-
-                        {% inbox_count as my_var %}
-                        {% if my_var >= 1 %}
-                            <div class="pull-right text-center"
-                                 style="color: white; height: 39px; padding: 5px; background-color: rgb(217, 83, 79) ; ) ; ;">
-                                {{ my_var }}
-                            </div>
-                        {% else %}
-                            <div class="pull-right"
-                                 style="height: 39px; padding: 5px;">
-                                &nbsp&nbsp
-                            </div>
-                        {% endif %}
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-            {% endblock top-nav %}
-
-            {% if request.user.is_staff %}
-
-                <a class="josstaffbutton"
-                   style="position: fixed; top: 85px; left: 1105px; font-size: 14pt; margin-right: 15px;"
-                   href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
-                    {% trans "> Staff <" %}
-                </a>
-
-            {% endif %}
-
-            {% if request.user.is_superuser %}
-
-                <a class="josstaffbutton"
-                   style="position: fixed; top: 85px; left: 1030px; font-size: 14pt; margin-right: 15px;"
-                   href="/admin">
-                    {% trans "Admin" %}
-                </a>
-
-            {% endif %}
-
-        </div>
-    </div>
-
     <!-- BREADCRUMB -->
     {% block outer_breadcrumb %}
         {% block breadcrumb_menu %}
-            {% include "pages/menus/breadcrumb.html" %}
-            <!-- div class="pull-right"
-                 style="color: rgb(112, 154, 109); font-family: 'Stalemate', cursive; font-size: 36pt; font-weight: bold; margin: -15px 0 0 0; padding: 0 15px; line-height: 1.1; background-color: white;">
-               Hi {{ request.user.get_short_name }}
-            </div -->
+            <div id="breadcrumb-bar"
+                 style= "background-color: rgb(231, 209, 222);
+                         border-radius: 0;
+                         height: 47px;
+                         margin-left: 220px;
+                         margin-top: 60px;
+                         width: 935px;">
+
+                <button class="btn btn-warning text-center"
+                        style="font-size: 16pt; width: 70px; height: 47px;"
+                        onclick=" window.history.back();">
+                    Back
+                </button>
+                <div style="
+                            color: black;
+                            display: inline;
+                            font-size: 22pt;
+                            font-weight: bold;
+                            padding-left: 10px;
+                            position: relative;
+                            top: 5px;
+                            ">
+                    <span style="font-size: 16pt; margin: 0 4px;">At:</span>
+
         {% endblock %}
+                </div>
+
+        {% block top-nav %}
+
+            {% if request.user.is_authenticated %}
+
+                <div style="position: absolute; top: 60px; right: 15px;">
+
+                    <button class="btn btn-link"
+                            style="height: 47px; padding: 6px 8px;"
+                            onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
+                        <i class="fa fa-home fa-fw"></i>
+                        Desk
+                    </button>
+
+
+                    <button class="btn btn-link"
+                            style="height: 47px; padding: 6px 8px;"
+                            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
+                        <i class="fa fa-globe fa-fw"></i>
+                        Buds
+                    </button>
+
+                    <button class="btn btn-link"
+                            style="height: 47px; padding: 6px 0 6px 8px; width: 120px;"
+                            onclick="location.href='{% url "josmessages:messages_redirect" %}';">
+                        <i class="fa fa-envelope fa-fw"></i>
+                        <span style="margin-right: 3px;">Mail</span>
+
+                        {% inbox_count as my_var %}
+                        {% if my_var >= 1 %}
+
+                            <span style="color: white; padding: 0 5px; background-color: rgb(217, 83, 79);">
+                                {{ my_var }}
+                            </span>
+
+                        {% else %}
+                            <span style="padding: 0 5px; ">
+                                &nbsp&nbsp
+                            </span>
+                        {% endif %}
+                    </button>
+                </div>
+            {% endif %}
+            </div>
+
+        {% endblock top-nav %}
+
     {% endblock outer_breadcrumb %}
 
     {% block extra_bar %}{% endblock extra_bar %}

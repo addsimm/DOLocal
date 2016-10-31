@@ -4,7 +4,7 @@
 {% block meta_title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block breadcrumb_menu %}{{ block.super }}
-    {{ story.title  | striptags | safe | truncatechars:55 }} <span style="font-size: 18pt; font-style: italic; margin-left: 5px;"> by {{ story.author.JOSProfile.jos_name }}</span></div></div>
+    {{ story.title  | striptags | safe | truncatechars:55 }} <span style="font-size: 18pt; font-style: italic; margin-left: 5px;"> by {{ story.author.JOSProfile.jos_name }}</span>
 {% endblock %}
 
 {% block all_content %}
