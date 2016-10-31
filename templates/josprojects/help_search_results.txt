@@ -9,7 +9,7 @@
         {% for help in help_items %}
             <ul>
                 <li style="margin-top: 20px;">
-                    <a style="padding: 5px 12px;" href="javascript:showHelpItem();">
+                    <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
                         {{ help.title }}
                     </a>
                 </li>
@@ -31,17 +31,13 @@
 
                     <button class="btn btn-warning btn-lg pull-right"
                             style="display:block"
-                            onclick="showHelpItem();">
+                            onclick="showHelpItem('none');">
                         Back
                     </button>
 
                 </div>
 
-                <div class="row" style="margin-top: 15px; margin-left: 40px;">
-
-                    {{ help.content | safe }}
-
-                </div>
+                <div id='help_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
             </div>
 
         {% endfor %}

@@ -66,10 +66,11 @@
     My drawer
 </button>
 
-<div style="background-color: white; color: red; position: fixed; top: 460px; left: 640px; font-size: 18pt; width: 335px; z-index: 110;">
+<!-- div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
     at: {{ request.session.active_tab }}<br>
     hp: {{ request.session.help_position }}<br>
-</div>
+    hit: {{ request.session.help_item_text }}<br>
+</div -->
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -123,8 +124,8 @@
 
         <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
                type="text" placeholder="start typing here">
-        <a class="btn btn-warning btn-lg"
-           style="font-size: 14pt; margin-top: -7px; width: 75px;"
+        <a class="btn btn-warning btn-sm"
+           style="font-size: 14pt; margin-top: -7px; width: 70px;"
            href="javascript:location.reload();">
             Clear
         </a>
@@ -181,6 +182,9 @@
             }
             $(active_tab).tab('show');
 
+            showHelpItem('{{ request.session.help_item_text }}');
+
+
         } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
             $("#fixed-top-bar").removeClass('moveDown');
@@ -191,6 +195,7 @@
 
     function session_data_update(element) {
         var data = {};
+        var textTest = false;
         if (element === 'help_position') {
             var hlpBtn = document.getElementById('help_button');
             var help_pos = 'up';
@@ -200,10 +205,12 @@
 
             data = {"help_position": help_pos};
 
-        } else {
-            // tab change
+        } else if (element === 'active_tab') {
             var active_tab = $('.nav-tabs .zzz').attr('id');
             data = {"active_tab": active_tab};
+        } else {
+            data = {"help_item_text": element};
+            textTest = true;
         }
 
         $.ajax({
@@ -215,6 +222,9 @@
                     location.reload();
                 }
                 if (element === 'active_tab' && '{{ request.session.active_tab }}' !== active_tab) {
+                    location.reload();
+                }
+                if (textTest && '{{ request.session.help_item_text }}' !== element) {
                     location.reload();
                 }
             }
@@ -229,11 +239,35 @@
         }
     });
 
-    function showHelpItem() {
-        $('#help_item_box').slideToggle('slow');
+    function showHelpItem(id) {
+
+        if (id !== 'none') {
+            $('#help_item_box').slideDown('slow');
+            var config = {
+                type: "GET",
+                url: "{% url 'search_help' %}",
+                data: {
+                    'help_search_text': id
+                },
+                dataType: 'html',
+                success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
+                    $('#help_content').html(serverResponse_data);
+                },
+                fail: function () {
+                    console.log("Get help content fail")
+                }
+            };
+            $.ajax(config);
+        } else {
+            $('#help_item_box').slideUp('slow');
+        }
+
+        session_data_update(id);
     }
 }
 
+// HELP SEARCH
+{
     /* Before our JavaScript, the urls need to be set. */
     var SUBMIT_URL = "{% url 'search_help' %}";
 
@@ -249,15 +283,15 @@
         } else {
             console.log("SUBMIT_URL=" + SUBMIT_URL + "; help_search_text=" + searchText);
             // Execute the search.
-            var processServerResponse = function (serverResponse_data,
-                                                  textStatus_ignored,
-                                                  jqXHR_ignored) {
-                console.log("SUBMIT_URL=" + SUBMIT_URL +
+            var processServerResponse = function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
+
+                /* console.log("SUBMIT_URL=" + SUBMIT_URL +
                  "; help_search_text=" + searchText +
                  "; serverResponse_data=" + serverResponse_data +
                  "; textStatus_ignored=" + textStatus_ignored +
                  "; jqXHR_ignored=" + jqXHR_ignored
-                 );
+                 ); */
+
                 $('#help_search_results').html(serverResponse_data);
             };
 
@@ -286,4 +320,6 @@
         $('#help_search_text').keyup(_.debounce(processSearch,
                 MILLS_TO_IGNORE_SEARCH, true));
     });
+}
+
 </script>

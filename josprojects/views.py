@@ -195,12 +195,16 @@ def help_update(request):
 
     help_position = request.POST.get("help_position", 'missing')
     active_tab = request.POST.get("active_tab", 'missing')
+    help_item_text = request.POST.get("help_item_text", 'missing')
 
     if active_tab != 'missing':
         request.session["active_tab"] = active_tab
 
     if help_position != 'missing':
         request.session["help_position"] = help_position
+
+    if help_item_text != 'missing':
+        request.session["help_item_text"] = help_item_text
 
     return HttpResponse('ok')
 
@@ -217,14 +221,24 @@ def ajax_help_search(request):
         """
         help_search_text = request.GET.get("help_search_text", "").strip().lower()
 
-    help_items = []
+        if help_search_text.isdigit():
+            id = int(help_search_text)
+            try:
+                help_item_content = get_object_or_404(JOSHelpItem, pk=id).content
+            except:
+                help_item_content = ' '
 
-    if (help_search_text != ""):
-        help_items = JOSHelpItem.objects.filter(title__icontains=help_search_text)
+            return HttpResponse(help_item_content)
 
-    context = {
-        'help_search_text': help_search_text,
-        'help_items': help_items
-    }
+        else:
+            help_items = []
 
-    return render_to_response("josprojects/help_search_results.html", context)
+            if (help_search_text != ""):
+                help_items = JOSHelpItem.objects.filter(title__icontains=help_search_text)
+
+            context = {
+                'help_search_text': help_search_text,
+                'help_items': help_items
+            }
+
+            return render_to_response("josprojects/help_search_results.txt", context)
