@@ -66,10 +66,10 @@
     My drawer
 </button>
 
-{#<div style="position: fixed; top: 60px; left: 840px; font-size: 18pt; width: 135px; z-index: 110;">#}
-{#    at: {{ request.session.active_tab }}<br>#}
-{#    hp: {{ request.session.help_position }}<br>#}
-{#</div>#}
+<div style="background-color: white; color: red; position: fixed; top: 460px; left: 640px; font-size: 18pt; width: 335px; z-index: 110;">
+    at: {{ request.session.active_tab }}<br>
+    hp: {{ request.session.help_position }}<br>
+</div>
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -123,9 +123,10 @@
 
         <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
                type="text" placeholder="start typing here">
-        <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;"
-           href=".">
-            Start over
+        <a class="btn btn-warning btn-lg"
+           style="font-size: 14pt; margin-top: -7px; width: 75px;"
+           href="javascript:location.reload();">
+            Clear
         </a>
     </div>
 

@@ -227,4 +227,4 @@ def ajax_help_search(request):
         'help_items': help_items
     }
 
-    return render_to_response("josprojects/help_search_results.txt", context)
+    return render_to_response("josprojects/help_search_results.html", context)
