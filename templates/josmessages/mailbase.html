@@ -19,35 +19,42 @@
 
 {% block all_content %}
 
-    <div class="row" style="margin: 0 0 40px 0;">
+<style>
 
-        <div class="col-xs-12" style="padding: 0;">
+#mail_base .btn-link {
+    width: 115px;
+}
 
-            <a class="joslargelinkbutton"
-               style=" "
-               href="{% url 'josmessages:messages_inbox' %}">
-                    <i class="fa fa-inbox fa-fw" style=" "></i>
-                    My inbox
-            </a>
+</style>
 
-            <a class="joslargelinkbutton"
-               style="margin-left: 15px;"
-               href="{% url 'josmessages:messages_outbox' %}">
-                    <i class="fa fa-paper-plane fa-fw"></i>
-                    Sent
-            </a>
+<div id='mail_base' class="row" style="margin: 15px 0 40px 0;">
 
-            <span class="josinstructions" style="margin-left: 40px;">To send messages, use:</span>
+    <div class="col-xs-12" style="padding: 0;">
+        <button class="btn btn-link"
+                style="height: 47px; margin-left: 15px; padding: 6px 8px;"
+                onclick="location.href= '{% url 'josmessages:messages_inbox' %}';">
+            <i class="fa fa-inbox fa-fw" style=" "></i>
+            Inbox
+        </button>
 
-            <button class="btn btn-link"
-                    style="height: 47px; margin-left: 15px; padding: 6px 8px;"
-                    onclick="location.href='{% url "josmembers:josmembers_list" %}';">
-                <i class="fa fa-heart fa-fw"></i>
-                Pals
-            </button>
+        <button class="btn btn-link"
+                style="height: 47px; margin-left: 15px; padding: 6px 8px;"
+                onclick="location.href= '{% url 'josmessages:messages_outbox' %}';">
+            <i class="fa fa-paper-plane fa-fw"></i>
+            Sent
+        </button>
 
-        </div>
+        <span class="josinstructions" style="margin: 0 30px;">To send messages, use:</span>
+
+        <button class="btn btn-link"
+                style="height: 47px; padding: 6px 8px;"
+                onclick="location.href='{% url "josmembers:josmembers_list" %}';">
+            <i class="fa fa-heart fa-fw"></i>
+            Pals
+        </button>
+
     </div>
+</div>
 
 {% endblock %}
 

@@ -28,7 +28,7 @@
         border-color: rgb(240, 173, 78);
     }
 
-    .zzz {
+    .jos_tab_active {
         background-color: rgb(255, 255, 224) !important;
         border: 3px solid rgb(65, 45, 120) !important;
         border-bottom-color: rgb(255, 255, 224) !important;
@@ -61,12 +61,12 @@
 
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
-        style="position: fixed; top: -5px; left: 685px; font-size: 18pt; width: 135px; height: 45px; z-index: 110;"
+        style="position: fixed; top: -5px; left: 745px; font-size: 18pt; width: 150px; height: 45px; z-index: 110;"
         onclick="session_data_update('help_position');">
     My drawer
 </button>
 
-<!-- div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
+<!-- DEBUG --><!-- div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
     at: {{ request.session.active_tab }}<br>
     hp: {{ request.session.help_position }}<br>
     hit: {{ request.session.help_item_text }}<br>
@@ -118,7 +118,6 @@
 </div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
-
     <div id="main_help">
         <div class="row" style=" ">
              To search for a term:
@@ -139,24 +138,20 @@
                     Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
                 </div>
             {% endif %}
-            {% if  help_items.count > 0 %}
-                {% for help in help_items %}
-                    <ul>
-                        <li style="margin-top: 20px;">
-                            <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
-                                {{ help.title }}
-                            </a>
-                        </li>
-                    </ul>
 
-                {% endfor %}
-            {% else %}
-                ---
-            {% endif %}
+            {% for help in help_items %}
+                <ul>
+                    <li style="margin-top: 20px;">
+                        <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
+                            {{ help.title }}
+                        </a>
+                    </li>
+                </ul>
+            {% endfor %}
         </div>
     </div>
 
-    <div id='help_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
+<div id='help_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
 
 <div id="my_notes" class="tab-pane fade">my_notes
@@ -235,7 +230,7 @@
             data = {"help_position": help_pos};
 
         } else if (element === 'active_tab') {
-            var active_tab = $('.nav-tabs .zzz').attr('id');
+            var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
             data = {"active_tab": active_tab};
         } else {
             data = {"help_item_text": element};
@@ -262,8 +257,8 @@
 
     $('.nav-tabs').on({
         'shown.bs.tab': function (event) {
-            $(event.target).addClass('zzz');
-            $(event.relatedTarget).removeClass('zzz');
+            $(event.target).addClass('jos_tab_active');
+            $(event.relatedTarget).removeClass('jos_tab_active');
             session_data_update('active_tab');
         }
     });
