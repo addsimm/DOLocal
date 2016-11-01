@@ -213,8 +213,6 @@ def ajax_help_search(request):
     help_search_text = ""  # Assume no search
     context ={}
 
-
-
     if (request.method == "GET"):
         """
         The search form has been submitted. Get the search text - must be GET.
@@ -224,7 +222,9 @@ def ajax_help_search(request):
         if help_search_text.isdigit():
             id = int(help_search_text)
             try:
-                help_item_content = get_object_or_404(JOSHelpItem, pk=id).content
+                help_item = get_object_or_404(JOSHelpItem, pk=id)
+                help_item_content = help_item.title + ':<br>' + help_item.content
+
             except:
                 help_item_content = ' '
 

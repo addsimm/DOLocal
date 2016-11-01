@@ -119,22 +119,44 @@
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
 
-    <div class="row" style=" ">
-         To search for a term:
+    <div id="main_help">
+        <div class="row" style=" ">
+             To search for a term:
 
-        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
-               type="text" placeholder="start typing here">
-        <a class="btn btn-warning btn-sm"
-           style="font-size: 14pt; margin-top: -7px; width: 70px;"
-           href="javascript:location.reload();">
-            Clear
-        </a>
+            <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
+                   type="text" placeholder="start typing here">
+            <a class="btn btn-warning btn-sm"
+               style="font-size: 14pt; margin-top: -7px; width: 70px;"
+               href="javascript:location.reload();">
+                Clear
+            </a>
+        </div>
+
+        <div id="help_search_results" class="row">
+
+            {% if  help_search_text %}
+                <div class="josinstructions" style="color: #5bc0de; margin-top: 15px;">
+                    Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
+                </div>
+            {% endif %}
+            {% if  help_items.count > 0 %}
+                {% for help in help_items %}
+                    <ul>
+                        <li style="margin-top: 20px;">
+                            <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
+                                {{ help.title }}
+                            </a>
+                        </li>
+                    </ul>
+
+                {% endfor %}
+            {% else %}
+                ---
+            {% endif %}
+        </div>
     </div>
 
-    <div id="help_search_results" class="row">
-        {% include "josprojects/help_search_results.txt" %}
-    </div>
-
+    <div id='help_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
 
 <div id="my_notes" class="tab-pane fade">my_notes
@@ -184,6 +206,13 @@
 
             showHelpItem('{{ request.session.help_item_text }}');
 
+            if ( '{{ request.session.help_item_text }}' === 'none') {
+                $('#main_help').show();
+                $('#help_item_box').hide();
+            } else {
+                $('#main_help').hide();
+                $('#help_item_box').show();
+            }
 
         } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
@@ -241,8 +270,15 @@
 
     function showHelpItem(id) {
 
-        if (id !== 'none') {
-            $('#help_item_box').slideDown('slow');
+        if ($.isNumeric(id)) {
+            var done_button =[
+            "<button class='btn btn-warning btn-lg pull-right'",
+            "        style='display:block'",
+            "        onclick='showHelpItem();'>",
+            "    Back",
+            "</button>"
+                    ].join('\n');
+
             var config = {
                 type: "GET",
                 url: "{% url 'search_help' %}",
@@ -251,7 +287,9 @@
                 },
                 dataType: 'html',
                 success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
-                    $('#help_content').html(serverResponse_data);
+                    $('#help_content')
+                            .append(done_button)
+                            .append(serverResponse_data);
                 },
                 fail: function () {
                     console.log("Get help content fail")
@@ -259,7 +297,7 @@
             };
             $.ajax(config);
         } else {
-            $('#help_item_box').slideUp('slow');
+            id = 'none';
         }
 
         session_data_update(id);
