@@ -37,51 +37,37 @@
         color: orange;
     }
 
-    .desk-button {
-        display: block;
-        font-size: 16pt;
-        min-height: 50px;
-        margin-top: 20px;
-        padding-top: 10px;
+    #top-buttons .btn-link {
+        font-size: 24pt;
+        height: 65px;
     }
 
 </style>
 
-<div class="row" style=" font-size: 18pt; width: 1150px; margin: 0;">
+<div id='top-buttons' class="row" style="width: 1150px; margin: 0;">
 
-    <a class="col-xs-3 pull-right" style="margin: 0 20px 0 30px;" href="http://www.joinourstory.com/workshop_connect">
-        <div class="row" style=" ">
+    <button class="btn btn-link pull-right"
+            style="margin: 0 20px; padding: 0 15px; width: auto;"
+            onclick="location.href='http://www.joinourstory.com/workshop_connect';">
+        <i class="fa fa-video-camera fa-fw"></i>
 
-            <div class="col-xs-2">
+        <div style="display: inline; padding-top: 11px;">Sharing room</div>
+    </button>
 
-                <i class="fa fa-video-camera fa-2x fa-fw" style="padding-top: 3px; margin-left: -15px; height: 50px;"></i>
+    <button class="btn btn-link pull-right text-left"
+            onclick="location.href='{% url "profile" request.user.id %}';"
+            style="padding: 0; width: 240px; border: none;">
+        <img class="pull-left" style="margin-right: 15px; width: 65px; height: 65px;"
+             src="
+                {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
+                    https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}
+                {% else %}
+                    /static/img/peeky-102216.png
+                {% endif %}">
 
-            </div>
+        <div class="pull-left" style="padding-top: 11px;">My profile</div>
 
-            <div class="col-xs-10 text-center" style="padding: 10px 0 0 0;">
-                Community room
-            </div>
-        </div>
-    </a>
-
-    <a class="col-xs-2 pull-right" style="padding: 0 15px" href="{% url "profile" request.user.id %}">
-        <div class="row">
-            <div class="col-xs-3">
-
-                <img style="padding: 0; margin-left: -15px; width: 56px; height: 56px;"
-                    {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
-                        src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
-                    {% else %}
-                        src="/static/img/peeky-102216.png"
-                    {% endif %}>
-
-            </div>
-
-            <div class="col-xs-9 text-center" style="padding: 10px 0 0 0;">
-                My profile
-            </div>
-        </div>
-    </a>
+    </button>
 
 </div>
 

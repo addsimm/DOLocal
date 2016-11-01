@@ -30,31 +30,31 @@
 
 </style>
 
-    <div style="">
-        <a class="secret-button"
-           style="
-                border: none;
-                color: #d9534f;
-                font-size: 18pt;
-                font-weight: normal;
-                left: 30px;
-                outline: none;
-                position: fixed;
-                top: 15px;
-                width: 35%;
-                z-index: 155;
-                  "
-           href=" {% if request.user.id > 0 %}
-                {% url 'personaldesk' %}/{{ request.user.id }}
-            {% else %}
-                {% url 'josmembers:jossignup' %}
-            {% endif %}">
-            <span style="color: black;">We're always here to help:&nbsp</span>
-            <b>(213) 465-0885</b>
-        </a>
-    </div>
+<div style="">
+    <a class="secret-button"
+       style="
+            border: none;
+            color: #d9534f;
+            font-size: 18pt;
+            font-weight: normal;
+            left: 30px;
+            outline: none;
+            position: fixed;
+            top: 15px;
+            width: 70%;
+            z-index: 155;
+              "
+       href=" {% if request.user.id > 0 %}
+            {% url 'personaldesk' %}/{{ request.user.id }}
+        {% else %}
+            {% url 'josmembers:jossignup' %}
+        {% endif %}">
+        <span style="color: black;">We're always here to help:&nbsp</span>
+        <b>(213) 465-0885</b>
+    </a>
+</div>
 
-<div id="landing_page text-center" style="margin-top: -65px; width: 1170px; z-index: 5;">
+<div id="landing_page text-center" style="margin-top: -45px; width: 1170px; z-index: 5;">
 
     <!-- VIDEO -->
     <div class="row">

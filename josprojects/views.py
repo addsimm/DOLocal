@@ -21,7 +21,7 @@ from .models import CKRichTextHolder, JOSStory, JOSHelpItem
 User = get_user_model()
 
 @login_required
-def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra_context=None):
+def personaldesk(request, pk, template="josprojects/personal_desk.html", extra_context=None):
     user = get_object_or_404(User, pk=pk)
 
     activate('America/Los_Angeles')
@@ -36,7 +36,7 @@ def personaldesk(request, pk, template="josprojects/jospersonaldesk.html", extra
 
 
 @login_required
-def mystory_list(request, template="josprojects/mystory_list.html", extra_context=None):
+def mystory_list(request, template="josprojects/my_story_list.html", extra_context=None):
     activate('America/Los_Angeles')
     stories = JOSStory.objects.filter(author=request.user).order_by('-updated')
 
@@ -48,7 +48,7 @@ def mystory_list(request, template="josprojects/mystory_list.html", extra_contex
 
 @login_required
 @csrf_exempt
-def josstory(request, story_id=0, edit=False, template="josprojects/josstory.html", extra_context=None):
+def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.html", extra_context=None):
     activate('America/Los_Angeles')
 
     try:
@@ -160,7 +160,7 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def temasystest(request, incognito=False, jos_id=0, template="josprojects/temasys_test.html"):
+def temasystest(request, incognito=False, jos_id=0, template="josprojects/chat_room.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
     try:
         user = get_object_or_404(User, pk=jos_id)
@@ -241,4 +241,4 @@ def ajax_help_search(request):
                 'help_items': help_items
             }
 
-            return render_to_response("josprojects/help_search_results.txt", context)
+            return render_to_response("josprojects/ajax_help_search_results.txt", context)
