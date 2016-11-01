@@ -99,7 +99,7 @@ def index_unread(request):
         'next_page_pk': next_page_pk
     }
 
-    return render(request, 'spirit/topic/notification/index_unread.html', context)
+    return render(request, 'old/spirit/topic/notification/index_unread.html', context)
 
 
 @login_required
@@ -112,4 +112,4 @@ def index(request):
 
     context = {'notifications': notifications, }
 
-    return render(request, 'spirit/topic/notification/index.html', context)
+    return render(request, 'old/spirit/topic/notification/index.html', context)

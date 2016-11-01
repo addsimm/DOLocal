@@ -17,7 +17,7 @@ TAGS = {
 }
 
 
-@register.inclusion_tag('spirit/utils/_messages.html')
+@register.inclusion_tag('old/spirit/utils/_messages.html')
 def render_messages(messages):
     grouped = OrderedDict()
 

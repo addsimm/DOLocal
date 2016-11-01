@@ -31,4 +31,4 @@ def index(request):
         'next_page_pk': next_page_pk
     }
 
-    return render(request, 'spirit/topic/unread/index.html', context)
+    return render(request, 'old/spirit/topic/unread/index.html', context)

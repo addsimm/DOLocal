@@ -15,177 +15,170 @@
 
 {% block all_content %}
 
-    <div class="row">
-        <div class="col-xs-11" style="margin-top: 30px; padding-left: 50px;">
-            {% block accounts_content %}
-                {# form.as_p #}
-                {% errors_for form %}
+<div class="row">
+<div class="col-xs-11" style="margin-top: 0; padding-left: 50px;">
+{% block accounts_content %}
 
-                <form class="form-horizontal"
-                      method="post"
-                      {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}
-                      novalidate>
+    {% errors_for form %}
 
-                    <fieldset>
-                        {% nevercache %}
-                            <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
-                            {% csrf_token %}
-                        {% endnevercache %}
+    <form class="form-horizontal"
+          method="post"
+          {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}
+          novalidate>
 
-                        {% for field in form %}
-                            {% if field.is_hidden %}
-                                {{ field }}
-                            {% else %}
+        <fieldset>
+        {% nevercache %}
+            <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+            {% csrf_token %}
+        {% endnevercache %}
 
-                                    <div class="form-group input_{{ field.id_for_label }}
-                                                                 {{ field.field.type }}
-                                                                 {% if field.errors %}
-                                                                    has-error
-                                                                 {% endif %}">
-    {# field.name #}
-                                    {% if field.label %}
-                                        <label class="control-label"
-                                            for="{{ field.auto_id }}">{{ field.label | title }}
-                                        </label>
-                                    {% endif %}
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
 
-                                    {{ field }}
+            {% else %}
+                <div class="form-group input_{{ field.id_for_label }}
+                                             {{ field.field.type }}
+                                             {% if field.errors %}
+                                                has-error
+                                             {% endif %}">
+                    {% if field.label %}
+                        <label class="control-label"
+                            for="{{ field.auto_id }}">{{ field.label | title }}
+                        </label>
+                    {% endif %}
 
-                                    {% if field.errors %}
-                                        <p class="help-block">
-                                            {% for e in field.errors %}
-                                                {% if not forloop.first %} / {% endif %}{{ e }}
-                                            {% endfor %}
-                                        </p>
+                    {{ field }}
 
-                                    {% elif field.help_text %}
-                                        <p class="help-block">
-                                            {{ field.help_text }}
-                                        </p>
-                                    {% endif %}
+                    {% if field.errors %}
+                        <p class="help-block">
+                            {% for e in field.errors %}
+                                {% if not forloop.first %} / {% endif %}{{ e }}
+                            {% endfor %}
+                        </p>
 
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </fieldset>
+                    {% elif field.help_text %}
+                        <p class="help-block">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
 
-                    <div class="form-actions"><!-- sumbit -->
-                        {% block account_form_actions %}
-                            {% if title == "Sign up" %}
-                                <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
-                                    I agree to the
-                                    <a class="joslargelinkbutton" style=" " href="/community-rules">Community
-                                        rules</a>
-                                    &nbsp&nbsp&nbsp&
-                                    <a class="joslargelinkbutton" style=" " href="/legals">Terms and
-                                        conditions</a><br><br>
-                                </div>
-                            {% endif %}
-                            <input class="btn btn-default btn-lg pull-left"
-                                   style="margin-top: 10px; width: 200px;"
-                                   type="submit"
-                                   value="{{ title }}">
-                        {% endblock account_form_actions %}
+                </div>
+            {% endif %}
+        {% endfor %}</fieldset>
+
+        <div class="form-actions"><!-- sumbit -->
+            {% block account_form_actions %}
+                {% if title == "Sign up" %}
+                    <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
+                        I agree to the
+                        <a class="joslargelinkbutton" style=" " href="/community-rules">Community
+                            rules</a>
+                        &nbsp&nbsp&nbsp&
+                        <a class="joslargelinkbutton" style=" " href="/legals">Terms and
+                            conditions</a><br><br>
                     </div>
+                {% endif %}
+                <input class="btn btn-default btn-lg pull-left"
+                       style="margin-top: 10px; width: 200px;"
+                       type="submit"
+                       value="{{ title }}">
+            {% endblock account_form_actions %}
+        </div>
+    </form>
+</div>
 
-                </form>
-            </div>
+{% endblock accounts_content %}
+<div class="col-xs-1"></div>
+</div>
 
-            {% endblock accounts_content %}
+<style>
 
-        <div class="col-xs-1"></div>
+    .form-group > input[type="text"],
+    .form-group > input[type="email"],
+    .form-group > input[type="number"],
+    .form-group > input[type="password"],
+    .form-group > textarea {
+        background-color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        outline: 2px dotted #28a4c9;
+        box-shadow: none;
+        color: rgb(65, 45, 120);
+        display: block;
+        font-size: 14pt;
+        line-height: normal;
+        max-width: 85%;
+        padding: 6px 12px;
+        transition: none;
+        vertical-align: middle;
+        width: 85%;
+    }
 
-    </div>
+    .form-group > input[type="text"],
+    .form-group > input[type="email"],
+    .form-group > input[type="password"],
+    .form-group > input[type="number"] {
+        height: 50px;
+    }
 
-    <style>
+    .form-group > input[type="checkbox"] {
+        height: 80px;
+    }
 
-        .form-group > input[type="text"],
-        .form-group > input[type="email"],
-        .form-group > input[type="number"],
-        .form-group > input[type="password"],
-        .form-group > textarea {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            outline: 2px dotted #28a4c9;
-            box-shadow: none;
-            color: rgb(65, 45, 120);
-            display: block;
-            font-size: 14pt;
-            line-height: normal;
-            max-width: 85%;
-            padding: 6px 12px;
-            transition: none;
-            vertical-align: middle;
-            width: 85%;
-        }
+    input[type='radio'] {
+        height: 1.35em;
+        margin-right: 7px;
+        margin-top: 0;
+        width: 1.35em;
+    }
 
-        .form-group > input[type="text"],
-        .form-group > input[type="email"],
-        .form-group > input[type="password"],
-        .form-group > input[type="number"] {
-            height: 50px;
-        }
+    input[type='checkbox'] {
+        height: 1.75em;
+        width: 1.75em;
+        margin-left: 7px;
+        vertical-align: middle;
+    }
 
-        .form-group > input[type="checkbox"] {
-            height: 80px;
-        }
+    .control-label {
+        vertical-align: middle;
+    }
 
-        input[type='radio'] {
-            height: 1.35em;
-            margin-right: 7px;
-            margin-top: 0;
-            width: 1.35em;
-        }
+    label[for*='id_email_frequency_'] {
 
-        input[type='checkbox'] {
-            height: 1.75em;
-            width: 1.75em;
-            margin-left: 7px;
-            vertical-align: middle;
-        }
+    }
 
-        .control-label {
-            vertical-align: middle;
-        }
+</style>
 
+<script>
 
+// Then move the input to outside of the label
+//// $('.input_id_email_frequency > label > input').each(function () {$(this).parent().before(this);});
 
-        label[for*='id_email_frequency_'] {
+    var radio_box_selectors = [
+        ".input_id_email_frequency",
+        ".input_id_primary_device",
+        ".input_id_primary_os"
+    ];
+    for (i = 0; i < radio_box_selectors.length; i++) {
+        //console.log('radio_box_selectors: ' + radio_box_selectors[i]);
+        $(radio_box_selectors[i] + " ul").contents().unwrap();
+        $(radio_box_selectors[i] + " li").contents().unwrap();
+        $(radio_box_selectors[i]).children()
+                .wrap("<div class='radio' style='margin-left: 30px; margin-top: 10px;'></div>");
+        $(radio_box_selectors[i] + " .control-label").unwrap();
+        // $(radio_box_selectors[i] + " label").removeAttr('for');
 
-        }
+        // $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
+        // $('<br>').insertBefore(radio_box_selectors[i] + " > label");
+    }
 
-    </style>
+    $(".form-group").each(function(index) {
+        $(this).wrap("<div class='col-xs-6' style='margin-top: 15px;'></div>");
+        // console.log(index + ": " + $(this).parent().attr('class'));
+    });
 
-    <script>
-
-        // Then move the input to outside of the label
-        //// $('.input_id_email_frequency > label > input').each(function () {$(this).parent().before(this);});
-
-        var radio_box_selectors = [
-            ".input_id_email_frequency",
-            ".input_id_primary_device",
-            ".input_id_primary_os"
-        ];
-        for (i = 0; i < radio_box_selectors.length; i++) {
-            //console.log('radio_box_selectors: ' + radio_box_selectors[i]);
-            $(radio_box_selectors[i] + " ul").contents().unwrap();
-            $(radio_box_selectors[i] + " li").contents().unwrap();
-            $(radio_box_selectors[i]).children()
-                    .wrap("<div class='radio' style='margin-left: 30px; margin-top: 10px;'></div>");
-            $(radio_box_selectors[i] + " .control-label").unwrap();
-            // $(radio_box_selectors[i] + " label").removeAttr('for');
-
-            // $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
-            // $('<br>').insertBefore(radio_box_selectors[i] + " > label");
-        }
-
-        $(".form-group").each(function(index) {
-            $(this).wrap("<div class='col-xs-6' style='margin-top: 15px;'></div>");
-            // console.log(index + ": " + $(this).parent().attr('class'));
-        });
-
-    </script>
+</script>
 
 
 {% endblock all_content %}

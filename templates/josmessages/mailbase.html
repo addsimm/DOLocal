@@ -38,10 +38,13 @@
             </a>
 
             <span class="josinstructions" style="margin-left: 40px;">To send messages, use:</span>
-            <a class="joslargelinkbutton" style="margin-left: 15px;"
-               href="{% url "josmembers:josmembers_list" %}">
-               Community
-            </a>
+
+            <button class="btn btn-link"
+                    style="height: 47px; margin-left: 15px; padding: 6px 8px;"
+                    onclick="location.href='{% url "josmembers:josmembers_list" %}';">
+                <i class="fa fa-heart fa-fw"></i>
+                Pals
+            </button>
 
         </div>
     </div>

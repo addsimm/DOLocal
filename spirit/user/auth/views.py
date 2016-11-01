@@ -39,7 +39,7 @@ def custom_logout(request, **kwargs):
     if request.method == 'POST':
         return logout(request, **kwargs)
 
-    return render(request, 'spirit/user/auth/logout.html')
+    return render(request, 'old/spirit/user/auth/logout.html')
 
 
 @ratelimit(field='email', rate='5/5m')
@@ -80,7 +80,7 @@ def register(request, registration_form=RegistrationForm):
 
     context = {'form': form, }
 
-    return render(request, 'spirit/user/auth/register.html', context)
+    return render(request, 'old/spirit/user/auth/register.html', context)
 
 
 def registration_activation(request, pk, token):
@@ -118,4 +118,4 @@ def resend_activation_email(request):
 
     context = {'form': form, }
 
-    return render(request, 'spirit/user/auth/activation_resend.html', context)
+    return render(request, 'old/spirit/user/auth/activation_resend.html', context)

@@ -73,7 +73,7 @@ def publish(request, user_id=None):
         'cform': cform,
         'tpform': tpform}
 
-    return render(request, 'spirit/topic/private/publish.html', context)
+    return render(request, 'old/spirit/topic/private/publish.html', context)
 
 
 @login_required
@@ -106,7 +106,7 @@ def detail(request, topic_id, slug):
         'comments': comments,
     }
 
-    return render(request, 'spirit/topic/private/detail.html', context)
+    return render(request, 'old/spirit/topic/private/detail.html', context)
 
 
 @login_required
@@ -138,7 +138,7 @@ def delete_access(request, pk):
 
     context = {'topic_private': topic_private, }
 
-    return render(request, 'spirit/topic/private/delete.html', context)
+    return render(request, 'old/spirit/topic/private/delete.html', context)
 
 
 @login_required
@@ -167,7 +167,7 @@ def join_in(request, topic_id):
         'form': form
     }
 
-    return render(request, 'spirit/topic/private/join.html', context)
+    return render(request, 'old/spirit/topic/private/join.html', context)
 
 
 @login_required
@@ -184,7 +184,7 @@ def index(request):
 
     context = {'topics': topics, }
 
-    return render(request, 'spirit/topic/private/index.html', context)
+    return render(request, 'old/spirit/topic/private/index.html', context)
 
 
 @login_required
@@ -204,4 +204,4 @@ def index_author(request):
 
     context = {'topics': topics, }
 
-    return render(request, 'spirit/topic/private/index_author.html', context)
+    return render(request, 'old/spirit/topic/private/index_author.html', context)

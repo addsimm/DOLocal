@@ -1,4 +1,4 @@
-{% extends "spirit/_base.html" %}
+{% extends "old/spirit/_base.html" %}
 
 {% load i18n %}
 
@@ -10,10 +10,10 @@
     
     <form action="." method="post" class="js-reply">
         {% csrf_token %}
-        {% include "spirit/_form.html" %}
+        {% include "old/spirit/_form.html" %}
 
         <div class="container">
-            {% include "spirit/comment/_editor.html" %}
+            {% include "old/spirit/comment/_editor.html" %}
 
             <input class="button reply-button" type="submit" value="{% trans "Publish" %}" />
         </div>

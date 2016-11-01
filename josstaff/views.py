@@ -14,7 +14,7 @@ from request.models import Request
 # Create your views here.
 
 
-def staffgallery(request, template="josstaff/staffgallery.html", extra_context= None):
+def staffgallery(request, template="josstaff/staff_gallery.html", extra_context= None):
     staff = JOSStaffMember.objects.all()
     context = {'staff': staff,
                'title': 'Join Our Story - Our Mission and Team'}
@@ -32,7 +32,7 @@ def community_rules(request, template="josstaff/community_rules.html", extra_con
 
 
 @staff_member_required
-def stafftimesheet(request, template="josstaff/stafftimesheet.html", extra_context=None):
+def stafftimesheet(request, template="josstaff/staff_timesheet.html", extra_context=None):
 
     firstname = request.GET.get('firstname')
     staffmember = get_object_or_404(JOSStaffMember, first_name = firstname)

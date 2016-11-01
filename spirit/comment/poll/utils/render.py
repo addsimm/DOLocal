@@ -31,7 +31,7 @@ def _render_form(poll, comment, request, csrf_token):
         'next': poll.get_rel_url(request)  # todo: add ?hash_tag=pX to comment.find and use the poll.url
     }
 
-    return render_to_string('spirit/comment/poll/_form.html', context)
+    return render_to_string('old/spirit/comment/poll/_form.html', context)
 
 
 def _render_results(poll, comment, request, csrf_token):
@@ -44,7 +44,7 @@ def _render_results(poll, comment, request, csrf_token):
         'csrf_token': csrf_token
     }
 
-    return render_to_string('spirit/comment/poll/_results.html', context)
+    return render_to_string('old/spirit/comment/poll/_results.html', context)
 
 
 def _evaluate(polls_by_name, comment, request, csrf_token):

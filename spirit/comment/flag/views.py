@@ -27,4 +27,4 @@ def create(request, comment_id):
         'comment': comment
     }
 
-    return render(request, 'spirit/comment/flag/create.html', context)
+    return render(request, 'old/spirit/comment/flag/create.html', context)
