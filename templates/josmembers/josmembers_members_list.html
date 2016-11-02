@@ -46,7 +46,7 @@
 
                             {% for usr in team_dict.users %}
 
-                                {% include "josmembers/_include.html" with user=usr height=64 %}
+                                {% include "josmembers/user_picture_include.html" with user=usr height=64 %}
 
                             {% endfor %}
 
@@ -73,7 +73,7 @@
                     {% for favorite in following %}
 
                         <div class="col-xs-3 text-center" style="padding: 10px; margin: 0 15px 15px 0; width: 256px; border: 1px solid rgb(65,45,120);">
-                            {% include "josmembers/_include.html" with user=favorite height=128 %}<br>
+                            {% include "josmembers/user_picture_include.html" with user=favorite height=128 %}<br>
 
                             <a class="btn btn-default btn-xs"
                                style="margin: 10px 0 0 0;"
