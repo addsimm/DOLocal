@@ -61,7 +61,7 @@
 
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
-        style="position: fixed; top: -5px; left: 745px; font-size: 18pt; width: 150px; height: 45px; z-index: 110;"
+        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 150px; height: 45px; z-index: 110;"
         onclick="session_data_update('help_position');">
     My drawer
 </button>
@@ -155,34 +155,106 @@
 </div>
 
 <div id="my_notes" class="tab-pane fade">my_notes
-{##}
-{#    <div id='border_title'#}
-{#         class="{% if edit %}edit_border{% endif %} edit_border_class"#}
-{#         style="padding: 3px;">#}
-{##}
-{#        {% include "josprojects/jos_editor.html" with section='title' %}#}
-{##}
-{#        <div class="row">#}
-{#            <form id='title_form'#}
-{#                  method="post"#}
-{#                  {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>#}
-{##}
-{#                <div id='title' class="col-xs-12 homehead text-center">#}
-{#                    Test<br>#}
-{#                </div>#}
-{##}
-{#                <input id="title_holder" type="hidden" name='nucontent' value=" ">#}
-{#                <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="title">#}
-{##}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
+
+    <a id="button_reply"
+       class="btn btn-default"
+       style="margin-left: 10px; width: 100px;"
+       onclick="activateCKEdit()"
+       data-toggle="tooltip"
+       title="Activates the word processor to reply"
+       data-placement="right">
+        Edit
+    </a>
+
+    <!-- div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div style="margin-left: 60px;">
+
+                {% for field in form %}
+                    {% if field.name == "message_thread_id" %}
+                        {{ field.as_hidden }}
+                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}"
+                               name="message_thread_id">
+                    {% else %}
+                        <div class="form-group input_{{ field.id_for_label }}
+                                                         {{ field.field.type }}
+                                                         {% if field.errors %}
+                                                            has-error
+                                                         {% endif %}">
+                            {# field.name #}
+                            {% if field.label %}
+                                <label class="control-label"
+                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                            {% endif %}
+
+                            {{ field }}
+
+                            {% if field.errors %}
+                                <p class="help-block">
+                                    {% for e in field.errors %}
+                                        {% if not forloop.first %} / {% endif %}{{ e }}
+                                    {% endfor %}
+                                </p>
+
+                            {% elif field.help_text %}
+                                <p class="help-block">
+                                    {{ field.help_text }}
+                                </p>
+                            {% endif %}
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button id="#button_cancel"
+                        type="button"
+                        class="btn btn-warning"
+                        style=" "
+                        onclick="cancel_reply();">Cancel
+                </button>
+
+                <input id="#button_send"
+                       class="btn btn-default"
+                       style="margin-left: 10px; width: 100px;"
+                       type="submit" value="Send">
+
+            </div>
+
+        </form>
+
+    </div -->
+
 </div>
 </div>
+
 
 
 <!-- help script -->
 <script>
+
+function activateCKEdit() {
+    $('#reply_thread_form').removeClass('hidden');
+    $('#button_cancel').removeClass('hidden');
+    $('#button_send').removeClass('hidden');
+    $('#button_reply').addClass('hidden');
+    $('#button_inbox').addClass('hidden');
+    $('#button_delete').addClass('hidden');
+    CKEDITOR.replace(id_body, {
+        toolbar: [
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+            {'name': 'editing', 'items': ['SelectAll', 'Find']}
+        ],
+        contentsCss: '/static/ckeditor/ckeditor/contents.css',
+        disableNativeSpellChecker: false,
+        width: '95%',
+        tabSpaces: 4,
+        extraPlugins: 'colorbutton',
+        removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+    });
+}
 
 // Deployment and Status Tracking
 {

@@ -4,103 +4,56 @@
 
 
 {% block inner_breadcrumb_menu %}
-    <span style="font-size: 18pt;">Subject:</span> {{ subject | striptags }}
+    Re: {{ subject | striptags }}
 {% endblock %}
 
 {% block all_content %}
 
 <div class="row">
 
-<div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
+<div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
 
     <span class="josinstructions">Subject:</span>
-    <span class="homehead" style="margin-left: 15px;">{{ subject | striptags }}</span><br><br>
+    <span class="homehead" style="margin-left: 15px;">{{ subject | striptags }}</span>
 
 {% for msg in emails %}
 
-{% if msg.sender != request.user %}
+    <div class="row" style="font-size: 20pt; margin-top: 20px;">
+        <div class="{% if msg.sender != request.user %}
+                        col-xs-3 col-xs-offset-1
+                    {% else %}
+                        col-xs-3 col-xs-offset-9
+                    {% endif %}">
+            {{ msg.sent_at | time:"f A" }}; {{ msg.sent_at | date:"M d" }}
 
-    <div class="row" style="margin-top: 30px;">
-
-        <div class="row">
-            <div class="col-xs-6 col-xs-offset-1">
-                <span style="font-size: 20pt; margin-left: -50px;">
-                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
-                </span>
-                <a class="joslargelinkbutton" href="{% url "profile" msg.sender.id %}"
-                   style="margin-left: 5px; margin-right: 10px;">
-                    <span style="font-size: 20pt; margin: 0 0 0 5px;">
-                        {{ msg.sender.JOSProfile.jos_name }}
-                    </span>
-                </a>said:
-            </div>
-        </div>
-
-        <div class="row"
-             style="border-bottom: 1px dashed rgb(65, 45, 120);
-                        margin-top: 20px;
-                        padding-bottom: 10px;">
-
-            <div class="col-xs-1">
-
-                {% if "noimage" in msg.sender.JOSProfile.profile_image_id_str %}
-                    <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/peeky-102216.png">
-                {% else %}
-                    <img class="img-responsive" style="display: inline; height: 60px;"
-                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ msg.sender.JOSProfile.profile_image_id_str }}">
-                {% endif %}
-
-            </div>
-
-            <div class="col-xs-10"
-                 style="border: 1px solid rgb(65, 45, 120);
-                     font-size: 20pt;
-                     padding: 15px;">
-
-                "{{ msg.body | striptags | safe }}"
-
-            </div>
         </div>
     </div>
 
-{% else %}
+    <div class="row" style="font-size: 20pt; margin-top: 20px;">
 
-    <div class="row" style="margin-top: 30px;">
-        <div class="row">
-            <div class="col-xs-6 col-xs-offset-6">
-                <span style="font-size: 20pt; margin-left: 7px;">
-                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
-                </span>
-                <a class="joslargelinkbutton" href="{% url "profile" msg.sender.id %}"
-                   style="margin-left: 5px; margin-right: 10px;">
-                        <span style="font-size: 20pt; margin: 0 0 0 5px;">
-                            {{ msg.sender.JOSProfile.jos_name }}
-                        </span>
-                </a>said:
+        {% if msg.sender != request.user %}
+
+            <div class="col-xs-2">
+                {% include "josmembers/user_picture.html" with user=msg.sender height=60 %}
             </div>
-        </div>
 
-        <div class="row"
-             style="border-bottom: 1px dashed rgb(65, 45, 120);
-                 margin-top: 20px; padding-bottom: 10px;">
-
-            <div class="col-xs-10 col-xs-offset-1"
-                 style="border: 1px solid rgb(65, 45, 120); font-size: 20pt; padding: 15px;">
+            <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
                 "{{ msg.body | striptags | safe }}"
             </div>
 
-            <div class="col-xs-1">
-                {% if "noimage" in msg.sender.JOSProfile.profile_image_id_str.profile_image_id_str %}
-                    <img class="img-responsive" style="display: inline; height: 60px;" src="/static/img/peeky-102216.png">
-                {% else %}
-                    <img class="img-responsive" style="display: inline; height: 60px;"
-                         src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ msg.sender.JOSProfile.profile_image_id_str }}">
-                {% endif %}
-            </div>
-        </div>
-    </div>
+        {% else %}
 
-{% endif %}
+            <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                "{{ msg.body | striptags | safe }}"
+            </div>
+
+            <div class="col-xs-2">
+                {% include "josmembers/user_picture.html" with user=msg.sender height=60 %}
+            </div>
+
+        {% endif %}
+
+    </div>
 
 {% endfor %}
 
