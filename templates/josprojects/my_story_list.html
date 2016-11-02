@@ -41,10 +41,10 @@
     {% if stories.count > 0 %}
 
         <table data-toggle="table" width="100%">
-            <col style="width:49%;">
-            <col style="width:23%;">
-            <col style="width:23%;">
-            <col style="width:5%;">
+            <col style="width:45%;">
+            <col style="width:20%;">
+            <col style="width:20%;">
+            <col style="width:15%;">
             <thead>
                 <tr>
                     <th data-sortable="true">Title</th>
@@ -66,11 +66,11 @@
                         <td style=" ">
 
                             {% if story.publish_permission == 1 %}
-                                <span style="color: rgb(217, 83, 79) ; ) ; ">Me</span>
+                                <span style="color: #d9534f;">Me</span>
                             {% elif story.publish_permission == 2 %}
-                                <span style="color: yellow">My team</span>
+                                <span style="color: #f0ad4e">My team</span>
                             {% else %}
-                                <span style="color: green">All</span>
+                                <span style="color: #5cb85c">All</span>
                             {% endif %}
 
                         </td>

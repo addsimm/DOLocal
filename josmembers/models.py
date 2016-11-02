@@ -73,6 +73,7 @@ class JOSTeam(TimeStamped, models.Model):
 
         return member_id_list
 
+
 class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Member Profile'
@@ -102,6 +103,14 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         jos_name = first_name + "_" + last_initial
         return jos_name
 
+
+    def get_teams(self):
+        return ", ".join(team.name for team in self.teams.all())
+
+
+    def has_teams(self):
+        if len(self.get_teams()) > 0:
+            return True
 
 class JOSReservation(TimeStamped, models.Model):
 

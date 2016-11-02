@@ -4,9 +4,6 @@
     .particBox:hover {
         outline: 2px solid #f0ad4e;
 
-
-
-
     }
 
 </style>
@@ -17,7 +14,7 @@
            display: inline-block;
            padding: 5px 0 0 0;
            margin: 0 10px 0 0;
-           width: {{ height|add:50 }}px;
+           width: {{ height|add:60 }}px;
            ">
 
     <div class="col-xs-12 text-center" style="padding: 0;">
@@ -30,7 +27,7 @@
     </div>
 
     <div class="col-xs-12 text-center" style="color: rgb(0, 128, 0); padding: 0 0 3px 0;">
-        {{ user.JOSProfile.jos_name }}
+        {{ user.JOSProfile.user.get_short_name }}
     </div>
 
 </a>

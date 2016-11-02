@@ -23,17 +23,27 @@ class JOSProfileAdmin(admin.ModelAdmin):
     """
     Admin class for JOSProfiles.
     """
+    model = JOSProfile
+    verbose_name = 'User profile'
 
-    verbose_name = 'Member profile'
-
-    list_display = ("id", "user",)
+    list_display = ("id", "user", "last_login", "get_teams", "has_teams")
     readonly_fields = ('created', 'updated',)
     filter_horizontal = ('teams',)
 
+    # def get_teams(self, obj):
+    #      return  ", ".join( team.name for team in obj.teams.all())
+    #
+    # def has_teams(self, obj):
+    #     if len(self.get_teams(obj)) > 0:
+    #         return True
+    #
+    #     return False
+
+    def last_login(self, obj):
+        return obj.user.last_login
+
     # fieldsets = josprofile_fieldsets
-    # list_display = josprofile_list_display
-    # list_filter = josprofile_list_filter
-    # filter_horizontal = ("categories", "related_posts",)
+
 
 admin.site.register(JOSProfile, JOSProfileAdmin)
 
