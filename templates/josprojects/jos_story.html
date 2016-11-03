@@ -127,7 +127,7 @@
 
     {% include "josprojects/updated_include.html" with myobj=story %}<br>
 
-    <!-- Discuss -->
+    <!-- Go To Disc -->
     <a class="btn pull-right btn-default"
        style="margin-top: 20px;" href="#discuss">
         {% trans "Discuss" %}
@@ -153,7 +153,7 @@
 
             <div class='text-left' style="margin: 25px 0 0 30px;">
 
-                <input name="permission_slider" title='permission_slider' id="ex13">
+                <input name="permission_slider" title='permission_slider' id="sharing_slider">
 
             </div>
 
@@ -284,7 +284,7 @@
 
 <script>
 
-    $("#ex13").slider({
+    $("#sharing_slider").slider({
                 id: "slider13",
                 handle: 'triangle',
                 max: 3,
@@ -297,7 +297,6 @@
                 value: {{ story.publish_permission }}
             })
             .on('slideStop', function (slideStopEvt) {
-                // alert('slider: ' + slideStopEvt.value);
                 window.location.href = "{% url "josstory" story.id %}/?pubperm=" + slideStopEvt.value;
             });
 

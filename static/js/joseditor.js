@@ -20,6 +20,7 @@ function activateCKEdit(section) {
         disableNativeSpellChecker: false,
         width: '95%',
         tabSpaces: 4,
+        uiColor: '#28a4c9',
         removePlugins: 'liststyle,tabletools,scayt,contextmenu',
         extraPlugins: 'colorbutton'
     });
@@ -43,7 +44,7 @@ function manageCKEdit(el) {
             $('.joshint').show();
             $('#save_' + section).show();
             $('#discard_' + section).show();
-            $('.edit_border_class').removeClass('edit_border')
+            $('.edit_border_class').removeClass('edit_border');
             $('#border_' + section).addClass('edit_border_active');
             activateCKEdit(section);
             break;
