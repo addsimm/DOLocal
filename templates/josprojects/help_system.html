@@ -166,67 +166,79 @@
         Edit
     </a>
 
-    <!-- div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
-
-        <form action="" method="post">
-            {% csrf_token %}
-
-            <div style="margin-left: 60px;">
-
-                {% for field in form %}
-                    {% if field.name == "message_thread_id" %}
-                        {{ field.as_hidden }}
-                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}"
-                               name="message_thread_id">
-                    {% else %}
-                        <div class="form-group input_{{ field.id_for_label }}
-                                                         {{ field.field.type }}
-                                                         {% if field.errors %}
-                                                            has-error
-                                                         {% endif %}">
+{#    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">#}
+{##}
+{#        <form action="" method="post">#}
+{#            {% csrf_token %}#}
+{#            <div style="margin-left: 60px;">#}
+{##}
+{#                {% for field in form %}#}
+{#                    {% if field.name == "message_thread_id" %}#}
+{#                        {{ field.as_hidden }}#}
+{#                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}"#}
+{#                               name="message_thread_id">#}
+{#                    {% else %}#}
+{#                        <div class="form-group input_{{ field.id_for_label }}#}
+{#                                                 {{ field.field.type }}#}
+{#                                                 {% if field.errors %}#}
+{#                                                    has-error#}
+{#                                                 {% endif %}">#}
                             {# field.name #}
-                            {% if field.label %}
-                                <label class="control-label"
-                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                            {% endif %}
-
-                            {{ field }}
-
-                            {% if field.errors %}
-                                <p class="help-block">
-                                    {% for e in field.errors %}
-                                        {% if not forloop.first %} / {% endif %}{{ e }}
-                                    {% endfor %}
-                                </p>
-
-                            {% elif field.help_text %}
-                                <p class="help-block">
-                                    {{ field.help_text }}
-                                </p>
-                            {% endif %}
-
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-                <button id="#button_cancel"
-                        type="button"
-                        class="btn btn-warning"
-                        style=" "
-                        onclick="cancel_reply();">Cancel
-                </button>
-
-                <input id="#button_send"
-                       class="btn btn-default"
-                       style="margin-left: 10px; width: 100px;"
-                       type="submit" value="Send">
-
-            </div>
-
-        </form>
-
-    </div -->
-
+{#                            {% if field.label %}#}
+{#                                <label class="control-label"#}
+{#                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>#}
+{#                            {% endif %}#}
+{##}
+{#                            {{ field }}#}
+{##}
+{#                            {% if field.errors %}#}
+{#                                <p class="help-block">#}
+{#                                    {% for e in field.errors %}#}
+{#                                        {% if not forloop.first %} / {% endif %}{{ e }}#}
+{#                                    {% endfor %}#}
+{#                                </p>#}
+{##}
+{#                            {% elif field.help_text %}#}
+{#                                <p class="help-block">#}
+{#                                    {{ field.help_text }}#}
+{#                                </p>#}
+{#                            {% endif %}#}
+{##}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{##}
+{##}
+{#                <input id="#button_send"#}
+{#                       class="btn btn-default"#}
+{#                       style="margin-left: 10px; width: 100px;"#}
+{#                       type="submit" value="Save">#}
+{##}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#    <!-- Bottom buttons -->#}
+{#    <div class="row" style="margin-top: 50px;">#}
+{##}
+{#        <div class="col-xs-12">#}
+{##}
+{##}
+{##}
+{#            <a id="button_reply"#}
+{#               class="btn btn-default"#}
+{#               style="margin-left: 10px; width: 100px;"#}
+{#               onclick="activateCKEdit()"#}
+{#               data-toggle="tooltip"#}
+{#               title="Activates the word processor to reply"#}
+{#               data-placement="right">#}
+{#                {% trans "Reply" %}#}
+{#            </a>#}
+{##}
+{##}
+{##}
+{#        </div>#}
+{#    </div>#}
 </div>
 </div>
 
@@ -235,26 +247,39 @@
 <!-- help script -->
 <script>
 
-/* function activateCKEdit() {
-    $('#reply_thread_form').removeClass('hidden');
-    $('#button_cancel').removeClass('hidden');
-    $('#button_send').removeClass('hidden');
-    $('#button_reply').addClass('hidden');
-    $('#button_inbox').addClass('hidden');
-    $('#button_delete').addClass('hidden');
-    CKEDITOR.replace(id_body, {
-        toolbar: [
-            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-            {'name': 'editing', 'items': ['SelectAll', 'Find']}
-        ],
-        contentsCss: '/static/ckeditor/ckeditor/contents.css',
-        disableNativeSpellChecker: false,
-        width: '95%',
-        tabSpaces: 4,
-        extraPlugins: 'colorbutton',
-        removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-    });
-} */
+    // My notes editor
+
+/*    function cancel_reply() {
+        $('#button_cancel').addClass('hidden');
+        $('#button_send').addClass('hidden');
+        $('#reply_thread_form').addClass('hidden');
+        $('#button_reply').removeClass('hidden');
+        $('#button_inbox').removeClass('hidden');
+        $('#button_delete').removeClass('hidden');
+    }
+
+    function activateCKEdit() {
+        $('#reply_thread_form').removeClass('hidden');
+        $('#button_cancel').removeClass('hidden');
+        $('#button_send').removeClass('hidden');
+        $('#button_reply').addClass('hidden');
+        $('#button_inbox').addClass('hidden');
+        $('#button_delete').addClass('hidden');
+        CKEDITOR.replace(id_body, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: '95%',
+            tabSpaces: 4,
+            uiColor: '#28a4c9',
+            extraPlugins: 'colorbutton',
+            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+        });
+    }
+*/
 
 // Deployment and Status Tracking
 {

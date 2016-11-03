@@ -16,7 +16,8 @@
     <span class="josinstructions">Subject:</span>
     <span class="homehead" style="margin-left: 15px;">{{ subject | striptags }}</span>
 
-
+<!-- Messages -->
+<div>
 {# msgs_user_ids: {{ msgs_user_ids }}<br>#}
 {% for msg in emails %}
 
@@ -54,66 +55,64 @@
     </div>
 
 {% endfor %}
+</div>
 
-    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
+<div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
 
-        <form action="" method="post">
-            {% csrf_token %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div style="margin-left: 60px;">
 
-            <div style="margin-left: 60px;">
+            {% for field in form %}
+                {% if field.name == "message_thread_id" %}
+                    {{ field.as_hidden }}
+                    <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
+                {% else %}
+                    <div class="form-group input_{{ field.id_for_label }}
+                                                 {{ field.field.type }}
+                                                 {% if field.errors %}
+                                                    has-error
+                                                 {% endif %}">
+                        {# field.name #}
+                        {% if field.label %}
+                            <label class="control-label"
+                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                        {% endif %}
 
-                {% for field in form %}
-                    {% if field.name == "message_thread_id" %}
-                        {{ field.as_hidden }}
-                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
-                    {% else %}
-                        <div class="form-group input_{{ field.id_for_label }}
-                                                     {{ field.field.type }}
-                                                     {% if field.errors %}
-                                                        has-error
-                                                     {% endif %}">
-                            {# field.name #}
-                            {% if field.label %}
-                                <label class="control-label"
-                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                            {% endif %}
+                        {{ field }}
 
-                            {{ field }}
+                        {% if field.errors %}
+                            <p class="help-block">
+                                {% for e in field.errors %}
+                                    {% if not forloop.first %} / {% endif %}{{ e }}
+                                {% endfor %}
+                            </p>
 
-                            {% if field.errors %}
-                                <p class="help-block">
-                                    {% for e in field.errors %}
-                                        {% if not forloop.first %} / {% endif %}{{ e }}
-                                    {% endfor %}
-                                </p>
+                        {% elif field.help_text %}
+                            <p class="help-block">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
 
-                            {% elif field.help_text %}
-                                <p class="help-block">
-                                    {{ field.help_text }}
-                                </p>
-                            {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
 
-                        </div>
-                    {% endif %}
-                {% endfor %}
+            <button id="#button_cancel"
+                    type="button"
+                    class="btn btn-warning"
+                    style=" "
+                    onclick="cancel_reply();">Cancel
+            </button>
 
-                <button id="#button_cancel"
-                        type="button"
-                        class="btn btn-warning"
-                        style=" "
-                        onclick="cancel_reply();">Cancel
-                </button>
+            <input id="#button_send"
+                   class="btn btn-default"
+                   style="margin-left: 10px; width: 100px;"
+                   type="submit" value="Send">
 
-                <input id="#button_send"
-                       class="btn btn-default"
-                       style="margin-left: 10px; width: 100px;"
-                       type="submit" value="Send">
-
-            </div>
-
-        </form>
-
-    </div>
+        </div>
+    </form>
+</div>
 
     <!-- Bottom buttons -->
     <div class="row" style="margin-top: 50px;">
