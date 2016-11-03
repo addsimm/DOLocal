@@ -181,7 +181,7 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
         if not msg.read_at:
             msg.read_at = timezone.now()
             msg.save()
-
+    msgs_user_ids = msg_thread.messages_distinct_user_ids
     msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
     form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
@@ -196,17 +196,25 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
             mt_id = request.POST["message_thread_id"]
             body = request.POST["body"]
             mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-            msgs_distinct_recipients = mt.messages_distinct_recipients
+            msgs_user_ids = mt.messages_distinct_user_ids
 
-            for msg in msgs_distinct_recipients:
-                send_msg = Message.objects.create(
-                    message_thread=mt,
-                    body=body,
-                    sender=request.user,
-                    recipient =msg.recipient,
-                    sent_at=timezone.now()
-                )
-                send_msg.save()
+            for xid in msgs_user_ids:
+
+                if xid != request.user.id:
+                    usr = " "
+                    try:
+                        usr = get_object_or_404(User, id=xid)
+                    except:
+                        pass
+                    if usr != " ":
+                        send_msg = Message.objects.create(
+                            message_thread=mt,
+                            body=body,
+                            sender=request.user,
+                            recipient = usr,
+                            sent_at=timezone.now()
+                        )
+                        send_msg.save()
 
             response_messages.info(request, "Message successfully sent.")
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
@@ -214,7 +222,8 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     context = {"form": form,
                "subject": msg_thread.subject,
                "emails": msgs,
-               "message_thread_id": msg_thread.id}
+               "message_thread_id": msg_thread.id,
+               "msgs_user_ids": msgs_user_ids}
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 

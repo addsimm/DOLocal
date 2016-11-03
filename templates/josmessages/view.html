@@ -16,15 +16,13 @@
     <span class="josinstructions">Subject:</span>
     <span class="homehead" style="margin-left: 15px;">{{ subject | striptags }}</span>
 
+
+{# msgs_user_ids: {{ msgs_user_ids }}<br>#}
 {% for msg in emails %}
 
-    <div class="row" style="font-size: 20pt; margin-top: 20px;">
-        <div class="{% if msg.sender != request.user %}
-                        col-xs-3 col-xs-offset-1
-                    {% else %}
-                        col-xs-3 col-xs-offset-9
-                    {% endif %}">
-            {{ msg.sent_at | time:"f A" }}; {{ msg.sent_at | date:"M d" }}
+    <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+        <div class="col-xs-3">
+            {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
 
         </div>
     </div>
@@ -33,11 +31,11 @@
 
         {% if msg.sender != request.user %}
 
-            <div class="col-xs-2">
+            <div class="col-xs-2" style="padding: 0;">
                 {% include "josmembers/user_picture_include.html" with user=msg.sender height=60 %}
             </div>
 
-            <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+            <div class="col-xs-10" style="margin-left: -25px; border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
                 "{{ msg.body | striptags | safe }}"
             </div>
 
@@ -70,10 +68,10 @@
                         <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
                     {% else %}
                         <div class="form-group input_{{ field.id_for_label }}
-                                                         {{ field.field.type }}
-                                                         {% if field.errors %}
-                                                            has-error
-                                                         {% endif %}">
+                                                     {{ field.field.type }}
+                                                     {% if field.errors %}
+                                                        has-error
+                                                     {% endif %}">
                             {# field.name #}
                             {% if field.label %}
                                 <label class="control-label"
@@ -179,6 +177,7 @@
             disableNativeSpellChecker: false,
             width: '95%',
             tabSpaces: 4,
+            uiColor: '#28a4c9',
             extraPlugins: 'colorbutton',
             removePlugins: 'liststyle,tabletools,scayt,contextmenu'
         });
