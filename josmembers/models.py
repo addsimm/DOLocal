@@ -112,6 +112,15 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         if len(self.get_teams()) > 0:
             return True
 
+
+class JOSUserCreatedNote(TimeStamped, models.Model):
+    class meta:
+        verbose_name = 'UC Note'
+
+    note_text = models.TextField(default="Enter notes here", null=True)
+    profile = models.ForeignKey(JOSProfile, null=True)
+
+
 class JOSReservation(TimeStamped, models.Model):
 
     class Meta:

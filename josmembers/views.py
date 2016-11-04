@@ -45,6 +45,12 @@ def login(request, template="accounts/account_login.html", form_class=LoginForm,
 
         context = {"form": form, "title": _("Log in")}
         context.update(extra_context or {})
+
+        # help session start values
+        request.session["active_tab"] = 'to_do_btn'
+        request.session["help_position"] = 'up'
+        request.session["help_item_text"] = 'none'
+
         return TemplateResponse(request, template, context)
 
 

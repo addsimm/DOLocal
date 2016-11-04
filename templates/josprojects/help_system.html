@@ -66,11 +66,11 @@
     My drawer
 </button>
 
-<!-- DEBUG --><!-- div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
+<!-- DEBUG --><div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
     at: {{ request.session.active_tab }}<br>
     hp: {{ request.session.help_position }}<br>
     hit: {{ request.session.help_item_text }}<br>
-</div -->
+</div>
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -151,10 +151,12 @@
         </div>
     </div>
 
-<div id='help_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
+<div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
 
 <div id="my_notes" class="tab-pane fade">my_notes
+
+    user_created_note: {{ user_created_note }}<br>
 
     <a id="button_reply"
        class="btn btn-default"
@@ -265,7 +267,7 @@
         $('#button_reply').addClass('hidden');
         $('#button_inbox').addClass('hidden');
         $('#button_delete').addClass('hidden');
-        CKEDITOR.replace(id_body, {
+        CKEDITOR.replace(XXXXXXX, {
             toolbar: [
                 {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
                 {'name': 'editing', 'items': ['SelectAll', 'Find']}
@@ -290,10 +292,7 @@
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
             $("#help_screen").slideDown("slow");
-            var active_tab = '#to_do_btn';
-            if ('{{ request.session.active_tab }}' !== '') {
-                active_tab = '#{{ request.session.active_tab }}'
-            }
+            active_tab = '#{{ request.session.active_tab }}';
             $(active_tab).tab('show');
 
             showHelpItem('{{ request.session.help_item_text }}');
@@ -329,9 +328,11 @@
         } else if (element === 'active_tab') {
             var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
             data = {"active_tab": active_tab};
-        } else {
+        } else if (element.isNumber()) {
             data = {"help_item_text": element};
             textTest = true;
+        } else {
+            data = {}
         }
 
         $.ajax({
@@ -379,7 +380,7 @@
                 },
                 dataType: 'html',
                 success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
-                    $('#help_content')
+                    $('#help_item_content')
                             .append(done_button)
                             .append(serverResponse_data);
                 },

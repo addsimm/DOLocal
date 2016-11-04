@@ -254,3 +254,4 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     #             notification.send([user], "messages_recovered", {"message": message,})
     #         return HttpResponseRedirect(success_url)
     #     raise Http404
+

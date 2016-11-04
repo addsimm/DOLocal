@@ -187,31 +187,9 @@ def workshop_connect(request, template="josprojects/workshop_connect.html"):
     return TemplateResponse(request, template, context)
 
 
-@login_required
-@csrf_exempt
-def help_update(request):
-    if not request.is_ajax() or not request.method == 'POST':
-        return HttpResponseNotAllowed(['POST'])
-
-    help_position = request.POST.get("help_position", 'missing')
-    active_tab = request.POST.get("active_tab", 'missing')
-    help_item_text = request.POST.get("help_item_text", 'missing')
-
-    if active_tab != 'missing':
-        request.session["active_tab"] = active_tab
-
-    if help_position != 'missing':
-        request.session["help_position"] = help_position
-
-    if help_item_text != 'missing':
-        request.session["help_item_text"] = help_item_text
-
-    return HttpResponse('ok')
-
-
 def ajax_help_search(request):
     help_search_text = ""  # Assume no search
-    context ={}
+    context = {}
 
     if (request.method == "GET"):
         """
@@ -238,7 +216,118 @@ def ajax_help_search(request):
 
             context = {
                 'help_search_text': help_search_text,
-                'help_items': help_items
+                'help_items':       help_items
             }
 
             return render_to_response("josprojects/ajax_help_search_results.txt", context)
+
+
+@login_required
+@csrf_exempt
+def help_update(request):
+    if not request.is_ajax() or not request.method == 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    help_position = request.POST.get("help_position", 'missing')
+    active_tab = request.POST.get("active_tab", 'missing')
+    help_item_text = request.POST.get("help_item_text", 'missing')
+
+    if active_tab != 'missing':
+        request.session["active_tab"] = active_tab
+
+    if help_position != 'missing':
+        request.session["help_position"] = help_position
+
+    if help_item_text != 'missing':
+        request.session["help_item_text"] = help_item_text
+
+    return HttpResponse('ok')
+
+
+@login_required
+def view(request, message_thread_id=0, template_name="josmessages/view.html"):
+    """
+    Shows a single message thread with reply option.
+    """
+    activate('America/Los_Angeles')
+
+    msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
+    all_thread_msgs = msg_thread.messages
+
+    for msg in all_thread_msgs.filter(recipient=request.user):
+        if not msg.read_at:
+            msg.read_at = timezone.now()
+            msg.save()
+    msgs_user_ids = msg_thread.messages_distinct_user_ids
+    msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
+    form = JOSReplyForm({"message_thread_id": msg_thread.id})
+
+    if request.method == "POST":
+        form = JOSReplyForm(request.POST)
+        if form.is_valid():
+            for msg in msgs:
+                if not msg.replied_at:
+                    msg.replied_at = timezone.now()
+                    msg.save()
+
+            mt_id = request.POST["message_thread_id"]
+            body = request.POST["body"]
+            mt = get_object_or_404(JOSMessageThread, pk=mt_id)
+            msgs_user_ids = mt.messages_distinct_user_ids
+
+            for xid in msgs_user_ids:
+
+                if xid != request.user.id:
+                    usr = " "
+                    try:
+                        usr = get_object_or_404(User, id=xid)
+                    except:
+                        pass
+                    if usr != " ":
+                        send_msg = Message.objects.create(
+                                message_thread=mt,
+                                body=body,
+                                sender=request.user,
+                                recipient=usr,
+                                sent_at=timezone.now()
+                        )
+                        send_msg.save()
+
+            response_messages.info(request, "Message successfully sent.")
+            return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
+
+    context = {"form":              form,
+               "subject":           msg_thread.subject,
+               "emails":            msgs,
+               "message_thread_id": msg_thread.id,
+               "msgs_user_ids":     msgs_user_ids}
+
+    return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+
+    # @login_required
+    # def undelete(request, message_id, success_url=None):
+    #     """
+    #     Recovers a message from trash. This is achieved by removing the
+    #     ``(sender|recipient)_deleted_at`` from the model.
+    #     """
+    #     user = request.user
+    #     message = get_object_or_404(Message, id=message_id)
+    #     undeleted = False
+    #     if success_url is None:
+    #         success_url = reverse("josmessages:messages_inbox")
+    #     if "next" in request.GET:
+    #         success_url = request.GET["next"]
+    #     if message.sender == user:
+    #         message.sender_deleted_at = None
+    #         undeleted = True
+    #     if message.recipient == user:
+    #         message.recipient_deleted_at = None
+    #         undeleted = True
+    #     if undeleted:
+    #         message.save()
+    #         response_messages(request, _(u"Message successfully recovered."))
+    #         if notification:
+    #             notification.send([user], "messages_recovered", {"message": message,})
+    #         return HttpResponseRedirect(success_url)
+    #     raise Http404

@@ -259,19 +259,23 @@
             var today = new Date();
             var hrs = today.getHours();
             var min = today.getMinutes();
+            var day_part = 'am';
             if (hrs > 12) {
                 hrs = hrs - 12;
+                day_part = 'pm';
             }
             var workshopMinutes = (hrs * 60) + min;
             if (min < 10) {
                 min = "0" + min;
             }
 
-            document.getElementById('time_clock').innerHTML = hrs + ":" + min;
+            document.getElementById('time_clock').innerHTML = hrs + ":" + min + day_part;
 
+            /*
             var offset = (9 * 60) + 30;
 
             if (workshopMinutes > offset + 10) {
+
                 $('#segment_0').addClass('segment-active');
             }
             if (workshopMinutes > offset + 30) {
@@ -285,6 +289,7 @@
             }
 
             var t = setTimeout(timeClock, 10000);
+            */
         }());
     }
 
