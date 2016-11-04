@@ -1,7 +1,6 @@
 ### josmembers/views.py
 from __future__ import unicode_literals
 
-
 from django.contrib.messages import info, error
 from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required

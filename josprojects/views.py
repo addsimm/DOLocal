@@ -10,7 +10,7 @@ from django.utils.timezone import activate
 from django.views.decorators.csrf import csrf_exempt
 
 from joscourses.models import JOSCourseWeek
-from josmembers.models import JOSProfile
+from josmembers.models import  JOSProfile, JOSUserCreatedNote
 from josmessages.models import Message, JOSMessageThread
 
 from josmembers.models import JOSTeam
@@ -228,6 +228,25 @@ def help_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponseNotAllowed(['POST'])
 
+    activate('America/Los_Angeles')
+
+    profile = user_created_note = ' '
+
+    try:
+        user_profile = get_object_or_404(JOSProfile, user=request.user)
+    except:
+        user_profile = None
+
+    if user_profile:
+        try:
+            user_created_note = get_object_or_404(JOSUserCreatedNote, profile=profile)
+        except:
+            user_created_note = JOSUserCreatedNote.objects.create(profile=profile)
+
+    text = user_created_note.note_text
+
+    # Update help status in session data
+
     help_position = request.POST.get("help_position", 'missing')
     active_tab = request.POST.get("active_tab", 'missing')
     help_item_text = request.POST.get("help_item_text", 'missing')
@@ -241,68 +260,29 @@ def help_update(request):
     if help_item_text != 'missing':
         request.session["help_item_text"] = help_item_text
 
+
+    # Notes editor handler
+
+    mt_id = request.POST["message_thread_id"]
+    body = request.POST["body"]
+    mt = get_object_or_404(JOSMessageThread, pk=mt_id)
+    msgs_user_ids = mt.messages_distinct_user_ids
+
+    response_messages.info(request, "Message successfully sent.")
+
+    ###########################
+    ### save note / reload page
+
     return HttpResponse('ok')
 
 
-@login_required
-def view(request, message_thread_id=0, template_name="josmessages/view.html"):
-    """
-    Shows a single message thread with reply option.
-    """
-    activate('America/Los_Angeles')
 
-    msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    all_thread_msgs = msg_thread.messages
 
-    for msg in all_thread_msgs.filter(recipient=request.user):
-        if not msg.read_at:
-            msg.read_at = timezone.now()
-            msg.save()
-    msgs_user_ids = msg_thread.messages_distinct_user_ids
-    msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
-    form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
-    if request.method == "POST":
-        form = JOSReplyForm(request.POST)
-        if form.is_valid():
-            for msg in msgs:
-                if not msg.replied_at:
-                    msg.replied_at = timezone.now()
-                    msg.save()
 
-            mt_id = request.POST["message_thread_id"]
-            body = request.POST["body"]
-            mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-            msgs_user_ids = mt.messages_distinct_user_ids
 
-            for xid in msgs_user_ids:
 
-                if xid != request.user.id:
-                    usr = " "
-                    try:
-                        usr = get_object_or_404(User, id=xid)
-                    except:
-                        pass
-                    if usr != " ":
-                        send_msg = Message.objects.create(
-                                message_thread=mt,
-                                body=body,
-                                sender=request.user,
-                                recipient=usr,
-                                sent_at=timezone.now()
-                        )
-                        send_msg.save()
 
-            response_messages.info(request, "Message successfully sent.")
-            return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
-
-    context = {"form":              form,
-               "subject":           msg_thread.subject,
-               "emails":            msgs,
-               "message_thread_id": msg_thread.id,
-               "msgs_user_ids":     msgs_user_ids}
-
-    return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 
     # @login_required

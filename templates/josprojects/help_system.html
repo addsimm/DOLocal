@@ -17,7 +17,7 @@
         font-size: 18pt;
         font-weight: bold;
         height: 50px;
-        margin: 0 0 0 15px;
+        margin: 10px 15px;
         padding: 5px 15px;
         outline: none;
         width: 150px !important;
@@ -40,22 +40,26 @@
         text-align: center;
     }
 
-    .tab-pane li {
-
-    }
-
     .tab-pane {
         left: 50px;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding: 30px 50px;
+        padding: 30px 30px 10px 30px;
         position: fixed;
         top: 50px;
-        height: 450px;
+        height: 475px;
         width: 1100px;
         z-index: 110;
     }
 
+    .tooltip .tooltip-inner {
+        background: aliceblue;
+        border: solid 2px rgb(65, 45, 120);
+        color: rgb(65, 45, 120);
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 16pt;
+        padding: 5px;
+    }
 
 </style>
 
@@ -66,11 +70,12 @@
     My drawer
 </button>
 
-<!-- DEBUG --><div style="background-color: white; color: red; position: fixed; top: 590px; left: 30px; font-size: 18pt; width: 1135px; z-index: 110;">
+<!-- DEBUG <div style="background-color: lightpink; padding: 5px; line-height: 1.5; color: blue; position: fixed; top: 110px; left: 650px; font-size: 14pt; width: 200px; z-index: 110;">
+    uc_note:<br>{{ user_created_note }}<br>
     at: {{ request.session.active_tab }}<br>
     hp: {{ request.session.help_position }}<br>
     hit: {{ request.session.help_item_text }}<br>
-</div>
+</div -->
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -154,97 +159,74 @@
 <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
 
-<div id="my_notes" class="tab-pane fade">my_notes
+<div id="my_notes" class="tab-pane fade">
 
-    user_created_note: {{ user_created_note }}<br>
-
-    <a id="button_reply"
-       class="btn btn-default"
-       style="margin-left: 10px; width: 100px;"
+    <a id="notes_edit_button"
+       class="btn btn-info"
+       style="width: 100px; position: relative; top: 50px; left: 945px;"
        onclick="activateCKEdit()"
        data-toggle="tooltip"
-       title="Activates the word processor to reply"
-       data-placement="right">
+       data-placement="bottom"
+       title="Activates notes editor"
+       >
         Edit
     </a>
 
-{#    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">#}
-{##}
-{#        <form action="" method="post">#}
-{#            {% csrf_token %}#}
-{#            <div style="margin-left: 60px;">#}
-{##}
-{#                {% for field in form %}#}
-{#                    {% if field.name == "message_thread_id" %}#}
-{#                        {{ field.as_hidden }}#}
-{#                        <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}"#}
-{#                               name="message_thread_id">#}
-{#                    {% else %}#}
-{#                        <div class="form-group input_{{ field.id_for_label }}#}
-{#                                                 {{ field.field.type }}#}
-{#                                                 {% if field.errors %}#}
-{#                                                    has-error#}
-{#                                                 {% endif %}">#}
-                            {# field.name #}
-{#                            {% if field.label %}#}
-{#                                <label class="control-label"#}
-{#                                       for="{{ field.auto_id }}">{{ field.label | title }}</label>#}
-{#                            {% endif %}#}
-{##}
-{#                            {{ field }}#}
-{##}
-{#                            {% if field.errors %}#}
-{#                                <p class="help-block">#}
-{#                                    {% for e in field.errors %}#}
-{#                                        {% if not forloop.first %} / {% endif %}{{ e }}#}
-{#                                    {% endfor %}#}
-{#                                </p>#}
-{##}
-{#                            {% elif field.help_text %}#}
-{#                                <p class="help-block">#}
-{#                                    {{ field.help_text }}#}
-{#                                </p>#}
-{#                            {% endif %}#}
-{##}
-{#                        </div>#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-{##}
-{##}
-{#                <input id="#button_send"#}
-{#                       class="btn btn-default"#}
-{#                       style="margin-left: 10px; width: 100px;"#}
-{#                       type="submit" value="Save">#}
-{##}
-{#            </div>#}
-{#        </form>#}
-{#    </div>#}
-{##}
-{#    <!-- Bottom buttons -->#}
-{#    <div class="row" style="margin-top: 50px;">#}
-{##}
-{#        <div class="col-xs-12">#}
-{##}
-{##}
-{##}
-{#            <a id="button_reply"#}
-{#               class="btn btn-default"#}
-{#               style="margin-left: 10px; width: 100px;"#}
-{#               onclick="activateCKEdit()"#}
-{#               data-toggle="tooltip"#}
-{#               title="Activates the word processor to reply"#}
-{#               data-placement="right">#}
-{#                {% trans "Reply" %}#}
-{#            </a>#}
-{##}
-{##}
-{##}
-{#        </div>#}
-{#    </div>#}
-</div>
-</div>
+    <textarea id="user_created_notes_field" class="edit_border" style="position: relative; top: 20px; left: -110px; padding: 10px; width: 920px; height: 415px; text-align: left;">
+        {{ user_created_note }}
+    </textarea>
 
 
+    <form action="" method="post">
+        {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == "XXX_id" %}
+
+                    {{ field.as_hidden }}
+                    <input id="id_message_thread_id"
+                           type="hidden"
+                           value="{{ message_thread_id }}"
+                           name="message_thread_id">
+
+                {% else %}
+
+                    <div class= "form-group input_{{ field.id_for_label }}
+                                 {{ field.field.type }}
+                                 {% if field.errors %}
+                                    has-error
+                                 {% endif %}">
+
+                         field.name
+
+                        {% if field.label %}
+                            <label class="control-label"
+                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                        {% endif %}
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <p class="help-block">
+                                {% for e in field.errors %}
+                                    {% if not forloop.first %} / {% endif %}{{ e }}
+                                {% endfor %}
+                            </p>
+
+                        {% elif field.help_text %}
+                            <p class="help-block">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+
+
+    </form>
+</div>
+</div>
 
 <!-- help script -->
 <script>
@@ -286,6 +268,8 @@
 // Deployment and Status Tracking
 {
     $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
             $(hb).text("Close").removeClass("btn-info").addClass("btn-warning");
@@ -328,7 +312,7 @@
         } else if (element === 'active_tab') {
             var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
             data = {"active_tab": active_tab};
-        } else if (element.isNumber()) {
+        } else if (element.isNumeric()) {
             data = {"help_item_text": element};
             textTest = true;
         } else {
