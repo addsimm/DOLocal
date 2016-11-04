@@ -17,10 +17,11 @@
         font-size: 18pt;
         font-weight: bold;
         height: 50px;
-        margin: 10px 15px;
+        margin: 0 15px;
         padding: 5px 15px;
         outline: none;
         width: 150px !important;
+        z-index: 112;
     }
 
     #help_nav_tabs a:hover, #help_nav_tabs a:focus {
@@ -44,7 +45,7 @@
         left: 50px;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding: 30px 30px 10px 30px;
+        padding: 15px;
         position: fixed;
         top: 50px;
         height: 475px;
@@ -86,7 +87,7 @@
          left: 30px;
          padding: 0;
          position: fixed;
-         top: -5px;
+         top: 0;
          width: 1170px;
          z-index: 104;
      ">
@@ -98,7 +99,7 @@
              left: 50px;
              outline: 3px solid rgb(65, 45, 120);
              position: fixed;
-             top: -5px;
+             top: 0;
              width: 1100px;
              z-index: 105;
          ">
@@ -123,18 +124,17 @@
 </div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
-    <div id="main_help">
-        <div class="row" style=" ">
-             To search for a term:
+    <div id="main_help" style="padding: 15px 30px;">
 
-            <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
-                   type="text" placeholder="start typing here">
-            <a class="btn btn-warning btn-sm"
-               style="font-size: 14pt; margin-top: -7px; width: 70px;"
-               href="javascript:location.reload();">
-                Clear
-            </a>
-        </div>
+         To search for a term:
+
+        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
+               type="text" placeholder="start typing here">
+        <a class="btn btn-warning btn-sm"
+           style="font-size: 14pt; margin-top: -7px; width: 70px;"
+           href="javascript:location.reload();">
+            Clear
+        </a>
 
         <div id="help_search_results" class="row">
 
@@ -146,7 +146,7 @@
 
             {% for help in help_items %}
                 <ul>
-                    <li style="margin-top: 20px;">
+                    <li style="margin-top: 30px;">
                         <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
                             {{ help.title }}
                         </a>
@@ -161,10 +161,10 @@
 
 <div id="my_notes" class="tab-pane fade">
 
-    <a id="notes_edit_button"
+    <a id="notes_edit_btn"
        class="btn btn-info"
-       style="width: 100px; position: relative; top: 50px; left: 945px;"
-       onclick="activateCKEdit()"
+       style="width: 100px; position: fixed; top: 100px; left: 1025px;"
+       onclick="activateCKEdit('user_created_notes_field')"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates notes editor"
@@ -172,57 +172,25 @@
         Edit
     </a>
 
-    <textarea id="user_created_notes_field" class="edit_border" style="position: relative; top: 20px; left: -110px; padding: 10px; width: 920px; height: 415px; text-align: left;">
+    <a id="notes_cancel_btn"
+       class="btn btn-danger"
+       style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
+       onclick="activateCKEdit('cancel')"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Discards recent changes to notes"
+    >
+        Cancel
+    </a>
+
+    <textarea id="user_created_notes_field" class="edit_border"
+              style="position: relative; top: 15px; left: -0; padding: 20px; width: 920px; height: 415px;">
         {{ user_created_note }}
     </textarea>
 
 
     <form action="" method="post">
         {% csrf_token %}
-            {% for field in form %}
-                {% if field.name == "XXX_id" %}
-
-                    {{ field.as_hidden }}
-                    <input id="id_message_thread_id"
-                           type="hidden"
-                           value="{{ message_thread_id }}"
-                           name="message_thread_id">
-
-                {% else %}
-
-                    <div class= "form-group input_{{ field.id_for_label }}
-                                 {{ field.field.type }}
-                                 {% if field.errors %}
-                                    has-error
-                                 {% endif %}">
-
-                         field.name
-
-                        {% if field.label %}
-                            <label class="control-label"
-                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                        {% endif %}
-
-                        {{ field }}
-
-                        {% if field.errors %}
-                            <p class="help-block">
-                                {% for e in field.errors %}
-                                    {% if not forloop.first %} / {% endif %}{{ e }}
-                                {% endfor %}
-                            </p>
-
-                        {% elif field.help_text %}
-                            <p class="help-block">
-                                {{ field.help_text }}
-                            </p>
-                        {% endif %}
-
-                    </div>
-                {% endif %}
-            {% endfor %}
-
-
 
     </form>
 </div>
@@ -231,39 +199,35 @@
 <!-- help script -->
 <script>
 
-    // My notes editor
+    // user_created_notes_field editor
 
-/*    function cancel_reply() {
-        $('#button_cancel').addClass('hidden');
-        $('#button_send').addClass('hidden');
-        $('#reply_thread_form').addClass('hidden');
-        $('#button_reply').removeClass('hidden');
-        $('#button_inbox').removeClass('hidden');
-        $('#button_delete').removeClass('hidden');
+    function activateCKEdit(el) {
+        var editing_element = el;
+        var activate_button = document.getElementById('notes_edit_btn');
+        if ($(activate_button).hasClass('btn-info')) {
+            $('#notes_cancel_btn').show();
+            $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
+
+            CKEDITOR.replace(editing_element, {
+                toolbar: [
+                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
+                ],
+                contentsCss: '/static/ckeditor/ckeditor/contents.css',
+                disableNativeSpellChecker: false,
+                width: 920,
+                height: 370,
+            ////    top: 50,
+                tabSpaces: 4,
+                uiColor: '#28a4c9',
+                extraPlugins: 'colorbutton',
+                removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+            });
+        }
     }
 
-    function activateCKEdit() {
-        $('#reply_thread_form').removeClass('hidden');
-        $('#button_cancel').removeClass('hidden');
-        $('#button_send').removeClass('hidden');
-        $('#button_reply').addClass('hidden');
-        $('#button_inbox').addClass('hidden');
-        $('#button_delete').addClass('hidden');
-        CKEDITOR.replace(XXXXXXX, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: '95%',
-            tabSpaces: 4,
-            uiColor: '#28a4c9',
-            extraPlugins: 'colorbutton',
-            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-        });
-    }
-*/
+
+
 
 // Deployment and Status Tracking
 {
@@ -337,6 +301,8 @@
         });
     }
 
+
+    //// fix to stop flip
     $('.nav-tabs').on({
         'shown.bs.tab': function (event) {
             $(event.target).addClass('jos_tab_active');
