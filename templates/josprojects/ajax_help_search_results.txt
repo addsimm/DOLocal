@@ -5,10 +5,10 @@
         Searching for "{{ help_search_text }}" - Found {{ help_items.count}} items:<br>
     </div>
 {% endif %}
-{#{% if  member_search_results.count > 0 %}#}
+
         {% for help in help_items %}
             <ul>
-                <li style="margin-top: 20px;">
+                <li style="margin-top: 30px;">
                     <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
                         {{ help.title }}
                     </a>
@@ -21,7 +21,7 @@
                         height: 450px;
                         left: 65px;
                         overflow-x: hidden;
-                        padding: 25px 55px;
+                        padding: 25px 85px;
                         position: fixed;
                         top: 75px;
                         width: 1065px;
@@ -29,9 +29,9 @@
                         ">
                 <div class="row">
 
-                    <button class="btn btn-warning btn-lg pull-right"
-                            style="display:block"
-                            onclick="showHelpItem('none');">
+                    <button class="btn btn-warning"
+                            style="width: 100px; position: fixed; top: 100px; left: 1025px;"
+                            onclick="showHelpItem();">
                         Back
                     </button>
 
@@ -41,7 +41,5 @@
             </div>
 
         {% endfor %}
-{#{% else %}#}
-{#    ---#}
-{#{% endif %}#}
+
 <br><br><br>

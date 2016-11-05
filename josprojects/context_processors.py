@@ -14,13 +14,17 @@ def help_sys(request):
     except:
         profile = None
 
-    if profile:
+    if profile != None:
         try:
             user_created_note = get_object_or_404(JOSUserCreatedNote, profile = profile)
         except:
             user_created_note = JOSUserCreatedNote.objects.create(profile = profile)
 
         text = user_created_note.note_text
+
+    else:
+        text= ' '
+
 
     return {
         'help_items': help_items,

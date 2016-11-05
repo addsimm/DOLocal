@@ -226,24 +226,24 @@ def ajax_help_search(request):
 @csrf_exempt
 def help_update(request):
     if not request.is_ajax() or not request.method == 'POST':
-        return HttpResponseNotAllowed(['POST'])
+        return HttpResponse('not ok')
 
-    activate('America/Los_Angeles')
-
-    profile = user_created_note = ' '
-
-    try:
-        user_profile = get_object_or_404(JOSProfile, user=request.user)
-    except:
-        user_profile = None
-
-    if user_profile:
-        try:
-            user_created_note = get_object_or_404(JOSUserCreatedNote, profile=profile)
-        except:
-            user_created_note = JOSUserCreatedNote.objects.create(profile=profile)
-
-    text = user_created_note.note_text
+    # activate('America/Los_Angeles')
+    #
+    # profile = user_created_note = ' '
+    #
+    # try:
+    #     user_profile = get_object_or_404(JOSProfile, user=request.user)
+    # except:
+    #     user_profile = None
+    #
+    # if user_profile:
+    #     try:
+    #         user_created_note = get_object_or_404(JOSUserCreatedNote, profile=profile)
+    #     except:
+    #         user_created_note = JOSUserCreatedNote.objects.create(profile=profile)
+    #
+    # text = user_created_note.note_text
 
     # Update help status in session data
 
@@ -263,12 +263,12 @@ def help_update(request):
 
     # Notes editor handler
 
-    mt_id = request.POST["message_thread_id"]
-    body = request.POST["body"]
-    mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-    msgs_user_ids = mt.messages_distinct_user_ids
+    # mt_id = request.POST["message_thread_id"]
+    # body = request.POST["body"]
+    # mt = get_object_or_404(JOSMessageThread, pk=mt_id)
+    # msgs_user_ids = mt.messages_distinct_user_ids
 
-    response_messages.info(request, "Message successfully sent.")
+    # response_messages.info(request, "Message successfully sent.")
 
     ###########################
     ### save note / reload page

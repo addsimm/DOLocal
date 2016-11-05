@@ -71,12 +71,23 @@
     My drawer
 </button>
 
-<!-- DEBUG <div style="background-color: lightpink; padding: 5px; line-height: 1.5; color: blue; position: fixed; top: 110px; left: 650px; font-size: 14pt; width: 200px; z-index: 110;">
-    uc_note:<br>{{ user_created_note }}<br>
-    at: {{ request.session.active_tab }}<br>
-    hp: {{ request.session.help_position }}<br>
-    hit: {{ request.session.help_item_text }}<br>
-</div -->
+<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 550px; font-size: 14pt; width: 300px; z-index: 110;">
+    DEBUG<br>
+    <div class="row">
+        <div class="col-xs-5">
+            uc_note: <br>
+            active tab: <br>
+            help pos: <br>
+            help item no: <br>
+        </div>
+        <div class="col-xs-7" style="color: red">
+            {{ user_created_note }}<br>
+            {{ request.session.active_tab }}<br>
+            {{ request.session.help_position }}<br>
+            {{ request.session.help_item_text }}<br>
+        </div>
+    </div>
+</div>
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -138,7 +149,7 @@
 
         <div id="help_search_results" class="row">
 
-            {% if  help_search_text %}
+            {% if help_search_text %}
                 <div class="josinstructions" style="color: #5bc0de; margin-top: 15px;">
                     Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
                 </div>
@@ -183,11 +194,12 @@
         Cancel
     </a>
 
-    <textarea id="user_created_notes_field" class="edit_border"
-              style="position: relative; top: 15px; left: -0; padding: 20px; width: 920px; height: 415px;">
-        {{ user_created_note }}
-    </textarea>
-
+    <div style="position: relative; top: 15px; left: -0;">
+        <textarea id="user_created_notes_field" class="edit_border"
+                  style="padding: 20px; width: 920px; height: 415px;">
+            {{ user_created_note }}
+        </textarea>
+    </div>
 
     <form action="" method="post">
         {% csrf_token %}
@@ -199,40 +211,43 @@
 <!-- help script -->
 <script>
 
-    // user_created_notes_field editor
+// user_created_notes_field editor
 
-    function activateCKEdit(el) {
-        var editing_element = el;
-        var activate_button = document.getElementById('notes_edit_btn');
-        if ($(activate_button).hasClass('btn-info')) {
-            $('#notes_cancel_btn').show();
-            $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
+function activateCKEdit(el) {
+    var editing_element = el;
+    var activate_button = document.getElementById('notes_edit_btn');
+    if ($(activate_button).hasClass('btn-info')) {
+        $('#notes_cancel_btn').show();
+        $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
 
-            CKEDITOR.replace(editing_element, {
-                toolbar: [
-                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
-                ],
-                contentsCss: '/static/ckeditor/ckeditor/contents.css',
-                disableNativeSpellChecker: false,
-                width: 920,
-                height: 370,
-            ////    top: 50,
-                tabSpaces: 4,
-                uiColor: '#28a4c9',
-                extraPlugins: 'colorbutton',
-                removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-            });
-        }
+        CKEDITOR.replace(editing_element, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: 920,
+            height: 370,
+            //
+            tabSpaces: 4,
+            uiColor: '#28a4c9',
+            extraPlugins: 'colorbutton',
+            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+        });
     }
-
-
-
+}
 
 // Deployment and Status Tracking
 {
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
+        /** The Ajax help search function. */
+
+        var MILLS_TO_IGNORE_SEARCH = 100;
+        var MILLS_TO_IGNORE_LIKES = 500;
+        /* This attaches a listener. Calling this again would attach a *second* */
+        $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
 
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
@@ -243,6 +258,8 @@
             active_tab = '#{{ request.session.active_tab }}';
             $(active_tab).tab('show');
 
+    //// double loading bug
+
             showHelpItem('{{ request.session.help_item_text }}');
 
             if ( '{{ request.session.help_item_text }}' === 'none') {
@@ -252,6 +269,8 @@
                 $('#main_help').hide();
                 $('#help_item_box').show();
             }
+
+    //// double loading bug
 
         } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
@@ -264,43 +283,61 @@
     function session_data_update(element) {
         var data = {};
         var textTest = false;
+
+        console.log('called session data update with element: ' + element);
+
         if (element === 'help_position') {
             var hlpBtn = document.getElementById('help_button');
             var help_pos = 'up';
             if ($(hlpBtn).hasClass("btn-info")) {
                 help_pos = 'down';
             }
-
             data = {"help_position": help_pos};
+
 
         } else if (element === 'active_tab') {
             var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
             data = {"active_tab": active_tab};
-        } else if (element.isNumeric()) {
+
+        } else if (element === 'none') {
+            data = {"help_item_text": 'none'};
+
+        } else if (Number.isInteger(parseInt(element))) {
             data = {"help_item_text": element};
             textTest = true;
+
         } else {
             data = {}
         }
 
-        $.ajax({
-            type: "POST",
-            url: '/help_update/',
-            data: data,
-            success: function () {
-                if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {
-                    location.reload();
+        console.log('session_data_update data: ' + JSON.stringify(data));
+
+        if (data !== {}) {
+            $.ajax({
+                type: "POST",
+                url: '/help_update/',
+                data: data,
+                success: function () {
+                    if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {
+                        location.reload();
+                    }
                 }
-                if (element === 'active_tab' && '{{ request.session.active_tab }}' !== active_tab) {
-                    location.reload();
-                }
-                if (textTest && '{{ request.session.help_item_text }}' !== element) {
-                    location.reload();
-                }
-            }
-        });
+            });
+        }
     }
 
+
+    /*
+    if (element === 'active_tab' && '{{ request.session.active_tab }}
+
+    ' !== active_tab) {
+        location.reload();
+    }
+    if (textTest && '{{ request.session.help_item_text }}
+
+     ' !== element) {
+        location.reload();
+    } */
 
     //// fix to stop flip
     $('.nav-tabs').on({
@@ -312,13 +349,14 @@
     });
 
     function showHelpItem(id) {
-
+        console.log("show help item is number: " + $.isNumeric(id));
         if ($.isNumeric(id)) {
+
             var done_button =[
             "<button class='btn btn-warning btn-lg pull-right'",
-            "        style='display:block'",
+            "        style='width: 100px; position: fixed; top: 100px; left: 1025px;'",
             "        onclick='showHelpItem();'>",
-            "    Back",
+            "    Backz",
             "</button>"
                     ].join('\n');
 
@@ -366,13 +404,6 @@
             // Execute the search.
             var processServerResponse = function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
 
-                /* console.log("SUBMIT_URL=" + SUBMIT_URL +
-                 "; help_search_text=" + searchText +
-                 "; serverResponse_data=" + serverResponse_data +
-                 "; textStatus_ignored=" + textStatus_ignored +
-                 "; jqXHR_ignored=" + jqXHR_ignored
-                 ); */
-
                 $('#help_search_results').html(serverResponse_data);
             };
 
@@ -391,16 +422,6 @@
             $.ajax(config);
         }
     };
-
-    /** The Ajax "main" function. */
-
-    var MILLS_TO_IGNORE_SEARCH = 100;
-    var MILLS_TO_IGNORE_LIKES = 500;
-    $(document).ready(function () {
-        /* This attaches a listener. Calling this again would attach a *second* */
-        $('#help_search_text').keyup(_.debounce(processSearch,
-                MILLS_TO_IGNORE_SEARCH, true));
-    });
 }
 
 </script>
