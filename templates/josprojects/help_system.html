@@ -163,9 +163,9 @@
             {% for help in help_items %}
                 <ul>
                     <li style="margin-top: 30px;">
-                        <a style="padding: 5px 12px;" href="javascript:showHelpItem('{{ help.id }}');">
+                        <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
                             {{ help.title }}
-                        </a>
+                        </button>
                     </li>
                 </ul>
             {% endfor %}
@@ -375,6 +375,7 @@ function activateCKEdit() {
             $('#main_help').show();
             $('#help_item_box').hide();
             $('#help_done_btn').hide();
+            $('#help_item_content').html(' ');
             id = 'none';
         }
 
