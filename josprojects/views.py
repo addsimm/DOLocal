@@ -261,7 +261,7 @@ def help_update(request):
     if help_item_no != 'missing':
         request.session["help_item_no"] = help_item_no
 
-    if help_item_no != 'missing':
+    if editor_status != 'missing':
         request.session["editor_status"] = editor_status
 
     # Notes editor handler

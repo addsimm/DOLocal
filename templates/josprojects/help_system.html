@@ -76,8 +76,9 @@
 {#            help item no: <br>#}
         </div>
         <div class="col-xs-6" style="color: red">
-            {{ request.session.editor_status }}<br>
             {{ user_created_note }}<br>
+            {{ request.session.editor_status }}<br>
+
 {#            {{ request.session.active_tab }}<br>#}
 {#            {{ request.session.help_position }}<br>#}
 {#            {{ request.session.help_item_no }}<br>#}
@@ -205,7 +206,7 @@
     </a>
 
     <div style="position: relative; top: 15px; width: 920px; left: 0;">
-        <textarea id="user_created_notes_field" class="edit_border" readonly='readonly'
+        <textarea id="user_created_notes_field" class="edit_border" readonly="readonly"
                   style="padding: 20px; width: 920px; height: 415px;">
             {{ user_created_note }}
         </textarea>
@@ -223,35 +224,36 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////// Set up save /discard
 
-function activateCKEdit(el) {
+function activateCKEdit() {
 
-    if (el = 'user_created_notes_field') {
+    edit_element = document.getElementById('user_created_notes_field');
+    edit_btn = document.getElementById('notes_edit_btn');
+
+    if ($(edit_btn).hasClass('btn-info')) {
+
         session_data_update('editor_status');
+        $('#notes_cancel_btn').show();
+        $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
+        edit_element.removeAttribute('readonly');
 
-        var editing_element = el;
-        var activate_button = document.getElementById('notes_edit_btn');
+        CKEDITOR.replace(edit_element, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: 920,
+            height: 370,
+            //
+            tabSpaces: 4,
+            uiColor: '#28a4c9',
+            extraPlugins: 'colorbutton',
+            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+        });
 
-        if ($(activate_button).hasClass('btn-info')) {
-            $('#notes_cancel_btn').show();
-            $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
-
-            CKEDITOR.replace(editing_element, {
-                toolbar: [
-                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
-                ],
-                contentsCss: '/static/ckeditor/ckeditor/contents.css',
-                disableNativeSpellChecker: false,
-                width: 920,
-                height: 370,
-                //
-                tabSpaces: 4,
-                uiColor: '#28a4c9',
-                extraPlugins: 'colorbutton',
-                removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-            });
-        }
     } else {
+
         session_data_update('editor_status');
     }
 }
@@ -277,9 +279,13 @@ function activateCKEdit(el) {
             active_tab = '#{{ request.session.active_tab }}';
             $(active_tab).tab('show');
 
-            showHelpItem('{{ request.session.help_item_no }}')
+            showHelpItem('{{ request.session.help_item_no }}');
 
-    } else {
+            if ('{{ request.session.editor_status }}' === 'active') {
+                activateCKEdit('user_created_notes_field');
+            }
+
+        } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
@@ -309,8 +315,10 @@ function activateCKEdit(el) {
             data = {"help_item_no": 'none'};
 
         } else if (element === 'editor_status') {
-            var status = 'active';
-            if ($('#notes_edit_btn').hasClass('btn-info')) { status = 'inactive' }
+
+            var status = 'inactive';
+            if ($('#notes_edit_btn').hasClass('btn-info')) { status = 'active'; }
+            console.log('editor status: ' + status);
             data = {"editor_status": status};
 
         } else if (Number.isInteger(parseInt(element))) {
