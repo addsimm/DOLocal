@@ -64,30 +64,31 @@
 
 </style>
 
+<!-- DEBUG -->
+<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 175; display: none;">
+    DEBUG<br>
+    <div class="row">
+        <div class="col-xs-6">
+            uc_note: <br>
+            active tab: <br>
+            help pos: <br>
+            help item no: <br>
+        </div>
+        <div class="col-xs-6" style="color: red">
+            {{ user_created_note }}<br>
+            {{ request.session.active_tab }}<br>
+            {{ request.session.help_position }}<br>
+            {{ request.session.help_item_no }}<br>
+        </div>
+    </div>
+</div>
+
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
         style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 150px; height: 45px; z-index: 110;"
         onclick="session_data_update('help_position');">
     My drawer
 </button>
-
-<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 550px; font-size: 14pt; width: 300px; z-index: 110;">
-    DEBUG<br>
-    <div class="row">
-        <div class="col-xs-5">
-            uc_note: <br>
-            active tab: <br>
-            help pos: <br>
-            help item no: <br>
-        </div>
-        <div class="col-xs-7" style="color: red">
-            {{ user_created_note }}<br>
-            {{ request.session.active_tab }}<br>
-            {{ request.session.help_position }}<br>
-            {{ request.session.help_item_text }}<br>
-        </div>
-    </div>
-</div>
 
 <!-- help screen -->
 <div id="help_screen" class=" "
@@ -130,6 +131,7 @@
 </div>
 
 <div class="tab-content">
+
 <div id="to_do" class="tab-pane fade">
     to_do
 </div>
@@ -167,7 +169,13 @@
         </div>
     </div>
 
-<div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
+    <button id='help_done_btn' class='btn btn-warning'
+            style = 'width: 100px; position: fixed; top: 100px; left: 1025px; display: none;'
+            onclick='showHelpItem();'>
+        Back
+    </button>
+
+    <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
 
 <div id="my_notes" class="tab-pane fade">
@@ -201,10 +209,6 @@
         </textarea>
     </div>
 
-    <form action="" method="post">
-        {% csrf_token %}
-
-    </form>
 </div>
 </div>
 
@@ -242,37 +246,26 @@ function activateCKEdit(el) {
 {
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
-        /** The Ajax help search function. */
 
+        /** The Ajax help search function. */
         var MILLS_TO_IGNORE_SEARCH = 100;
-        var MILLS_TO_IGNORE_LIKES = 500;
         /* This attaches a listener. Calling this again would attach a *second* */
         $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
 
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
+
             $(hb).text("Close").removeClass("btn-info").addClass("btn-warning");
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
             $("#help_screen").slideDown("slow");
+
             active_tab = '#{{ request.session.active_tab }}';
             $(active_tab).tab('show');
 
-    //// double loading bug
+            showHelpItem({{ request.session.help_item_no }})
 
-            showHelpItem('{{ request.session.help_item_text }}');
-
-            if ( '{{ request.session.help_item_text }}' === 'none') {
-                $('#main_help').show();
-                $('#help_item_box').hide();
-            } else {
-                $('#main_help').hide();
-                $('#help_item_box').show();
-            }
-
-    //// double loading bug
-
-        } else {
+    } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
@@ -294,17 +287,15 @@ function activateCKEdit(el) {
             }
             data = {"help_position": help_pos};
 
-
         } else if (element === 'active_tab') {
             var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
             data = {"active_tab": active_tab};
 
         } else if (element === 'none') {
-            data = {"help_item_text": 'none'};
+            data = {"help_item_no": 'none'};
 
         } else if (Number.isInteger(parseInt(element))) {
-            data = {"help_item_text": element};
-            textTest = true;
+            data = {"help_item_no": element};
 
         } else {
             data = {}
@@ -326,39 +317,21 @@ function activateCKEdit(el) {
         }
     }
 
-
-    /*
-    if (element === 'active_tab' && '{{ request.session.active_tab }}
-
-    ' !== active_tab) {
-        location.reload();
-    }
-    if (textTest && '{{ request.session.help_item_text }}
-
-     ' !== element) {
-        location.reload();
-    } */
-
-    //// fix to stop flip
     $('.nav-tabs').on({
-        'shown.bs.tab': function (event) {
+        'show.bs.tab': function (event) {
+            $('a').removeClass('jos_tab_active');
             $(event.target).addClass('jos_tab_active');
-            $(event.relatedTarget).removeClass('jos_tab_active');
             session_data_update('active_tab');
         }
     });
 
     function showHelpItem(id) {
-        console.log("show help item is number: " + $.isNumeric(id));
+        id = typeof id !== 'undefined' ? id : 'none';
+        console.log("show help item id: " + id + " is number: " + $.isNumeric(id));
         if ($.isNumeric(id)) {
 
-            var done_button =[
-            "<button class='btn btn-warning btn-lg pull-right'",
-            "        style='width: 100px; position: fixed; top: 100px; left: 1025px;'",
-            "        onclick='showHelpItem();'>",
-            "    Backz",
-            "</button>"
-                    ].join('\n');
+            $('#main_help').hide();
+            $('#help_item_box').show();
 
             var config = {
                 type: "GET",
@@ -368,16 +341,20 @@ function activateCKEdit(el) {
                 },
                 dataType: 'html',
                 success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
-                    $('#help_item_content')
-                            .append(done_button)
-                            .append(serverResponse_data);
+                    $('#help_item_content').html(serverResponse_data);
+                    $('#help_done_btn').show();
+
                 },
                 fail: function () {
                     console.log("Get help content fail")
                 }
             };
             $.ajax(config);
+
         } else {
+            $('#main_help').show();
+            $('#help_item_box').hide();
+            $('#help_done_btn').hide();
             id = 'none';
         }
 

@@ -249,7 +249,7 @@ def help_update(request):
 
     help_position = request.POST.get("help_position", 'missing')
     active_tab = request.POST.get("active_tab", 'missing')
-    help_item_text = request.POST.get("help_item_text", 'missing')
+    help_item_no = request.POST.get("help_item_no", 'missing')
 
     if active_tab != 'missing':
         request.session["active_tab"] = active_tab
@@ -257,8 +257,8 @@ def help_update(request):
     if help_position != 'missing':
         request.session["help_position"] = help_position
 
-    if help_item_text != 'missing':
-        request.session["help_item_text"] = help_item_text
+    if help_item_no != 'missing':
+        request.session["help_item_no"] = help_item_no
 
 
     # Notes editor handler

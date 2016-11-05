@@ -48,7 +48,7 @@ def login(request, template="accounts/account_login.html", form_class=LoginForm,
         # help session start values
         request.session["active_tab"] = 'to_do_btn'
         request.session["help_position"] = 'up'
-        request.session["help_item_text"] = 'none'
+        request.session["help_item_no"] = 'none'
 
         return TemplateResponse(request, template, context)
 
