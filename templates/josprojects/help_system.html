@@ -21,7 +21,6 @@
         padding: 5px 15px;
         outline: none;
         width: 150px !important;
-        z-index: 112;
     }
 
     #help_nav_tabs a:hover, #help_nav_tabs a:focus {
@@ -45,12 +44,13 @@
         left: 50px;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding: 15px;
+        margin-top: 20px;
+        padding: 20px;
         position: fixed;
         top: 50px;
-        height: 475px;
+        height: 465px;
         width: 1100px;
-        z-index: 110;
+        z-index: 165;
     }
 
     .tooltip .tooltip-inner {
@@ -65,27 +65,29 @@
 </style>
 
 <!-- DEBUG -->
-<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 175; display: none;">
+<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 200; display: inherit;">
     DEBUG<br>
     <div class="row">
         <div class="col-xs-6">
             uc_note: <br>
-            active tab: <br>
-            help pos: <br>
-            help item no: <br>
+            editor_status:<br>
+{#            active tab: <br>#}
+{#            help pos: <br>#}
+{#            help item no: <br>#}
         </div>
         <div class="col-xs-6" style="color: red">
+            {{ request.session.editor_status }}<br>
             {{ user_created_note }}<br>
-            {{ request.session.active_tab }}<br>
-            {{ request.session.help_position }}<br>
-            {{ request.session.help_item_no }}<br>
+{#            {{ request.session.active_tab }}<br>#}
+{#            {{ request.session.help_position }}<br>#}
+{#            {{ request.session.help_item_no }}<br>#}
         </div>
     </div>
 </div>
 
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
-        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 150px; height: 45px; z-index: 110;"
+        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 150px; height: 45px; z-index: 200;"
         onclick="session_data_update('help_position');">
     My drawer
 </button>
@@ -101,7 +103,7 @@
          position: fixed;
          top: 0;
          width: 1170px;
-         z-index: 104;
+         z-index: 150;
      ">
 
     <div id="help_inner"
@@ -113,12 +115,12 @@
              position: fixed;
              top: 0;
              width: 1100px;
-             z-index: 105;
+             z-index: 155;
          ">
 
         <ul id="help_nav_tabs"
             class="nav nav-tabs"
-            style="background-color: white; position: relative; top: -5px; padding-top: 15px; left: -3px; width: 1106px; border-bottom: 3px solid rgb(65, 45, 120);">
+            style="background-color: white; position: fixed; top: 0; padding-top: 20px; left: 46px; width: 1107px; border-bottom: 3px solid rgb(65, 45, 120); z-index: 160;">
 
             <li><a id='to_do_btn' data-toggle="tab" href="#to_do">To do</a></li>
 
@@ -202,14 +204,15 @@
         Cancel
     </a>
 
-    <div style="position: relative; top: 15px; left: -0;">
-        <textarea id="user_created_notes_field" class="edit_border"
+    <div style="position: relative; top: 15px; width: 920px; left: 0;">
+        <textarea id="user_created_notes_field" class="edit_border" readonly='readonly'
                   style="padding: 20px; width: 920px; height: 415px;">
             {{ user_created_note }}
         </textarea>
     </div>
 
 </div>
+
 </div>
 
 <!-- help script -->
@@ -217,28 +220,39 @@
 
 // user_created_notes_field editor
 
-function activateCKEdit(el) {
-    var editing_element = el;
-    var activate_button = document.getElementById('notes_edit_btn');
-    if ($(activate_button).hasClass('btn-info')) {
-        $('#notes_cancel_btn').show();
-        $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// Set up save /discard
 
-        CKEDITOR.replace(editing_element, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: 920,
-            height: 370,
-            //
-            tabSpaces: 4,
-            uiColor: '#28a4c9',
-            extraPlugins: 'colorbutton',
-            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-        });
+function activateCKEdit(el) {
+
+    if (el = 'user_created_notes_field') {
+        session_data_update('editor_status');
+
+        var editing_element = el;
+        var activate_button = document.getElementById('notes_edit_btn');
+
+        if ($(activate_button).hasClass('btn-info')) {
+            $('#notes_cancel_btn').show();
+            $('#notes_edit_btn').removeClass('btn-info').addClass('btn-success').text('Save');
+
+            CKEDITOR.replace(editing_element, {
+                toolbar: [
+                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                    {'name': 'editing', 'items': ['SelectAll', 'Find']}
+                ],
+                contentsCss: '/static/ckeditor/ckeditor/contents.css',
+                disableNativeSpellChecker: false,
+                width: 920,
+                height: 370,
+                //
+                tabSpaces: 4,
+                uiColor: '#28a4c9',
+                extraPlugins: 'colorbutton',
+                removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+            });
+        }
+    } else {
+        session_data_update('editor_status');
     }
 }
 
@@ -263,7 +277,7 @@ function activateCKEdit(el) {
             active_tab = '#{{ request.session.active_tab }}';
             $(active_tab).tab('show');
 
-            showHelpItem({{ request.session.help_item_no }})
+            showHelpItem('{{ request.session.help_item_no }}')
 
     } else {
             $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
@@ -293,6 +307,11 @@ function activateCKEdit(el) {
 
         } else if (element === 'none') {
             data = {"help_item_no": 'none'};
+
+        } else if (element === 'editor_status') {
+            var status = 'active';
+            if ($('#notes_edit_btn').hasClass('btn-info')) { status = 'inactive' }
+            data = {"editor_status": status};
 
         } else if (Number.isInteger(parseInt(element))) {
             data = {"help_item_no": element};

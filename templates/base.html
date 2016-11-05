@@ -49,19 +49,14 @@
 
 </head>
 
-<style>
-
-    .moveDown {
-        margin-top: 555px;
-    }
-
-    #fixed-top-bar .btn-link {
-        margin-left: 7px;
-    }
-
-</style>
-
-<body id="{% block body_id %}body{% endblock %}">
+<body id="{% block body_id %}body{% endblock %}"
+      style="
+        color: rgb(65, 45, 120);
+        font-family: 'source sans pro', sans-serif;
+        font-size: 16pt;
+        line-height: normal;
+        padding-top: 120px;
+        ">
 
 {% block help %}
 
@@ -87,7 +82,7 @@
 {% block base-fixed-top-bar %}
 
 <!-- Fixed Top Nav -->
-<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:0; background-color: white; transition: .6s ease-in-out all; z-index: 100;">
+<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:-20px; background-color: white; transition: .6s ease-in-out all; z-index: 100;">
 
     {% block logo %}
         <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
@@ -97,7 +92,7 @@
                        background-size: 219px 129px;
                        height:129px;
                        outline: none;
-                       position: absolute; top: -8px; left: -15px;
+                       position: absolute; top: 12px; left: -15px;
                        width:219px;">
 
         </a>
@@ -106,7 +101,7 @@
     {% if request.user.is_staff %}
 
         <a class="josstaffbutton text-center"
-           style="position: fixed; top: 70px; left: 1010px; font-size: 12pt; width: 80px;"
+           style="position: fixed; top: 80px; left: 990px; font-size: 12pt; width: 80px;"
            href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
             {% trans "Staff" %}
         </a>
@@ -116,7 +111,7 @@
     {% if request.user.is_superuser %}
 
         <a class="josstaffbutton text-center"
-           style="position: fixed; top: 70px; left: 1100px;  font-size: 12pt; width: 80px;"
+           style="position: fixed; top: 80px; left: 1080px;  font-size: 12pt; width: 80px;"
            href="/admin">
             {% trans "Admin" %}
         </a>
@@ -180,7 +175,7 @@
                          border-radius: 0;
                          height: 47px;
                          margin-left: 220px;
-                         margin-top: 60px;
+                         margin-top: 80px;
                          width: 935px;">
 
                 <div class=" " style="
@@ -201,7 +196,7 @@
 
             {% if request.user.is_authenticated %}
 
-                <div style="position: absolute; top: 5px; left: 220px;">
+                <div style="position: absolute; top: 25px; left: 220px;">
 
                     <button class="btn btn-warning text-center"
                             style="font-size: 16pt; width: 70px; height: 47px;"
@@ -210,7 +205,7 @@
                     </button>
 
                     <button class="btn btn-link"
-                            style="height: 47px; padding: 6px 8px;"
+                            style="height: 47px; margin: 0 0 0 7px; padding: 6px 8px;"
                             onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
                         <i class="fa fa-home fa-fw"></i>
                         Desk
@@ -218,14 +213,14 @@
 
 
                     <button class="btn btn-link"
-                            style="height: 47px; padding: 6px 8px;"
+                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 8px;"
                             onclick="location.href='{% url "josmembers:josmembers_list" %}';">
                         <i class="fa fa-heart fa-fw"></i>
                         Pals
                     </button>
 
                     <button class="btn btn-link"
-                            style="height: 47px; padding: 6px 0 6px 8px; width: 120px;"
+                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 0 6px 8px; width: 120px;"
                             onclick="location.href='{% url "josmessages:messages_redirect" %}';">
                         <i class="fa fa-envelope fa-fw"></i>
                         <span style="margin-right: 3px;">Mail</span>
@@ -257,7 +252,7 @@
 
 {% endblock base-fixed-top-bar %}
 
-<!-- CONTENT -->
+<!-- MAIN CONTENT -->
 <div id="main_container" class="container"
      style="
             width: 1170px;

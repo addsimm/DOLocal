@@ -49,6 +49,7 @@ def login(request, template="accounts/account_login.html", form_class=LoginForm,
         request.session["active_tab"] = 'to_do_btn'
         request.session["help_position"] = 'up'
         request.session["help_item_no"] = 'none'
+        request.session["editor_status"] = 'inactive'
 
         return TemplateResponse(request, template, context)
 

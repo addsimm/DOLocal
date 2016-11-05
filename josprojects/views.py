@@ -250,6 +250,7 @@ def help_update(request):
     help_position = request.POST.get("help_position", 'missing')
     active_tab = request.POST.get("active_tab", 'missing')
     help_item_no = request.POST.get("help_item_no", 'missing')
+    editor_status = request.POST.get("editor_status", 'missing')
 
     if active_tab != 'missing':
         request.session["active_tab"] = active_tab
@@ -260,6 +261,8 @@ def help_update(request):
     if help_item_no != 'missing':
         request.session["help_item_no"] = help_item_no
 
+    if help_item_no != 'missing':
+        request.session["editor_status"] = editor_status
 
     # Notes editor handler
 
