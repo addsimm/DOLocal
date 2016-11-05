@@ -297,8 +297,6 @@ function activateCKEdit() {
         var data = {};
         var textTest = false;
 
-        console.log('called session data update with element: ' + element);
-
         if (element === 'help_position') {
             var hlpBtn = document.getElementById('help_button');
             var help_pos = 'up';
@@ -318,7 +316,6 @@ function activateCKEdit() {
 
             var status = 'inactive';
             if ($('#notes_edit_btn').hasClass('btn-info')) { status = 'active'; }
-            console.log('editor status: ' + status);
             data = {"editor_status": status};
 
         } else if (Number.isInteger(parseInt(element))) {
@@ -354,7 +351,7 @@ function activateCKEdit() {
 
     function showHelpItem(id) {
         id = typeof id !== 'undefined' ? id : 'none';
-        console.log("show help item id: " + id + " is number: " + $.isNumeric(id));
+
         if ($.isNumeric(id)) {
 
             $('#main_help').hide();
@@ -370,10 +367,6 @@ function activateCKEdit() {
                 success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
                     $('#help_item_content').html(serverResponse_data);
                     $('#help_done_btn').show();
-
-                },
-                fail: function () {
-                    console.log("Get help content fail")
                 }
             };
             $.ajax(config);
