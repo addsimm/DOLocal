@@ -75,7 +75,7 @@
 {#            help pos: <br>#}
 {#            help item no: <br>#}
         </div>
-        <div class="col-xs-6" style="color: red">
+        <div class="col-xs-6" style="color: red;">
             {{ user_created_note }}<br>
             {{ request.session.editor_status }}<br>
 
@@ -295,7 +295,6 @@ function activateCKEdit() {
 
     function session_data_update(element) {
         var data = {};
-        var textTest = false;
 
         if (element === 'help_position') {
             var hlpBtn = document.getElementById('help_button');
