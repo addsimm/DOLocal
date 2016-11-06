@@ -144,12 +144,12 @@
 
          To search for a term:
 
-        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 350px;"
+        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
                type="text" placeholder="start typing here">
-        <a class="btn btn-warning btn-sm"
-           style="font-size: 14pt; margin-top: -7px; width: 70px;"
+        <a class="btn btn-warning"
+           style="font-size: 14pt; margin-top: -7px; width: 120px;"
            href="javascript:location.reload();">
-            Clear
+            Start over
         </a>
 
         <div id="help_search_results" class="row">
@@ -258,66 +258,44 @@
                     return;
                 }
 
-                $('#notes_cancel_btn').show();
                 $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
-
+                $('#notes_cancel_btn').show();
                 $(edit_element).hide();
                 ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
 
-                session_data_update('editor_status');
-
-            // Save CK
-            } else if ($(edit_btn).hasClass('btn-success')){
-                if (!ck_editor){
+                // Save CK
+            } else {
+                if (!ck_editor) {
                     return;
                 }
 
-                $('#notes_cancel_btn').hide();
-                $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
+                if ($(edit_btn).hasClass('btn-success')) {
 
-                // Retrieve the editor contents. Ajax send to server.
-                var new_note_content = ck_editor.editable().getText();
+                    // Retrieve the editor contents. Ajax send to server.
+                    var new_note_content = ck_editor.editable().getText();
+                    $.ajax({
+                        type: "POST",
+                        url: '/help_update/',
+                        data: {'new_note_content': new_note_content},
+                        success: function () {
+                            console.log('successfully posted:  ' + new_note_content);
+                        }
+                    });
 
-                $(edit_element).html(new_note_content).show();
+                    $(edit_element).html(new_note_content).show();
 
-                $.ajax({
-                    type: "POST",
-                    url: '/help_update/',
-                    data: {'new_note_content': new_note_content},
-                    success: function () {
-                        console.log('successfully posted:  ' + new_note_content);
-                    }
-                });
+                } else if (msg === 'cancel') {
+                    $(edit_element).html(old_content).show();
+                }
 
                 // Destroy the editor.
+                $('#notes_cancel_btn').hide();
+                $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
                 ck_editor.destroy();
                 ck_editor = null;
-
-                session_data_update('editor_status');
-            } else {
-                console.log('problem');
             }
-
-        // Cancel CK
-        } else if (msg === 'cancel') {
-            if (!ck_editor) {
-                return;
-            }
-
-            $('#notes_cancel_btn').hide();
-            $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
-
-            $(edit_element).innerHTML = old_content;
-            $(edit_element).show();
-
-            // Destroy the editor.
-            ck_editor.destroy();
-            ck_editor = null;
 
             session_data_update('editor_status');
-
-        } else {
-            console.log('problem');
         }
     }
 
@@ -327,6 +305,7 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         /** The Ajax help search function. */
+
         var MILLS_TO_IGNORE_SEARCH = 100;
         /* This attaches a listener. Calling this again would attach a *second* */
         $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
@@ -359,36 +338,42 @@
     function session_data_update(element) {
         var data = {};
 
-        if (element === 'help_position') {
-            var hlpBtn = document.getElementById('help_button');
-            var help_pos = 'up';
-            if ($(hlpBtn).hasClass("btn-info")) {
-                help_pos = 'down';
-            }
-            data = {"help_position": help_pos};
-
-        } else if (element === 'active_tab') {
-            var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
-            data = {"active_tab": active_tab};
-
-        } else if (element === 'none') {
-            data = {"help_item_no": 'none'};
-
-        } else if (element === 'editor_status') {
-            var status = 'inactive';
-            if (ck_editor) {
-                status = 'active'
-            }
-            data = {"editor_status": status};
-
-        } else if (Number.isInteger(parseInt(element))) {
+        if (Number.isInteger(parseInt(element))) {
             data = {"help_item_no": element};
-
         } else {
-            data = {}
+            switch (element) {
+                case 'help_position':
+                    var hlpBtn = document.getElementById('help_button');
+                    var help_pos = 'up';
+                    if ($(hlpBtn).hasClass("btn-info")) {
+                        help_pos = 'down';
+                    }
+                    data = {"help_position": help_pos};
+                    break;
+
+                case 'active_tab':
+                    var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
+                    data = {"active_tab": active_tab};
+                    break;
+
+                case 'none':
+                    data = {"help_item_no": 'none'};
+                    break;
+
+                case 'editor_status':
+                    var status = 'inactive';
+                    if (ck_editor) {
+                        status = 'active'
+                    }
+                    data = {"editor_status": status};
+                    break;
+                default:
+                    data = {}
+                    break;
+            }
         }
 
-        console.log('session_data_update data: ' + JSON.stringify(data));
+        console.log('session_data_update; data: ' + JSON.stringify(data));
 
         if (data !== {}) {
             $.ajax({
@@ -412,37 +397,36 @@
         }
     });
 
-    function showHelpItem(id) {
-        id = typeof id !== 'undefined' ? id : 'none';
+    function showHelpItem(idno) {
+        idno = typeof idno !== 'undefined' ? idno : 'none';
 
-        if ($.isNumeric(id)) {
+        if ($.isNumeric(idno)) {
 
             $('#main_help').hide();
             $('#help_item_box').show();
 
-            var config = {
+            $.ajax({
                 type: "GET",
                 url: "{% url 'search_help' %}",
                 data: {
-                    'help_search_text': id
+                    'help_search_text': idno
                 },
                 dataType: 'html',
                 success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
                     $('#help_item_content').html(serverResponse_data);
                     $('#help_done_btn').show();
                 }
-            };
-            $.ajax(config);
+            });
 
         } else {
             $('#main_help').show();
             $('#help_item_box').hide();
             $('#help_done_btn').hide();
             $('#help_item_content').html(' ');
-            id = 'none';
+            idno = 'none';
         }
 
-        session_data_update(id);
+        session_data_update(idno);
     }
 }
 
@@ -455,7 +439,7 @@
     var processSearch = function () {
         //Get and trim the search text.
         var searchText = $('#help_search_text').val().trim().toLowerCase();
-
+        console.log('searchText: ' + searchText);
         if (searchText.length < 3) {
             //Too short. Ignore the submission, and erase any current results.
             $('#help_search_results').html("<i>Keep typing ...</i>");
@@ -468,7 +452,7 @@
                 $('#help_search_results').html(serverResponse_data);
             };
 
-            var config = {
+            $.ajax({
                 type: "GET",
                 url: SUBMIT_URL,
                 data: {
@@ -477,12 +461,12 @@
                 dataType: 'html',
                 success: processServerResponse,
                 fail: function () {
-                    alert("Fail")
+                    console.log("Fail");
                 }
-            };
-            $.ajax(config);
+            });
         }
     };
 }
+
 
 </script>
