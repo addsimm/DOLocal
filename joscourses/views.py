@@ -64,16 +64,28 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     return TemplateResponse(request, template, context)
 
 
-def next_handout(request, extra_context=None):
-    week_no = request.GET['week_no']
-    next_order = int(request.GET['order'])
+# from wand.image import Image
+#
+# with Image(filename='pikachu.png') as img:
+#     print('width =', img.width)
+#     print('height =', img.height)
 
-    week = get_object_or_404(JOSCourseWeek, pk=week_no)
-    handouts =JOSHandout.objects.filter(courseweek=week, publish=True).order_by('element_order')
+# with Image(filename='pikachu.png') as img:
+#     img.format = 'jpeg'
+#
+# with Image(filename='pikachu.png') as original:
+#     with original.convert('jpeg') as converted:
+#         # operations to a jpeg image...
+#         pass
+#
+# img.save(filename='pikachu.jpg') //// SAVE LOCALLY
 
-    try:
-        next_handout_id = str(handouts[next_order].id)
-    except:
-        next_handout_id = str(handouts[0].id)
 
-    return redirect("http://www.joinourstory.com/joscourses/handout/" + next_handout_id)
+# def content_file_name(instance, filename):
+#     return '/'.join(['content', instance.user.username, filename])
+#
+#
+# class Content(models.Model):
+#     name = models.CharField(max_length=200)
+#     user = models.ForeignKey(User)
+#     file = models.FileField(upload_to=content_file_name)
