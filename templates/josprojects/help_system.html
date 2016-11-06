@@ -189,7 +189,7 @@
     <a id="notes_edit_btn"
        class="btn btn-info"
        style="width: 100px; position: fixed; top: 100px; left: 1025px;"
-       onclick="activateCKEdit('notes_edit_btn');"
+       onclick="activateCKEdit();"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates notes editor"
@@ -200,7 +200,7 @@
     <a id="notes_cancel_btn"
        class="btn btn-danger"
        style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
-       onclick="activateCKEdit('cancel')"
+       onclick="destroyMyEdit();"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Discards recent changes to notes"
@@ -227,9 +227,9 @@
 <script>
     var ck_editor;
 
-    var edit_element = document.getElementById('user_created_notes_field'),
-        ck_editor_container = document.getElementById('ck_editor_container'),
-        edit_btn = document.getElementById('notes_edit_btn');
+    var ck_editor_container = document.getElementById('ck_editor_container'),
+        edit_btn = document.getElementById('notes_edit_btn'),
+        edit_element = document.getElementById('user_created_notes_field');
 
     var old_content = '{{ user_created_note }}';
     $(edit_element).html(old_content);
@@ -250,56 +250,50 @@
     };
 
     // user_created_notes_field editor
-    function activateCKEdit(msg) {
-        old_content = $(edit_element).html();
+    function activateCKEdit() {
 
-        if (msg === 'notes_edit_btn') {
-
-            // Activate CK
-            if ($(edit_btn).hasClass('btn-info')) {
-                if (ck_editor) {
-                    return;
-                }
-
-                $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
-                $('#notes_cancel_btn').show();
-                $(edit_element).hide();
-                ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
-
-                // Save CK
-            } else {
-                if (!ck_editor) {
-                    return;
-                }
-
-                if ($(edit_btn).hasClass('btn-success')) {
-
-                    // Retrieve the editor contents. Ajax send to server.
-                    var new_note_content = ck_editor.editable().getText();
-                    $.ajax({
-                        type: "POST",
-                        url: '/help_update/',
-                        data: {'new_note_content': new_note_content},
-                        success: function () {
-                            console.log('successfully posted:  ' + new_note_content);
-                        }
-                    });
-
-                    $(edit_element).html(new_note_content).show();
-
-                } else if (msg === 'cancel') {
-                    $(edit_element).html(old_content).show();
-                }
-
-                // Destroy the editor.
-                $('#notes_cancel_btn').hide();
-                $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
-                ck_editor.destroy();
-                ck_editor = null;
+        if ($(edit_btn).hasClass('btn-info')) {
+            if (ck_editor) {
+                return;
             }
 
+            $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
+            $('#notes_cancel_btn').show();
+            $(edit_element).hide();
+            ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
+
             session_data_update('editor_status');
+
+            // Save CK
+        } else {
+            if (!ck_editor) {
+                return;
+            }
+
+            // Retrieve the editor contents. Ajax send to server.
+            var new_note_content = ck_editor.editable().getText();
+            $.ajax({
+                type: "POST",
+                url: '/help_update/',
+                data: {'new_note_content': new_note_content},
+                success: function () {
+                    console.log('successfully posted:  ' + new_note_content);
+                }
+            });
+
+            $(edit_element).html(new_note_content);
+            destroyMyEdit();
         }
+    }
+
+    function destroyMyEdit() {
+        $(edit_element).show();
+        $('#notes_cancel_btn').hide();
+        $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
+        ck_editor.destroy();
+        ck_editor = null;
+
+        session_data_update('editor_status');
     }
 
 // Deployment and Status Tracking
