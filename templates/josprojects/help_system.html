@@ -42,8 +42,6 @@
 
     .tab-pane {
         left: 50px;
-        overflow-x: hidden;
-        overflow-y: scroll;
         margin-top: 20px;
         padding: 20px;
         position: fixed;
@@ -140,29 +138,34 @@
 </div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
-    <div id="main_help" style="padding: 15px 30px;">
+    <div id="main_help"
+         style="padding: 15px 30px;">
 
-         To search for a term:
+        <div style="position: absolute; top: 3px; left: 0;  padding: 25px 30px 0 60px; z-index: 170; width: 100%; background-color: rgb(255, 255, 224);">
+            To search for a term:
 
-        <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
-               type="text" placeholder="start typing here">
-        <a class="btn btn-warning"
-           style="font-size: 14pt; margin-top: -7px; width: 120px;"
-           href="javascript:location.reload();">
-            Start over
-        </a>
+            <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
+                   type="text" placeholder="start typing here">
+            <a class="btn btn-warning"
+               style="font-size: 14pt; margin-top: -7px; width: 120px;"
+               href="javascript:location.reload();">
+                Start over
+            </a>
+        </div>
 
-        <div id="help_search_results" class="row">
+        <div id="help_search_results"
+             class="row text-left"
+             style="margin-top: 55px; padding: 10px 20px; height: 375px; margin-left: 10%; width: 80%; outline: 1px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
 
             {% if help_search_text %}
-                <div class="josinstructions" style="color: #5bc0de; margin-top: 15px;">
+                <div class="josinstructions" style="color: #d9534f; margin-top: 0;">
                     Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
                 </div>
             {% endif %}
 
             {% for help in help_items %}
-                <ul>
-                    <li style="margin-top: 30px;">
+                <ul style="list-style: none;">
+                    <li style="margin-top: 25px;">
                         <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
                             {{ help.title }}
                         </button>

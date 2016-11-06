@@ -1,14 +1,14 @@
 
 
 {% if  help_search_text %}
-    <div class= "josinstructions" style="color: #5bc0de; margin-top: 15px;">
+    <div class= "josinstructions" style="color: #d9534f; margin-top: 0;">
         Searching for "{{ help_search_text }}" - Found {{ help_items.count}} items:<br>
     </div>
 {% endif %}
 
 {% for help in help_items %}
-    <ul>
-        <li style="margin-top: 30px;">
+    <ul style="list-style: none;">
+        <li style="margin-top: 25px;">
             <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
                 {{ help.title }}
             </button>
