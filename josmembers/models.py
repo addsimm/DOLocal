@@ -116,6 +116,7 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 class JOSUserCreatedNote(TimeStamped, models.Model):
     class meta:
         verbose_name = 'UC Note'
+        verbose_name_plural = 'UC Notes'
 
     note_text = models.TextField(default="Enter notes here", null=True)
     profile = models.ForeignKey(JOSProfile, null=True)

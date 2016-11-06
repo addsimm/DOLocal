@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils import timezone
@@ -228,25 +228,18 @@ def help_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ok')
 
-    # activate('America/Los_Angeles')
-    #
-    # profile = user_created_note = ' '
-    #
-    # try:
-    #     user_profile = get_object_or_404(JOSProfile, user=request.user)
-    # except:
-    #     user_profile = None
-    #
-    # if user_profile:
-    #     try:
-    #         user_created_note = get_object_or_404(JOSUserCreatedNote, profile=profile)
-    #     except:
-    #         user_created_note = JOSUserCreatedNote.objects.create(profile=profile)
-    #
-    # text = user_created_note.note_text
+    user_profile = get_object_or_404(JOSProfile, user=request.user)
+
+    new_note_content = request.POST.get('new_note_content', 'missing')
+
+    if new_note_content != 'missing':
+        user_created_note = get_object_or_404(JOSUserCreatedNote, profile=user_profile)
+
+        user_created_note.note_text = new_note_content
+        user_created_note.save()
+        info(request, "Notes updated!")
 
     # Update help status in session data
-
     help_position = request.POST.get("help_position", 'missing')
     active_tab = request.POST.get("active_tab", 'missing')
     help_item_no = request.POST.get("help_item_no", 'missing')
@@ -264,28 +257,7 @@ def help_update(request):
     if editor_status != 'missing':
         request.session["editor_status"] = editor_status
 
-    # Notes editor handler
-
-    # mt_id = request.POST["message_thread_id"]
-    # body = request.POST["body"]
-    # mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-    # msgs_user_ids = mt.messages_distinct_user_ids
-
-    # response_messages.info(request, "Message successfully sent.")
-
-    ###########################
-    ### save note / reload page
-
     return HttpResponse('ok')
-
-
-
-
-
-
-
-
-
 
 
     # @login_required

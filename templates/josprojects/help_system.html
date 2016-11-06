@@ -65,7 +65,7 @@
 </style>
 
 <!-- DEBUG -->
-<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 200; display: inherit;">
+<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 200; display: none;">
     DEBUG<br>
     <div class="row">
         <div class="col-xs-6">
@@ -186,7 +186,7 @@
     <a id="notes_edit_btn"
        class="btn btn-info"
        style="width: 100px; position: fixed; top: 100px; left: 1025px;"
-       onclick="activateCKEdit('user_created_notes_field')"
+       onclick="activateCKEdit('notes_edit_btn');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates notes editor"
@@ -206,57 +206,120 @@
     </a>
 
     <div style="position: relative; top: 15px; width: 920px; left: 0;">
-        <textarea id="user_created_notes_field" class="edit_border" readonly="readonly"
-                  style="padding: 20px; width: 920px; height: 415px;">
-            {{ user_created_note }}
-        </textarea>
+
+        <!-- This div holds editor. -->
+        <div id="ck_editor_container"></div>
+
+
+        <!-- This div displays contents. -->
+        <div id="user_created_notes_field" class="edit_border"
+             style="padding: 20px; width: 920px; height: 415px;">
+
+        </div>
     </div>
-
+</div>
 </div>
 
-</div>
-
-<!-- help script -->
+<!-- Drawer javascript -->
 <script>
+    var ck_editor;
 
-// user_created_notes_field editor
+    var edit_element = document.getElementById('user_created_notes_field'),
+        ck_editor_container = document.getElementById('ck_editor_container'),
+        edit_btn = document.getElementById('notes_edit_btn');
 
-//////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////// Set up save /discard
+    var old_content = '{{ user_created_note }}';
+    $(edit_element).html(old_content);
 
-function activateCKEdit() {
+    var ck_config = {
+        toolbar: [
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+            {'name': 'editing', 'items': ['SelectAll', 'Find']}
+        ],
+        contentsCss: '/static/ckeditor/ckeditor/contents.css',
+        disableNativeSpellChecker: false,
+        width: 920,
+        height: 370,
+        tabSpaces: 4,
+        uiColor: '#28a4c9',
+        extraPlugins: 'colorbutton',
+        removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+    };
 
-    edit_element = document.getElementById('user_created_notes_field');
-    edit_btn = document.getElementById('notes_edit_btn');
+    // user_created_notes_field editor
+    function activateCKEdit(msg) {
+        old_content = $(edit_element).html();
 
-    if ($(edit_btn).hasClass('btn-info')) {
+        if (msg === 'notes_edit_btn') {
 
-        session_data_update('editor_status');
-        $('#notes_cancel_btn').show();
-        $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
-        edit_element.removeAttribute('readonly');
+            // Activate CK
+            if ($(edit_btn).hasClass('btn-info')) {
+                if (ck_editor) {
+                    return;
+                }
 
-        CKEDITOR.replace(edit_element, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: 920,
-            height: 370,
-            //
-            tabSpaces: 4,
-            uiColor: '#28a4c9',
-            extraPlugins: 'colorbutton',
-            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-        });
+                $('#notes_cancel_btn').show();
+                $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
 
-    } else {
+                $(edit_element).hide();
+                ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
 
-        session_data_update('editor_status');
+                session_data_update('editor_status');
+
+            // Save CK
+            } else if ($(edit_btn).hasClass('btn-success')){
+                if (!ck_editor){
+                    return;
+                }
+
+                $('#notes_cancel_btn').hide();
+                $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
+
+                // Retrieve the editor contents. Ajax send to server.
+                var new_note_content = ck_editor.editable().getText();
+
+                $(edit_element).html(new_note_content).show();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/help_update/',
+                    data: {'new_note_content': new_note_content},
+                    success: function () {
+                        console.log('successfully posted:  ' + new_note_content);
+                    }
+                });
+
+                // Destroy the editor.
+                ck_editor.destroy();
+                ck_editor = null;
+
+                session_data_update('editor_status');
+            } else {
+                console.log('problem');
+            }
+
+        // Cancel CK
+        } else if (msg === 'cancel') {
+            if (!ck_editor) {
+                return;
+            }
+
+            $('#notes_cancel_btn').hide();
+            $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
+
+            $(edit_element).innerHTML = old_content;
+            $(edit_element).show();
+
+            // Destroy the editor.
+            ck_editor.destroy();
+            ck_editor = null;
+
+            session_data_update('editor_status');
+
+        } else {
+            console.log('problem');
+        }
     }
-}
 
 // Deployment and Status Tracking
 {
@@ -282,7 +345,7 @@ function activateCKEdit() {
             showHelpItem('{{ request.session.help_item_no }}');
 
             if ('{{ request.session.editor_status }}' === 'active') {
-                activateCKEdit('user_created_notes_field');
+                activateCKEdit('notes_edit_btn');
             }
 
         } else {
@@ -312,9 +375,10 @@ function activateCKEdit() {
             data = {"help_item_no": 'none'};
 
         } else if (element === 'editor_status') {
-
             var status = 'inactive';
-            if ($('#notes_edit_btn').hasClass('btn-info')) { status = 'active'; }
+            if (ck_editor) {
+                status = 'active'
+            }
             data = {"editor_status": status};
 
         } else if (Number.isInteger(parseInt(element))) {

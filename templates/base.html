@@ -67,7 +67,7 @@
 {% block logout %}
 
     <a class="btn btn-default pull-right"
-       style="position: fixed; top: 5px; left: 1070px; width: 115px;  z-index: 110;"
+       style="position: fixed; top: 5px; left: 1070px; width: 115px;  z-index: 250;"
             {% if request.user.is_authenticated %}
        href="{% url "logout" %}?next={{ request.path }}">
                 Log out

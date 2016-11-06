@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from josmembers.models import JOSProfile, JOSReservation, JOSTeam
+from josmembers.models import JOSProfile, JOSReservation, JOSTeam, JOSUserCreatedNote
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 # from notification.models import NoticeQueueBatch, NoticeSetting, NoticeType
@@ -74,3 +74,17 @@ class JOSReservationAdmin(admin.ModelAdmin):
     readonly_fields = ('updated',)
 
 admin.site.register(JOSReservation, JOSReservationAdmin)
+
+
+class JOSUserCreatedNoteAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSUserCreatedNote.
+    """
+    verbose_name = 'Note'
+
+    list_display = ("id", "updated", "profile", "note_text")
+
+    readonly_fields = ('updated',)
+
+
+admin.site.register(JOSUserCreatedNote, JOSUserCreatedNoteAdmin)
