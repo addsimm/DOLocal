@@ -1,10 +1,6 @@
-import StringIO
-
-from django.core.files.uploadedfile import InMemoryUploadedFile
-
-from django.core.files.base import ContentFile
+from django.core.files import File
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
 from wand.image import Image
@@ -56,50 +52,27 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     if not cur_handout.pdf_handout:
         pdf_missing = True
 
-    with Image(filename=cur_handout.pdf_handout.path) as original:
-            with original.convert('jpeg') as converted:
-                converted_io = StringIO.StringIO(converted)
-                # converted.save(file=converted_io)
+    if cur_handout.image_handout is None:
+        with Image(filename=cur_handout.pdf_handout.path) as  original:
+            with original.convert('jpg') as converted:
 
-                # converted_file = InMemoryUploadedFile(converted_io, None, cur_handout, 'image/jpeg',
-                #                                       converted_io.len, None)
-                cur_handout.image_handout.save("joscourses", ContentFile(converted_io.read()))
+                format = converted.format
+                converted.save(filename='static/img/temporary.jpg')
+
+                f_name="bsho-image-" + str(cur_handout.id)
+                cur_handout.image_handout.save(f_name, File(open('static/img/temporary.jpg', 'r')))
                 cur_handout.save()
 
-    context = { 'week':       week,
-                'part_no': int(part_no),
-                'segments':   week_segments,
-                'current_segment': current_segment_no,
-                'handouts':   current_handouts,
-                'handout': cur_handout,
-                'pdf_missing': pdf_missing,
-                'converted': converted_io
-               }
+    context = {
+        'week':            week,
+        'part_no':         int(part_no),
+        'segments':        week_segments,
+        'current_segment': current_segment_no,
+        'handouts':        current_handouts,
+        'handout':         cur_handout,
+        'pdf_missing':     pdf_missing
+    }
 
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
-
-
-#     print('width =', img.width)
-#     print('height =', img.height)
-
-# with Image(filename='pikachu.png') as img:
-#     img.format = 'jpeg'
-#
-# with Image(filename='pikachu.png') as original:
-#     with original.convert('jpeg') as converted:
-#         # operations to a jpeg image...
-#         pass
-#
-# img.save(filename='pikachu.jpg') //// SAVE LOCALLY
-
-
-# def content_file_name(instance, filename):
-#     return '/'.join(['content', instance.user.username, filename])
-#
-#
-# class Content(models.Model):
-#     name = models.CharField(max_length=200)
-#     user = models.ForeignKey(User)
-#     file = models.FileField(upload_to=content_file_name)
