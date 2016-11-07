@@ -129,8 +129,9 @@ class JOSHandout(TimeStamped, models.Model):
 
     publish = models.BooleanField(default=False)
 
-    pdf_handout = models.FileField(upload_to=upload_to("joscourses-handouts.pdf_handout", "joscourses"),
-                          max_length=255, null=True, blank=True)
+    pdf_handout = models.FileField(upload_to=upload_to("joscourses-handouts.pdf_handout", "joscourses"), max_length=255, null=True, blank=True)
+
+    image_handout = models.FileField(upload_to=upload_to("joscourses-handouts.image_handout", "joscourses"), max_length=255, null=True, blank=True)
 
     def __unicode__(self):
         return 'Handout #'+str(self.id)

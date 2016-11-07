@@ -1,7 +1,13 @@
+import StringIO
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
+from wand.image import Image
 from .models import JOSCourseWeek, JOSHandout
 
 # Create your views here.
@@ -50,13 +56,24 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     if not cur_handout.pdf_handout:
         pdf_missing = True
 
+    with Image(filename=cur_handout.pdf_handout.path) as original:
+            with original.convert('jpeg') as converted:
+                converted_io = StringIO.StringIO(converted)
+                # converted.save(file=converted_io)
+
+                # converted_file = InMemoryUploadedFile(converted_io, None, cur_handout, 'image/jpeg',
+                #                                       converted_io.len, None)
+                cur_handout.image_handout.save("joscourses", ContentFile(converted_io.read()))
+                cur_handout.save()
+
     context = { 'week':       week,
                 'part_no': int(part_no),
                 'segments':   week_segments,
                 'current_segment': current_segment_no,
                 'handouts':   current_handouts,
                 'handout': cur_handout,
-                'pdf_missing': pdf_missing
+                'pdf_missing': pdf_missing,
+                'converted': converted_io
                }
 
     context.update(extra_context or {})
@@ -64,9 +81,6 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     return TemplateResponse(request, template, context)
 
 
-# from wand.image import Image
-#
-# with Image(filename='pikachu.png') as img:
 #     print('width =', img.width)
 #     print('height =', img.height)
 

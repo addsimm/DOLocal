@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from .views import course_week, course_week_list, next_handout
+from .views import course_week, course_week_list # next_handout
 
 urlpatterns = patterns('',
 
@@ -9,6 +9,6 @@ urlpatterns = patterns('',
        name="course_week"),
 
    url("courseweek$", course_week, name="course_week"),
-   url("next_handout/*$", next_handout, name="next_handout"),
+   # url("next_handout/*$", next_handout, name="next_handout"),
 
   )
