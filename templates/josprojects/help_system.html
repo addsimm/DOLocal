@@ -189,7 +189,7 @@
     <a id="notes_edit_btn"
        class="btn btn-info"
        style="width: 100px; position: fixed; top: 100px; left: 1025px;"
-       onclick="activateCKEdit();"
+       onclick="notesCKEdit();"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates editor"
@@ -200,7 +200,7 @@
     <a id="notes_cancel_btn"
        class="btn btn-danger"
        style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
-       onclick="destroyMyEdit();"
+       onclick="notesDestroy();"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Discards recent changes!"
@@ -250,7 +250,7 @@
     };
 
     // user_created_notes_field editor
-    function activateCKEdit() {
+    function notesCKEdit() {
 
         if ($(edit_btn).hasClass('btn-info')) {
             if (ck_editor) {
@@ -282,11 +282,11 @@
             });
 
             $(edit_element).html(new_note_content);
-            destroyMyEdit();
+            notesDestroy();
         }
     }
 
-    function destroyMyEdit() {
+    function notesDestroy() {
         $(edit_element).show();
         $('#notes_cancel_btn').hide();
         $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
@@ -321,7 +321,7 @@
             showHelpItem('{{ request.session.help_item_no }}');
 
             if ('{{ request.session.editor_status }}' === 'active') {
-                activateCKEdit('notes_edit_btn');
+                notesCKEdit('notes_edit_btn');
             }
 
         } else {

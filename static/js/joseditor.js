@@ -2,9 +2,12 @@
  * Created by adamsimon on 6/12/16.
  */
 
+
+var currentEditor;
+
 function activateCKEdit(section) {
 
-    CKEDITOR.replace(section, {
+    currentEditor = CKEDITOR.replace(section, {
         toolbar: [
             {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
             {'name': 'styles', 'items': ['Font', 'FontSize']},
@@ -28,7 +31,7 @@ function activateCKEdit(section) {
 }
 
 
-function manageCKEdit(el) {
+function handleCKEdit(el) {
     var elstrid = '#' + el.id;
     var pos = elstrid.search("_");
     var section = elstrid.slice(pos + 1);
@@ -50,12 +53,8 @@ function manageCKEdit(el) {
             break;
 
         case "save":
-            var CKEDITOR = window.parent.CKEDITOR;
-            for (var i in CKEDITOR.instances) {
-                var currentInstance = i;
-                break;
-            }
-            var data = CKEDITOR.instances[currentInstance].getData();
+
+            var data = currentEditor.editable().getData();
             // alert(data);
             $('#' + section + '_holder').val(data);
             var save_confirm = $.confirm({

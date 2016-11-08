@@ -1,0 +1,104 @@
+{% extends "joscourses/joscourseweek.html" %}
+{% load i18n mezzanine_tags accounts_tags static %}
+
+{% block all_content %}
+
+{{ block.super }}
+<!-- Main Panel -->
+
+<!-- DEBUG -->
+<div class='hidden' style="color: rgb(217, 83, 79); margin: 30px 30px;">
+    DEBUG:<br><br>
+
+    format: {{ format }}
+
+    <br><br>
+
+    id: {{ handout.id }}<br>
+    image_handout : {{ handout.image_handout }}<br>
+    pdf_handout: {{ handout.pdf_handout }}<br>
+
+</div>
+
+<div class="row text-center" style="margin-top: 30px;">
+
+    {% if handout.element_no == 14 %}
+
+        <iframe
+            src="{{ week.video }}" width="960" height="540" frameborder="0"
+            webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        </iframe>
+
+    {% else %}
+
+        <div class="col-xs-10">
+            {% if pdf_missing %}
+
+                Sorry, this PDF is missing - Click back call us, please!
+
+            {% else %}
+
+                <img src="https://joinourstory.com/static/media/{{ handout.image_handout }}"
+                     style="outline: 1px solid rgb(65,45,120); margin-left: -5%;" width="90%">
+
+                <iframe id="pdf_frame" title="PDF" name="PDF"
+                        src="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
+                        width="1170px" height="1500px"
+                        style="margin-left: -15px;">
+                    Your web browser doesn't support 'iframes' - please call.
+                </iframe>
+
+            {% endif %}
+        </div>
+        <div class="col-xs-2" style="margin-top: 135px;">
+
+            <button class="btn btn-default" onclick="printPDF();" style="width: 135px;">
+                Print
+            </button>
+
+            <button class="btn btn-default" style="width: 135px; margin-top: 30px;">
+                Download
+            </button>
+
+        </div>
+
+    {% endif %}
+</div>
+
+<script>
+
+    function printPDF() {
+        $('#pdf_frame').attr("src", pdf_url).load(function () {
+            document.getElementById('pdf_frame').contentWindow.print();
+        });
+    }
+
+</script>
+
+
+
+
+{% endblock %}
+
+{#week: {{ week }}<br>#}
+{#part_no: {{ part_no }}<br>#}
+{#segment_no: {{ segment_no }}<br>#}
+{#element_no: {{ element_no }}<br><br>#}
+{##}
+{#segments:<br>#}
+{#{% for seg in segments %}#}
+{#    segment: {{ forloop.counter }} / {{ seg }}<br>#}
+{#{% endfor %}#}
+{#handouts:<br>#}
+{#{% for hand in handouts %}#}
+{#    hand: {{ forloop.counter }} / {{ hand }}<br>#}
+{#{% endfor %}#}
+{##}
+{##}
+{#<br><br>handout.segment_no: {{ handout.segment_no }}<br><br>#}
+{##}
+{#handout.part_no: {{ handout.part_no }} <br>#}
+{#handout.element_no: {{ handout.element_no }}<br>#}
+{#pdf_missing: {{ pdf_missing }}#}
+
+

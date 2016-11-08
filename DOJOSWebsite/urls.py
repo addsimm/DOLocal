@@ -7,6 +7,7 @@ from django.contrib import admin
 from mezzanine.conf import settings
 
 from josprojects.views import *
+from joscourses.views import course_week_test
 
 _slash = "/" if settings.APPEND_SLASH else ""
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
@@ -24,14 +25,20 @@ urlpatterns = i18n_patterns("",
     ("^admin/", include(admin.site.urls)),
 )
 
-# if settings.USE_MODELTRANSLATION:
-#     urlpatterns += patterns('',
-#         url('^i18n/$', 'django.views.i18n.set_language', name='set_language'),
-#     )
 
 # import spirit.urls
 
 urlpatterns += patterns('',
+
+    ##### Adam test page: currently set for courseweek
+
+    url("test_page/(?P<week_no>\d{1,3})/(?P<part_no>\d{1,3})/(?P<segment_no>\d{1,3})/(?P<handout_id>\d{1,4})/$",
+    course_week_test,
+    name="course_week_test"),
+
+    url("course_week_test$", course_week_test, name="course_week_test"),
+
+
     ### EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
 
