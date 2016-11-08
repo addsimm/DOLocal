@@ -30,12 +30,12 @@
 
     {% else %}
 
-        <div class="col-xs-10">
-            <img src="https://joinourstory.com/static/media/{{ handout.image_handout }}"
-                 style="outline: 1px solid rgb(65,45,120)" width="100%">
-        </div>
+{#        <div class="col-xs-10">#}
+{#            <img src="https://joinourstory.com/static/media/{{ handout.image_handout }}"#}
+{#                 style="outline: 1px solid rgb(65,45,120)" width="100%">#}
+{#        </div>#}
 
-        <!-- PDF: {% if pdf_missing %}
+        {% if pdf_missing %}
 
             Sorry, this PDF is missing - <br>
 
@@ -50,7 +50,7 @@
                 Your web browser doesn't support 'iframes' - please call.
             </iframe>
 
-        {% endif %} -->
+        {% endif %}
     {% endif %}
 </div>
 
