@@ -52,7 +52,7 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     if not cur_handout.pdf_handout:
         pdf_missing = True
 
-    if not cur_handout.image_handout:
+    if not cur_handout.image_handout and pdf_missing == False:
         with Image(filename=cur_handout.pdf_handout.path) as  original:
             with original.convert('jpg') as converted:
 
