@@ -53,15 +53,15 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
         pdf_missing = True
 
     frmt = 'missing'
-    # if not cur_handout.image_handout:
-    with Image(filename=cur_handout.pdf_handout.path) as  original:
-        with original.convert('png24') as converted:
+    if cur_handout.pdf_handout:
+        with Image(filename=cur_handout.pdf_handout.path) as  original:
+            with original.convert('png24') as converted:
 
-            converted.save(filename='static/img/temporary.png')
-            frmt = converted.format
-            f_name = "bsho-image-" + str(cur_handout.id) + '.png'
-            cur_handout.image_handout.save(f_name, File(open('static/img/temporary.png', 'r')))
-            cur_handout.save()
+                converted.save(filename='static/img/temporary.png')
+                frmt = converted.format
+                f_name = "bsho-image-" + str(cur_handout.id) + '.png'
+                cur_handout.image_handout.save(f_name, File(open('static/img/temporary.png', 'r')))
+                cur_handout.save()
 
     context = {
         'week':            week,
