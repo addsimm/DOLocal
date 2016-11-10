@@ -190,18 +190,18 @@ def follow_unfollow(request):
             other_user = User.objects.get(id=other_user_id)
             # Create request.user follows other_user relationship
             Follow.objects.add_follower(request.user, other_user)
-            info(request, other_user.JOSProfile.jos_name() + " is now a favorite!")
+            info(request, other_user.JOSProfile.friendly_jos_name() + " is now a favorite!")
         except ValidationError:
             info(request, "You cannot favorite yourself ...")
         except AlreadyExistsError:
-            info(request, other_user.JOSProfile.jos_name() + " is already a favorite!")
+            info(request, other_user.JOSProfile.friendly_jos_name() + " is already a favorite!")
 
     if remove_user_id != " ":
         try:
             remove_user = User.objects.get(id=remove_user_id)
             return_variable = Follow.objects.remove_follower(request.user, remove_user)
             if return_variable:
-                info(request, remove_user.JOSProfile.jos_name() + " is no longer a favorite.")
+                info(request, remove_user.JOSProfile.friendly_jos_name() + " is no longer a favorite.")
             else:
                 info(request, "Sorry, problem removing favorite - please contact us.")
         except:

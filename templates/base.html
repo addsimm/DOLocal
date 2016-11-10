@@ -88,15 +88,14 @@
         <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
            {% else %}href="/"{% endif %}
            style="
-                       background-image:url(https://www.joinourstory.com/static/img/JOSLogo121615.png);
-                       background-repeat: no-repeat;
-                       background-size: 202px 120px;
-                       height:120px;
-                       outline: none;
-                       padding: 0;
-                       position: absolute; top: 7px; left: 0;
-                       width:219px;">
-
+               background-image:url(https://www.joinourstory.com/static/img/JOSLogo121615.png);
+               background-repeat: no-repeat;
+               background-size: 202px 120px;
+               height:120px;
+               outline: none;
+               padding: 0;
+               position: absolute; top: 7px; left: 0;
+               width:219px;">
         </a>
     {% endblock logo %}
 

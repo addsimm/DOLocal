@@ -16,7 +16,7 @@
                         {% endif %}
                     </td>
                     <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
-                    {{ member.jos_name }}
+                    {{ member.friendly_jos_name }}
                     </td>
                     <td style="width: 60%;">
                         <a class="btn btn-default"

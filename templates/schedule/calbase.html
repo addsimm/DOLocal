@@ -3,10 +3,10 @@
 {% load url from future %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.jos_name }} Calendar
+    {{ user.JOSProfile.friendly_jos_name }} Calendar
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.jos_name }} Calendar
+    {{ user.JOSProfile.friendly_jos_name }} Calendar
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -61,7 +61,7 @@
 
         </div>
     </div>
-
+</div>
 
     {% block cal_content %}
 

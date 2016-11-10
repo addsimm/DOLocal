@@ -103,6 +103,11 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
         jos_name = first_name + "_" + last_initial
         return jos_name
 
+    def friendly_jos_name(request):
+        first_name = request.user.get_short_name()[:8]
+        last_initial = request.user.last_name[:1].upper()
+        friendly_jos_name = first_name + " " + last_initial + "."
+        return friendly_jos_name
 
     def get_teams(self):
         return ", ".join(team.name for team in self.teams.all())

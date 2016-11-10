@@ -25,7 +25,7 @@
                             {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
                         </td>
                         <td>&nbsp&nbsp&nbsp
-                            {{ message.recipient.JOSProfile.jos_name }}</td>
+                            {{ message.recipient.JOSProfile.friendly_jos_name }}</td>
                         <td>&nbsp&nbsp&nbsp
                             {{ message.subject | truncatechars:20 }}</td>
                         <td>&nbsp&nbsp&nbsp

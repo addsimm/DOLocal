@@ -2,8 +2,8 @@
 {% load i18n mezzanine_tags accounts_tags cloudinary %}
 {% cloudinary_includes %}
 
-{% block meta_title %}{{ user.JOSProfile.jos_name }}{% endblock %}
-{% block title %}{{ user.JOSProfile.jos_name }}{% endblock %}
+{% block meta_title %}{{ user.JOSProfile.friendly_jos_name }}{% endblock %}
+{% block title %}{{ user.JOSProfile.friendly_jos_name }}{% endblock %}
 {# block body_id }account{ endblock #}
 
 {% block breadcrumb_menu %}

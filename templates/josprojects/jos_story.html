@@ -4,7 +4,7 @@
 {% block meta_title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block breadcrumb_menu %}{{ block.super }}
-    {{ story.title  | striptags | safe | truncatechars:55 }} <span style="font-size: 18pt; font-style: italic; margin-left: 5px;"> by {{ story.author.JOSProfile.jos_name }}</span>
+    {{ story.title  | striptags | safe | truncatechars:55 }} <span style="font-size: 18pt; font-style: italic; margin-left: 5px;"> by {{ story.author.JOSProfile.friendly_jos_name }}</span>
 {% endblock %}
 
 {% block all_content %}
@@ -86,7 +86,7 @@
                 <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
                    style="padding: 0">
                     <span style="font-size: 48pt; margin: 0 15px;">
-                        {{ story.author.JOSProfile.jos_name }}
+                        {{ story.author.JOSProfile.friendly_jos_name }}
                     </span>
                 </a>
 
