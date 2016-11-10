@@ -159,6 +159,7 @@ footer {
 .btn, .btn:visited {
     background-image: none;
     background-repeat: no-repeat;
+    border-radius: 6px;
     box-shadow: none;
     color: white;
     font-size: 16pt;
