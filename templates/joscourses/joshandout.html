@@ -32,13 +32,14 @@
     {% else %}
 
         <div class="col-xs-9">
+
             {% if pdf_missing %}
 
                 Sorry, this PDF is missing - Click back call us, please!
 
             {% else %}
 
-                <img src="https://joinourstory.com/static/media/{{ handout.image_handout }}"
+                <img src="https://joinourstory.com/static/img/temp{{ request.user.id }}.png"
                      style="position: relative; left: 50px; outline: 1px solid rgb(65,45,120); margin-left: 0;" width="100%">
 
                 <iframe id="pdf_frame" title="PDF" name="PDF"
@@ -53,7 +54,7 @@
 
         </div>
 
-        <div class="col-xs-3" style="position: relative; left: -50px; margin-top: 135px;">
+        <div class="col-xs-3" style="position: relative; left: -50px; margin-top: 105px;">
 
             <button class="btn affix btn-default" onclick="printPDF();" style="width: 135px;">
                 Print
@@ -81,26 +82,4 @@
 </script>
 
     {% endblock %}
-
-{#week: {{ week }}<br>#}
-{#part_no: {{ part_no }}<br>#}
-{#segment_no: {{ segment_no }}<br>#}
-{#element_no: {{ element_no }}<br><br>#}
-{##}
-{#segments:<br>#}
-{#{% for seg in segments %}#}
-{#    segment: {{ forloop.counter }} / {{ seg }}<br>#}
-{#{% endfor %}#}
-{#handouts:<br>#}
-{#{% for hand in handouts %}#}
-{#    hand: {{ forloop.counter }} / {{ hand }}<br>#}
-{#{% endfor %}#}
-{##}
-{##}
-{#<br><br>handout.segment_no: {{ handout.segment_no }}<br><br>#}
-{##}
-{#handout.part_no: {{ handout.part_no }} <br>#}
-{#handout.element_no: {{ handout.element_no }}<br>#}
-{#pdf_missing: {{ pdf_missing }}#}
-
 

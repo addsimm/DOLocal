@@ -1,3 +1,5 @@
+import os.path
+
 from django.core.files import File
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -21,6 +23,7 @@ def course_week_list(request, template="###", extra_context=None):
 @login_required
 def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1",
                 template="joscourses/joshandout.html", extra_context=None):
+
     week = get_object_or_404(JOSCourseWeek, week_no=int(week_no))
     week_handouts = JOSHandout.objects.filter(courseweek=week, part_no=int(part_no), publish=True)
     week_segments = week_handouts.distinct('segment_no').order_by('segment_no')
@@ -52,16 +55,14 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     if not cur_handout.pdf_handout:
         pdf_missing = True
 
-    frmt = 'missing'
+    f_name = ' '
+    ### change to image
     if cur_handout.pdf_handout:
-        with Image(filename=cur_handout.pdf_handout.path) as  original:
-            with original.convert('png24') as converted:
-
-                converted.save(filename='static/img/temporary.png')
-                frmt = converted.format
-                f_name = "bsho-image-" + str(cur_handout.id) + '.png'
-                cur_handout.image_handout.save(f_name, File(open('static/img/temporary.png', 'r')))
-                cur_handout.save()
+        if os.path.isfile(cur_handout.pdf_handout.path):
+            with Image(filename=cur_handout.pdf_handout.path) as original:
+                with original.convert('png24') as converted:
+                    f_name = 'static/img/temp' + str(request.user.id) + '.png'
+                    converted.save(filename=f_name)
 
     context = {
         'week':            week,
@@ -71,7 +72,7 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
         'handouts':        current_handouts,
         'handout':         cur_handout,
         'pdf_missing':     pdf_missing,
-        'format': frmt,
+        'f_name':          f_name,
         'download_filename': "BetterStorytelling-Handout-" + str(cur_handout.id)
 
     }

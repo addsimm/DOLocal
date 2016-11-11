@@ -160,7 +160,7 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
-def temasystest(request, incognito=False, jos_id=0, template="josprojects/hi_res_chat_room.html"):
+def temasystest(request, incognito=False, jos_id=0, template="josprojects/chat_room.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
     try:
         user = get_object_or_404(User, pk=jos_id)
