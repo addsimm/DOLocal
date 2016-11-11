@@ -80,3 +80,10 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
+
+
+def playground_view(request, template="playground.html", extra_context=None):
+    context = {}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)

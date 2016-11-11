@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block meta_title %}
+
+{% endblock %}
+{% block title %}
+
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    Designer Playground
+
+{% endblock %}
+
+
+{% block all_content %}
+
+<style>
+
+    a, a:visited {
+        background-color: blue;
+        color: red;
+        font-weight: normal;
+        outline: 5px solid black;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .tr1 {
+        width: 20%;
+        padding-bottom: 14.142135627%; /* = width / sqrt(2) */
+        position: relative;
+        overflow: hidden;
+        outline: 2px solid black;
+        transform: rotate(45deg);
+    }
+
+    .tr1:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: green;
+
+        transform-origin: 0 100%;
+        transform: rotate(45deg);
+    }
+
+    .tr2 {
+        width: 20%;
+        padding-bottom: 14.142135627%; /* = width / sqrt(2) */
+        position: relative;
+        overflow: hidden;
+        outline: 2px solid black;
+        left:200px;
+    }
+
+    .tr2:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: red;
+
+        transform-origin: 100% 0;
+        transform: rotate(45deg);
+
+    }
+
+    .tr3 {
+        width: 20%;
+        padding-bottom: 14.142135627%; /* = width / sqrt(2) */
+        position: relative;
+        overflow: hidden;
+        outline: 2px solid black;
+    }
+
+    .tr3:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+        transform-origin: 100% 0;
+        transform: rotate(45deg);
+
+    }
+
+
+</style>
+
+<div style="margin-top: 100px;">
+    <a class="tr1" href="javascript: alert('Clicked');">x
+    </a>
+</div>
+
+<div style="margin-top: 100px;">
+    <div class="tr2"></div>
+    <div class="tr3"></div>
+</div>
+
+{% endblock all_content %}
+
+
+
+<script>
+
+
+</script>
+
+
+
