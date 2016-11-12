@@ -60,9 +60,10 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     if cur_handout.pdf_handout:
         if os.path.isfile(cur_handout.pdf_handout.path):
             with Image(filename=cur_handout.pdf_handout.path) as original:
-                with original.convert('png24') as converted:
+                with original.convert('png') as converted:
                     f_name = 'static/img/temp' + str(request.user.id) + '.png'
-                    converted.save(filename=f_name)
+                    with open(f_name, 'wb') as f:
+                        converted.save(file=f)
 
     context = {
         'week':            week,
