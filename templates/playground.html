@@ -19,6 +19,120 @@
 
 <style>
 
+    canvas {
+        border: 1px solid black;
+    }
+
+</style>
+
+    <button class="btn btn-default" onclick="drawThis();">Draw</button><br>
+
+<canvas id="tutorial" width="500" height="500">
+    Your browser does not support HTML5 Canvas.
+</canvas>
+
+
+
+
+
+<script>
+
+$(document).ready( function () {
+    drawThis();
+});
+
+function drawThis() {
+    var canvas = document.getElementById('tutorial');
+
+    if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+
+        // ctx.fillRect(25, 25, 100, 100);
+        // ctx.clearRect(45, 45, 60, 60);
+        // ctx.strokeRect(50, 50, 50, 50);
+
+        // text
+        ctx.font = "48px serif";
+        ctx.fillText("Hello world", 250, 50);
+
+        // Filled triangle
+        ctx.beginPath();
+        ctx.fillStyle = "orange";
+        ctx.moveTo(25, 25);
+        ctx.lineTo(105, 25);
+        ctx.lineTo(25, 105);
+        ctx.fill();
+
+        // Stroked triangle
+        ctx.beginPath();
+        ctx.moveTo(125, 125);
+        ctx.lineTo(125, 45);
+        ctx.lineTo(45, 125);
+        ctx.closePath();
+        ctx.stroke();
+
+
+        // movePen
+
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+        ctx.moveTo(110, 75);
+        ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+        ctx.moveTo(65, 65);
+        ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+        ctx.moveTo(95, 65);
+        ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+        ctx.stroke();
+
+        // arcs
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 3; j++) {
+                ctx.beginPath();
+                var x = 250 + j * 50; // x coordinate
+                var y = 250 + i * 50; // y coordinate
+                var radius = 20; // Arc radius
+                var startAngle = 0; // Starting point on circle
+                var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
+                var anticlockwise = i % 2 == 0 ? false : true; // clockwise or anticlockwise
+
+                ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+                if (i > 1) {
+                    ctx.fill();
+                } else {
+                    ctx.stroke();
+                }
+            }
+        }
+
+        var img = new Image();   // Create new img element
+        img.src = '/static/img/peeky-102216.png'; // Set source path
+        img.addEventListener("load", function () {
+            ctx.drawImage(img, 50, 350);
+        }, false);
+
+
+
+        /*
+            ctx.fillStyle = "rgb(200,0,0)";
+            ctx.fillRect(10, 10, 50, 50);
+
+            ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+            ctx.fillRect(30, 30, 50, 50);
+         */
+
+    } else {
+        // canvas-unsupported code here
+    }
+}
+
+</script>
+
+{% endblock all_content %}
+
+
+<style>
+
     a, a:visited {
         background-color: blue;
         color: red;
@@ -56,7 +170,7 @@
         position: relative;
         overflow: hidden;
         outline: 2px solid black;
-        left:200px;
+        left: 200px;
     }
 
     .tr2:before {
@@ -94,7 +208,6 @@
 
     }
 
-
 </style>
 
 <div style="margin-top: 100px;">
@@ -106,15 +219,3 @@
     <div class="tr2"></div>
     <div class="tr3"></div>
 </div>
-
-{% endblock all_content %}
-
-
-
-<script>
-
-
-</script>
-
-
-
