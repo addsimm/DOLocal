@@ -37,6 +37,37 @@
 
 <script>
 
+    /*
+
+     Ai->Canvas makes it easy to draw complex shapes that can easily be tested with the canvas isPointInPath command.
+
+     Example:
+     1. Create a new layer named “sunSpot();”, and use the ellipse tool to draw a circle that overlaps the clickable area of the sun.
+
+     2. Because the sunSpot layer is only used to configure a path to check for mouse clicks, there is no need to actually see it on the canvas. So, set both fill and stroke styles to “none.”
+
+     3. To create a “supernova” animation that will start when the sunSpot area is clicked, rename the sunGlow layer to: “sunGlow(origin: center; scale-direction: grow; scale-duration: 6; scale-iterations: 1; scale-multiplier: 12; scale-offset: 1; scale-timing-function: expoEaseOut; alpha-direction: fade-out; alpha-duration: 6; alpha-iterations: 1);”. The scale-multiplier property multiplies the scale value, and the scale-offset property adds a percentage of the original range.
+
+     4. Choose File/Export/<canvas>, and open the exported file in a text editor.
+
+     */
+
+    // 5. Add a new JavaScript function called “sunClick();” after the init() function:
+
+    function sunClick(e) {
+        sunSpot(ctx);
+        var x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
+        var y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
+        if (ctx.isPointInPath(x, y)) {
+            sunGlow.scaleClock.restart();
+            sunGlow.alphaClock.restart();
+        }
+    }
+
+    // 6. To prevent sunGlow at page loads, delete “sunGlow.scaleClock.start();” and “sunGlow.alphaClock.start();”
+
+    // 7. At end init(): canvas.addEventListener("click", sunClick, false);”
+
 $(document).ready( function () {
     drawThis();
 });
@@ -47,11 +78,7 @@ function drawThis() {
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
 
-        // ctx.fillRect(25, 25, 100, 100);
-        // ctx.clearRect(45, 45, 60, 60);
-        // ctx.strokeRect(50, 50, 50, 50);
-
-        // text
+         // text
         ctx.font = "48px serif";
         ctx.fillText("Hello world", 250, 50);
 
@@ -72,38 +99,41 @@ function drawThis() {
         ctx.stroke();
 
 
-        // movePen
+        // layer1/Group
+        ctx.save();
 
+        // layer1/Group/node1
+        ctx.save();
         ctx.beginPath();
-        ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
-        ctx.moveTo(110, 75);
-        ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
-        ctx.moveTo(65, 65);
-        ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
-        ctx.moveTo(95, 65);
-        ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
-        ctx.stroke();
 
-        // arcs
-        for (var i = 0; i < 4; i++) {
-            for (var j = 0; j < 3; j++) {
-                ctx.beginPath();
-                var x = 250 + j * 50; // x coordinate
-                var y = 250 + i * 50; // y coordinate
-                var radius = 20; // Arc radius
-                var startAngle = 0; // Starting point on circle
-                var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
-                var anticlockwise = i % 2 == 0 ? false : true; // clockwise or anticlockwise
+        // layer1/Group/node5
+        ctx.beginPath();
+        ctx.moveTo(133.6, 68.4);
+        ctx.bezierCurveTo(125.6, 69.9, 114.6, 74.2, 106.3, 79.1);
+        ctx.bezierCurveTo(99.0, 83.4, 83.6, 98.8, 79.3, 106.1);
+        ctx.bezierCurveTo(72.1, 118.3, 67.2, 134.1, 67.1, 145.6);
+        ctx.lineTo(67.1, 149.9);
+        ctx.lineTo(108.4, 150.1);
+        ctx.lineTo(149.6, 150.4);
+        ctx.lineTo(149.9, 191.6);
+        ctx.lineTo(150.1, 232.9);
+        ctx.lineTo(152.9, 232.9);
+        ctx.bezierCurveTo(162.2, 232.8, 177.8, 229.0, 186.6, 224.6);
+        ctx.bezierCurveTo(201.9, 217.1, 217.3, 201.7, 224.8, 186.4);
+        ctx.bezierCurveTo(229.2, 177.6, 233.0, 162.0, 233.1, 152.7);
+        ctx.lineTo(233.1, 149.9);
+        ctx.lineTo(191.9, 149.7);
+        ctx.lineTo(150.6, 149.4);
+        ctx.lineTo(150.3, 108.1);
+        ctx.lineTo(150.1, 66.9);
+        ctx.lineTo(145.3, 67.0);
+        ctx.bezierCurveTo(142.7, 67.0, 137.5, 67.7, 133.6, 68.4);
+        ctx.closePath();
+        ctx.fill();
 
-                ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+        // layer1/Group
+        ctx.restore();
 
-                if (i > 1) {
-                    ctx.fill();
-                } else {
-                    ctx.stroke();
-                }
-            }
-        }
 
         var img = new Image();   // Create new img element
         img.src = '/static/img/peeky-102216.png'; // Set source path
@@ -111,15 +141,6 @@ function drawThis() {
             ctx.drawImage(img, 50, 350);
         }, false);
 
-
-
-        /*
-            ctx.fillStyle = "rgb(200,0,0)";
-            ctx.fillRect(10, 10, 50, 50);
-
-            ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-            ctx.fillRect(30, 30, 50, 50);
-         */
 
     } else {
         // canvas-unsupported code here
