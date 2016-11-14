@@ -1,12 +1,6 @@
 {% extends "base.html" %}
-
-{% block meta_title %}
-
-{% endblock %}
-{% block title %}
-
-{% endblock %}
-
+{% block meta_title %}{% endblock %}
+{% block title %}{% endblock %}
 {% block breadcrumb_menu %}
 
     {{ block.super }}
@@ -14,26 +8,24 @@
 
 {% endblock %}
 
-
 {% block all_content %}
 
 <style>
 
     canvas {
         border: 1px solid black;
+        background-color: yellow;
     }
 
 </style>
 
-    <button class="btn btn-default" onclick="drawThis();">Draw</button><br>
-
-<canvas id="tutorial" width="500" height="500">
-    Your browser does not support HTML5 Canvas.
-</canvas>
-
-
-
-
+<div class="row" style="margin-top: 30px;">
+    <div class="col-xs-12 text-center">
+        <canvas id="pie-canvas" width="900" height="900">
+            Your browser does not support HTML5 Canvas.
+        </canvas>
+    </div>
+</div>
 
 <script>
 
@@ -73,74 +65,60 @@ $(document).ready( function () {
 });
 
 function drawThis() {
-    var canvas = document.getElementById('tutorial');
+    var canvas = document.getElementById('pie-canvas');
 
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
 
-         // text
-        ctx.font = "48px serif";
-        ctx.fillText("Hello world", 250, 50);
-
-        // Filled triangle
+        // pie/conflict
+        ctx.save();
         ctx.beginPath();
-        ctx.fillStyle = "orange";
-        ctx.moveTo(25, 25);
-        ctx.lineTo(105, 25);
-        ctx.lineTo(25, 105);
-        ctx.fill();
-
-        // Stroked triangle
-        ctx.beginPath();
-        ctx.moveTo(125, 125);
-        ctx.lineTo(125, 45);
-        ctx.lineTo(45, 125);
-        ctx.closePath();
+        ctx.moveTo(20.0, 300.7);
+        ctx.bezierCurveTo(83.7, 121.7, 250.3, 7.0, 431.1, 1.8);
+        ctx.lineTo(431.1, 434.1);
+        ctx.lineTo(430.9, 434.1);
+        ctx.lineTo(20.0, 300.6);
+        ctx.lineWidth = 3.6;
         ctx.stroke();
 
-
-        // layer1/Group
-        ctx.save();
-
-        // layer1/Group/node1
-        ctx.save();
+        // pie/character
         ctx.beginPath();
+        ctx.moveTo(847.4, 304.3);
+        ctx.bezierCurveTo(901.1, 486.5, 833.7, 677.2, 690.5, 787.7);
+        ctx.lineTo(436.4, 437.9);
+        ctx.lineTo(436.5, 437.9);
+        ctx.lineTo(847.4, 304.4);
+        ctx.stroke();
 
-        // layer1/Group/node5
+        // pie/theme
         ctx.beginPath();
-        ctx.moveTo(133.6, 68.4);
-        ctx.bezierCurveTo(125.6, 69.9, 114.6, 74.2, 106.3, 79.1);
-        ctx.bezierCurveTo(99.0, 83.4, 83.6, 98.8, 79.3, 106.1);
-        ctx.bezierCurveTo(72.1, 118.3, 67.2, 134.1, 67.1, 145.6);
-        ctx.lineTo(67.1, 149.9);
-        ctx.lineTo(108.4, 150.1);
-        ctx.lineTo(149.6, 150.4);
-        ctx.lineTo(149.9, 191.6);
-        ctx.lineTo(150.1, 232.9);
-        ctx.lineTo(152.9, 232.9);
-        ctx.bezierCurveTo(162.2, 232.8, 177.8, 229.0, 186.6, 224.6);
-        ctx.bezierCurveTo(201.9, 217.1, 217.3, 201.7, 224.8, 186.4);
-        ctx.bezierCurveTo(229.2, 177.6, 233.0, 162.0, 233.1, 152.7);
-        ctx.lineTo(233.1, 149.9);
-        ctx.lineTo(191.9, 149.7);
-        ctx.lineTo(150.6, 149.4);
-        ctx.lineTo(150.3, 108.1);
-        ctx.lineTo(150.1, 66.9);
-        ctx.lineTo(145.3, 67.0);
-        ctx.bezierCurveTo(142.7, 67.0, 137.5, 67.7, 133.6, 68.4);
+        ctx.moveTo(688.7, 789.6);
+        ctx.bezierCurveTo(532.0, 896.9, 329.8, 891.8, 180.5, 789.7);
+        ctx.lineTo(434.6, 440.0);
+        ctx.lineTo(434.7, 440.1);
+        ctx.lineTo(688.6, 789.6);
+        ctx.stroke();
+
+        // pie/world
+        ctx.beginPath();
+        ctx.moveTo(177.1, 787.9);
+        ctx.bezierCurveTo(26.6, 672.0, -31.0, 478.1, 19.9, 304.6);
+        ctx.lineTo(431.1, 438.2);
+        ctx.lineTo(431.0, 438.3);
+        ctx.lineTo(177.0, 787.8);
+        ctx.stroke();
+
+        // pie/plot
+        ctx.beginPath();
+        ctx.moveTo(434.6, 2.7);
+        ctx.bezierCurveTo(624.6, 7.9, 785.1, 130.9, 845.9, 301.2);
+        ctx.lineTo(434.8, 434.8);
+        ctx.lineTo(434.8, 434.7);
+        ctx.lineTo(434.8, 2.7);
+        ctx.lineTo(434.6, 2.7);
         ctx.closePath();
-        ctx.fill();
-
-        // layer1/Group
+        ctx.stroke();
         ctx.restore();
-
-
-        var img = new Image();   // Create new img element
-        img.src = '/static/img/peeky-102216.png'; // Set source path
-        img.addEventListener("load", function () {
-            ctx.drawImage(img, 50, 350);
-        }, false);
-
 
     } else {
         // canvas-unsupported code here
@@ -151,17 +129,18 @@ function drawThis() {
 
 {% endblock all_content %}
 
+// TEXT:
+ctx.font = "48px serif";
+ctx.fillText("Hello world", 250, 50);
+
+// IMAGE:
+var img = new Image();   // Create new img element
+img.src = '/static/img/peeky-102216.png'; // Set source path
+img.addEventListener("load", function () {
+ctx.drawImage(img, 50, 350);
+}, false);
 
 <style>
-
-    a, a:visited {
-        background-color: blue;
-        color: red;
-        font-weight: normal;
-        outline: 5px solid black;
-        padding: 0;
-        border-radius: 0;
-    }
 
     .tr1 {
         width: 20%;
@@ -185,58 +164,6 @@ function drawThis() {
         transform: rotate(45deg);
     }
 
-    .tr2 {
-        width: 20%;
-        padding-bottom: 14.142135627%; /* = width / sqrt(2) */
-        position: relative;
-        overflow: hidden;
-        outline: 2px solid black;
-        left: 200px;
-    }
-
-    .tr2:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: red;
-
-        transform-origin: 100% 0;
-        transform: rotate(45deg);
-
-    }
-
-    .tr3 {
-        width: 20%;
-        padding-bottom: 14.142135627%; /* = width / sqrt(2) */
-        position: relative;
-        overflow: hidden;
-        outline: 2px solid black;
-    }
-
-    .tr3:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: blue;
-        transform-origin: 100% 0;
-        transform: rotate(45deg);
-
-    }
-
 </style>
 
-<div style="margin-top: 100px;">
-    <a class="tr1" href="javascript: alert('Clicked');">x
-    </a>
-</div>
-
-<div style="margin-top: 100px;">
-    <div class="tr2"></div>
-    <div class="tr3"></div>
-</div>
+<div class="tr1" style="margin-top: 100px;" href="javascript: alert('Clicked');"></div>
