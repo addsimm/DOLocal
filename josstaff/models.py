@@ -41,6 +41,8 @@ class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
 
     admin_thumb_field = "bio_image"
 
+    publish = models.BooleanField(default=True)
+
     def user_name(self):
         un = str(self.first_name + self.last_name)
         return (un.lower())

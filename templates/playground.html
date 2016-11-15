@@ -14,14 +14,16 @@
 
     canvas {
         border: 1px solid black;
-        background-color: yellow;
+        background-color: lightblue;
     }
 
 </style>
 
+<div id="mouse_report"></div>
+
 <div class="row" style="margin-top: 30px;">
     <div class="col-xs-12 text-center">
-        <canvas id="pie-canvas" width="900" height="900">
+        <canvas id="pie_canvas" width="600" height="400">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>
@@ -29,40 +31,81 @@
 
 <script>
 
-    /*
+    C = document.getElementById('pie_canvas');
+    cntxt = C.getContext('2d');
 
-     Ai->Canvas makes it easy to draw complex shapes that can easily be tested with the canvas isPointInPath command.
+    paths = [];
 
-     Example:
-     1. Create a new layer named “sunSpot();”, and use the ellipse tool to draw a circle that overlaps the clickable area of the sun.
+    for (x=0; x<3; x++) {
+        xx = (200 * x);
+        for (y = 0; y < 2; y++) {
+            yy = (200 * y);
 
-     2. Because the sunSpot layer is only used to configure a path to check for mouse clicks, there is no need to actually see it on the canvas. So, set both fill and stroke styles to “none.”
-
-     3. To create a “supernova” animation that will start when the sunSpot area is clicked, rename the sunGlow layer to: “sunGlow(origin: center; scale-direction: grow; scale-duration: 6; scale-iterations: 1; scale-multiplier: 12; scale-offset: 1; scale-timing-function: expoEaseOut; alpha-direction: fade-out; alpha-duration: 6; alpha-iterations: 1);”. The scale-multiplier property multiplies the scale value, and the scale-offset property adds a percentage of the original range.
-
-     4. Choose File/Export/<canvas>, and open the exported file in a text editor.
-
-     */
-
-    // 5. Add a new JavaScript function called “sunClick();” after the init() function:
-
-    function sunClick(e) {
-        sunSpot(ctx);
-        var x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
-        var y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
-        if (ctx.isPointInPath(x, y)) {
-            sunGlow.scaleClock.restart();
-            sunGlow.alphaClock.restart();
+            var path = new Path2D();
+            cntxt.fillStyle = getRandomColor();
+            path.rect(xx, yy, 200, 200);
+            cntxt.fill(path);
+            cntxt.fillText('path', path, 100);
+            paths.push(path);
         }
     }
 
-    // 6. To prevent sunGlow at page loads, delete “sunGlow.scaleClock.start();” and “sunGlow.alphaClock.start();”
+    console.log(paths);
 
-    // 7. At end init(): canvas.addEventListener("click", sunClick, false);”
+    C.addEventListener('click', function(e) {
+        var mousePos = getMousePos(C, e);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        console.log(' ');
+        for (i = 0; i < 6; i++) {
+            console.log(i + ' - ' + cntxt.isPointInPath(paths[i], mousePos.x, mousePos.y));
+        }
+    });
 
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+/*
 $(document).ready( function () {
     drawThis();
+
 });
+
+
+var pie_canvas = document.getElementById('pie-canvas');
+var context2 = pie_canvas.getContext('2d');
+pie_canvas.onmousemove = function (evt) {
+            var mousePos = getMousePos(pie_canvas, evt);
+            var hitRegion = evt.region;
+            var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y + ',' + hitRegion;
+            // alert("click: " + message);
+            // writeMessage(pie_canvas, message);
+            $('#mouse_report').text(message);
+        };
+
+
+function writeMessage(canvas, message) {
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.font = '18pt Calibri';
+    context.fillStyle = 'black';
+    context.fillText(message, 10, 25);
+}
+
+
 
 function drawThis() {
     var canvas = document.getElementById('pie-canvas');
@@ -124,6 +167,7 @@ function drawThis() {
         // canvas-unsupported code here
     }
 }
+*/
 
 </script>
 

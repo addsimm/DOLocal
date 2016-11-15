@@ -14,58 +14,33 @@
 
 {% block all_content %}
 
-    <div class="row" style=" ">
-        <div class="col-xs-12" style="margin-top: 20px;">
+<div class="row" style="font-family: 'Abril Fatface', serif; font-size: 28pt; margin-top: 20px;">
 
-            <div class=" "
-                style="font-family: 'Abril Fatface', serif; font-size: 28pt;  margin-bottom: 15px;">
-                Mission:<br>
-            </div>
-            <div class=" " style="font-weight: bold; margin-left: 45px;">
-                We enrich lives - especially older adults'- by delivering a fun, supportive space for meaningful expression, enjoyment and friendship in order to promote healthier minds and happier souls.<br><br>
-            </div>
+    <div class="col-xs-12" style="margin-top: 0; margin-bottom: 0;">
+        Our mission:<br>
+    </div>
+</div>
 
+<div class="row" style="margin: 15px; padding: 20px 40px 20px 20px; line-height: normal;">
+    <div class="col-xs-12" style="margin-top: 0; margin-bottom: 0;">
+
+        Join Our Story helps older adults enjoy safe and supportive social connections, create and share meaningful stories, and receive due recognition for their efforts. The goal of our collaborative online storytelling platform is to fight social isolation and maintain cognitive function, bringing better health and happiness to an under-served community.<br>
+
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: -30px;">
+    <div class="col-xs-12" style="margin-top: 0; margin-bottom: 0;">
+        <div class=" "
+            style="font-family: 'Abril Fatface', serif; font-size: 28pt;">
+            Our team:<br>
         </div>
     </div>
+</div>
 
+{% for member in staff %}
 
-    <div class="row" style=" ">
-        <div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
-
-            Join Our Story is a California benefit organization that helps older adults fill their lives with creative
-            expression, supportive social connections and positive recognition. To reach this goal we deliver an
-            accessible, compelling online platform where people can enjoy, create, and share. The vision includes a
-            slate of dramatic and instructional programming, produced by professionals and supplemented by users<br><br>
-
-            Our Better Storytelling course, which evolved from tests conducted at a range of senior communities,
-            provides one cornerstone. Better Storytelling adapts to welcome every ability level through easy-to-use
-            tools and intriguing assignments that also promote community and friendship. Further support is readily
-            available in order to overcome any initial hesitation and provide boosts as needed. This course has received
-            overwhelmingly positive feedback. In line with Join Our Stories mission, Better Storytelling increases
-            social engagement, heightens mental acuity and, most importantly, is incredibly fun.<br><br>
-
-            Though many writing programs exist, this Join Our Story course is the first specifically devoted to
-            improving older adults' quality of life and to fostering an active, ongoing community. Storytelling always
-            centers on social interaction, to which Join Our Story adds motivational and intellectual support. The Join
-            Our Story team is lead by Celeste Davidson, a multiple award winning author, certified educator who is doing
-            doctoral research in educational technology; it also includes professionals from academia, social services,
-            health and entertainment. Together, we have worked as teachers, scientific researchers, professional
-            writers, and executives in startups and large corporations - some nonprofit. Most of all, we are
-            compassionate individuals dedicated to helping older adults lead creative, connected, and healthy lives.<br><br>
-
-        </div>
-    </div>
-
-    <div class="row" style="margin-bottom: -30px;">
-        <div class="col-xs-12" style="margin-top: 0; margin-bottom: 0;">
-            <div class=" "
-                style="font-family: 'Abril Fatface', serif; font-size: 28pt;">
-                Team:<br>
-            </div>
-        </div>
-    </div>
-    {% for member in staff %}
-
+    {% if member.publish %}
         {% if forloop.counter|divisibleby:2 %}
             <div class="row" style="background-color: rgb(209,209,209); margin: 15px; padding: 20px; line-height: 1.1;">
                 <div class="col-xs-2">
@@ -114,5 +89,7 @@
             </div>
 
         {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
+
 {% endblock all_content %}

@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>621005</introspection-state-number>
-        <introspection-timestamp>2016-11-09.18:47:43.525</introspection-timestamp>
+        <introspection-state-number>643205</introspection-state-number>
+        <introspection-timestamp>2016-11-14.14:31:26.456</introspection-timestamp>
       </schema>
       <schema id="3" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -597,7 +597,7 @@
       </table>
       <table id="148" parent="2" name="josstaff_josstaffmember">
         <object-id>17021</object-id>
-        <state-number>349818</state-number>
+        <state-number>643205</state-number>
       </table>
       <table id="149" parent="2" name="mailer_dontsendentry">
         <object-id>18727</object-id>
@@ -21988,1037 +21988,1036 @@ course_id</columns>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="3983" parent="132" name="image_handout">
-        <state-number>621005</state-number>
-        <data-type>varchar(255)</data-type>
-      </column>
-      <index id="3984" parent="132" name="joscourses_joshandout_pkey">
+      <index id="3983" parent="132" name="joscourses_joshandout_pkey">
         <object-id>21183</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="3985" parent="132" name="joscourses_joshandout_41c4d410">
+      <index id="3984" parent="132" name="joscourses_joshandout_41c4d410">
         <object-id>21190</object-id>
         <columns>pdf_handout</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="3986" parent="132" name="joscourses_joshandout_pkey">
+      <key id="3985" parent="132" name="joscourses_joshandout_pkey">
         <columns>id</columns>
         <underlying-index>joscourses_joshandout_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="3987" parent="132" name="j_courseweek_id_638d6beb8e30b63e_fk_joscourses_joscourseweek_id">
+      <foreign-key id="3986" parent="132" name="j_courseweek_id_638d6beb8e30b63e_fk_joscourses_joscourseweek_id">
         <columns>pdf_handout</columns>
         <ref-key>~.joscourses_joscourseweek.joscourses_joscourseweek_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="3988" parent="133" name="id">
+      <column id="3987" parent="133" name="id">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;joscourses_jossegment_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="3989" parent="133" name="created">
+      <column id="3988" parent="133" name="created">
         <state-number>153743</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="3990" parent="133" name="updated">
+      <column id="3989" parent="133" name="updated">
         <state-number>153743</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="3991" parent="133" name="segment_type">
+      <column id="3990" parent="133" name="segment_type">
         <state-number>153743</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="3992" parent="133" name="segment_order">
+      <column id="3991" parent="133" name="segment_order">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="3993" parent="133" name="title">
+      <column id="3992" parent="133" name="title">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="3994" parent="133" name="content">
+      <column id="3993" parent="133" name="content">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="3995" parent="133" name="publish">
+      <column id="3994" parent="133" name="publish">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <column id="3996" parent="133" name="courseweek_id">
+      <column id="3995" parent="133" name="courseweek_id">
         <state-number>153743</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="3997" parent="133" name="joscourses_jossegment_pkey">
+      <index id="3996" parent="133" name="joscourses_jossegment_pkey">
         <object-id>21164</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="3998" parent="133" name="joscourses_jossegment_41c4d410">
+      <index id="3997" parent="133" name="joscourses_jossegment_41c4d410">
         <object-id>21171</object-id>
         <columns>courseweek_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="3999" parent="133" name="joscourses_jossegment_pkey">
+      <key id="3998" parent="133" name="joscourses_jossegment_pkey">
         <columns>id</columns>
         <underlying-index>joscourses_jossegment_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4000" parent="133" name="j_courseweek_id_1d2f012ffecc2bec_fk_joscourses_joscourseweek_id">
+      <foreign-key id="3999" parent="133" name="j_courseweek_id_1d2f012ffecc2bec_fk_joscourses_joscourseweek_id">
         <columns>courseweek_id</columns>
         <ref-key>~.joscourses_joscourseweek.joscourses_joscourseweek_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4001" parent="134" name="id">
+      <column id="4000" parent="134" name="id">
         <state-number>45368</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;joscourses_josstoryactivity_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4002" parent="134" name="created">
+      <column id="4001" parent="134" name="created">
         <state-number>45368</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4003" parent="134" name="updated">
+      <column id="4002" parent="134" name="updated">
         <state-number>45368</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4004" parent="134" name="activity_title">
+      <column id="4003" parent="134" name="activity_title">
         <state-number>45368</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(150)</data-type>
       </column>
-      <column id="4005" parent="134" name="content">
+      <column id="4004" parent="134" name="content">
         <state-number>45368</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4006" parent="134" name="courseweek_id">
+      <column id="4005" parent="134" name="courseweek_id">
         <state-number>45368</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4007" parent="134" name="publish">
+      <column id="4006" parent="134" name="publish">
         <state-number>48092</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <column id="4008" parent="134" name="activityno">
+      <column id="4007" parent="134" name="activityno">
         <state-number>49093</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4009" parent="134" name="joscourses_josstoryactivity_pkey">
+      <index id="4008" parent="134" name="joscourses_josstoryactivity_pkey">
         <object-id>19363</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4010" parent="134" name="joscourses_josstoryactivity_41c4d410">
+      <index id="4009" parent="134" name="joscourses_josstoryactivity_41c4d410">
         <object-id>19402</object-id>
         <columns>courseweek_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4011" parent="134" name="joscourses_josstoryactivity_pkey">
+      <key id="4010" parent="134" name="joscourses_josstoryactivity_pkey">
         <columns>id</columns>
         <underlying-index>joscourses_josstoryactivity_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4012" parent="134" name="j_courseweek_id_462c1db398443ec3_fk_joscourses_joscourseweek_id">
+      <foreign-key id="4011" parent="134" name="j_courseweek_id_462c1db398443ec3_fk_joscourses_joscourseweek_id">
         <columns>courseweek_id</columns>
         <ref-key>~.joscourses_joscourseweek.joscourses_joscourseweek_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4013" parent="135" name="id">
+      <column id="4012" parent="135" name="id">
         <state-number>5463</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josdjoingo_joingocard_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4014" parent="135" name="created">
+      <column id="4013" parent="135" name="created">
         <state-number>5463</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4015" parent="135" name="updated">
+      <column id="4014" parent="135" name="updated">
         <state-number>5463</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4016" parent="135" name="card_serial">
+      <column id="4015" parent="135" name="card_serial">
         <state-number>5463</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4017" parent="135" name="entries">
+      <column id="4016" parent="135" name="entries">
         <state-number>5545</state-number>
         <data-type>integer[]</data-type>
       </column>
-      <column id="4018" parent="135" name="tags">
+      <column id="4017" parent="135" name="tags">
         <state-number>5469</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(200) []</data-type>
       </column>
-      <index id="4019" parent="135" name="josdjoingo_joingocard_pkey">
+      <index id="4018" parent="135" name="josdjoingo_joingocard_pkey">
         <object-id>18082</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4020" parent="135" name="josdjoingo_joingocard_pkey">
+      <key id="4019" parent="135" name="josdjoingo_joingocard_pkey">
         <columns>id</columns>
         <underlying-index>josdjoingo_joingocard_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <check id="4021" parent="135" name="josdjoingo_joingocard_card_serial_check">
+      <check id="4020" parent="135" name="josdjoingo_joingocard_card_serial_check">
         <columns>card_serial</columns>
         <predicate>card_serial &gt;= 0</predicate>
       </check>
-      <column id="4022" parent="136" name="id">
+      <column id="4021" parent="136" name="id">
         <state-number>3570</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmembers_josprofile_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4023" parent="136" name="date_of_birth">
+      <column id="4022" parent="136" name="date_of_birth">
         <state-number>3750</state-number>
         <data-type>date</data-type>
       </column>
-      <column id="4024" parent="136" name="about_me">
+      <column id="4023" parent="136" name="about_me">
         <state-number>3851</state-number>
         <data-type>text</data-type>
       </column>
-      <column id="4025" parent="136" name="user_id">
+      <column id="4024" parent="136" name="user_id">
         <state-number>3570</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4026" parent="136" name="created">
+      <column id="4025" parent="136" name="created">
         <state-number>3633</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4027" parent="136" name="updated">
+      <column id="4026" parent="136" name="updated">
         <state-number>3633</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4028" parent="136" name="profile_image_id_str">
+      <column id="4027" parent="136" name="profile_image_id_str">
         <state-number>400269</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(150)</data-type>
       </column>
-      <column id="4029" parent="136" name="user_created_notes">
+      <column id="4028" parent="136" name="user_created_notes">
         <state-number>601972</state-number>
         <data-type>text</data-type>
       </column>
-      <index id="4030" parent="136" name="josmembers_josprofile_pkey">
+      <index id="4029" parent="136" name="josmembers_josprofile_pkey">
         <object-id>18010</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4031" parent="136" name="josmembers_josprofile_user_id_key">
+      <index id="4030" parent="136" name="josmembers_josprofile_user_id_key">
         <object-id>18012</object-id>
         <columns>user_id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4032" parent="136" name="josmembers_josprofile_pkey">
+      <key id="4031" parent="136" name="josmembers_josprofile_pkey">
         <columns>id</columns>
         <underlying-index>josmembers_josprofile_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="4033" parent="136" name="josmembers_josprofile_user_id_key">
+      <key id="4032" parent="136" name="josmembers_josprofile_user_id_key">
         <columns>user_id</columns>
         <underlying-index>josmembers_josprofile_user_id_key</underlying-index>
       </key>
-      <foreign-key id="4034" parent="136" name="josmembers_josprofile_user_id_79cd8136e9616f17_fk_auth_user_id">
+      <foreign-key id="4033" parent="136" name="josmembers_josprofile_user_id_79cd8136e9616f17_fk_auth_user_id">
         <columns>user_id</columns>
         <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4035" parent="137" name="id">
+      <column id="4034" parent="137" name="id">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmembers_josprofile_teams_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4036" parent="137" name="josprofile_id">
+      <column id="4035" parent="137" name="josprofile_id">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4037" parent="137" name="josteam_id">
+      <column id="4036" parent="137" name="josteam_id">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4038" parent="137" name="josmembers_josprofile_teams_pkey">
+      <index id="4037" parent="137" name="josmembers_josprofile_teams_pkey">
         <object-id>21899</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4039" parent="137" name="josmembers_josprofile_teams_josprofile_id_josteam_id_key">
+      <index id="4038" parent="137" name="josmembers_josprofile_teams_josprofile_id_josteam_id_key">
         <object-id>21901</object-id>
         <columns>josprofile_id
 josteam_id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4040" parent="137" name="josmembers_josprofile_teams_5e7390f7">
+      <index id="4039" parent="137" name="josmembers_josprofile_teams_5e7390f7">
         <object-id>21913</object-id>
         <columns>josprofile_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="4041" parent="137" name="josmembers_josprofile_teams_b3ac8d39">
+      <index id="4040" parent="137" name="josmembers_josprofile_teams_b3ac8d39">
         <object-id>21914</object-id>
         <columns>josteam_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4042" parent="137" name="josmembers_josprofile_teams_pkey">
+      <key id="4041" parent="137" name="josmembers_josprofile_teams_pkey">
         <columns>id</columns>
         <underlying-index>josmembers_josprofile_teams_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="4043" parent="137" name="josmembers_josprofile_teams_josprofile_id_josteam_id_key">
+      <key id="4042" parent="137" name="josmembers_josprofile_teams_josprofile_id_josteam_id_key">
         <columns>josprofile_id
 josteam_id</columns>
         <underlying-index>josmembers_josprofile_teams_josprofile_id_josteam_id_key</underlying-index>
       </key>
-      <foreign-key id="4044" parent="137" name="josm_josprofile_id_3eac7164eafe855c_fk_josmembers_josprofile_id">
+      <foreign-key id="4043" parent="137" name="josm_josprofile_id_3eac7164eafe855c_fk_josmembers_josprofile_id">
         <columns>josprofile_id</columns>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="4045" parent="137" name="josmembers_josteam_id_5b6ef710531d8c71_fk_josmembers_josteam_id">
+      <foreign-key id="4044" parent="137" name="josmembers_josteam_id_5b6ef710531d8c71_fk_josmembers_josteam_id">
         <columns>josteam_id</columns>
         <ref-key>~.josmembers_josteam.josmembers_josteam_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4046" parent="138" name="id">
+      <column id="4045" parent="138" name="id">
         <state-number>218021</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmembers_josreservation_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4047" parent="138" name="created">
+      <column id="4046" parent="138" name="created">
         <state-number>218021</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4048" parent="138" name="updated">
+      <column id="4047" parent="138" name="updated">
         <state-number>218021</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4049" parent="138" name="first_name">
+      <column id="4048" parent="138" name="first_name">
         <state-number>218021</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="4050" parent="138" name="last_name">
+      <column id="4049" parent="138" name="last_name">
         <state-number>218021</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="4051" parent="138" name="email">
+      <column id="4050" parent="138" name="email">
         <state-number>218691</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(254)</data-type>
       </column>
-      <column id="4052" parent="138" name="phone">
+      <column id="4051" parent="138" name="phone">
         <state-number>218691</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(40)</data-type>
       </column>
-      <column id="4053" parent="138" name="best_time_to_call">
+      <column id="4052" parent="138" name="best_time_to_call">
         <state-number>218738</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4054" parent="138" name="primary_device">
+      <column id="4053" parent="138" name="primary_device">
         <state-number>218691</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4055" parent="138" name="zip">
+      <column id="4054" parent="138" name="zip">
         <state-number>223383</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(10)</data-type>
       </column>
-      <column id="4056" parent="138" name="email_frequency">
+      <column id="4055" parent="138" name="email_frequency">
         <state-number>218738</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4057" parent="138" name="phone_text">
+      <column id="4056" parent="138" name="phone_text">
         <state-number>221808</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="4058" parent="138" name="primary_os">
+      <column id="4057" parent="138" name="primary_os">
         <state-number>218738</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4059" parent="138" name="webcam">
+      <column id="4058" parent="138" name="webcam">
         <state-number>221808</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="4060" parent="138" name="browser">
+      <column id="4059" parent="138" name="browser">
         <state-number>220713</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4061" parent="138" name="staff_notes">
+      <column id="4060" parent="138" name="staff_notes">
         <state-number>221720</state-number>
         <data-type>text</data-type>
       </column>
-      <column id="4062" parent="138" name="refer">
+      <column id="4061" parent="138" name="refer">
         <state-number>221867</state-number>
         <data-type>text</data-type>
       </column>
-      <column id="4063" parent="138" name="printer">
+      <column id="4062" parent="138" name="printer">
         <state-number>278110</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="4064" parent="138" name="status">
+      <column id="4063" parent="138" name="status">
         <state-number>400271</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4065" parent="138" name="josmembers_josreservation_pkey">
+      <index id="4064" parent="138" name="josmembers_josreservation_pkey">
         <object-id>21394</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4066" parent="138" name="josmembers_josreservation_pkey">
+      <key id="4065" parent="138" name="josmembers_josreservation_pkey">
         <columns>id</columns>
         <underlying-index>josmembers_josreservation_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="4067" parent="139" name="id">
+      <column id="4066" parent="139" name="id">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmembers_josteam_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4068" parent="139" name="created">
+      <column id="4067" parent="139" name="created">
         <state-number>411562</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4069" parent="139" name="updated">
+      <column id="4068" parent="139" name="updated">
         <state-number>411562</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4070" parent="139" name="name">
+      <column id="4069" parent="139" name="name">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(250)</data-type>
       </column>
-      <column id="4071" parent="139" name="description">
+      <column id="4070" parent="139" name="description">
         <state-number>411562</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(250)</data-type>
       </column>
-      <index id="4072" parent="139" name="josmembers_josteam_pkey">
+      <index id="4071" parent="139" name="josmembers_josteam_pkey">
         <object-id>21891</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4073" parent="139" name="josmembers_josteam_pkey">
+      <key id="4072" parent="139" name="josmembers_josteam_pkey">
         <columns>id</columns>
         <underlying-index>josmembers_josteam_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="4074" parent="140" name="id">
+      <column id="4073" parent="140" name="id">
         <state-number>602043</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmembers_josusercreatednote_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4075" parent="140" name="created">
+      <column id="4074" parent="140" name="created">
         <state-number>602043</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4076" parent="140" name="updated">
+      <column id="4075" parent="140" name="updated">
         <state-number>602043</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4077" parent="140" name="note_text">
+      <column id="4076" parent="140" name="note_text">
         <state-number>602043</state-number>
         <data-type>text</data-type>
       </column>
-      <column id="4078" parent="140" name="profile_id">
+      <column id="4077" parent="140" name="profile_id">
         <state-number>602425</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="4079" parent="140" name="josmembers_josusercreatednote_pkey">
+      <index id="4078" parent="140" name="josmembers_josusercreatednote_pkey">
         <object-id>22353</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4080" parent="140" name="josmembers_josusercreatednote_83a0eb3f">
+      <index id="4079" parent="140" name="josmembers_josusercreatednote_83a0eb3f">
         <object-id>22375</object-id>
         <columns>profile_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4081" parent="140" name="josmembers_josusercreatednote_pkey">
+      <key id="4080" parent="140" name="josmembers_josusercreatednote_pkey">
         <columns>id</columns>
         <underlying-index>josmembers_josusercreatednote_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4082" parent="140" name="josmemb_profile_id_28c9bc6a35436b40_fk_josmembers_josprofile_id">
+      <foreign-key id="4081" parent="140" name="josmemb_profile_id_28c9bc6a35436b40_fk_josmembers_josprofile_id">
         <columns>profile_id</columns>
         <ref-key>~.josmembers_josprofile.josmembers_josprofile_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4083" parent="141" name="id">
+      <column id="4082" parent="141" name="id">
         <state-number>114755</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmessages_josmessagethread_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4084" parent="141" name="subject">
+      <column id="4083" parent="141" name="subject">
         <state-number>128642</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="4085" parent="141" name="created">
+      <column id="4084" parent="141" name="created">
         <state-number>401387</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4086" parent="141" name="updated">
+      <column id="4085" parent="141" name="updated">
         <state-number>401387</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <index id="4087" parent="141" name="josmessages_josmessagethread_pkey">
+      <index id="4086" parent="141" name="josmessages_josmessagethread_pkey">
         <object-id>20862</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4088" parent="141" name="josmessages_josmessagethread_pkey">
+      <key id="4087" parent="141" name="josmessages_josmessagethread_pkey">
         <columns>id</columns>
         <underlying-index>josmessages_josmessagethread_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="4089" parent="142" name="id">
+      <column id="4088" parent="142" name="id">
         <state-number>80047</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josmessages_message_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4090" parent="142" name="body">
+      <column id="4089" parent="142" name="body">
         <state-number>460438</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4091" parent="142" name="sent_at">
+      <column id="4090" parent="142" name="sent_at">
         <state-number>80047</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4092" parent="142" name="read_at">
+      <column id="4091" parent="142" name="read_at">
         <state-number>80047</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4093" parent="142" name="replied_at">
+      <column id="4092" parent="142" name="replied_at">
         <state-number>80047</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4094" parent="142" name="recipient_deleted_at">
+      <column id="4093" parent="142" name="recipient_deleted_at">
         <state-number>80047</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4095" parent="142" name="new_column">
+      <column id="4094" parent="142" name="new_column">
         <state-number>114718</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="4096" parent="142" name="message_thread_id">
+      <column id="4095" parent="142" name="message_thread_id">
         <state-number>128642</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="4097" parent="142" name="sender_id">
+      <column id="4096" parent="142" name="sender_id">
         <state-number>131347</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4098" parent="142" name="recipient_id">
+      <column id="4097" parent="142" name="recipient_id">
         <state-number>131347</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="4099" parent="142" name="josmessages_message_pkey">
+      <index id="4098" parent="142" name="josmessages_message_pkey">
         <object-id>20487</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4100" parent="142" name="josmessages_message_8b938c66">
+      <index id="4099" parent="142" name="josmessages_message_8b938c66">
         <object-id>21065</object-id>
         <columns>#20</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="4101" parent="142" name="josmessages_message_9c894bd6">
+      <index id="4100" parent="142" name="josmessages_message_9c894bd6">
         <object-id>21025</object-id>
         <columns>#19</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="4102" parent="142" name="josmessages_message_a12c6f75">
+      <index id="4101" parent="142" name="josmessages_message_a12c6f75">
         <object-id>20887</object-id>
         <columns>#17</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4103" parent="142" name="josmessages_message_pkey">
+      <key id="4102" parent="142" name="josmessages_message_pkey">
         <columns>id</columns>
         <underlying-index>josmessages_message_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4104" parent="142" name="D5a33cec52fbc6f3cfa447b876ed3922">
+      <foreign-key id="4103" parent="142" name="D5a33cec52fbc6f3cfa447b876ed3922">
         <columns>#17</columns>
         <ref-key>~.josmessages_josmessagethread.josmessages_josmessagethread_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="4105" parent="142" name="josmessages_message_sender_id_d76f9943ff81314_fk_auth_user_id">
+      <foreign-key id="4104" parent="142" name="josmessages_message_sender_id_d76f9943ff81314_fk_auth_user_id">
         <columns>#19</columns>
         <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="4106" parent="142" name="josmessages_messa_recipient_id_1d48d5cebcf00a05_fk_auth_user_id">
+      <foreign-key id="4105" parent="142" name="josmessages_messa_recipient_id_1d48d5cebcf00a05_fk_auth_user_id">
         <columns>#20</columns>
         <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4107" parent="143" name="id">
+      <column id="4106" parent="143" name="id">
         <state-number>25637</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josprojects_ckrichtextholder_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4108" parent="143" name="created">
+      <column id="4107" parent="143" name="created">
         <state-number>25637</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4109" parent="143" name="updated">
+      <column id="4108" parent="143" name="updated">
         <state-number>25637</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4110" parent="143" name="field_edited">
+      <column id="4109" parent="143" name="field_edited">
         <state-number>101562</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(150)</data-type>
       </column>
-      <column id="4111" parent="143" name="content">
+      <column id="4110" parent="143" name="content">
         <state-number>25637</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4112" parent="143" name="author_id">
+      <column id="4111" parent="143" name="author_id">
         <state-number>25637</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4113" parent="143" name="parent_class">
+      <column id="4112" parent="143" name="parent_class">
         <state-number>101562</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(150)</data-type>
       </column>
-      <column id="4114" parent="143" name="parent_id">
+      <column id="4113" parent="143" name="parent_id">
         <state-number>101562</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4115" parent="143" name="josprojects_ckrichtextholder_pkey">
+      <index id="4114" parent="143" name="josprojects_ckrichtextholder_pkey">
         <object-id>19093</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4116" parent="143" name="josprojects_ckrichtextholder_4f331e2f">
+      <index id="4115" parent="143" name="josprojects_ckrichtextholder_4f331e2f">
         <object-id>19100</object-id>
         <columns>parent_class</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4117" parent="143" name="josprojects_ckrichtextholder_pkey">
+      <key id="4116" parent="143" name="josprojects_ckrichtextholder_pkey">
         <columns>id</columns>
         <underlying-index>josprojects_ckrichtextholder_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4118" parent="143" name="josprojects_ckrichtex_author_id_7616b3e3105b51b_fk_auth_user_id">
+      <foreign-key id="4117" parent="143" name="josprojects_ckrichtex_author_id_7616b3e3105b51b_fk_auth_user_id">
         <columns>parent_class</columns>
         <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4119" parent="144" name="id">
+      <column id="4118" parent="144" name="id">
         <state-number>504367</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josprojects_joshelpitem_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4120" parent="144" name="title">
+      <column id="4119" parent="144" name="title">
         <state-number>504367</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="4121" parent="144" name="content">
+      <column id="4120" parent="144" name="content">
         <state-number>506504</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <index id="4122" parent="144" name="josprojects_joshelpitem_pkey">
+      <index id="4121" parent="144" name="josprojects_joshelpitem_pkey">
         <object-id>22148</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="4123" parent="144" name="josprojects_joshelpitem_pkey">
+      <key id="4122" parent="144" name="josprojects_joshelpitem_pkey">
         <columns>id</columns>
         <underlying-index>josprojects_joshelpitem_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="4124" parent="145" name="id">
+      <column id="4123" parent="145" name="id">
         <state-number>26391</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josprojects_josstory_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4125" parent="145" name="created">
+      <column id="4124" parent="145" name="created">
         <state-number>26391</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4126" parent="145" name="updated">
+      <column id="4125" parent="145" name="updated">
         <state-number>26391</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4127" parent="145" name="title">
+      <column id="4126" parent="145" name="title">
         <state-number>106754</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4128" parent="145" name="content">
+      <column id="4127" parent="145" name="content">
         <state-number>106754</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4129" parent="145" name="author_id">
+      <column id="4128" parent="145" name="author_id">
         <state-number>26391</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4130" parent="145" name="message_thread_id">
+      <column id="4129" parent="145" name="message_thread_id">
         <state-number>114770</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="4131" parent="145" name="publish_permission">
+      <column id="4130" parent="145" name="publish_permission">
         <state-number>428916</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4132" parent="145" name="josprojects_josstory_pkey">
+      <index id="4131" parent="145" name="josprojects_josstory_pkey">
         <object-id>19118</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4133" parent="145" name="josprojects_josstory_4f331e2f">
+      <index id="4132" parent="145" name="josprojects_josstory_4f331e2f">
         <object-id>19126</object-id>
         <columns>author_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="4134" parent="145" name="josprojects_josstory_528b7707">
+      <index id="4133" parent="145" name="josprojects_josstory_528b7707">
         <object-id>20894</object-id>
         <columns>publish_permission</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4135" parent="145" name="josprojects_josstory_pkey">
+      <key id="4134" parent="145" name="josprojects_josstory_pkey">
         <columns>id</columns>
         <underlying-index>josprojects_josstory_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4136" parent="145" name="josprojects_josstory_author_id_34e89ef0313293db_fk_auth_user_id">
+      <foreign-key id="4135" parent="145" name="josprojects_josstory_author_id_34e89ef0313293db_fk_auth_user_id">
         <columns>author_id</columns>
         <ref-key>~.auth_user.auth_user_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="4137" parent="145" name="f45a0ff3220dc1c58618652eeda1861e">
+      <foreign-key id="4136" parent="145" name="f45a0ff3220dc1c58618652eeda1861e">
         <columns>publish_permission</columns>
         <ref-key>~.josmessages_josmessagethread.josmessages_josmessagethread_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4138" parent="146" name="id">
+      <column id="4137" parent="146" name="id">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josstaff_josreferral_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4139" parent="146" name="created">
+      <column id="4138" parent="146" name="created">
         <state-number>139337</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4140" parent="146" name="updated">
+      <column id="4139" parent="146" name="updated">
         <state-number>139337</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4141" parent="146" name="first_name">
+      <column id="4140" parent="146" name="first_name">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="4142" parent="146" name="last_name">
+      <column id="4141" parent="146" name="last_name">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="4143" parent="146" name="referral_email">
+      <column id="4142" parent="146" name="referral_email">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(254)</data-type>
       </column>
-      <column id="4144" parent="146" name="referral_phone">
+      <column id="4143" parent="146" name="referral_phone">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(40)</data-type>
       </column>
-      <column id="4145" parent="146" name="referral_city">
+      <column id="4144" parent="146" name="referral_city">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(40)</data-type>
       </column>
-      <column id="4146" parent="146" name="referral_notes">
+      <column id="4145" parent="146" name="referral_notes">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4147" parent="146" name="staff_member_id">
+      <column id="4146" parent="146" name="staff_member_id">
         <state-number>139337</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="4148" parent="146" name="josstaff_josreferral_pkey">
+      <index id="4147" parent="146" name="josstaff_josreferral_pkey">
         <object-id>21100</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4149" parent="146" name="josstaff_josreferral_8035f81a">
+      <index id="4148" parent="146" name="josstaff_josreferral_8035f81a">
         <object-id>21107</object-id>
         <columns>staff_member_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4150" parent="146" name="josstaff_josreferral_pkey">
+      <key id="4149" parent="146" name="josstaff_josreferral_pkey">
         <columns>id</columns>
         <underlying-index>josstaff_josreferral_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4151" parent="146" name="staff_member_id_114f6f0508f95daf_fk_josstaff_josstaffmember_id">
+      <foreign-key id="4150" parent="146" name="staff_member_id_114f6f0508f95daf_fk_josstaff_josstaffmember_id">
         <columns>staff_member_id</columns>
-        <ref-key>~.josstaff_josstaffmember.josstaff_josstaffmember_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="4152" parent="147" name="id">
+      <column id="4151" parent="147" name="id">
         <state-number>5550</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josstaff_josstaffhoursentry_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4153" parent="147" name="created">
+      <column id="4152" parent="147" name="created">
         <state-number>5550</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4154" parent="147" name="updated">
+      <column id="4153" parent="147" name="updated">
         <state-number>5550</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4155" parent="147" name="hours_claimed">
+      <column id="4154" parent="147" name="hours_claimed">
         <state-number>5550</state-number>
         <mandatory>1</mandatory>
         <data-type>smallint</data-type>
       </column>
-      <column id="4156" parent="147" name="hours_notes">
+      <column id="4155" parent="147" name="hours_notes">
         <state-number>5683</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4157" parent="147" name="staff_member_id">
+      <column id="4156" parent="147" name="staff_member_id">
         <state-number>5550</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4158" parent="147" name="period_date_end">
+      <column id="4157" parent="147" name="period_date_end">
         <state-number>5559</state-number>
         <mandatory>1</mandatory>
         <data-type>date</data-type>
       </column>
-      <column id="4159" parent="147" name="period_date_start">
+      <column id="4158" parent="147" name="period_date_start">
         <state-number>5559</state-number>
         <mandatory>1</mandatory>
         <data-type>date</data-type>
       </column>
-      <column id="4160" parent="147" name="time_claim_approved">
+      <column id="4159" parent="147" name="time_claim_approved">
         <state-number>5559</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <index id="4161" parent="147" name="josstaff_josstaffhoursentry_pkey">
+      <index id="4160" parent="147" name="josstaff_josstaffhoursentry_pkey">
         <object-id>18110</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="4162" parent="147" name="josstaff_josstaffhoursentry_8035f81a">
+      <index id="4161" parent="147" name="josstaff_josstaffhoursentry_8035f81a">
         <object-id>18124</object-id>
         <columns>staff_member_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="4163" parent="147" name="josstaff_josstaffhoursentry_pkey">
+      <key id="4162" parent="147" name="josstaff_josstaffhoursentry_pkey">
         <columns>id</columns>
         <underlying-index>josstaff_josstaffhoursentry_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="4164" parent="147" name="staff_member_id_3c652bdad65677a2_fk_josstaff_josstaffmember_id">
+      <foreign-key id="4163" parent="147" name="staff_member_id_3c652bdad65677a2_fk_josstaff_josstaffmember_id">
         <columns>staff_member_id</columns>
-        <ref-key>~.josstaff_josstaffmember.josstaff_josstaffmember_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <check id="4165" parent="147" name="josstaff_josstaffhoursentry_hours_claimed_check">
+      <check id="4164" parent="147" name="josstaff_josstaffhoursentry_hours_claimed_check">
         <columns>hours_claimed</columns>
         <predicate>hours_claimed &gt;= 0</predicate>
       </check>
-      <column id="4166" parent="148" name="id">
+      <column id="4165" parent="148" name="id">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
         <default-expression>nextval(&apos;josstaff_josstaffmember_id_seq&apos;::regclass)</default-expression>
       </column>
-      <column id="4167" parent="148" name="keywords_string">
+      <column id="4166" parent="148" name="keywords_string">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(500)</data-type>
       </column>
-      <column id="4168" parent="148" name="title">
+      <column id="4167" parent="148" name="title">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(500)</data-type>
       </column>
-      <column id="4169" parent="148" name="slug">
+      <column id="4168" parent="148" name="slug">
         <state-number>1744</state-number>
         <data-type>varchar(2000)</data-type>
       </column>
-      <column id="4170" parent="148" name="_meta_title">
+      <column id="4169" parent="148" name="_meta_title">
         <state-number>1744</state-number>
         <data-type>varchar(500)</data-type>
       </column>
-      <column id="4171" parent="148" name="description">
+      <column id="4170" parent="148" name="description">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4172" parent="148" name="gen_description">
+      <column id="4171" parent="148" name="gen_description">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <column id="4173" parent="148" name="created">
+      <column id="4172" parent="148" name="created">
         <state-number>1744</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4174" parent="148" name="updated">
+      <column id="4173" parent="148" name="updated">
         <state-number>1744</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4175" parent="148" name="status">
+      <column id="4174" parent="148" name="status">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4176" parent="148" name="publish_date">
+      <column id="4175" parent="148" name="publish_date">
         <state-number>1744</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4177" parent="148" name="expiry_date">
+      <column id="4176" parent="148" name="expiry_date">
         <state-number>1744</state-number>
         <data-type>timestamp with time zone</data-type>
       </column>
-      <column id="4178" parent="148" name="short_url">
+      <column id="4177" parent="148" name="short_url">
         <state-number>1744</state-number>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="4179" parent="148" name="in_sitemap">
+      <column id="4178" parent="148" name="in_sitemap">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
       </column>
-      <column id="4180" parent="148" name="created_date">
+      <column id="4179" parent="148" name="created_date">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>date</data-type>
       </column>
-      <column id="4181" parent="148" name="modified_date">
+      <column id="4180" parent="148" name="modified_date">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>date</data-type>
       </column>
-      <column id="4182" parent="148" name="first_name">
+      <column id="4181" parent="148" name="first_name">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(60)</data-type>
       </column>
-      <column id="4183" parent="148" name="last_name">
+      <column id="4182" parent="148" name="last_name">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(60)</data-type>
       </column>
-      <column id="4184" parent="148" name="email">
+      <column id="4183" parent="148" name="email">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(254)</data-type>
       </column>
-      <column id="4185" parent="148" name="bio_text">
+      <column id="4184" parent="148" name="bio_text">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <column id="4186" parent="148" name="bio_image">
+      <column id="4185" parent="148" name="bio_image">
         <state-number>1744</state-number>
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="4187" parent="148" name="site_id">
+      <column id="4186" parent="148" name="site_id">
         <state-number>1744</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="4188" parent="148" name="jos_title">
+      <column id="4187" parent="148" name="jos_title">
         <state-number>1758</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(60)</data-type>
       </column>
-      <column id="4189" parent="148" name="_order">
+      <column id="4188" parent="148" name="_order">
         <state-number>3071</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="4190" parent="148" name="cumulative_hours">
+      <column id="4189" parent="148" name="cumulative_hours">
         <state-number>349818</state-number>
         <mandatory>1</mandatory>
         <data-type>smallint</data-type>
+      </column>
+      <column id="4190" parent="148" name="publish">
+        <state-number>643205</state-number>
+        <mandatory>1</mandatory>
+        <data-type>boolean</data-type>
       </column>
       <index id="4191" parent="148" name="josstaff_josstaffmember_pkey">
         <object-id>17028</object-id>
