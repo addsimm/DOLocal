@@ -22,13 +22,13 @@
 
 <div id="mouse_report"></div>
 
-<div class="row" style="margin-top: 30px; height: 900px;">
+<div class="row" style="margin-top: -10px; height: 800px;">
     <div class="col-xs-12 text-center">
-        <img src="/static/img/sw-final.png" height=870px>
+        <img src="/static/img/sw-111616.png" height=800px>
     </div>
 </div>
 
-<div class="row" style="position: relative; top: -900px; left: 12px;">
+<div class="row" style="position: relative; top: -802px; left: 48px;">
     <div class="col-xs-12 text-center">
         <canvas id="pie_canvas" width="900" height="900">
             Your browser does not support HTML5 Canvas.
@@ -50,57 +50,55 @@
             path4 = new Path2D(),
             path5 = new Path2D();
 
-        ctx.lineWidth = .01;
+        ctx.lineWidth = .03;
 
         {
-            // pie/conflict
-            path1.moveTo(20.0, 300.7);
-            path1.bezierCurveTo(83.7, 121.7, 250.3, 7.0, 431.1, 1.8);
-            path1.lineTo(431.1, 434.1);
-            path1.lineTo(430.9, 434.1);
-            path1.lineTo(20.0, 300.6);
+            // pie/Group/conflict
+            path1.moveTo(18.5, 278.4);
+            path1.bezierCurveTo(77.5, 112.7, 231.7, 6.5, 399.1, 1.7);
+            path1.lineTo(399.1, 402.0);
+            path1.lineTo(399.0, 401.9);
+            path1.lineTo(18.6, 278.3);
             path1.closePath();
             ctx.stroke(path1);
             paths.push(path1);
 
-
-            // pie/character
-            path2.moveTo(847.4, 304.3);
-            path2.bezierCurveTo(901.1, 486.5, 833.7, 677.2, 690.5, 787.7);
-            path2.lineTo(436.4, 437.9);
-            path2.lineTo(436.5, 437.9);
-            path2.lineTo(847.4, 304.4);
+            // pie/Group/character
+            path2.moveTo(784.6, 281.7);
+            path2.bezierCurveTo(834.3, 450.5, 772.0, 627.1, 639.4, 729.3);
+            path2.lineTo(404.1, 405.5);
+            path2.lineTo(404.2, 405.5);
+            path2.lineTo(784.7, 281.8);
             path2.closePath();
             ctx.stroke(path2);
             paths.push(path2);
 
-            // pie/theme
-            path3.moveTo(688.7, 789.6);
-            path3.bezierCurveTo(532.0, 896.9, 329.8, 891.8, 180.5, 789.7);
-            path3.lineTo(434.6, 440.0);
-            path3.lineTo(434.7, 440.1);
-            path3.lineTo(688.6, 789.6);
+            // pie/Group/theme
+            path3.moveTo(637.7, 731.1);
+            path3.bezierCurveTo(492.6, 830.5, 305.4, 825.8, 167.1, 731.2);
+            path3.lineTo(402.4, 407.4);
+            path3.lineTo(402.5, 407.5);
+            path3.lineTo(637.6, 731.1);
             path3.closePath();
             ctx.stroke(path3);
             paths.push(path3);
 
-            // pie/world
-            path4.moveTo(177.1, 787.9);
-            path4.bezierCurveTo(26.6, 672.0, -31.0, 478.1, 19.9, 304.6);
-            path4.lineTo(431.1, 438.2);
-            path4.lineTo(431.0, 438.3);
-            path4.lineTo(177.0, 787.8);
+            path4.moveTo(164.0, 729.5);
+            path4.bezierCurveTo(24.6, 622.2, -28.7, 442.7, 18.5, 282.0);
+            path4.lineTo(399.1, 405.7);
+            path4.lineTo(399.1, 405.8);
+            path4.lineTo(163.9, 729.4);
             path4.closePath();
             ctx.stroke(path4);
             paths.push(path4);
 
-            // pie/plot
-            path5.moveTo(434.6, 2.7);
-            path5.bezierCurveTo(624.6, 7.9, 785.1, 130.9, 845.9, 301.2);
-            path5.lineTo(434.8, 434.8);
-            path5.lineTo(434.8, 434.7);
-            path5.lineTo(434.8, 2.7);
-            path5.lineTo(434.6, 2.7);
+            // pie/Group/plot
+            path5.moveTo(402.4, 2.5);
+            path5.bezierCurveTo(578.3, 7.3, 727.0, 121.2, 783.2, 278.9);
+            path5.lineTo(402.6, 402.6);
+            path5.lineTo(402.6, 402.5);
+            path5.lineTo(402.6, 2.5);
+            path5.lineTo(402.4, 2.5);
             path5.closePath();
             ctx.stroke(path5);
             paths.push(path5);
