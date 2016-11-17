@@ -28,9 +28,9 @@
     </div>
 </div>
 
-<div class="row" style="position: relative; top: -802px; left: 48px;">
+<div class="row" >
     <div class="col-xs-12 text-center">
-        <canvas id="pie_canvas" width="900" height="900">
+        <canvas id="pie_canvas" width="800" height="800" style="position: relative; top: -802px; left: 0;">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>
@@ -39,90 +39,113 @@
 <script>
 
     var C = document.getElementById('pie_canvas');
-    var wedges = ['none', 'conflict', 'character', 'theme', 'world', 'plot'];
+    var ctx = C.getContext('2d');
     var paths = [];
+    var wedges = ['none', 'conflict', 'character', 'theme', 'world', 'plot'];
+    var oldWedge = 0,
+        newWedge = 0;
 
-    if (C.getContext) {
-        var ctx = C.getContext('2d');
-        var path1 = new Path2D(),
-            path2 = new Path2D(),
-            path3 = new Path2D(),
-            path4 = new Path2D(),
-            path5 = new Path2D();
+    function redraw() {
+        console.log('drawing');
+        ctx.clearRect(0, 0, C.width, C.height);
+        paths = [];
+        var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
+        var path4 = new Path2D(), path5 = new Path2D();
 
-        ctx.lineWidth = .03;
+        ctx.lineWidth = .01;
 
-        {
-            // pie/Group/conflict
-            path1.moveTo(18.5, 278.4);
-            path1.bezierCurveTo(77.5, 112.7, 231.7, 6.5, 399.1, 1.7);
-            path1.lineTo(399.1, 402.0);
-            path1.lineTo(399.0, 401.9);
-            path1.lineTo(18.6, 278.3);
-            path1.closePath();
-            ctx.stroke(path1);
-            paths.push(path1);
+        // pie/conflict
+        path1.moveTo(18.5, 278.4);
+        path1.bezierCurveTo(77.5, 112.7, 231.7, 6.5, 399.1, 1.7);
+        path1.lineTo(399.1, 402.0);
+        path1.lineTo(399.0, 401.9);
+        path1.lineTo(18.6, 278.3);
+        path1.closePath();
+        ctx.stroke(path1);
+        paths.push(path1);
 
-            // pie/Group/character
-            path2.moveTo(784.6, 281.7);
-            path2.bezierCurveTo(834.3, 450.5, 772.0, 627.1, 639.4, 729.3);
-            path2.lineTo(404.1, 405.5);
-            path2.lineTo(404.2, 405.5);
-            path2.lineTo(784.7, 281.8);
-            path2.closePath();
-            ctx.stroke(path2);
-            paths.push(path2);
+        // pie/character
+        path2.moveTo(784.6, 281.7);
+        path2.bezierCurveTo(834.3, 450.5, 772.0, 627.1, 639.4, 729.3);
+        path2.lineTo(404.1, 405.5);
+        path2.lineTo(404.2, 405.5);
+        path2.lineTo(784.7, 281.8);
+        path2.closePath();
+        ctx.stroke(path2);
+        paths.push(path2);
 
-            // pie/Group/theme
-            path3.moveTo(637.7, 731.1);
-            path3.bezierCurveTo(492.6, 830.5, 305.4, 825.8, 167.1, 731.2);
-            path3.lineTo(402.4, 407.4);
-            path3.lineTo(402.5, 407.5);
-            path3.lineTo(637.6, 731.1);
-            path3.closePath();
-            ctx.stroke(path3);
-            paths.push(path3);
+        // pie/theme
+        path3.moveTo(637.7, 731.1);
+        path3.bezierCurveTo(492.6, 830.5, 305.4, 825.8, 167.1, 731.2);
+        path3.lineTo(402.4, 407.4);
+        path3.lineTo(402.5, 407.5);
+        path3.lineTo(637.6, 731.1);
+        path3.closePath();
+        ctx.stroke(path3);
+        paths.push(path3);
 
-            path4.moveTo(164.0, 729.5);
-            path4.bezierCurveTo(24.6, 622.2, -28.7, 442.7, 18.5, 282.0);
-            path4.lineTo(399.1, 405.7);
-            path4.lineTo(399.1, 405.8);
-            path4.lineTo(163.9, 729.4);
-            path4.closePath();
-            ctx.stroke(path4);
-            paths.push(path4);
+        // pie/world
+        path4.moveTo(164.0, 729.5);
+        path4.bezierCurveTo(24.6, 622.2, -28.7, 442.7, 18.5, 282.0);
+        path4.lineTo(399.1, 405.7);
+        path4.lineTo(399.1, 405.8);
+        path4.lineTo(163.9, 729.4);
+        path4.closePath();
+        ctx.stroke(path4);
+        paths.push(path4);
 
-            // pie/Group/plot
-            path5.moveTo(402.4, 2.5);
-            path5.bezierCurveTo(578.3, 7.3, 727.0, 121.2, 783.2, 278.9);
-            path5.lineTo(402.6, 402.6);
-            path5.lineTo(402.6, 402.5);
-            path5.lineTo(402.6, 2.5);
-            path5.lineTo(402.4, 2.5);
-            path5.closePath();
-            ctx.stroke(path5);
-            paths.push(path5);
+        // pie/plot
+        path5.moveTo(402.4, 2.5);
+        path5.bezierCurveTo(578.3, 7.3, 727.0, 121.2, 783.2, 278.9);
+        path5.lineTo(402.6, 402.6);
+        path5.lineTo(402.6, 402.5);
+        path5.lineTo(402.6, 2.5);
+        path5.lineTo(402.4, 2.5);
+        path5.closePath();
+        ctx.stroke(path5);
+        paths.push(path5);
+    }
+
+    $(document).mousemove(function(e) {
+        var mousePos = getMousePos(C, e);
+
+        for (i = 0; i < 5; i++) {
+            if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
+                newWedge = i+1;
+                break
+            } else {
+                newWedge = 0;
+            }
         }
 
-    } else {
-        // canvas-unsupported code here
-    }
+        // var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y +
+        // ', old wedge: ' + oldWedge + ', new wedge: ' + newWedge;
+        // $('#mouse_report').text(message);
+
+        if (newWedge !== oldWedge) {
+            redraw();
+            if (newWedge !== 0) {
+                ctx.save();
+                ctx.fillStyle = "white";
+                ctx.globalAlpha = 0.6;
+                ctx.fill(paths[newWedge - 1]);
+                ctx.restore();
+            }
+            oldWedge = newWedge;
+        }
+    });
 
     C.addEventListener('click', function(e) {
         var segment = 0;
         var mousePos = getMousePos(C, e);
-        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-        console.log(' ');
         for (i = 0; i < 5; i++) {
-            console.log(i + ' - ' + ctx.isPointInPath(paths[i], mousePos.x, mousePos.y));
             if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
                 segment = i+1;
                 break
             }
         }
-        if (segment > 0) {
-            alert(wedges[segment] + ' clicked');
-        }
+
+        console.log(wedges[segment] + ' clicked');
     });
 
     function getMousePos(canvas, evt) {
@@ -133,14 +156,9 @@
         };
     }
 
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+    $(document).ready(function() {
+        redraw()
+    });
 
 </script>
 
