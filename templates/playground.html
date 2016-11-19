@@ -12,13 +12,91 @@
 
 <style>
 
-    canvas {
-{#        border: 1px solid black;#}
-{#        background-image: url("/static/img/sw-final.png");#}
-{#        background-repeat: no-repeat;#}
+    .edit_label {
+
+    }
+    .edit_box {
+        height: 150px;
+        width: 100%;
+        background-color: white;
+        border: 3px dashed #28a4c9;
+        opacity: .4;
+    }
+
+    .edit_box:hover {
+        opacity: 1;
+    }
+
+    .template_row {
+        margin-top: 15px;
+        display: flex;
+        width: 100%
+    }
+
+    .template_component_label {
+        background-color: white;
+        font-family: 'Architects Daughter';
+        font-size: 28pt;
+        margin-left: 30px;
+        width: 55%;
+    }
+
+    .template_component {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        width: 60%;
     }
 
 </style>
+
+<div class="row text-center" >
+    <div class="col-xs-12"
+         style="background: pink url('/static/img/plot-template.png') no-repeat top center; margin-top: 20px; height: 800px; width: 100%;">
+
+
+        <div class="template_row" style="justify-content: center;">
+
+            <div class="template_component">
+                <div class="template_component_label">Climax</div>
+
+                <div id='xxx' class='edit_box'></div>
+            </div>
+        </div>
+
+        <div class="template_row" style="justify-content: space-between;">
+
+            <div class="template_component">
+                <div class="template_component_label">Rising Action</div>
+                <div id='xxx' class='edit_box'></div>
+            </div>
+
+            <div class="template_component">
+                <div class="template_component_label">Falling Action</div>
+
+                <div id='xxx' class='edit_box'></div>
+            </div>
+
+        </div>
+
+        <div class="template_row" style="display: flex; justify-content: space-between;">
+
+            <div class="template_component">
+                <div class="template_component_label">Incident</div>
+
+                <div id='xxx' class='edit_box'></div>
+            </div>
+
+            <div class="template_component">
+                <div class="template_component_label">Resolution</div>
+
+                <div id='xxx' class='edit_box'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="mouse_report"></div>
 
