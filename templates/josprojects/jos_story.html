@@ -50,7 +50,7 @@
               data-toggle="tooltip"
               title="Dragging bottom right triangle changes the editor's height"
               data-placement="bottom">
-        Hint: Drag to change editor height;  also, contact us if you unintentionally erase anything
+        Hint: Drag to change editor height;  contact us if you unintentionally erase anything
         </span>
     </div>
 
@@ -127,7 +127,7 @@
 
     {% include "josprojects/updated_include.html" with myobj=story %}<br>
 
-    <!-- Go To Disc -->
+    <!-- Go To Discuss -->
     <a class="btn pull-right btn-default"
        style="margin-top: 20px;" href="#discuss">
         {% trans "Discuss" %}
@@ -221,19 +221,19 @@
 
             <div class="col-xs-10 col-xs-offset-1" style="margin-top: 10px;">
 
-                <div id='border_comment' class="{% if edit %}edit_border{% endif %} edit_border_class"
+                <div id='border_comment' class="edit_border_class"
                      style="padding: 3px;">
 
                     <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px;">
 
                         <a id="edit_comment"
                            class="btn btn-default edit_section_button"
-                           style="margin-top: 0; margin-left: 100px; width: 250px;"
+                           style="margin-top: 15px; margin-left: 30px; width: 250px;"
                            onclick="handleCKEdit(this)"
                            data-toggle="tooltip"
                            title="Activates the word processor"
                            data-placement="right">
-                            {% trans "Add your thought ..." %}
+                            Add your thought ...
                         </a>
 
                         <button id="save_comment"
