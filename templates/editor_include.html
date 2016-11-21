@@ -25,14 +25,25 @@
         removePlugins: 'liststyle,tabletools,scayt,contextmenu'
     };
 
+
+    window.onbeforeunload = function () {
+        // console.log('unload called');
+        if (ck_editor) {
+            console.log('ckeditor found; trying to save');
+            josCKEdit(sect2edit);
+            session_data_update('editor_status');
+        }
+    };
+
     // editor
     function josCKEdit(sect2edit) {
-
+        // console.log('editor called with: ' + sect2edit);
         var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
                 edit_btn = document.getElementById(sect2edit + '_edit_btn'),
                 edit_element = document.getElementById(sect2edit + '_original_content');
 
         if ($(edit_btn).hasClass('btn-info')) {
+            // console.log('editor has class info');
             if (ck_editor) {
                 return;
             }
@@ -44,6 +55,7 @@
 
             // Save CK
         } else {
+            // console.log('editor does not have info');
             if (!ck_editor) {
                 return;
             }
@@ -59,7 +71,6 @@
                     console.log('successfully posted:  ' + new_note_content);
                 }
             });
-
             $(edit_element).text(new_note_content);
             josCKDestroy(sect2edit);
         }
