@@ -51,18 +51,9 @@
         z-index: 165;
     }
 
-    .tooltip .tooltip-inner {
-        background: aliceblue;
-        border: solid 2px rgb(65, 45, 120);
-        color: rgb(65, 45, 120);
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 16pt;
-        padding: 5px;
-    }
-
 </style>
 
-<!-- DEBUG -->
+<!-- DEBUG
 <div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 200; display: none;">
     DEBUG<br>
     <div class="row">
@@ -82,7 +73,7 @@
 {#            {{ request.session.help_item_no }}<br>#}
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
@@ -189,7 +180,7 @@
     <a id="notes_edit_btn"
        class="btn btn-info"
        style="width: 100px; position: fixed; top: 100px; left: 1025px;"
-       onclick="notesCKEdit();"
+       onclick="josCKEdit('notes');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates editor"
@@ -200,24 +191,23 @@
     <a id="notes_cancel_btn"
        class="btn btn-danger"
        style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
-       onclick="notesDestroy();"
+       onclick="josCKDestroy('notes');"
        data-toggle="tooltip"
        data-placement="bottom"
-       title="Discards recent changes!"
+       title="Warning: discards recent changes!!"
     >
         Cancel
     </a>
 
-    <div style="position: relative; top: 15px; width: 920px; left: 0;">
+    <div style="position: relative; top: 15px; width: 920px; height: 415px; left: -5px;">
 
         <!-- This div holds editor. -->
-        <div id="ck_editor_container"></div>
+        <div id="notes_editor_container" style="width: 920px; margin-left: -20px;"></div>
 
 
         <!-- This div displays contents. -->
-        <div id="user_created_notes_field" class="edit_border"
+        <div id="notes_original_content" class="edit_border"
              style="padding: 20px; width: 920px; height: 415px;">
-
         </div>
     </div>
 </div>
@@ -226,11 +216,10 @@
 <!-- Drawer javascript -->
 <script>
     var ck_editor;
-
-    var ck_editor_container = document.getElementById('ck_editor_container'),
-        edit_btn = document.getElementById('notes_edit_btn'),
-        edit_element = document.getElementById('user_created_notes_field');
-
+    var section = 'notes';
+    var ck_editor_container = document.getElementById(section + '_editor_container'),
+            edit_btn = document.getElementById(section + '_edit_btn'),
+            edit_element = document.getElementById(section + '_original_content');
     var old_content = '{{ user_created_note }}';
     $(edit_element).html(old_content);
 
@@ -241,24 +230,28 @@
         ],
         contentsCss: '/static/ckeditor/ckeditor/contents.css',
         disableNativeSpellChecker: false,
-        width: 920,
-        height: 370,
+        width: '100%',
+        height: 360,
         tabSpaces: 4,
         uiColor: '#28a4c9',
         extraPlugins: 'colorbutton',
         removePlugins: 'liststyle,tabletools,scayt,contextmenu'
     };
 
-    // user_created_notes_field editor
-    function notesCKEdit() {
+    // editor
+    function josCKEdit(section) {
+
+        var     ck_editor_container = document.getElementById(section + '_editor_container'),
+                edit_btn = document.getElementById(section + '_edit_btn'),
+                edit_element = document.getElementById(section + '_original_content');
 
         if ($(edit_btn).hasClass('btn-info')) {
             if (ck_editor) {
                 return;
             }
 
-            $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save');
-            $('#notes_cancel_btn').show();
+            $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save').attr("data-original-title", "Saves changes");
+            $('#' + section + '_cancel_btn').show();
             $(edit_element).hide();
             ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
 
@@ -282,14 +275,15 @@
             });
 
             $(edit_element).html(new_note_content);
-            notesDestroy();
+            josCKDestroy(section);
         }
     }
 
-    function notesDestroy() {
+    function josCKDestroy(section) {
+
         $(edit_element).show();
-        $('#notes_cancel_btn').hide();
-        $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit');
+        $('#' + section + '_cancel_btn').hide();
+        $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit').attr("title", "Activates editor");
         ck_editor.destroy();
         ck_editor = null;
 
@@ -321,7 +315,7 @@
             showHelpItem('{{ request.session.help_item_no }}');
 
             if ('{{ request.session.editor_status }}' === 'active') {
-                notesCKEdit('notes_edit_btn');
+                josCKEdit('notes');
             }
 
         } else {
@@ -464,6 +458,5 @@
         }
     };
 }
-
 
 </script>

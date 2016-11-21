@@ -31,7 +31,6 @@
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
-        <script src="{% static "js/joseditor.js" %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
         <script src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
@@ -88,8 +87,7 @@
         <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
            {% else %}href="/"{% endif %}
            style="
-               background-image:url(https://www.joinourstory.com/static/img/JOSLogo121615.png);
-               background-repeat: no-repeat;
+               background: white url('/static/img/JOSLogo121615.png') no-repeat top center;
                background-size: 202px 120px;
                height:120px;
                outline: none;

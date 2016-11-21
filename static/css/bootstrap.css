@@ -13,7 +13,6 @@ figcaption,
 figure,
 footer,
 header,
-hgroup,
 main,
 nav,
 section,
@@ -682,7 +681,7 @@ blockquote {
 }
 
 blockquote p {
-  font-size: 17.5px;
+  font-size: 16pt;
   font-weight: 300;
   line-height: 1.25;
 }
@@ -6005,7 +6004,7 @@ button.close {
 }
 
 .modal-header {
-  min-height: 16.428571429px;
+  min-height: 14pt;
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -6076,14 +6075,7 @@ button.close {
 }
 
 .tooltip {
-  position: absolute;
-  z-index: 1030;
-  display: block;
-  font-size: 12px;
-  line-height: 1.4;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  visibility: visible;
+
 }
 
 .tooltip.in {
@@ -6112,13 +6104,7 @@ button.close {
 }
 
 .tooltip-inner {
-  max-width: 200px;
-  padding: 3px 8px;
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  background-color: #000000;
-  border-radius: 4px;
+
 }
 
 .tooltip-arrow {
@@ -6586,10 +6572,6 @@ button.close {
 
 .affix {
   position: fixed;
-}
-
-@-ms-viewport {
-  width: device-width;
 }
 
 .visible-xs,

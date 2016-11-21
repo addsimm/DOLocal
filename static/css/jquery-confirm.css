@@ -7,6 +7,7 @@
  * Copyright 2013-2016 jquery-confirm
  * Licensed under MIT (https://github.com/craftpip/jquery-confirm/blob/master/LICENSE)
  */
+
 @-webkit-keyframes jconfirm-rotate {
   from {
     -webkit-transform: rotate(0deg);

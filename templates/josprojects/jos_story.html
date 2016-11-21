@@ -46,7 +46,7 @@
     <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
 
         <span class="joshint"
-              style="display: none; font-size: 16pt;"
+              style="{% if not edit %}display: none;{% endif %} font-size: 16pt;"
               data-toggle="tooltip"
               title="Dragging bottom right triangle changes the editor's height"
               data-placement="bottom">
@@ -289,6 +289,7 @@
                 step: 1,
                 ticks: [1, 2, 3],
                 ticks_labels: ["Only me", "My team", "Publish"],
+                tooltip: "hide",
                 value: {{ story.publish_permission }}
             })
             .on('slideStop', function (slideStopEvt) {

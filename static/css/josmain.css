@@ -245,13 +245,26 @@ footer {
     font-size: 10pt;
 }
 
+.tooltip {
+    background-color: lightyellow;
+    position: absolute;
+    z-index: 999;
+    display: block;
+    line-height: 1.4;
+    visibility: visible;
+}
+
 .tooltip-inner {
-    background: lightyellow;
-    border: solid 2px rgb(65, 45, 120);
-    color: rgb(65, 45, 120);
+    background: rgb(65, 45, 120);
+    border-radius: 8px;
+    border: none;
+    color: white;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 16pt;
-    padding: 5px;
+    max-width: 250px;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
 }
 
 
