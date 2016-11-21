@@ -77,7 +77,10 @@
 
 <!-- help button -->
 <button id="help_button" class="btn btn-info"
-        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 150px; height: 45px; z-index: 200;"
+        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 180px; height: 45px; z-index: 200;"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Opens: to do, how do I? and my notes"
         onclick="session_data_update('help_position');">
     My drawer
 </button>
@@ -180,7 +183,7 @@
     <a id="notes_edit_btn"
        class="btn btn-info"
        style="width: 100px; position: fixed; top: 100px; left: 1025px;"
-       onclick="josCKEdit('notes');"
+       onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates editor"
@@ -191,18 +194,18 @@
     <a id="notes_cancel_btn"
        class="btn btn-danger"
        style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
-       onclick="josCKDestroy('notes');"
+       onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
-       title="Warning: discards recent changes!!"
+       title="Warning: discards recent changes!"
     >
-        Cancel
+        Discard
     </a>
 
-    <div style="position: relative; top: 15px; width: 920px; height: 415px; left: -5px;">
+    <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
 
         <!-- This div holds editor. -->
-        <div id="notes_editor_container" style="width: 920px; margin-left: -20px;"></div>
+        <div id="notes_editor_container" style="width: 920px;"></div>
 
 
         <!-- This div displays contents. -->
@@ -210,85 +213,13 @@
              style="padding: 20px; width: 920px; height: 415px;">
         </div>
     </div>
+
+    {% include "editor_include.html" with sect='notes' orig_content=user_created_note %}
 </div>
 </div>
 
 <!-- Drawer javascript -->
 <script>
-    var ck_editor;
-    var section = 'notes';
-    var ck_editor_container = document.getElementById(section + '_editor_container'),
-            edit_btn = document.getElementById(section + '_edit_btn'),
-            edit_element = document.getElementById(section + '_original_content');
-    var old_content = '{{ user_created_note }}';
-    $(edit_element).html(old_content);
-
-    var ck_config = {
-        toolbar: [
-            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-            {'name': 'editing', 'items': ['SelectAll', 'Find']}
-        ],
-        contentsCss: '/static/ckeditor/ckeditor/contents.css',
-        disableNativeSpellChecker: false,
-        width: '100%',
-        height: 360,
-        tabSpaces: 4,
-        uiColor: '#28a4c9',
-        extraPlugins: 'colorbutton',
-        removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-    };
-
-    // editor
-    function josCKEdit(section) {
-
-        var     ck_editor_container = document.getElementById(section + '_editor_container'),
-                edit_btn = document.getElementById(section + '_edit_btn'),
-                edit_element = document.getElementById(section + '_original_content');
-
-        if ($(edit_btn).hasClass('btn-info')) {
-            if (ck_editor) {
-                return;
-            }
-
-            $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save').attr("data-original-title", "Saves changes");
-            $('#' + section + '_cancel_btn').show();
-            $(edit_element).hide();
-            ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, old_content);
-
-            session_data_update('editor_status');
-
-            // Save CK
-        } else {
-            if (!ck_editor) {
-                return;
-            }
-
-            // Retrieve the editor contents. Ajax send to server.
-            var new_note_content = ck_editor.editable().getText();
-            $.ajax({
-                type: "POST",
-                url: '/help_update/',
-                data: {'new_note_content': new_note_content},
-                success: function () {
-                    console.log('successfully posted:  ' + new_note_content);
-                }
-            });
-
-            $(edit_element).html(new_note_content);
-            josCKDestroy(section);
-        }
-    }
-
-    function josCKDestroy(section) {
-
-        $(edit_element).show();
-        $('#' + section + '_cancel_btn').hide();
-        $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit').attr("title", "Activates editor");
-        ck_editor.destroy();
-        ck_editor = null;
-
-        session_data_update('editor_status');
-    }
 
 // Deployment and Status Tracking
 {
@@ -304,7 +235,7 @@
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
 
-            $(hb).text("Close").removeClass("btn-info").addClass("btn-warning");
+            $(hb).text("Close drawer").removeClass("btn-info").addClass("btn-warning").attr("data-original-title", "Closes drawer");
             $("#fixed-top-bar").addClass('moveDown');
             $("#main_container").addClass('moveDown');
             $("#help_screen").slideDown("slow");
@@ -319,7 +250,7 @@
             }
 
         } else {
-            $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info");
+            $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info").attr("data-original-title", "Opens: to do, how do I? and my notes");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
@@ -364,7 +295,7 @@
             }
         }
 
-        console.log('session_data_update; data: ' + JSON.stringify(data));
+        // console.log('session_data_update; data: ' + JSON.stringify(data));
 
         if (data !== {}) {
             $.ajax({

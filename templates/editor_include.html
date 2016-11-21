@@ -1,0 +1,81 @@
+<script>
+
+    var ck_editor = null;
+    var sect2edit = '{{ sect }}';
+
+    var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
+        edit_btn = document.getElementById(sect2edit + '_edit_btn'),
+        edit_element = document.getElementById(sect2edit + '_original_content');
+
+    var old_content = '{{ orig_content }}';
+    $(edit_element).text('{{ orig_content }}');
+
+    var ck_config = {
+        toolbar: [
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+            {'name': 'editing', 'items': ['SelectAll', 'Find']}
+        ],
+        contentsCss: '/static/ckeditor/ckeditor/contents.css',
+        disableNativeSpellChecker: false,
+        width: '100%',
+        height: 360,
+        tabSpaces: 4,
+        uiColor: '#28a4c9',
+        extraPlugins: 'colorbutton',
+        removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+    };
+
+    // editor
+    function josCKEdit(sect2edit) {
+
+        var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
+                edit_btn = document.getElementById(sect2edit + '_edit_btn'),
+                edit_element = document.getElementById(sect2edit + '_original_content');
+
+        if ($(edit_btn).hasClass('btn-info')) {
+            if (ck_editor) {
+                return;
+            }
+
+            $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save').attr("data-original-title", "Saves changes");
+            $('#' + sect2edit + '_cancel_btn').show();
+            $(edit_element).hide();
+            ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, $(edit_element).text());
+
+            // Save CK
+        } else {
+            if (!ck_editor) {
+                return;
+            }
+
+            // Retrieve the editor contents. Ajax send to server.
+
+            var new_note_content = ck_editor.editable().getText();
+            $.ajax({
+                type: "POST",
+                url: '/help_update/',
+                data: {'new_note_content': new_note_content},
+                success: function () {
+                    console.log('successfully posted:  ' + new_note_content);
+                }
+            });
+
+            $(edit_element).text(new_note_content);
+            josCKDestroy(sect2edit);
+        }
+    }
+
+    function josCKDestroy(sect2destroy) {
+
+        var edit_element = document.getElementById(sect2destroy + '_original_content');
+        var edit_btn = document.getElementById(sect2edit + '_edit_btn');
+
+        $(edit_element).show();
+        $('#' + sect2destroy + '_cancel_btn').hide();
+        $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit').attr("data-original-title", "Activates editor");
+        ck_editor.destroy();
+        ck_editor = null;
+
+    }
+
+</script>
