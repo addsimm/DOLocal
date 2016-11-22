@@ -10,7 +10,7 @@
     var old_content = '{{ orig_content }}';
     $(edit_element).text('{{ orig_content }}');
 
-    var ck_config = {
+    var ck_config_small = {
         toolbar: [
             {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
             {'name': 'editing', 'items': ['SelectAll', 'Find']}
@@ -25,11 +25,40 @@
         removePlugins: 'liststyle,tabletools,scayt,contextmenu'
     };
 
+    var ck_config_large = {
+        toolbar: [
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+            {'name': 'styles', 'items': ['Font', 'FontSize']},
+            {
+                'name': 'basicstyles',
+                'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']
+            },
+            {
+                'name': 'paragraph',
+                'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']
+            },
+            {'name': 'insert', 'items': ['Image', 'Smiley']},
+            {'name': 'editing', 'items': ['SelectAll', 'Find']}
+        ],
+        contentsCss: '/static/ckeditor/ckeditor/contents.css',
+        width: '100%',
+        height: 360,
+        tabSpaces: 4,
+        uiColor: '#28a4c9',
+        removePlugins: 'liststyle,tabletools,scayt,contextmenu',
+        extraPlugins: 'colorbutton'
+    };
+
+    var ck_config = ck_config_small;
+    var config = '{{ config }}';
+    if (config === 'large') {
+        ck_config = ck_config_large;
+    }
 
     window.onbeforeunload = function () {
         // console.log('unload called');
         if (ck_editor) {
-            console.log('ckeditor found; trying to save');
+            // console.log('ckeditor found; trying to save');
             josCKEdit(sect2edit);
             session_data_update('editor_status');
         }
@@ -39,8 +68,8 @@
     function josCKEdit(sect2edit) {
         // console.log('editor called with: ' + sect2edit);
         var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
-                edit_btn = document.getElementById(sect2edit + '_edit_btn'),
-                edit_element = document.getElementById(sect2edit + '_original_content');
+            edit_btn = document.getElementById(sect2edit + '_edit_btn'),
+            edit_element = document.getElementById(sect2edit + '_original_content');
 
         if ($(edit_btn).hasClass('btn-info')) {
             // console.log('editor has class info');

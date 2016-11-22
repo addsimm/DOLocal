@@ -214,7 +214,7 @@
         </div>
     </div>
 
-    {% include "editor_include.html" with sect='notes' orig_content=user_created_note %}
+    {% include "editor_include.html" with sect='notes' config='small' orig_content=user_created_note %}
 </div>
 </div>
 
@@ -258,7 +258,7 @@
     });
 
     function session_data_update(element) {
-        console.log('updating: ' + element);
+        // console.log('updating: ' + element);
         var data = {};
 
         if (Number.isInteger(parseInt(element))) {
