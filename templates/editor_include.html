@@ -7,8 +7,8 @@
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         edit_element = document.getElementById(sect2edit + '_original_content');
 
-    var old_content = '{{ orig_content }}';
-    $(edit_element).text('{{ orig_content }}');
+    var old_content = "{{ orig_content | escapejs }}";
+    $(edit_element).html('{{ orig_content | escapejs }}');
 
     var ck_config_small = {
         toolbar: [
@@ -56,9 +56,9 @@
     }
 
     window.onbeforeunload = function () {
-        // console.log('unload called');
+        console.log('unload called');
         if (ck_editor) {
-            // console.log('ckeditor found; trying to save');
+            console.log('ckeditor found; trying to save');
             josCKEdit(sect2edit);
             session_data_update('editor_status');
         }
@@ -66,13 +66,13 @@
 
     // editor
     function josCKEdit(sect2edit) {
-        // console.log('editor called with: ' + sect2edit);
+        console.log('editor called with: ' + sect2edit);
         var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
             edit_btn = document.getElementById(sect2edit + '_edit_btn'),
             edit_element = document.getElementById(sect2edit + '_original_content');
 
         if ($(edit_btn).hasClass('btn-info')) {
-            // console.log('editor has class info');
+            console.log('editor has class info');
             if (ck_editor) {
                 return;
             }
@@ -80,18 +80,18 @@
             $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save').attr("data-original-title", "Saves changes");
             $('#' + sect2edit + '_cancel_btn').show();
             $(edit_element).hide();
-            ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, $(edit_element).text());
+            ck_editor = CKEDITOR.appendTo(ck_editor_container, ck_config, $(edit_element).html());
 
             // Save CK
         } else {
-            // console.log('editor does not have info');
+            console.log('editor does not have info');
             if (!ck_editor) {
                 return;
             }
 
             // Retrieve the editor contents. Ajax send to server.
 
-            var new_note_content = ck_editor.editable().getText();
+            var new_note_content = ck_editor.getData();
             $.ajax({
                 type: "POST",
                 url: '/help_update/',
@@ -100,12 +100,14 @@
                     console.log('successfully posted:  ' + new_note_content);
                 }
             });
-            $(edit_element).text(new_note_content);
+            $(edit_element).html(new_note_content);
             josCKDestroy(sect2edit);
         }
     }
 
     function josCKDestroy(sect2destroy) {
+
+        console.log('editor destroy called');
 
         var edit_element = document.getElementById(sect2destroy + '_original_content');
         var edit_btn = document.getElementById(sect2edit + '_edit_btn');

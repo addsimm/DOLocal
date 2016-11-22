@@ -15,7 +15,17 @@
 {% endblock %}
 
 {% block all_content %}
-<style> .cke {margin-left: 25px;}</style>
+
+<style>
+
+    .change-image {
+        font-size: 12pt;
+        margin-top: 0;
+        outline: none;
+        text-decoration: none;
+    }
+
+</style>
 
 <div class="row" style="margin-top: 50px;">
 
@@ -38,14 +48,7 @@
 
             </div>
 
-            <style>
-                .change-image {
-                    font-size: 12pt;
-                    margin-top: 0;
-                    outline: none;
-                    text-decoration: none;
-                }
-            </style>
+
 
             {% if edit %}
 
@@ -93,28 +96,47 @@
     </div>
 
     <!-- Aboutme -->
-    <div class="row" style="margin-top: 10px;">
 
-            <div id='border_aboutme' class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 8px;">
 
-                <!-- Buttons -->
-                {% include "josprojects/jos_editor.html" with section='aboutme' %}
+    <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
 
-                <div class="row">
-                    <form id='aboutme_form' method="post"
-                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+        <!-- This div displays contents. -->
+        <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
+             style="padding: 20px; width: 920px; min-height: 415px;">
+            {{ profile.about_me | safe }}<br>
+        </div>
 
-                        <div id='aboutme' class="col-xs-12" style="padding: 0 30px;">
-                            {{ profile.about_me | safe }}<br>
-                        </div>
+        {% if edit %}
 
-                        <input id="aboutme_holder" type="hidden" name='nucontent' value=" ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="about_me">
-                    </form>
-                </div>
-            </div>
+            <a id="about_edit_btn pull-right edit_section_button"
+               class="btn btn-info btn-xs"
+               style="margin-left: 5px; width: 150px;"
+               onclick="josCKEdit('about');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit about me
+            </a>
 
+            <!-- TEMPORARILY unhidden -->
+            <a id="about_cancel_btn pull-right edit_section_button"
+               class="btn btn-danger btn-xs"
+               style="width: 150px;"
+               onclick="josCKDestroy('about');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Warning: discards recent changes!"
+            >
+                Discard
+            </a>
+
+            <!-- This div holds editor. -->
+            <div id="about_editor_container" style="width: 920px;"></div>
+
+            {% include "editor_include.html" with sect='about' config='large' orig_content=profile.about_me %}
+
+        {% endif %}
     </div>
 </div>
 
@@ -140,8 +162,9 @@
 
     {% if profile.user == request.user %}
 
+        <!-- TEMPORARILY hidden -->
         <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px;"
+           style="margin-top: 30px; display: none;"
                 {% if edit %}
            href="{% url "josmembers:josprofile" request.user.id %}">
                     {% trans "Hide" %}
@@ -185,7 +208,6 @@
 <script>
 
     $(document).ready(function () {
-        CKEDITOR.disableAutoInline = true;
         $('[data-toggle="tooltip"]').tooltip();
     });
 
