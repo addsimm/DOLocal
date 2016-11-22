@@ -211,19 +211,26 @@
         <!-- This div displays contents. -->
         <div id="notes_original_content" class="edit_border"
              style="padding: 20px; width: 920px; height: 415px;">
+            {{ user_created_note | safe }}
         </div>
     </div>
 
-    {% include "editor_include.html" with sect='notes' config='small' orig_content=user_created_note %}
 </div>
 </div>
 
 <!-- Drawer javascript -->
 <script>
 
-// Deployment and Status Tracking
+// Init, Deployment and Status Tracking
 {
     $(document).ready(function () {
+
+        // editors keys are sections with: section, toolbar and original content
+
+        initJOSEditor('notes', 'small', "{{ user_created_note | escapejs }}");
+
+        // console.log('editors: ' + JSON.stringify(editors.notes.toolbar));
+
         $('[data-toggle="tooltip"]').tooltip();
 
         /** The Ajax help search function. */
@@ -285,7 +292,7 @@
 
                 case 'editor_status':
                     var status = 'inactive';
-                    if (ck_editor) {
+                    if (editors['notes'].section_editor) {
                         status = 'active'
                     }
                     data = {"editor_status": status};
