@@ -293,12 +293,27 @@ def ajax_story_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ok')
 
+    story_id = int(request.get_full_path().split('=')[1])
+
+    story = ' '
+    try:
+        story = get_object_or_404(JOSStory, pk=story_id)
+    except:
+        info(request, "Cannot find story!")
+
     new_content = request.POST.get('new_content', 'missing')
+    section = request.POST.get('section', 'missing')
 
     if new_content != 'missing':
-        user_profile = get_object_or_404(JOSProfile, user=request.user)
-        user_profile.about_me = new_content
-        user_profile.save()
-        info(request, "Profile updated!")
 
-    return HttpResponse('ok')
+        if section == 'content':
+            story.content = new_content
+            story.save()
+
+        elif section == 'title':
+            story.title = new_content
+            story.save()
+
+        info(request, "Story updated!")
+
+    return HttpResponse(story_id)

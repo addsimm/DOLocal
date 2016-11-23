@@ -21,6 +21,8 @@ urlpatterns = patterns(
 
    url("help_update", help_update, name="help_update"),
 
+   # url("/(?P<story_id>\d+/story_update/)", ajax_story_update, name="story_update"),
+
    url("story_update", ajax_story_update, name="story_update"),
 
 )

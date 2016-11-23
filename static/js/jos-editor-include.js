@@ -110,8 +110,8 @@ function josCKEdit(sect2edit) {
                 'new_content': new_content,
                 'section': sect2edit
             },
-            success: function () {
-                console.log('successfully posted:  ' + new_content);
+            success: function (serverResponse_data) {
+                console.log('successfully posted:  ' + new_content + ' to: ' + sect2edit);
             }
         });
         $(edit_element).html(new_content);

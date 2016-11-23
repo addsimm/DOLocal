@@ -30,7 +30,7 @@
     <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
 
         <span class="joshint"
-              style="{% if not edit %}display: none;{% endif %} font-size: 16pt;"
+              style="{% if not edit %}display: none;{% endif %} font-size: 12pt;"
               data-toggle="tooltip"
               title="Dragging bottom right triangle changes the editor's height"
               data-placement="bottom">
@@ -42,65 +42,94 @@
     <div class="row" style=" ">
         <div class="col-xs-12">
 
-            <div id='border_title'
-                 class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 3px;">
+            {% if edit %}
 
-                <!-- Title Edit Buttons -->
-                {% include "josprojects/../jos_editor.html" with section='title' %}
-
-                <div class="row">
-                    <form id='title_form'
-                          method="post"
-                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-
-                        <div id='title' class="col-xs-12 homehead text-center">
-                            {{ story.title | striptags | safe }}<br>
-                        </div>
-
-                        <input id="title_holder" type="hidden" name='nucontent' value = " ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value = "title">
-
-                    </form>
-                </div>
-            </div>
-
-            <div class="text-center" style="margin-top: 10px; padding-top: 10px;">
-
-                <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
-                   style="padding: 0">
-                    <span style="font-size: 48pt; margin: 0 15px;">
-                        {{ story.author.JOSProfile.friendly_jos_name }}
-                    </span>
+                <a id="title_edit_btn"
+                   class="btn btn-info btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                   onclick="josCKEdit('title');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Activates editor"
+                >
+                    Edit title
                 </a>
 
+                <a id="title_cancel_btn"
+                   class="btn btn-danger btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                   onclick="josCKDestroy('title');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Warning: discards recent changes!"
+                >
+                    Discard
+                </a>
+
+
+                <!-- This div holds editor. -->
+                <div id="title_editor_container" style=" "></div>
+
+            {% endif %}
+
+            <!-- This div displays contents. -->
+            <div id="title_original_content"
+                 class="homehead text-center {% if edit %}edit_border{% endif %} edit_border_class">
+                {{ story.title | striptags | safe }}<br>
             </div>
         </div>
     </div>
 
-    <!-- Content -->
-    <div class="row" style=" ">
+     <!-- Author -->
+    <div class="row text-center" style="margin-top: 25px;">
 
+        <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
+           style="padding: 0;">
+            <span style="font-size: 48pt; margin: 0 15px;">
+                {{ story.author.JOSProfile.friendly_jos_name }}
+            </span>
+        </a>
+
+    </div>
+
+    <!-- Content -->
+    <div class="row" style="margin-top: 40px;">
         <div class="col-xs-12">
 
-            <div id='border_content' class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 3px;">
+            {% if edit %}
 
-                <!-- Content Edit Buttons -->
-                {% include "josprojects/../jos_editor.html" with section='content' %}
+                <a id="content_edit_btn"
+                   class="btn btn-info btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                   onclick="josCKEdit('content');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Activates editor"
+                >
+                    Edit content
+                </a>
 
-                <div class="row">
-                    <form id='content_form' method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+                <a id="content_cancel_btn"
+                   class="btn btn-danger btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                   onclick="josCKDestroy('content');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Warning: discards recent changes!"
+                >
+                    Discard
+                </a>
 
-                        <div id='content' class="col-xs-12">
-                            {{ story.content | richtext_filters | safe }}<br>
-                        </div>
 
-                        <input id="content_holder" type="hidden" name='nucontent' value=" ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="content">
+                <!-- This div holds editor. -->
+                <div id="content_editor_container" style=" "></div>
 
-                    </form>
-                </div>
+            {% endif %}
+
+            <!-- This div displays contents. -->
+            <div id="content_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
+                 style=" ">
+                    {{ story.content | safe }}<br>
             </div>
         </div>
     </div>
@@ -264,7 +293,8 @@
 <script>
 
     $(document).ready(function () {
-        initJOSEditor('title', 'small', 'story_update', "{{ story.title | escapejs }}");
+        initJOSEditor('title', 'small', '/story_update/?id=' + '{{ story.id }}', "{{ story.title | escapejs }}");
+        initJOSEditor('content', 'large', '/story_update/?id=' + '{{ story.id }}', "{{ story.content | escapejs }}");
         // initJOSEditor('about', 'large', 'member_profile_update', "{{ profile.about_me | escapejs }}");
 
         $('[data-toggle="tooltip"]').tooltip();

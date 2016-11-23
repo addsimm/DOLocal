@@ -116,52 +116,52 @@
         </div>
     </div>
 
-    <script language="javascript">
-        /* Before our JavaScript, the urls need to be set. */
-        var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
+<script>
+    /* Before our JavaScript, the urls need to be set. */
+    var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
 
-            /** Executes a search  */
-        var processSearchPal = function () {
-            //Get and trim the search text.
-            var searchText = $('#member_search_text').val().trim().toLowerCase();
+        /** Executes a search  */
+    var processSearchPal = function () {
+        //Get and trim the search text.
+        var searchText = $('#member_search_text').val().trim().toLowerCase();
 
-            if (searchText.length < 2) {
-                //Too short. Ignore the submission, and erase any current results.
-                $('#member_search_results').html("<i>Keep typing ...</i>");
+        if (searchText.length < 2) {
+            //Too short. Ignore the submission, and erase any current results.
+            $('#member_search_results').html("<i>Keep typing ...</i>");
 
-            } else {
-                // Execute the search.
-                var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
-                    {
-                        $('#member_search_results').html(serverResponse_data);
-                    };
-
-                var config = {
-                    type: "GET",
-                    url: SUBMIT_URL_PAL,
-                    data: {
-                        'member_search_text': searchText
-                    },
-                    dataType: 'html',
-                    success: processServerResponsePal,
-                    fail: function () {
-                        alert("Fail")
-                    }
+        } else {
+            // Execute the search.
+            var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
+                {
+                    $('#member_search_results').html(serverResponse_data);
                 };
-                $.ajax(config);
-            }
-        };
 
-        /** The Ajax "main" function. */
+            var config = {
+                type: "GET",
+                url: SUBMIT_URL_PAL,
+                data: {
+                    'member_search_text': searchText
+                },
+                dataType: 'html',
+                success: processServerResponsePal,
+                fail: function () {
+                    alert("Fail")
+                }
+            };
+            $.ajax(config);
+        }
+    };
 
-        var MILLS_TO_IGNORE_SEARCH = 100;
-        $(document).ready(function () {
-            /* This attaches a listener. Calling this again would attach a *second* */
-            $('#member_search_text').keyup(_.debounce(processSearchPal,
-                    MILLS_TO_IGNORE_SEARCH, true));
-        });
+    /** The Ajax "main" function. */
 
-    </script>
+    var MILLS_TO_IGNORE_SEARCH = 100;
+    $(document).ready(function () {
+        /* This attaches a listener. Calling this again would attach a *second* */
+        $('#member_search_text').keyup(_.debounce(processSearchPal,
+                MILLS_TO_IGNORE_SEARCH, true));
+    });
+
+</script>
 
 {% endblock all_content %}
 
