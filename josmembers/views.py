@@ -1,15 +1,16 @@
 ### josmembers/views.py
 from __future__ import unicode_literals
 
-from django.contrib.messages import info, error
 from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import info, error
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
+from django.utils.timezone import activate
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.timezone import activate
 
 from mezzanine.accounts.forms import PasswordResetForm, LoginForm
 from mezzanine.conf import settings
@@ -148,7 +149,7 @@ def members_list(request, template="josmembers/josmembers_members_list.html", ex
     return TemplateResponse(request, template, context)
 
 
-def submit_member_search_from_ajax(request):
+def ajax_submit_member_search(request):
     """
     Processes a search request
     """
@@ -209,6 +210,22 @@ def follow_unfollow(request):
 
         return
 
+
+@login_required
+@csrf_exempt
+def ajax_member_profile_update(request):
+    if not request.is_ajax() or not request.method == 'POST':
+        return HttpResponse('not ok')
+
+    new_content = request.POST.get('new_content', 'missing')
+
+    if new_content != 'missing':
+        user_profile = get_object_or_404(JOSProfile, user=request.user)
+        user_profile.about_me = new_content
+        user_profile.save()
+        info(request, "Profile updated!")
+
+    return HttpResponse('ok')
 
 ### Profiles:
 

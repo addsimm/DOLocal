@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from views import members_list, submit_member_search_from_ajax, reserve_space
+from views import members_list, ajax_submit_member_search, ajax_member_profile_update, reserve_space
 
 from mezzanine.conf import settings
 
@@ -41,6 +41,7 @@ urlpatterns = patterns('',
    # friends AJAX search
 
     url("josmembers_list", members_list, name="josmembers_list"),
-    url(r"^search_friends/$", submit_member_search_from_ajax, name="search_member_list"),
+    url(r"^search_friends/$", ajax_submit_member_search, name="search_member_list"),
 
+    url("member_profile_update", ajax_member_profile_update, name="member_profile_update")
 )

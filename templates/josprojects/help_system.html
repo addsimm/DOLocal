@@ -182,18 +182,18 @@
 
     <a id="notes_edit_btn"
        class="btn btn-info"
-       style="width: 100px; position: fixed; top: 100px; left: 1025px;"
+       style="width: 125px; position: fixed; top: 100px; left: 1010px;"
        onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates editor"
        >
-        Edit
+        Edit notes
     </a>
 
     <a id="notes_cancel_btn"
        class="btn btn-danger"
-       style="width: 100px; position: fixed; top: 160px; left: 1025px; display: none;"
+       style="width: 125px; position: fixed; top: 160px; left: 1010px; display: none;"
        onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -210,7 +210,7 @@
 
         <!-- This div displays contents. -->
         <div id="notes_original_content" class="edit_border"
-             style="padding: 20px; width: 920px; height: 415px;">
+             style="padding: 20px; width: 920px; height: 415px; overflow-x: hidden; overflow-y: scroll;">
             {{ user_created_note | safe }}
         </div>
     </div>
@@ -225,9 +225,9 @@
 {
     $(document).ready(function () {
 
-        // editors keys are sections with: section, toolbar and original content
+        // editors keys are sections with: section, toolbar, url and original content
 
-        initJOSEditor('notes', 'small', "{{ user_created_note | escapejs }}");
+        initJOSEditor('notes', 'small', 'help_update', "{{ user_created_note | escapejs }}");
 
         // console.log('editors: ' + JSON.stringify(editors.notes.toolbar));
 

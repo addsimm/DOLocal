@@ -20,6 +20,4 @@ urlpatterns = patterns('',
 
    url("help_update", help_update, name="help_update"),
 
-
-
 )

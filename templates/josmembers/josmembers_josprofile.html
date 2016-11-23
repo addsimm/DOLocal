@@ -40,15 +40,13 @@
             <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} padding: 10px;">
 
                 {% if "noimage" in profile.profile_image_id_str %}
-                    <img class="img-responsive" style="height: 256px;" src="//www.joinourstory.com/static/img/peeky-102216.png">
+                    <img class="img-responsive" style="height: 256px;" src="{% static '/static/img/peeky-102216.png' %}">
                 {% else %}
                     <img class="img-responsive" style="height: 256px;"
                          src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_id_str }}">
                 {% endif %}
 
             </div>
-
-
 
             {% if edit %}
 
@@ -89,6 +87,7 @@
 
         </div>
 
+        <!-- Member name -->
         <div class="col-xs-7 text-center" style="margin-top: 80px;">
             <span class="joscursive" style="font-size: 72pt; font-weight: bold;">About {{ profile.user.get_short_name }}</span>
         </div>
@@ -96,33 +95,24 @@
     </div>
 
     <!-- Aboutme -->
-
-
     <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
-
-        <!-- This div displays contents. -->
-        <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
-             style="padding: 20px; width: 920px; min-height: 415px;">
-            {{ profile.about_me | safe }}<br>
-        </div>
 
         {% if edit %}
 
-            <a id="about_edit_btn pull-right edit_section_button"
-               class="btn btn-info btn-xs"
-               style="margin-left: 5px; width: 150px;"
+            <a id="about_edit_btn"
+               class="btn btn-info btn-xs pull-right edit_section_button"
+               style="font-size: 14pt; position: absolute; top: -31px; right: 0; width: 125px;"
                onclick="josCKEdit('about');"
                data-toggle="tooltip"
                data-placement="bottom"
                title="Activates editor"
             >
-                Edit about me
+                Edit about
             </a>
 
-            <!-- TEMPORARILY unhidden -->
-            <a id="about_cancel_btn pull-right edit_section_button"
-               class="btn btn-danger btn-xs"
-               style="width: 150px;"
+            <a id="about_cancel_btn"
+               class="btn btn-danger btn-xs pull-right edit_section_button"
+               style="font-size: 14pt; position: absolute; top: -31px; width: 125px; right: 135px;  display: none;"
                onclick="josCKDestroy('about');"
                data-toggle="tooltip"
                data-placement="bottom"
@@ -131,12 +121,17 @@
                 Discard
             </a>
 
+
             <!-- This div holds editor. -->
             <div id="about_editor_container" style="width: 920px;"></div>
 
-            {% include "editor_include.html" with sect='about' config='large' orig_content=profile.about_me %}
-
         {% endif %}
+
+        <!-- This div displays contents. -->
+        <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
+             style="padding: 20px; width: 920px; min-height: 415px;">
+            {{ profile.about_me | safe }}<br>
+        </div>
     </div>
 </div>
 
@@ -162,9 +157,8 @@
 
     {% if profile.user == request.user %}
 
-        <!-- TEMPORARILY hidden -->
         <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px; display: none;"
+           style="margin-top: 30px;"
                 {% if edit %}
            href="{% url "josmembers:josprofile" request.user.id %}">
                     {% trans "Hide" %}
@@ -208,6 +202,7 @@
 <script>
 
     $(document).ready(function () {
+        initJOSEditor('about', 'large', 'member_profile_update', "{{ profile.about_me | escapejs }}");
         $('[data-toggle="tooltip"]').tooltip();
     });
 

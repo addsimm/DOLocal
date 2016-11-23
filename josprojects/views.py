@@ -237,7 +237,7 @@ def help_update(request):
 
         user_created_note.note_text = new_note_content
         user_created_note.save()
-        info(request, "Notes updated!")
+        # info(request, "Notes updated!")
 
     # Update help status in session data
     help_position = request.POST.get("help_position", 'missing')
