@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
 
-from .views import personaldesk, josstory, mystory_list, story_gallery, help_update
+from .views import personaldesk, josstory, mystory_list, story_gallery, help_update, ajax_story_update
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+        '',
 
    # url("ckrichtextedit/(?P<pk>\d+)$", "josprojects.views.ckrichtextedit", name="ckrichtextedit"),
    # url("ckrichtextedit", "josprojects.views.ckrichtextedit", {'pk': None}, name="ckrichtextedit"),
@@ -19,5 +20,7 @@ urlpatterns = patterns('',
    url("story_gallery", story_gallery, name="story_gallery"),
 
    url("help_update", help_update, name="help_update"),
+
+   url("story_update", ajax_story_update, name="story_update"),
 
 )

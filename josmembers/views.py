@@ -238,7 +238,6 @@ def josprofile_redirect(request):
     return redirect("profile", username=request.user.username)
 
 
-@csrf_exempt
 def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile.html", extra_context=None):
 
     # check request for favoring
@@ -266,26 +265,6 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
         currentProfile.profile_image_id_str = getPotentialNewProfileImageIdStr()
         currentProfile.save()
 
-    if request.method == 'POST':
-        nucontent = request.POST['nucontent']
-        field_to_edit = request.POST['field_to_edit']
-
-        ckrtfholder = CKRichTextHolder.objects.create(
-            author=request.user,
-            parent_class='JOSStory',
-            parent_id=currentProfile.id,
-            field_edited=field_to_edit,
-            content=getattr(currentProfile, field_to_edit)
-        )
-
-        ckrtfholder.save()
-
-        setattr(currentProfile, field_to_edit, nucontent)
-        info(request, "Changes saved!")
-        currentProfile.save()
-
-        edit = False
-
     context = {"profile": currentProfile,
                "edit": edit,
                "potentialNewProfileImageIdStr": getPotentialNewProfileImageIdStr(),
@@ -293,7 +272,6 @@ def josprofile(request, userid, edit, template="josmembers/josmembers_josprofile
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
-
 
 ### Signup:
 

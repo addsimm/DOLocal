@@ -10,38 +10,22 @@
 {% block all_content %}
 
 <style>
+
     #author, #author:visited {
         background-color: white;
         color: rgb(112, 154, 109);
     }
 
-    #author:focus, #author:hover {color: #e38d13; outline: 2px dashed #e38d13}
-
-    .cke { margin-left: 25px;}
-
-    .fixed {
-        height: 600px;
-        overflow: hidden;
-    }
-
-    .scrollit {
-        overflow-y: scroll;
-    }
-
-    .desk-button {
-        display: block;
-        font-size: 16pt;
-        min-height: 50px;
-        margin-top: 20px;
-        padding-top: 10px;
-    }
+    #author:focus, #author:hover {
+        color: #e38d13;
+        outline: 2px dashed #e38d13}
 
 </style>
 
 <div class="row" style="margin-top: 0;">
 
 <!-- Main Panel -->
-<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120); min-height: 850px;">
+<div class="col-xs-10" style="border-right: 1px solid rgb(65, 45, 120); min-height: 850px;">
 
     <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
 
@@ -279,6 +263,13 @@
 
 <script>
 
+    $(document).ready(function () {
+        initJOSEditor('title', 'small', 'story_update', "{{ story.title | escapejs }}");
+        // initJOSEditor('about', 'large', 'member_profile_update', "{{ profile.about_me | escapejs }}");
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
     $("#sharing_slider").slider({
                 id: "slider13",
                 handle: 'triangle',
@@ -295,11 +286,6 @@
             .on('slideStop', function (slideStopEvt) {
                 window.location.href = "{% url "josstory" story.id %}/?pubperm=" + slideStopEvt.value;
             });
-
-    $(document).ready(function () {
-        CKEDITOR.disableAutoInline = true;
-        $('[data-toggle="tooltip"]').tooltip();
-    });
 
 </script>
 

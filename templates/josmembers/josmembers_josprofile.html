@@ -27,10 +27,10 @@
 
 </style>
 
-<div class="row" style="margin-top: 50px;">
+<div class="row" style=" ">
 
 <!-- Left Panel -->
-<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
+<div class="col-xs-10" style="border-right: 1px solid rgb(65,45,120);">
 
     <!-- Image -->
     <div class="row">
@@ -88,77 +88,70 @@
         </div>
 
         <!-- Member name -->
-        <div class="col-xs-7 text-center" style="margin-top: 80px;">
-            <span class="joscursive" style="font-size: 72pt; font-weight: bold;">About {{ profile.user.get_short_name }}</span>
+        <div class="col-xs-5 text-center" style="margin-top: 90px;">
+            <span class="joscursive" style="font-size: 72pt; font-weight: bold;">
+                About {{ profile.user.get_short_name }}
+            </span>
         </div>
 
     </div>
 
     <!-- Aboutme -->
-    <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
+    <div class="row" style="min-height: 415px; margin-top: 15px;">
 
-        {% if edit %}
+        <div class="col-xs-12">
+            {% if edit %}
 
-            <a id="about_edit_btn"
-               class="btn btn-info btn-xs pull-right edit_section_button"
-               style="font-size: 14pt; position: absolute; top: -31px; right: 0; width: 125px;"
-               onclick="josCKEdit('about');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Activates editor"
-            >
-                Edit about
-            </a>
+                <a id="about_edit_btn"
+                   class="btn btn-info btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                   onclick="josCKEdit('about');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Activates editor"
+                >
+                    Edit about
+                </a>
 
-            <a id="about_cancel_btn"
-               class="btn btn-danger btn-xs pull-right edit_section_button"
-               style="font-size: 14pt; position: absolute; top: -31px; width: 125px; right: 135px;  display: none;"
-               onclick="josCKDestroy('about');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Warning: discards recent changes!"
-            >
-                Discard
-            </a>
+                <a id="about_cancel_btn"
+                   class="btn btn-danger btn-xs pull-right edit_section_button"
+                   style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                   onclick="josCKDestroy('about');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Warning: discards recent changes!"
+                >
+                    Discard
+                </a>
 
 
-            <!-- This div holds editor. -->
-            <div id="about_editor_container" style="width: 920px;"></div>
+                <!-- This div holds editor. -->
+                <div id="about_editor_container" style=" "></div>
 
-        {% endif %}
+            {% endif %}
 
-        <!-- This div displays contents. -->
-        <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
-             style="padding: 20px; width: 920px; min-height: 415px;">
-            {{ profile.about_me | safe }}<br>
+            <!-- This div displays contents. -->
+            <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
+                 style="padding: 20px; min-height: 415px;">
+                {{ profile.about_me | safe }}<br>
+            </div>
+
         </div>
     </div>
 </div>
 
 <!-- Side panel -->
-<div id="editing_side_panel_hint"
-     class="col-xs-2 fixed hidden"
-     style="font-size: 18pt; margin-top: 90px;">
-    Hint:<br>Choose "Discard" or "Save" to exit editing mode
-</div>
 
-<div id="editing_side_panel" class="col-xs-2 fixed" style="">
-
-    <div style="height: 70px; text-align: center;">
-        <span class="joshint"
-              data-toggle="tooltip"
-              title="The column on left scrolls"
-              data-placement="bottom">
-            Hint: Left column scrolls
-        </span>
-    </div>
+<div id="editing_side_panel"
+     class="col-xs-2"
+     style="position: fixed; left: 982px; top: 170px;">
 
     {% include "josprojects/updated_include.html" with myobj=profile %}
 
     {% if profile.user == request.user %}
 
         <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px;"
+           style="margin-top: 40px;"
                 {% if edit %}
            href="{% url "josmembers:josprofile" request.user.id %}">
                     {% trans "Hide" %}

@@ -8,17 +8,29 @@
 
 </style>
 
-<div id="library_include">
+<div id="library_include" class="text-center">
 
-    <div class="row text-center" style="margin: 40px 0 0 0;">
+    <div class="row text-center" style="margin: 50px 0 0 0;">
         <span class="homehead" style="font-size: 20pt;">Library</span>
     </div>
 
-    <button class="btn btn-link" onclick="location.href='{% url "story_gallery" %}';">
-        Published
+    <a class="btn btn-default"
+       style="margin-top: 20px; width: 100%;"
+       href="{% url 'josstory' %}/0">
+        New story
+    </a>
+
+    <button class="btn btn-link" onclick="location.href='{% url "mystory_list" %}';">
+        My stories
     </button>
 
     <div style="border-top: 1px solid rgb(45,25,160); margin: 20px 0 0 0;"></div>
+
+    <button class="btn btn-link" onclick="location.href='{% url "story_gallery" %}';" style="margin: 20px 0 0 0;">
+        Published
+    </button>
+
+    <div style="border-top: 1px solid rgb(45,25,160); margin: 20px 0 0 0; padding-top: 10px;">Teams</div>
 
     {% for team in user.JOSProfile.teams.all %}
 
@@ -27,17 +39,5 @@
         </button>
 
     {% endfor %}
-
-    <div style="border-top: 1px solid rgb(45,25,160); margin: 10px 0 0 0;"></div>
-
-    <button class="btn btn-link" onclick="location.href='{% url "mystory_list" %}';">
-        My stories
-    </button>
-
-    <a class="btn btn-default"
-       style="margin-top: 20px; width: 100%;"
-       href="{% url 'josstory' %}/0">
-        New story
-    </a>
 
 </div>

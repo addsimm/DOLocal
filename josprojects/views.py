@@ -47,88 +47,6 @@ def mystory_list(request, template="josprojects/my_story_list.html", extra_conte
 
 
 @login_required
-@csrf_exempt
-def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.html", extra_context=None):
-    activate('America/Los_Angeles')
-
-    try:
-        story = get_object_or_404(JOSStory, pk=story_id)
-    except:
-        story = JOSStory.objects.create(author=request.user, title="- untitled -", content="- content goes here -")
-
-    try:
-        comment_thread = get_object_or_404(JOSMessageThread, subject='Comments: ' + str(story.id))
-    except:
-        comment_thread = 'missing'
-
-    if comment_thread == 'missing':
-        try:
-            comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
-        except:
-            comment_thread = JOSMessageThread.objects.create(subject='On: ' + strip_tags(story.title))
-            comment_thread.save()
-
-    comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
-
-    new_permission_value = int(request.GET.get('pubperm', 0))
-    if new_permission_value != 0:
-        story.publish_permission = new_permission_value
-        story.save()
-
-        if new_permission_value == 1:
-            permission_change_message = 'only you can read it'
-        elif new_permission_value == 2:
-            permission_change_message = 'your team can read it'
-        else:
-            permission_change_message = 'the community can read it'
-
-        info(request, "Sharing changed, now: " + permission_change_message + "!")
-        return redirect('joinourstory.com/josstory/' + str(story_id))
-
-    if request.method == 'POST':
-        nu_content = request.POST['nucontent']
-        field_to_edit = request.POST['field_to_edit']
-
-        if field_to_edit == "comment":
-            send_message = Message.objects.create(
-                body = nu_content,
-                message_thread = comment_thread,
-                recipient = story.author,
-                sender = request.user,
-                sent_at =timezone.now()
-            )
-            send_message.save()
-
-            info(request, "Great thought, thanks!")
-
-        else:
-            ckrtf_holder = CKRichTextHolder.objects.create(
-                author = request.user,
-                parent_class = 'JOSStory',
-                parent_id = story.id,
-                field_edited = field_to_edit,
-                content = getattr(story, field_to_edit)
-            )
-            ckrtf_holder.save()
-
-            if field_to_edit=='title':
-                nu_content = strip_tags(nu_content)
-
-            setattr(story, field_to_edit, nu_content)
-            info(request, "Changes saved!")
-            story.save()
-
-        edit = False
-
-        return redirect('joinourstory.com/josstory/' + str(story_id))
-
-    context = {'story': story, 'edit': edit, "comments": comments}
-    context.update(extra_context or {})
-
-    return TemplateResponse(request, template, context)
-
-
-@login_required
 def story_gallery(request, template="josprojects/story_gallery.html", extra_context=None):
     activate('America/Los_Angeles')
 
@@ -221,7 +139,6 @@ def ajax_help_search(request):
 
             return render_to_response("josprojects/ajax_help_search_results.txt", context)
 
-
 @login_required
 @csrf_exempt
 def help_update(request):
@@ -286,3 +203,102 @@ def help_update(request):
     #             notification.send([user], "messages_recovered", {"message": message,})
     #         return HttpResponseRedirect(success_url)
     #     raise Http404
+
+
+@login_required
+@csrf_exempt
+def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.html", extra_context=None):
+    activate('America/Los_Angeles')
+
+    try:
+        story = get_object_or_404(JOSStory, pk=story_id)
+    except:
+        story = JOSStory.objects.create(author=request.user, title="- untitled -", content="- content goes here -")
+
+    try:
+        comment_thread = get_object_or_404(JOSMessageThread, subject='Comments: ' + str(story.id))
+    except:
+        comment_thread = 'missing'
+
+    if comment_thread == 'missing':
+        try:
+            comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
+        except:
+            comment_thread = JOSMessageThread.objects.create(subject='On: ' + strip_tags(story.title))
+            comment_thread.save()
+
+    comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
+
+    new_permission_value = int(request.GET.get('pubperm', 0))
+    if new_permission_value != 0:
+        story.publish_permission = new_permission_value
+        story.save()
+
+        if new_permission_value == 1:
+            permission_change_message = 'only you can read it'
+        elif new_permission_value == 2:
+            permission_change_message = 'your team can read it'
+        else:
+            permission_change_message = 'the community can read it'
+
+        info(request, "Sharing changed, now: " + permission_change_message + "!")
+        return redirect('joinourstory.com/josstory/' + str(story_id))
+
+    if request.method == 'POST':
+        nu_content = request.POST['nucontent']
+        field_to_edit = request.POST['field_to_edit']
+
+        if field_to_edit == "comment":
+            send_message = Message.objects.create(
+                    body=nu_content,
+                    message_thread=comment_thread,
+                    recipient=story.author,
+                    sender=request.user,
+                    sent_at=timezone.now()
+            )
+            send_message.save()
+
+            info(request, "Great thought, thanks!")
+
+        else:
+            ckrtf_holder = CKRichTextHolder.objects.create(
+                    author=request.user,
+                    parent_class='JOSStory',
+                    parent_id=story.id,
+                    field_edited=field_to_edit,
+                    content=getattr(story, field_to_edit)
+            )
+            ckrtf_holder.save()
+
+            if field_to_edit == 'title':
+                nu_content = strip_tags(nu_content)
+
+            setattr(story, field_to_edit, nu_content)
+            info(request, "Changes saved!")
+            story.save()
+
+        edit = False
+
+        return redirect('joinourstory.com/josstory/' + str(story_id))
+
+    context = {'story': story, 'edit': edit, "comments": comments}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+@csrf_exempt
+def ajax_story_update(request):
+    if not request.is_ajax() or not request.method == 'POST':
+        return HttpResponse('not ok')
+
+    new_content = request.POST.get('new_content', 'missing')
+
+    if new_content != 'missing':
+        user_profile = get_object_or_404(JOSProfile, user=request.user)
+        user_profile.about_me = new_content
+        user_profile.save()
+        info(request, "Profile updated!")
+
+    return HttpResponse('ok')
