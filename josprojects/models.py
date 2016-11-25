@@ -25,7 +25,7 @@ class CKRichTextHolder(TimeStamped, models.Model):
         return jos_name
 
 
-class JOSStory(TimeStamped, models.Model):
+class JOSStory1(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Story'
         verbose_name_plural = 'Stories'

@@ -22,7 +22,6 @@ var ck_config_small = {
     height: 360,
     tabSpaces: 4,
     uiColor: '#28a4c9',
-    extraPlugins: 'colorbutton',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
 
@@ -41,8 +40,8 @@ var ck_config_large = {
     tabSpaces: 4,
     toolbarRows: 1,
     uiColor: '#28a4c9',
-    removePlugins: 'liststyle,tabletools,scayt,contextmenu',
-    extraPlugins: 'colorbutton'
+    extraPlugins: 'colorbutton',
+    removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
 
 window.onbeforeunload = function () {

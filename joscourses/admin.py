@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import JOSCourse, JOSCourseStudent, JOSCourseWeek, JOSHandout, JOSStoryActivity
+from .models import JOSCourse, JOSStory, JOSCourseWeek, JOSHandout
 
 
 # Register your models here.
@@ -50,3 +50,19 @@ admin.site.register(JOSHandout, JOSHandoutAdmin)
 #
 #
 # admin.site.register(JOSStoryActivity, JOSStoryActivityAdmin)
+
+
+class JOSStoryAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSStory.
+    """
+    list_display = ("id", "author", "publish_permission", "updated", "title", "content")
+
+    verbose_name = "JOSStory"
+
+    readonly_fields = ("created", "updated",)
+
+    list_editable = ("publish_permission",)
+
+
+admin.site.register(JOSStory, JOSStoryAdmin)

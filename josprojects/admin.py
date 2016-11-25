@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CKRichTextHolder, JOSStory, JOSHelpItem
+from .models import CKRichTextHolder, JOSStory1, JOSHelpItem
 
 # Register your models here.
 
@@ -18,21 +18,6 @@ class CKRichTextHolderAdmin(admin.ModelAdmin):
 admin.site.register(CKRichTextHolder, CKRichTextHolderAdmin)
 
 
-class JOSStoryAdmin(admin.ModelAdmin):
-    """
-    Admin class for JOSStory.
-    """
-    list_display = ("id", "author", "publish_permission", "updated", "title", "content")
-
-    verbose_name = "JOSStory"
-
-    readonly_fields = ("created", "updated",)
-
-    list_editable = ("publish_permission",)
-
-admin.site.register(JOSStory, JOSStoryAdmin)
-
-
 class JOSHelpItemAdmin(admin.ModelAdmin):
     """
     Admin class for JOSHelpItem.
@@ -45,3 +30,19 @@ class JOSHelpItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(JOSHelpItem, JOSHelpItemAdmin)
+
+
+class JOSStory1Admin(admin.ModelAdmin):
+    """
+    Admin class for JOSStory.
+    """
+    list_display = ("id", "author", "publish_permission", "updated", "title", "content")
+
+    verbose_name = "JOSStory"
+
+    readonly_fields = ("created", "updated",)
+
+    list_editable = ("publish_permission",)
+
+
+admin.site.register(JOSStory1, JOSStory1Admin)

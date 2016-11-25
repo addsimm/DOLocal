@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.utils import timezone
-from django.utils.html import strip_tags
 from django.utils.timezone import activate
 from django.views.decorators.csrf import csrf_exempt
 
@@ -14,7 +13,8 @@ from josmembers.models import  JOSProfile, JOSUserCreatedNote
 from josmessages.models import Message, JOSMessageThread
 
 from josmembers.models import JOSTeam
-from .models import CKRichTextHolder, JOSStory, JOSHelpItem
+from joscourses.models import JOSStory
+from josprojects.models import JOSHelpItem
 
 # Create your views here.
 
@@ -204,16 +204,16 @@ def help_update(request):
     #         return HttpResponseRedirect(success_url)
     #     raise Http404
 
-
+"""
 @login_required
 @csrf_exempt
-def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.html", extra_context=None):
+def josstory1(request, story_id=0, edit=False, template="joscourses/jos_story.html", extra_context=None):
     activate('America/Los_Angeles')
 
     try:
-        story = get_object_or_404(JOSStory, pk=story_id)
+        story = get_object_or_404(JOSStory1, pk=story_id)
     except:
-        story = JOSStory.objects.create(author=request.user, title="- Untitled -", content="- Content goes here -")
+        story = JOSStory1.objects.create(author=request.user, title="- Untitled -", content="- Content goes here -")
 
     if not story.message_thread:
         comment_thread = JOSMessageThread.objects.create(subject=story.title)
@@ -252,7 +252,7 @@ def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.ht
 
 @login_required
 @csrf_exempt
-def ajax_story_update(request):
+def ajax_story_update1(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ok')
 
@@ -260,7 +260,7 @@ def ajax_story_update(request):
 
     story = ' '
     try:
-        story = get_object_or_404(JOSStory, pk=story_id)
+        story = get_object_or_404(JOSStory1, pk=story_id)
     except:
         info(request, "Cannot find story!")
 
@@ -293,3 +293,4 @@ def ajax_story_update(request):
             info(request, "Great thought, thanks!")
 
     return HttpResponse(story_id)
+"""

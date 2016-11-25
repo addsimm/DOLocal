@@ -1,6 +1,6 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
-from .views import personaldesk, josstory, mystory_list, story_gallery, help_update, ajax_story_update
+from .views import personaldesk, mystory_list, story_gallery, help_update
 
 urlpatterns = patterns(
         '',
@@ -13,16 +13,17 @@ urlpatterns = patterns(
 
    url("mystory_list", mystory_list, name="mystory_list"),
 
-   url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
-   url("josstory/(?P<story_id>\d+)/*$", josstory, {'edit': False}, name="josstory"),
-   url("josstory/*$", josstory, {'story_id': 0, 'edit': False}, name="josstory"),
-
    url("story_gallery", story_gallery, name="story_gallery"),
 
    url("help_update", help_update, name="help_update"),
 
-   # url("/(?P<story_id>\d+/story_update/)", ajax_story_update, name="story_update"),
+   # url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
+   # url("josstory/(?P<story_id>\d+)/*$", josstory, {'edit': False}, name="josstory"),
+   # url("josstory/*$", josstory, {'story_id': 0, 'edit': False}, name="josstory"),
+   #
+   # url("story_update/*$", ajax_story_update, name="story_update"),
 
-   url("story_update/*$", ajax_story_update, name="story_update"),
+
+
 
 )

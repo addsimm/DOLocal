@@ -3,11 +3,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from mezzanine.core.models import TimeStamped
-# from mezzanine.core.fields import FileField
-
 from mezzanine.utils.models import upload_to
 
 from embed_video.fields import EmbedVideoField
+from taggit.managers import TaggableManager
+
+from josmessages.models import JOSMessageThread
 
 # Create your models here.
 
@@ -132,3 +133,24 @@ class JOSHandout(TimeStamped, models.Model):
 
     def __unicode__(self):
         return 'Handout #'+str(self.id)
+
+
+class JOSStory(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Story'
+        verbose_name_plural = 'Stories'
+
+    message_thread = models.ForeignKey(JOSMessageThread, null=True)
+    author = models.ForeignKey(User)
+    title = models.TextField(default="Untitled")
+    content = models.TextField(default="Coming soon")
+    publish_permission = models.IntegerField(default=1)
+    tags = TaggableManager()
+
+    def get_jos_name(author):
+        first_name = author.get_short_name()[:9]
+        last_initial = author.user.last_name[:1].upper()
+        jos_name = first_name + " " + last_initial + "."
+        return jos_name
+
+
