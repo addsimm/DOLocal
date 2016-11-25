@@ -8,8 +8,7 @@ from django.template.response import TemplateResponse
 from wand.image import Image
 from .models import JOSCourseWeek, JOSHandout
 
-# Create your views here.
-
+### UNUSED
 @login_required
 def course_week_list(request, template="###", extra_context=None):
     weeks = JOSCourseWeek.objects.order_by('week_no')
@@ -83,8 +82,25 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
     return TemplateResponse(request, template, context)
 
 
+### DEVELOPMENT
 def playground_view(request, template="playground.html", extra_context=None):
     context = {}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
+
+
+def storywheel(request, template="joscourses/storywheel.html", extra_context=None):
+    context = {}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+def sw_plot(request, template="joscourses/sw-plot.html", extra_context=None):
+    context = {}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
