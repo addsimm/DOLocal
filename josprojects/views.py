@@ -213,19 +213,19 @@ def josstory(request, story_id=0, edit=False, template="josprojects/jos_story.ht
     try:
         story = get_object_or_404(JOSStory, pk=story_id)
     except:
-        story = JOSStory.objects.create(author=request.user, title="- untitled -", content="- content goes here -")
+        story = JOSStory.objects.create(author=request.user, title="- Untitled -", content="- Content goes here -")
 
-    try:
-        comment_thread = get_object_or_404(JOSMessageThread, subject='Comments: ' + str(story.id))
-    except:
-        comment_thread = 'missing'
+    if not story.message_thread:
+        comment_thread = JOSMessageThread.objects.create(subject=story.title)
+        story.message_thread = comment_thread
+        story.save()
+        return redirect('joinourstory.com/josstory/' + str(story.id))
 
-    if comment_thread == 'missing':
-        try:
-            comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
-        except:
-            comment_thread = JOSMessageThread.objects.create(subject='On: ' + strip_tags(story.title))
-            comment_thread.save()
+    comment_thread = story.message_thread
+
+    if comment_thread.subject != story.title:
+        comment_thread.subject = story.title
+        comment_thread.save()
 
     comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
 
@@ -264,8 +264,7 @@ def ajax_story_update(request):
     except:
         info(request, "Cannot find story!")
 
-    if story.title:
-        comment_thread = get_object_or_404(JOSMessageThread, subject='On: ' + story.title)
+    comment_thread = story.message_thread
 
     new_content = request.POST.get('new_content', 'missing')
     section = request.POST.get('section', 'missing')
@@ -275,12 +274,12 @@ def ajax_story_update(request):
         if section == 'content':
             story.content = new_content
             story.save()
-            info(request, "Story updated!")
+            info(request, "Story content updated!")
 
         elif section == 'title':
             story.title = new_content
             story.save()
-            info(request, "Story updated!")
+            info(request, "Story title updated!")
 
         elif section == "comment":
             send_message = Message.objects.create(
@@ -292,6 +291,5 @@ def ajax_story_update(request):
             )
             send_message.save()
             info(request, "Great thought, thanks!")
-            return redirect('joinourstory.com/josstory/' + str(story_id))
 
     return HttpResponse(story_id)

@@ -46,7 +46,7 @@ var ck_config_large = {
 };
 
 window.onbeforeunload = function () {
-    //console.log('unload called');
+    //// console.log('unload called');
     var lngth = Object.keys(editors).length;
     for (var i = 0; i < lngth; i++) {
         var section = Object.keys(editors)[i];
@@ -54,17 +54,14 @@ window.onbeforeunload = function () {
             console.log('unload called; ckeditor found: ' + section + ' -- trying to save');
             josCKEdit(section);
         } else {
-            // console.log('ckeditor: ' + section + ' -- not found');
+            //// console.log('ckeditor: ' + section + ' -- not found');
         }
     }
 };
 
 // editor
 function josCKEdit(sect2edit) {
-
     console.log('editor called; section: ' + sect2edit);
-
-    var org_cntnt = editors[sect2edit].original_content;
 
     var ck_config = ck_config_small;
     if (editors[sect2edit].toolbar === 'large') {
@@ -75,10 +72,10 @@ function josCKEdit(sect2edit) {
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         edit_element = document.getElementById(sect2edit + '_original_content');
 
-    // console.log('edit_btn: ' + $(edit_btn).text());
+    //// console.log('edit_btn: ' + $(edit_btn).text());
 
     if ($(edit_btn).hasClass('btn-info')) {
-        // console.log('starting editor; editors[sect2edit].section_editor: ' + editors[sect2edit].section_editor);
+        //// console.log('starting editor; editors[sect2edit].section_editor: ' + editors[sect2edit].section_editor);
         if (editors[sect2edit].section_editor) {
             return;
         }
@@ -87,7 +84,6 @@ function josCKEdit(sect2edit) {
         $('#' + sect2edit + '_cancel_btn').show();
         $(edit_element).hide();
 
-
         editors[sect2edit].section_editor = CKEDITOR.appendTo(
             ck_editor_container,
             ck_config,
@@ -95,7 +91,7 @@ function josCKEdit(sect2edit) {
 
     } else { //Save
 
-        // console.log('trying to save');
+        //// console.log('trying to save');
         if (!editors[sect2edit].section_editor) {
             return;
         }
@@ -103,6 +99,8 @@ function josCKEdit(sect2edit) {
         // Retrieve the editor contents. Ajax send to server.
 
         var new_content = editors[sect2edit].section_editor.getData();
+        $(edit_element).html(new_content);
+        josCKDestroy(sect2edit);
         $.ajax({
             type: "POST",
             url: editors[sect2edit].editor_ajax_post_url,
@@ -111,16 +109,17 @@ function josCKEdit(sect2edit) {
                 'section': sect2edit
             },
             success: function (serverResponse_data) {
-                console.log('successfully posted:  ' + new_content + ' to: ' + sect2edit);
+                console.log('successfully posted:  ' + new_content + ' to: ' + sect2edit + ' -- ' + serverResponse_data);
+                if (editors[sect2edit].editor_ajax_post_url.search('help') === -1) {
+                    location.reload();
+                }
             }
         });
-        $(edit_element).html(new_content);
-        josCKDestroy(sect2edit);
     }
 }
 
-function josCKDestroy(sect2destroy) {
 
+function josCKDestroy(sect2destroy) {
     console.log('editor destroy; section: ' + sect2destroy);
 
     var edit_element = document.getElementById(sect2destroy + '_original_content');
@@ -132,5 +131,5 @@ function josCKDestroy(sect2destroy) {
     editors[sect2destroy].section_editor.destroy();
     editors[sect2destroy].section_editor = null;
 
-    // console.log('destroyed editor - .section_editor: ' + editors[sect2destroy].section_editor);
+    //// console.log('destroyed editor - .section_editor: ' + editors[sect2destroy].section_editor);
 }

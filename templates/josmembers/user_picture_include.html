@@ -27,7 +27,9 @@
             {% endif %}>
     </div>
 
-    <div class="col-xs-12 text-center" style="color: rgb(0, 128, 0); padding: 0 0 3px 0;">
+    <div class="col-xs-12 text-center"
+         style="color: rgb(0, 128, 0); padding: 0 0 3px 0; font-size:
+                {% if user.JOSProfile.user.get_short_name|length < 6 %}16pt{% else %}14pt{% endif %};">
         {{ user.JOSProfile.user.get_short_name }}
     </div>
 

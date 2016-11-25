@@ -10,8 +10,8 @@
       <schema id="2" parent="1" name="public">
         <object-id>2200</object-id>
         <comment>standard public schema</comment>
-        <introspection-state-number>643205</introspection-state-number>
-        <introspection-timestamp>2016-11-14.14:31:26.456</introspection-timestamp>
+        <introspection-state-number>684103</introspection-state-number>
+        <introspection-timestamp>2016-11-24.23:39:22.136</introspection-timestamp>
       </schema>
       <schema id="3" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -22488,8 +22488,7 @@ josteam_id</columns>
         <default-expression>nextval(&apos;josmessages_josmessagethread_id_seq&apos;::regclass)</default-expression>
       </column>
       <column id="4083" parent="141" name="subject">
-        <state-number>128642</state-number>
-        <mandatory>1</mandatory>
+        <state-number>684103</state-number>
         <data-type>varchar(255)</data-type>
       </column>
       <column id="4084" parent="141" name="created">

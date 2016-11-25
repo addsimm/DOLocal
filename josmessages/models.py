@@ -25,7 +25,7 @@ class JOSMessageThread(TimeStamped, models.Model):
     class Meta:
         verbose_name = "Thread"
 
-    subject = models.CharField(verbose_name="subject", max_length=255, blank=True)
+    subject = models.CharField(verbose_name="subject", max_length=255, null=True, blank=True)
 
     @property
     def messages(self):

@@ -23,6 +23,6 @@ urlpatterns = patterns(
 
    # url("/(?P<story_id>\d+/story_update/)", ajax_story_update, name="story_update"),
 
-   url("story_update", ajax_story_update, name="story_update"),
+   url("story_update/*$", ajax_story_update, name="story_update"),
 
 )

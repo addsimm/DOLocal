@@ -94,15 +94,7 @@ def delete(request, message_thread_id=0):
 @login_required
 def jos_message_compose(request, id=None, template_name="josmessages/compose.html", recipient_filter=None):
     """
-    Displays and handles the ``form_class`` form to compose new messages.
-    Required Arguments: None
-    Optional Arguments:
-        ``recipient``: username of a `django.contrib.auth` User, who should
-                       receive the message, optionally multiple usernames
-                       could be separated by a "+"
-        ``form_class``: the form-class to use
-        ``template_name``: the template to use
-        ``success_url``: where to redirect after successfully submission
+    Handles messages
     """
 
     recip_ids =[]

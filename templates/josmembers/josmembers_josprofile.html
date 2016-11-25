@@ -88,7 +88,7 @@
         </div>
 
         <!-- Member name -->
-        <div class="col-xs-5 text-center" style="margin-top: 90px;">
+        <div class="col-xs-8" style="padding: 90px 0 0 50px;">
             <span class="joscursive" style="font-size: 72pt; font-weight: bold;">
                 About {{ profile.user.get_short_name }}
             </span>
@@ -150,37 +150,37 @@
 
     {% if profile.user == request.user %}
 
-        <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px; margin-right: 15px;"
-                {% if edit %}
-                    href="{% url "josmembers:josprofile" request.user.id %}">
-                    Hide
-                {% else %}
-                    href="{% url "josmembers:josprofile_edit" request.user.id %}">
-                    Edit
-                {% endif %}
+        <a id="edit_mode_button" class="btn pull-left btn-info"
+           style="margin-top: 20px; margin-left: 40px;"
+            {% if edit %}
+                href="{% url "josmembers:josprofile" request.user.id %}
+                Hide
+            {% else %}
+                href="{% url "josmembers:josprofile_edit" request.user.id %}
+                Edit
+            {% endif %}">
         </a><br>
 
     {% else %}
 
-        <a class="btn pull-right btn-default"
-           style="margin-top: 30px;  margin-right: 15px;"
+        <a class="btn pull-left btn-default"
+           style="margin-top: 20px; margin-left: 40px;"
            href="/messages/compose/{{ profile.user.id }}">
             Message
         </a>
 
         {% if requesterfollows %}
 
-            <a class="btn pull-right  btn-default"
-               style="margin-top: 30px;  margin-right: 15px;"
+            <a class="btn pull-left btn-default"
+               style="margin-top: 20px; margin-left: 40px;"
                href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ profile.user.id }} ">
                 Unfavor
             </a>
 
         {% else %}
 
-            <a class="btn pull-right btn-default"
-               style="margin-top: 30px;  margin-right: 15px;"
+            <a class="btn pull-left btn-default"
+               style="margin-top: 20px; margin-left: 40px;"
                href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
                 Favor
             </a>
