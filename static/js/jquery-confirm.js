@@ -448,7 +448,7 @@ var jconfirm, Jconfirm;
                 var contentHeight = 0;
                 var paneHeight = 0;
             } else {
-                var contentHeight = this.$content.outerHeight();
+                var contentHeight = this.$content.outerHeight()+10;
                 var paneHeight = this.$contentPane.height();
                 if (paneHeight == 0)
                     paneHeight = contentHeight;

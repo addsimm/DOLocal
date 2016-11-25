@@ -43,6 +43,7 @@ body.jconfirm-noscroll {
   font-family: 'source sans pro', sans-serif;
   font-size: 24pt;
   left: 0;
+  line-height: .8;
   overflow: hidden;
   position: fixed;
   width: 1275px;
@@ -81,7 +82,7 @@ body.jconfirm-noscroll {
   position: relative;
   border: 3px solid rgb(65, 45, 120);
   outline: none;
-  padding: 40px 15px 0 40px;
+  padding: 30px 15px 0 40px;
   z-index: 250;
 }
 

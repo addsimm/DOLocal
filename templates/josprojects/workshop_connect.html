@@ -49,13 +49,13 @@
         <a id='join_button'
            class="btn btn-default btn-lg"
            style="width: 400px;"
-           href="https://www.joinourstory.com/temasystest/{{ user.id }}">
+           href="https://www.joinourstory.com/community_room/{{ user.id }}">
             Join community room
         </a>
         {% if request.user.is_staff %}
             <a class="josstaffbutton btn btn-lg"
                style="width: 200px;"
-               href="https://www.joinourstory.com/temasystest/incognito">
+               href="https://www.joinourstory.com/community_room/incognito">
                 > Join incognito <
             </a>
         {% endif %}

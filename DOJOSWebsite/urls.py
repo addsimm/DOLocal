@@ -48,8 +48,8 @@ urlpatterns += patterns('',
     ### Video conference ###
     url("workshop_connect$", workshop_connect, name="workshop_connect"),
 
-    url("temasystest/incognito/$", temasystest, {'incognito': True}, name="temasystest"),
-    url("temasystest/(?P<jos_id>\d+)", temasystest, name="temasystest"),
+    url("community_room/incognito/$", community_room, {'incognito': True}, name="community_room"),
+    url("community_room/(?P<jos_id>\d+)", community_room, name="community_room"),
 
     ### JOS Members / Accounts ###
     url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),
