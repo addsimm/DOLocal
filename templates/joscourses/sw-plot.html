@@ -44,7 +44,6 @@
     .template_component_label {
         background-color: white;
         padding: 5px;
-
         font-family: 'Architects Daughter';
         font-size: 28pt;
     }
@@ -68,50 +67,60 @@
 
 <div class="text-center" style="background: white url('{% static 'img/plot-template.png' %}') no-repeat center; background-size: 700px 700px; height: 800px; width: 100%; margin-top: -45px; padding: 0;">
 
-    <div class="template_row" style="justify-content: center; height: 18%;">
+    <div class="row text-left">
 
-        <div class="template_component" style="width: 90%;">
-
-            <div class="template_component_label">Climax</div>
-
-            {% if edit %}
-
-                <a id="climax_edit_btn"
-                   class="btn btn-info btn-xs pull-right edit_section_button"
-                   style="align-self: flex-start; margin-left: 135px; font-size: 14pt; width: 125px; margin-top: -31px;"
-                   onclick="josCKEdit('climax');"
-                   data-toggle="tooltip"
-                   data-placement="bottom"
-                   title="Activates editor"
-                >
-                    Edit climax
-                </a>
-
-                <a id="climax_cancel_btn"
-                   class="btn btn-danger btn-xs pull-right edit_section_button"
-                   style="align-self: flex-start; font-size: 14pt; width: 125px; margin-top: -31px; display: none;"
-                   onclick="josCKDestroy('climax');"
-                   data-toggle="tooltip"
-                   data-placement="bottom"
-                   title="Warning: discards recent changes!"
-                >
-                    Discard
-                </a>
-
-
-                <!-- This div holds editor. -->
-                <div id="climax_editor_container" class='edit_box' style=" "></div>
-
-            {% endif %}
-
-            <div id='climax_original_content'
-                 class='edit_box'
-                 style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
-                {{ plot_template.climax | striptags }}<br>
-            </div>
-
+        <span class="col-xs-1 template_component_label">Climax</span>
+        <div id='climax_original_content' class="col-xs-9"
+             style="{% if edit %}border: 3px dashed #28a4c9;{% else %}border: 1px solid rgb(65,45,120);{% endif %} margin: 15px -30px 0 30px; height: 100px; padding: 7px;">
+            {{ plot_template.climax | striptags }}<br>
         </div>
+
     </div>
+
+    <div class=" ">
+
+        {% if edit %}
+
+            <a id="climax_cancel_btn"
+               class="btn btn-danger btn-xs pull-left"
+               style="font-size: 14pt; width: 125px; margin-left: 125px;"
+               onclick="josCKDestroy('climax');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Warning: discards recent changes!"
+            >
+                Discard
+            </a>
+
+            <a id="climax_edit_btn"
+               class="btn btn-info btn-xs"
+               style="position: absolute; font-size: 14pt; width: 125px; left: 300px;"
+               onclick="josCKEdit('climax');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit climax
+            </a>
+
+            <!-- This div holds editor. -->
+            <div id="climax_editor_container" class=' ' style=" "></div>
+
+        {% endif %}
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="template_row" style="height: 50%; margin-top: 3%;">
 

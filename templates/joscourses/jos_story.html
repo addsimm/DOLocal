@@ -128,7 +128,7 @@
 
             <!-- This div displays contents. -->
             <div id="content_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="min-height: 450px">
+                 style="min-height: 450px; padding: 10px;">
                     {{ story.content | safe }}<br>
             </div>
         </div>
@@ -201,13 +201,13 @@
 
             <a id="comment_edit_btn"
                class="btn btn-info"
-               style="font-size: 16pt; width: 250px; margin: -31px 0 0 15px;"
+               style="font-size: 16pt; width: 375px; margin: -31px 0 0 30px;"
                onclick="josCKEdit('comment');"
                data-toggle="tooltip"
                data-placement="bottom"
                title="Activates editor"
             >
-                Add your thought ...
+                Click to add your thought below ...
             </a>
 
             <!-- This div holds editor. -->
@@ -229,7 +229,7 @@
         <a id="edit_mode_button" class="btn pull-left btn-info"
            style="margin: 0 0 0 50px;"
                 {% if edit %}
-           href="{% url "josstory" story.id %}">
+           href="{% url "joscourses:josstory" story.id %}">
                     Hide
                 {% else %}
                     href="{% url "joscourses:josstory_edit" story.id %}">
