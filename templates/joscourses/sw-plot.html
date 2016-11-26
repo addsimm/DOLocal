@@ -5,152 +5,148 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    Plot template {{ storywheel.title }}{{ plot_template.climax | safe }}
+    Plot template {{ storywheel.title }}
 
 {% endblock %}
 
 {% block all_content %}
 
-    <style>
+<style>
 
-        .edit_box {
-            height: 95%;
-            width: 100%;
-            background-color: white;
-            border: 3px dashed #28a4c9;
-            opacity: .4;
-        }
+    .edit_box {
+        height: 95%;
+        width: 100%;
+        background-color: transparent;
+        text-align: left;
+        border: 1px solid rgb(65,45,120);
+        padding: 10px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
 
-        .edit_box:hover {
-            opacity: 1;
-        }
+    .edit_box:hover {
 
-        .template_row {
-            display: flex;
-            width: 100%
-        }
+    }
 
-        .template_component {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 45%;
-        }
+    .template_row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%
+    }
 
-        .template_component_label {
-            background-color: white;
-            padding: 0 20px;
+    .template_component {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 47%;
+    }
 
-            font-family: 'Architects Daughter';
-            font-size: 28pt;
-        }
+    .template_component_label {
+        background-color: white;
+        padding: 5px;
 
-    </style>
+        font-family: 'Architects Daughter';
+        font-size: 28pt;
+    }
 
-    EDIT: {{ edit }}<br>
+</style>
 
-    {% if storywheel.author == request.user %}
+{% if storywheel.author == request.user %}
 
-        <a id="edit_mode_button" class="btn pull-left btn-info"
-           style="margin-top: 20px; margin-left: 40px;"
-           href="{% if edit %}
-                    {% url "joscourses:sw_plot" storywheel.id %}
-                 {% else %}
-                    {% url "joscourses:sw_plot_edit" storywheel.id %}
-                 {% endif %}">
-            {% if edit %}Hide{% else %}Edit{% endif %}
-        </a><br>
+    <a id="edit_mode_button" class="btn btn-info"
+       style="font-size: 18pt; position: fixed; left: 1075px; top: 120px; z-index: 115;"
+       href="{% if edit %}
+                {% url "joscourses:sw_plot" storywheel.id %}
+             {% else %}
+                {% url "joscourses:sw_plot_edit" storywheel.id %}
+             {% endif %}">
+        {% if edit %}Hide{% else %}Edit{% endif %}
+    </a><br>
 
-    {% endif %}
-
-
-    <div class="row text-center" style=" ">
-        <div class="col-xs-12"
-             style="background: white url('{% static 'img/plot-template.png' %}') no-repeat top center; height: 800px; width: 100%; padding: 0;">
+{% endif %}
 
 
-            <div class="template_row" style="justify-content: center; height: 18%;">
+<div class="text-center" style="background: white url('{% static 'img/plot-template.png' %}') no-repeat center; background-size: 700px 700px; height: 800px; width: 100%; margin-top: -45px; padding: 0;">
 
-                <div class="template_component" style="width: 90%;">
+    <div class="template_row" style="justify-content: center; height: 18%;">
 
-                    <div class="template_component_label">Climax</div>
+        <div class="template_component" style="width: 90%;">
 
-                    {% if edit %}
+            <div class="template_component_label">Climax</div>
 
-                        <a id="climax_edit_btn"
-                           class="btn btn-info btn-xs pull-right edit_section_button"
-                           style="font-size: 14pt; width: 125px; margin-top: -31px;"
-                           onclick="josCKEdit('climax');"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="Activates editor"
-                        >
-                            Edit climax
-                        </a>
+            {% if edit %}
 
-                        <a id="climax_cancel_btn"
-                           class="btn btn-danger btn-xs pull-right edit_section_button"
-                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
-                           onclick="josCKDestroy('climax');"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="Warning: discards recent changes!"
-                        >
-                            Discard
-                        </a>
+                <a id="climax_edit_btn"
+                   class="btn btn-info btn-xs pull-right edit_section_button"
+                   style="align-self: flex-start; margin-left: 135px; font-size: 14pt; width: 125px; margin-top: -31px;"
+                   onclick="josCKEdit('climax');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Activates editor"
+                >
+                    Edit climax
+                </a>
 
-
-                        <!-- This div holds editor. -->
-                        <div id="climax_editor_container" style=" "></div>
-
-                    {% endif %}
-
-                    <!-- This div displays contents. -->
-                    <!-- div id="climax_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class" style="padding: 20px; min-height: 415px;">
-                        {{ plot_template.climax | safe }}<br>
-                    </div -->
+                <a id="climax_cancel_btn"
+                   class="btn btn-danger btn-xs pull-right edit_section_button"
+                   style="align-self: flex-start; font-size: 14pt; width: 125px; margin-top: -31px; display: none;"
+                   onclick="josCKDestroy('climax');"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Warning: discards recent changes!"
+                >
+                    Discard
+                </a>
 
 
-                    <div id='xxx' class='edit_box'>
-                        {{ plot_template.climax | safe }}<br>
-                    </div>
+                <!-- This div holds editor. -->
+                <div id="climax_editor_container" class='edit_box' style=" "></div>
 
-                </div>
+            {% endif %}
+
+            <div id='climax_original_content'
+                 class='edit_box'
+                 style="{% if edit %}border: 3px dashed #28a4c9;{% endif %}">
+                {{ plot_template.climax | striptags }}<br>
             </div>
 
-            <div class="template_row" style="justify-content: space-around; height: 50%; margin-top: 3%;">
-
-                <div class="template_component" style="width: 55%;">
-                    <div id='xxx' class='edit_box'>xxx</div>
-                </div>
-
-                <div class="template_component" style="width: 40%;">
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-
-            </div>
-
-            <div class="template_row"
-                 style="display: flex; justify-content: space-between; height: 29%;">
-
-                <div class="template_component">
-                    <div class="template_component_label" style="align-self: flex-start;">Inciting incident</div>
-
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-
-                <div class="template_component">
-                    <div class="template_component_label" style="align-self: flex-end;">Resolution</div>
-
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <script>
+    <div class="template_row" style="height: 50%; margin-top: 3%;">
+
+        <div class="template_component" style="width: 55%;">
+            <div id='xxx' class='edit_box'>xxx</div>
+        </div>
+
+        <div class="template_component" style="width: 30%;">
+            <div id='xxx' class='edit_box'></div>
+        </div>
+
+    </div>
+
+    <div class="template_row"
+         style="height: 29%;">
+
+        <div class="template_component">
+            <div class="template_component_label" style="align-self: flex-start;">Inciting incident</div>
+
+            <div id='xxx' class='edit_box'></div>
+        </div>
+
+        <div class="template_component">
+            <div class="template_component_label" style="align-self: flex-end;">Resolution</div>
+
+            <div id='xxx' class='edit_box'></div>
+        </div>
+    </div>
+</div>
 
 
-    </script>
+<script>
+
+    initJOSEditor('climax', 'large', 'member_profile_update', "{{ plot_template.climax | striptags }}");
+
+</script>
 
 {% endblock all_content %}
