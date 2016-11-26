@@ -14,18 +14,23 @@
 <style>
 
     .edit_box {
+        background-color: rgba(255,255,255,.2);
+        border:
+            {% if edit %}
+                3px dashed #5bc0de
+            {% else %}
+                1px solid rgb(65,45,120)
+            {% endif %};
         height: 95%;
-        width: 100%;
-        background-color: transparent;
-        text-align: left;
-        border: 1px solid rgb(65,45,120);
-        padding: 10px;
         overflow-x: hidden;
         overflow-y: scroll;
+        padding: 10px;
+        text-align: left;
+        width: 100%;
     }
 
     .edit_box:hover {
-
+        background-color: rgba(255, 255, 255, .9);
     }
 
     .template_row {
@@ -39,13 +44,6 @@
         flex-direction: column;
         align-items: center;
         width: 47%;
-    }
-
-    .template_component_label {
-        background-color: white;
-        padding: 5px;
-        font-family: 'Architects Daughter';
-        font-size: 28pt;
     }
 
 </style>
@@ -64,235 +62,146 @@
 
 {% endif %}
 
-    <style>
-        .edit_box {
-            height: 95%;
-            width: 100%;
-            background-color: white;
-            border: 3px dashed #28a4c9;
-            opacity: .4;
-        }
+<img src="{% static 'img/plot-mountain-112716.png' %}" width=1050px height=1050px
+     style="position: fixed; top: 10px; left: 80px; margin-bottom: 50px; z-index: -1">
 
-        .edit_box:hover {
-            opacity: 1;
-        }
+<div style="height: 800px; margin-top: -45px; padding: 0; width: 100%;">
 
-        .template_row {
-            display: flex;
-            width: 100%
-        }
+    <div class="template_row" style="justify-content: flex-start; height: 15%; margin-top: 3%;">
 
-        .template_component {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 45%;
-        }
+        <!-- Climax -->
+        <div class="template_component" style="width: 85%;">
 
-        .template_component_label {
-            background-color: white;
-            padding: 0 20px;
-            font-family: 'Architects Daughter';
-            font-size: 28pt;
-        }
-    </style>
+            <div id='xxx' class='edit_box'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
 
-    <div class="row text-center" style=" ">
-        <div class="col-xs-12"
-             style="background: white url('{% static 'img/plot-template.png' %}') no-repeat top center; height: 800px; width: 100%; padding: 0;">
-
-
-            <div class="template_row" style="justify-content: center; height: 18%;">
-
-                <div class="template_component" style="width: 90%;">
-
-                    <div class="template_component_label">Climax</div>
-
-                    <div id='xxx' class='edit_box'></div>
-
-                </div>
-            </div>
-
-            <div class="template_row" style="justify-content: space-around; height: 50%; margin-top: 3%;">
-
-                <div class="template_component" style="width: 55%;">
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-
-                <div class="template_component" style="width: 40%;">
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-
-            </div>
-
-            <div class="template_row"
-                 style="display: flex; justify-content: space-between; height: 29%;">
-
-                <div class="template_component">
-                    <div class="template_component_label" style="align-self: flex-start;">Inciting incident</div>
-
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-
-                <div class="template_component">
-                    <div class="template_component_label" style="align-self: flex-end;">Resolution</div>
-
-                    <div id='xxx' class='edit_box'></div>
-                </div>
-            </div>
         </div>
     </div>
 
-<div class="text-center" style="background: white url('{% static 'img/plot-template.png' %}') no-repeat center; background-size: 700px 700px; height: 800px; width: 100%; margin-top: -45px; padding: 0;">
-
-    <!-- Incite -->
-    <div class="row text-left">
-
-        <div class="col-xs-1 template_component_label" style="margin-top: 30px;">Climax</div>
-
-        <div id='climax_original_content' class="col-xs-8"
-             style="{% if edit %}border: 3px dashed #28a4c9;{% else %}border: 1px solid rgb(65,45,120);{% endif %} margin: 15px -30px 0 30px; height: 100px; padding: 7px;">
-            {{ plot_template.climax | striptags }}<br>
-        </div>
-
-    </div>
-
-    {% if edit %}
-
-        <a id="climax_edit_btn"
-           class="btn btn-info btn-xs"
-           style="position: absolute; left: 920px; top: 130px; font-size: 14pt; width: 125px;"
-           onclick="centralCKEdit('climax', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
-           data-toggle="tooltip"
-           data-placement="bottom"
-           title="Activates editor"
-        >
-            Edit climax
-        </a>
-
-        <!-- Editor -->
-        <div id="climax_editor_container"
-             style="position:absolute; top: 160px; width: 800px; left: 110px;"></div>
-
-    {% endif %}
-
-
-    <div class="template_row" style="height: 40%; margin-top: 5%;">
+    <div class="template_row" style="height: 46%; margin-top: 4%;">
 
         <!-- Rising -->
-        <div class="template_component text-left" style="width: 55%;">
-            <div id='rising_original_content' class=" "
-                 style="{% if edit %}border: 3px dashed #28a4c9;
-                        {% else %}border: 1px solid rgb(65,45,120);{% endif %}
-                         width: 100%; height: 100%;  padding: 7px;">
-                {{ plot_template.rising | striptags }}<br>
-            </div>
+        <div class="template_component" style="width: 58%;">
+            <div id='xxx' class='edit_box'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
         </div>
-
-        {% if edit %}
-
-
-            <a id="rising_edit_btn"
-               class="btn btn-info btn-xs"
-               style="position: absolute; left: 535px; top: 260px; font-size: 14pt; width: 125px;"
-               onclick="centralCKEdit('rising', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Activates editor"
-            >
-                Edit rising
-            </a>
-
-            <!-- Editor -->
-            <div id="rising_editor_container"
-                 style="position:absolute; top: 290px; width: 800px; left: 30px;"></div>
-
-        {% endif %}
 
         <!-- Falling -->
-        <div class="template_component" style="width: 30%;">
-            <div id='falling_original_content' class=" "
-                 style="{% if edit %}border: 3px dashed #28a4c9;
-                 {% else %}border: 1px solid rgb(65,45,120);{% endif %}
-                         width: 100%; height: 100%;  padding: 7px;">
-                {{ plot_template.falling | striptags }}<br>
-            </div>
+        <div class="template_component" style="width: 37%;">
+            <div id='xxx' class='edit_box'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
         </div>
 
-        {% if edit %}
-
-
-
-            <a id="falling_edit_btn"
-               class="btn btn-info btn-xs"
-               style="position: absolute; left: 1040px; top: 260px; font-size: 14pt; width: 125px;"
-               onclick="centralCKEdit('falling', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Activates editor"
-            >
-                Edit falling
-            </a>
-
-            <!-- Editor -->
-            <div id="falling_editor_container"
-                 style="position:absolute; top: 290px; width: 800px; left: 370px;"></div>
-
-        {% endif %}
     </div>
 
-    <div class="template_row" style="height: 29%; margin-top: 2%;">
+    <div class="template_row"
+         style="display: flex; justify-content: space-between; height: 26%; margin-top: 6%;">
 
         <!-- Incite -->
-        <div class="template_component text-left" style="width: 50%;">
-            <div class="template_component_label" style="align-self: flex-start;">
-                Inciting incident
-            </div>
-            <div id='incite_original_content' class=" "
-                 style="{% if edit %}border: 3px dashed #28a4c9;
-                 {% else %}border: 1px solid rgb(65,45,120);{% endif %}
-                         width: 100%; height: 100%;  padding: 7px;">
-                {{ plot_template.incite | striptags }}<br>
-            </div>
+        <div class="template_component">
+
+            <div id='xxx' class='edit_box'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+
         </div>
 
-        {% if edit %}
-
-            <a id="incite_cancel_btn"
-               class="btn btn-danger btn-xs pull-left"
-               style="position: absolute; left: 342px; top: 663px; font-size: 14pt; width: 125px;"
-               onclick="josCKDestroy('incite');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Warning: discards recent changes!"
-            >
-                Discard
-            </a>
-
-            <a id="incite_edit_btn"
-               class="btn btn-info btn-xs"
-               style="position: absolute; left: 477px; top: 663px; font-size: 14pt; width: 125px;"
-               onclick="centralCKEdit('incite', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Activates editor"
-            >
-                Edit incite
-            </a>
-
-            <!-- Editor -->
-            <div id="incite_editor_container"
-                 style="position:absolute; top: 310px; width: 800px; left: 30px;"></div>
-
-        {% endif %}
-
+        <!-- Resolve -->
         <div class="template_component">
-            <div class="template_component_label" style="align-self: flex-end;">Resolution</div>
 
-            <div id='xxx' class='edit_box'></div>
+            <div id='xxx' class='edit_box'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+
         </div>
     </div>
+
+    <div class="row" style="height: 200px;"></div>
+
 </div>
+
+
+
+<!-- Editor -->
+{% if edit %}
+
+    <a id="cancel_btn"
+       class="btn btn-danger"
+       style="position: absolute; left: 830px; top: 200px; width: 125px;"
+       onclick="josCKDestroy('incite');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Warning: discards recent changes!"
+    >
+        Discard
+    </a>
+    <a id="save_btn"
+       class="btn btn-success"
+       style="position: absolute; left: 970px; top: 200px; width: 125px;"
+       onclick=" "
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Warning: discards recent changes!"
+    >
+        Save
+    </a>
+
+    <!-- Editor -->
+    <div id="central_editor_container"
+         style="position:absolute; top: 290px; width: 800px; left: 370px;"></div>
+
+    <a id="climax_edit_btn"
+       class="btn btn-info btn-xs"
+       style="position: absolute; left: 55px; top: 120px; font-size: 14pt; width: 125px;"
+       onclick="centralCKEdit('climax', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Activates editor"
+    >
+        Edit climax
+    </a>
+
+    <a id="rising_edit_btn"
+       class="btn btn-info btn-xs"
+       style="position: absolute; left: 55px; top: 286px; font-size: 14pt; width: 125px;"
+       onclick="centralCKEdit('rising', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Activates editor"
+    >
+        Edit rising
+    </a>
+
+    <a id="falling_edit_btn"
+       class="btn btn-info btn-xs"
+       style="position: absolute; left: 1030px; top: 286px; font-size: 14pt; width: 125px;"
+       onclick="centralCKEdit('falling', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Activates editor"
+    >
+        Edit falling
+    </a>
+
+    <a id="incite_edit_btn"
+       class="btn btn-info btn-xs"
+       style="position: absolute; left: 55px; top: 722px; font-size: 14pt; width: 125px;"
+       onclick="centralCKEdit('incite', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Activates editor"
+    >
+        Edit incite
+    </a>
+
+    <a id="resolve_edit_btn"
+       class="btn btn-info btn-xs"
+       style="position: absolute; left: 1030px; top: 722px; font-size: 14pt; width: 125px;"
+       onclick="centralCKEdit('resolve', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+       data-toggle="tooltip"
+       data-placement="bottom"
+       title="Activates editor"
+    >
+        Edit resolve
+    </a>
+
+{% endif %}
+
+
+
 
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
