@@ -2,10 +2,26 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import JOSCourse, JOSStory, JOSCourseWeek, JOSHandout
+from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSStorywheel, JOSPlotTemplate
 
 
 # Register your models here.
+
+"""
+class JOSStoryActivityAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "created", "course", "week")
+    verbose_name = 'JOS Story Activity'
+    readonly_fields = ('created', 'updated',)
+
+
+admin.site.register(JOSStoryActivity, JOSStoryActivityAdmin)
+
+class JOSCourseStudentAdmin(admin.ModelAdmin):
+    list_display = ("id", "username", "created", "course")
+    verbose_name = 'JOS Course Student'
+    readonly_fields = ('created', 'updated',)
+
+admin.site.register(JOSCourseStudent, JOSCourseStudentAdmin)
 
 class JOSCourseAdmin(admin.ModelAdmin):
     list_display = ("id", "course_title", "instructor", "updated")
@@ -13,15 +29,7 @@ class JOSCourseAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated',)
 
 admin.site.register(JOSCourse, JOSCourseAdmin)
-
-
-# class JOSCourseStudentAdmin(admin.ModelAdmin):
-#     list_display = ("id", "username", "created", "course")
-#     verbose_name = 'JOS Course Student'
-#     readonly_fields = ('created', 'updated',)
-#
-# admin.site.register(JOSCourseStudent, JOSCourseStudentAdmin)
-
+"""
 
 class JOSCourseWeekAdmin(admin.ModelAdmin):
     verbose_name = 'Week'
@@ -43,14 +51,6 @@ class JOSHandoutAdmin(admin.ModelAdmin):
 
 admin.site.register(JOSHandout, JOSHandoutAdmin)
 
-# class JOSStoryActivityAdmin(admin.ModelAdmin):
-#     list_display = ("id", "title", "created", "course", "week")
-#     verbose_name = 'JOS Story Activity'
-#     readonly_fields = ('created', 'updated',)
-#
-#
-# admin.site.register(JOSStoryActivity, JOSStoryActivityAdmin)
-
 
 class JOSStoryAdmin(admin.ModelAdmin):
     """
@@ -64,5 +64,32 @@ class JOSStoryAdmin(admin.ModelAdmin):
 
     list_editable = ("publish_permission",)
 
-
 admin.site.register(JOSStory, JOSStoryAdmin)
+
+
+class JOSStorywheelAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSStorywheel.
+    """
+    list_display = ("id", "author", "publish_permission", "updated", "title")
+
+    verbose_name = "Storywheel"
+
+    readonly_fields = ("created", "updated",)
+
+    list_editable = ("publish_permission",)
+
+admin.site.register(JOSStorywheel, JOSStorywheelAdmin)
+
+
+class JOSPlotTemplateAdmin(admin.ModelAdmin):
+    """
+    Admin class for JOSStorywheel.
+    """
+    list_display = ("id", "incite", "rising", "climax", "falling", "resolve", "updated")
+
+    verbose_name = "Storywheel"
+
+    readonly_fields = ("created", "updated",)
+
+admin.site.register(JOSPlotTemplate, JOSPlotTemplateAdmin)

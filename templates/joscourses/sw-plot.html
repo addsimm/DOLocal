@@ -5,7 +5,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    Plot template
+    Plot template {{ storywheel.title }}{{ plot_template.climax | safe }}
 
 {% endblock %}
 
@@ -47,6 +47,23 @@
 
     </style>
 
+    EDIT: {{ edit }}<br>
+
+    {% if storywheel.author == request.user %}
+
+        <a id="edit_mode_button" class="btn pull-left btn-info"
+           style="margin-top: 20px; margin-left: 40px;"
+           href="{% if edit %}
+                    {% url "joscourses:sw_plot" storywheel.id %}
+                 {% else %}
+                    {% url "joscourses:sw_plot_edit" storywheel.id %}
+                 {% endif %}">
+            {% if edit %}Hide{% else %}Edit{% endif %}
+        </a><br>
+
+    {% endif %}
+
+
     <div class="row text-center" style=" ">
         <div class="col-xs-12"
              style="background: white url('{% static 'img/plot-template.png' %}') no-repeat top center; height: 800px; width: 100%; padding: 0;">
@@ -58,7 +75,45 @@
 
                     <div class="template_component_label">Climax</div>
 
-                    <div id='xxx' class='edit_box'></div>
+                    {% if edit %}
+
+                        <a id="climax_edit_btn"
+                           class="btn btn-info btn-xs pull-right edit_section_button"
+                           style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                           onclick="josCKEdit('climax');"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Activates editor"
+                        >
+                            Edit climax
+                        </a>
+
+                        <a id="climax_cancel_btn"
+                           class="btn btn-danger btn-xs pull-right edit_section_button"
+                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                           onclick="josCKDestroy('climax');"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Warning: discards recent changes!"
+                        >
+                            Discard
+                        </a>
+
+
+                        <!-- This div holds editor. -->
+                        <div id="climax_editor_container" style=" "></div>
+
+                    {% endif %}
+
+                    <!-- This div displays contents. -->
+                    <!-- div id="climax_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class" style="padding: 20px; min-height: 415px;">
+                        {{ plot_template.climax | safe }}<br>
+                    </div -->
+
+
+                    <div id='xxx' class='edit_box'>
+                        {{ plot_template.climax | safe }}<br>
+                    </div>
 
                 </div>
             </div>
@@ -66,7 +121,7 @@
             <div class="template_row" style="justify-content: space-around; height: 50%; margin-top: 3%;">
 
                 <div class="template_component" style="width: 55%;">
-                    <div id='xxx' class='edit_box'></div>
+                    <div id='xxx' class='edit_box'>xxx</div>
                 </div>
 
                 <div class="template_component" style="width: 40%;">

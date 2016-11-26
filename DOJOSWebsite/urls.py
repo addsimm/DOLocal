@@ -6,7 +6,7 @@ from django.contrib import admin
 
 from mezzanine.conf import settings
 
-from josprojects.views import *
+from josprojects.views import help_update, ajax_help_search, workshop_connect, community_room
 from joscourses.views import playground_view
 
 _slash = "/" if settings.APPEND_SLASH else ""
@@ -34,7 +34,7 @@ urlpatterns += patterns('',
 
     url("playground", playground_view, name="playground"),
 
-
+    url("help_update", help_update, name="help_update"),
 
     ### EDITABLE HOMEPAGE
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
@@ -59,7 +59,7 @@ urlpatterns += patterns('',
     ### JOS Staff / Projects / Courses ###
     ("^", include("josstaff.urls", namespace='josstaff')),
     ("^", include("josprojects.urls")),
-    ("^joscourses/", include("joscourses.urls")),
+    ("^joscourses/", include("joscourses.urls", namespace='joscourses')),
 
     ### DJOINGO ###
     # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),

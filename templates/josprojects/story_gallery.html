@@ -52,7 +52,7 @@
                         </td>
 
                         <td>
-                            <a style="margin-left: 10px;" href="{% url 'josstory' %}/{{ story.id }}">
+                            <a style="margin-left: 10px;" href="{% url 'joscourses:josstory' %}/{{ story.id }}">
                                 {{ story.title | striptags | safe | truncatechars:45 }}
                             </a>
                         </td>

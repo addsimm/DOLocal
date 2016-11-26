@@ -147,14 +147,14 @@ def help_update(request):
 
     user_profile = get_object_or_404(JOSProfile, user=request.user)
 
-    new_note_content = request.POST.get('new_note_content', 'missing')
+    new_note_content = request.POST.get('new_content', 'missing')
 
     if new_note_content != 'missing':
         user_created_note = get_object_or_404(JOSUserCreatedNote, profile=user_profile)
 
         user_created_note.note_text = new_note_content
         user_created_note.save()
-        # info(request, "Notes updated!")
+        info(request, "Notes updated!")
 
     # Update help status in session data
     help_position = request.POST.get("help_position", 'missing')

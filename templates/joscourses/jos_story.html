@@ -232,7 +232,7 @@
            href="{% url "josstory" story.id %}">
                     Hide
                 {% else %}
-                    href="{% url "josstory_edit" story.id %}">
+                    href="{% url "joscourses:josstory_edit" story.id %}">
                     Edit
                 {% endif %}
         </a><br>
@@ -288,7 +288,7 @@
                 value: {{ story.publish_permission }}
             })
             .on('slideStop', function (slideStopEvt) {
-                window.location.href = "{% url "josstory" story.id %}/?pubperm=" + slideStopEvt.value;
+                window.location.href = "{% url "joscourses:josstory" story.id %}/?pubperm=" + slideStopEvt.value;
             });
 
 </script>

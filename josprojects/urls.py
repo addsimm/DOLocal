@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import personaldesk, mystory_list, story_gallery, help_update
+from .views import personaldesk, mystory_list, story_gallery
 
 urlpatterns = patterns(
         '',
@@ -14,8 +14,6 @@ urlpatterns = patterns(
    url("mystory_list", mystory_list, name="mystory_list"),
 
    url("story_gallery", story_gallery, name="story_gallery"),
-
-   url("help_update", help_update, name="help_update"),
 
    # url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
    # url("josstory/(?P<story_id>\d+)/*$", josstory, {'edit': False}, name="josstory"),

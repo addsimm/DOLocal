@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
-from .models import JOSCourseWeek, JOSHandout, JOSStory
+from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSStorywheel, JOSPlotTemplate
 
 ### UNUSED
 @login_required
@@ -108,7 +108,7 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         comment_thread = JOSMessageThread.objects.create(subject=story.title)
         story.message_thread = comment_thread
         story.save()
-        return redirect('joinourstory.com/josstory/' + str(story.id))
+        return redirect('joscourses.views.josstory', story_id=story.id)
 
     comment_thread = story.message_thread
 
@@ -184,15 +184,39 @@ def ajax_story_update(request):
     return HttpResponse(story_id)
 
 
-def storywheel(request, template="joscourses/storywheel.html", extra_context=None):
-    context = {}
+@login_required
+def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra_context=None):
+    activate('America/Los_Angeles')
+
+    try:
+        storywheel = get_object_or_404(JOSStorywheel, pk=wheel_id)
+    except:
+        storywheel = JOSStorywheel.objects.create(author=request.user, title="- Untitled -")
+        storywheel.save()
+        return redirect('joinourstory.com/joscourses/storywheel/' + str(storywheel.id))
+
+    context = {'storywheel' : storywheel}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
 
 
-def sw_plot(request, template="joscourses/sw-plot.html", extra_context=None):
-    context = {}
+def sw_plot(request, edit, wheel_id=0, template="joscourses/sw-plot.html", extra_context=None):
+
+    storywheel = get_object_or_404(JOSStorywheel, pk=wheel_id)
+
+    plot_template, created = JOSPlotTemplate.objects.get_or_create(storywheel=storywheel)
+
+    if created:
+        plot_template.save()
+        return redirect('joinourstory.com/joscourses/plot_template/' + str(storywheel.id))
+
+    context = {
+        'plot_template': plot_template,
+        'storywheel': storywheel,
+        'edit': edit
+    }
+
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)

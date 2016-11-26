@@ -5,7 +5,7 @@
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    Storywheel
+    Storywheel {{ storywheel.title }}
 
 {% endblock %}
 
@@ -39,6 +39,8 @@
     var wedges = ['none', 'conflict', 'character', 'theme', 'world', 'plot'];
     var oldWedge = 0,
         newWedge = 0;
+
+    var url_plot = "{% url 'joscourses:sw_plot' wheel_id=storywheel.id %}"
 
     function redraw() {
         console.log('drawing');
@@ -142,7 +144,7 @@
 
         console.log(wedges[segment] + ' clicked');
         if (wedges[segment] === 'plot') {
-            location.href = "{% url 'sw_plot' %}";
+            location.href = url_plot;
         }
     });
 

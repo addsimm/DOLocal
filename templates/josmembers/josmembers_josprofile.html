@@ -152,13 +152,12 @@
 
         <a id="edit_mode_button" class="btn pull-left btn-info"
            style="margin-top: 20px; margin-left: 40px;"
-            {% if edit %}
-                href="{% url "josmembers:josprofile" request.user.id %}
-                Hide
-            {% else %}
-                href="{% url "josmembers:josprofile_edit" request.user.id %}
-                Edit
-            {% endif %}">
+           href="{% if edit %}
+                    {% url "josmembers:josprofile" request.user.id %}
+                 {% else %}
+                    {% url "josmembers:josprofile_edit" request.user.id %}
+                 {% endif %}">
+            {% if edit %}Hide{% else %}Edit{% endif %}
         </a><br>
 
     {% else %}

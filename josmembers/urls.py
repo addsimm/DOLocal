@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from views import members_list, ajax_submit_member_search, ajax_member_profile_update, reserve_space
 
 from mezzanine.conf import settings
@@ -20,8 +20,10 @@ urlpatterns = patterns('',
 
     url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash),
        "josmembers.views.josprofile", {'edit': True}, name="josprofile_edit"),
+
     url("^%s/(?P<userid>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
        "josmembers.views.josprofile", {'edit': False}, name="josprofile"),
+
     url("^%s%s$" % (PROFILE_URL.strip("/"), _slash),
        "josmembers.views.josprofile_redirect", name="josprofile_redirect"),
     url("^%s%s$" % (LOGIN_URL.strip("/"), _slash),

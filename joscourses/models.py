@@ -50,6 +50,7 @@ class JOSCourseStudent(TimeStamped, models.Model):
     def __unicode__(self):
         return 'Enrollee: ' + self.student.JOSProfile.jos_name()
 
+
 class JOSCourseWeek(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Courseweek'
@@ -152,5 +153,30 @@ class JOSStory(TimeStamped, models.Model):
         last_initial = author.user.last_name[:1].upper()
         jos_name = first_name + " " + last_initial + "."
         return jos_name
+
+
+class JOSStorywheel(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Storywheel'
+
+    author = models.ForeignKey(User, blank=True, null=True)
+    title = models.TextField(default="Untitled", blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+    tags = TaggableManager()
+
+
+class JOSPlotTemplate(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Plot Template'
+        verbose_name_plural = 'Plot Templates'
+
+    storywheel = models.ForeignKey(JOSStorywheel, blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+    incite = models.TextField(default="Insert here", blank=True, null=True)
+    rising = models.TextField(default="Insert here", blank=True, null=True)
+    climax = models.TextField(default="Insert here", blank=True, null=True)
+    falling = models.TextField(default="Insert here", blank=True, null=True)
+    resolve = models.TextField(default="Insert here", blank=True, null=True)
+
 
 
