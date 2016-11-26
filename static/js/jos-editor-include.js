@@ -1,5 +1,7 @@
 /**
  * Created by adamsimon on 11/22/16.
+ * This editor is always available using a page's init function:
+ * initJOSEditor(sctn, tlbr, eapurl, org_cntnt)
  */
 
 var editors = {};
