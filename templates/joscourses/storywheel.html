@@ -17,12 +17,10 @@
 
 <div id="mouse_report"></div>
 
-<div class="row" style="margin: -85px 0 20px 0; height: 800px;">
+<div class="row" style="padding: -85px 0 20px 0; height: 800px;">
     <div class="col-xs-12 text-center">
-        <img src="{% static 'img/storywheel-112016.png' %}" height=800px>
-
         <canvas id="pie_canvas" width="800" height="800"
-                style="position: fixed; top: 50px; left: 202px;">
+                style="background-image: url('{% static 'img/storywheel-112016.png' %}'); position: absolute; top: -85px; left: 202px;">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>

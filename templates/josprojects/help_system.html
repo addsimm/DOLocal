@@ -225,19 +225,14 @@
 {
     $(document).ready(function () {
 
-        // editors keys are sections with: section, toolbar, url and original content
-
+        // editors params: section, toolbar, url and original content
         initJOSEditor('notes', 'small', 'help_update', "{{ user_created_note | escapejs }}");
-
-        // console.log('editors: ' + JSON.stringify(editors.notes.toolbar));
-
         $('[data-toggle="tooltip"]').tooltip();
 
-        /** The Ajax help search function. */
-
+        // The Ajax help search function; attaches a listener
         var MILLS_TO_IGNORE_SEARCH = 100;
-        /* This attaches a listener. Calling this again would attach a *second* */
         $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
+
 
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {

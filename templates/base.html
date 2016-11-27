@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 {% load pages_tags mezzanine_tags i18n staticfiles static inbox %}
 
 <head>
@@ -49,14 +49,21 @@
 
 </head>
 
-<body id="{% block body_id %}body{% endblock %}"
-      style="
+<style>
+
+    body {
         color: rgb(65, 45, 120);
         font-family: 'source sans pro', sans-serif;
         font-size: 16pt;
         line-height: normal;
         padding-top: 135px;
-        ">
+        width: 1170px;
+    }
+
+</style>
+
+
+<body id="{% block body_id %}body{% endblock %}">
 
 {% block help %}
 

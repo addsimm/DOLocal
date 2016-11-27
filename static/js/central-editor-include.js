@@ -29,7 +29,6 @@ function cntrlCKEdit(template_section) {
         return;
     }
 
-    $(cntrl_title).text('Updating ' + template_section).show();
     $('.edit_btn_central').hide();
     $('.template_row').hide();
     $('#edit_mode_button').hide();
@@ -38,9 +37,9 @@ function cntrlCKEdit(template_section) {
     cntrlEditor = CKEDITOR.appendTo(
         cntrl_container, ck_config_small, $(cntrl_orig_elmnt).text());
 
+    $(cntrl_title).text('Updating ' + template_section);
     $(cntrl_container).show();
-    $(cntrl_save_btn).show();
-    $(cntrl_cancel_btn).show();
+
 }
 /*
 } else { //Save
