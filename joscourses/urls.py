@@ -21,9 +21,9 @@ urlpatterns = patterns(
     url("storywheel/*$", storywheel, name="storywheel"),
 
 
-    url("sw_plot/(?P<wheel_id>\d+)/edit$", sw_plot, {'edit': True}, name="sw_plot_edit"),
+    url("plot_template/(?P<wheel_id>\d+)/edit$", sw_plot, {'edit': True}, name="sw_plot_edit"),
 
-    url("sw_plot/(?P<wheel_id>\d+)$", sw_plot, {'edit': False}, name="sw_plot"),
+    url("plot_template/(?P<wheel_id>\d+)$", sw_plot, {'edit': False}, name="sw_plot"),
 
     #url("sw_plot", sw_plot, name="sw_plot"),
 )

@@ -8,7 +8,7 @@
     Storywheel {{ storywheel.title }}
 
 {% endblock %}
-
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
 {% block all_content %}
 
 <style>
@@ -17,7 +17,7 @@
 
 <div id="mouse_report"></div>
 
-<div class="row" style="margin-top: 15px; height: 800px;">
+<div class="row" style="margin-top: -100px; height: 800px;">
     <div class="col-xs-12 text-center">
         <img src="{% static 'img/storywheel-112016.png' %}" height=800px>
     </div>
@@ -40,7 +40,7 @@
     var oldWedge = 0,
         newWedge = 0;
 
-    var url_plot = "{% url 'joscourses:sw_plot' wheel_id=storywheel.id %}"
+    var url_plot = "https://joinourstory.com/joscourses/plot_template/" + "{{ storywheel.id }}";
 
     function redraw() {
         console.log('drawing');
@@ -144,6 +144,7 @@
 
         console.log(wedges[segment] + ' clicked');
         if (wedges[segment] === 'plot') {
+            console.log('url_plot: ' + url_plot);
             location.href = url_plot;
         }
     });

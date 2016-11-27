@@ -8,7 +8,7 @@
     Plot template {{ storywheel.title }}
 
 {% endblock %}
-
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
 {% block all_content %}
 
 <style>
@@ -46,6 +46,12 @@
         width: 47%;
     }
 
+    .edit_btn_central {
+        position: absolute;
+        font-size: 14pt;
+        width: 125px;
+    }
+
 </style>
 
 {% if storywheel.author == request.user %}
@@ -63,11 +69,11 @@
 {% endif %}
 
 <img src="{% static 'img/plot-mountain-112716.png' %}" width=1050px height=1050px
-     style="position: fixed; top: 10px; left: 80px; margin-bottom: 50px; z-index: -1">
+     style="position: fixed; top: -60px; left: 30px; z-index: -1">
 
-<div style="height: 800px; margin-top: -45px; padding: 0; width: 100%;">
+<div style="position: fixed; top: 90px; left: 30px; height: 800px; width: 1170px;">
 
-    <div class="template_row" style="justify-content: flex-start; height: 15%; margin-top: 3%;">
+    <div class="template_row" style="justify-content: flex-start; height: 15%;">
 
         <!-- Climax -->
         <div class="template_component" style="width: 85%;">
@@ -77,7 +83,7 @@
         </div>
     </div>
 
-    <div class="template_row" style="height: 46%; margin-top: 4%;">
+    <div class="template_row" style="height: 48%; margin-top: 4%;">
 
         <!-- Rising -->
         <div class="template_component" style="width: 58%;">
@@ -92,7 +98,7 @@
     </div>
 
     <div class="template_row"
-         style="display: flex; justify-content: space-between; height: 26%; margin-top: 6%;">
+         style="display: flex; justify-content: space-between; height: 29%; margin-top: 4%;">
 
         <!-- Incite -->
         <div class="template_component">
@@ -108,12 +114,7 @@
 
         </div>
     </div>
-
-    <div class="row" style="height: 200px;"></div>
-
 </div>
-
-
 
 <!-- Editor -->
 {% if edit %}
@@ -139,13 +140,13 @@
         Save
     </a>
 
-    <!-- Editor -->
+    <!-- Edit Buttons -->
     <div id="central_editor_container"
-         style="position:absolute; top: 290px; width: 800px; left: 370px;"></div>
+         style="position:absolute; top: 240px; height: 500px; width: 900px; left: 90px; background-color: pink"></div>
 
     <a id="climax_edit_btn"
-       class="btn btn-info btn-xs"
-       style="position: absolute; left: 55px; top: 120px; font-size: 14pt; width: 125px;"
+       class="btn btn-info btn-xs edit_btn_central"
+       style="left: 55px; top: 59px;"
        onclick="centralCKEdit('climax', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -155,8 +156,8 @@
     </a>
 
     <a id="rising_edit_btn"
-       class="btn btn-info btn-xs"
-       style="position: absolute; left: 55px; top: 286px; font-size: 14pt; width: 125px;"
+       class="btn btn-info btn-xs edit_btn_central"
+       style="left: 55px; top: 226px;"
        onclick="centralCKEdit('rising', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -166,8 +167,8 @@
     </a>
 
     <a id="falling_edit_btn"
-       class="btn btn-info btn-xs"
-       style="position: absolute; left: 1030px; top: 286px; font-size: 14pt; width: 125px;"
+       class="btn btn-info btn-xs edit_btn_central"
+       style="left: 1050px; top: 226px;"
        onclick="centralCKEdit('falling', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -177,8 +178,8 @@
     </a>
 
     <a id="incite_edit_btn"
-       class="btn btn-info btn-xs"
-       style="position: absolute; left: 55px; top: 722px; font-size: 14pt; width: 125px;"
+       class="btn btn-info btn-xs edit_btn_central"
+       style="left: 55px; top: 658px;"
        onclick="centralCKEdit('incite', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -188,8 +189,8 @@
     </a>
 
     <a id="resolve_edit_btn"
-       class="btn btn-info btn-xs"
-       style="position: absolute; left: 1030px; top: 722px; font-size: 14pt; width: 125px;"
+       class="btn btn-info btn-xs edit_btn_central"
+       style="left: 1050px; top: 658px;"
        onclick="centralCKEdit('resolve', 'plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -200,11 +201,14 @@
 
 {% endif %}
 
-
-
+<div style="height: 700px; border: 1px solid transparent; margin: 0;"></div>
 
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
-<script></script>
+<script>
+
+$('.edit_btn_central').hide();
+
+</script>
 
 {% endblock all_content %}

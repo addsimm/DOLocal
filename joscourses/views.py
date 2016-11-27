@@ -201,15 +201,20 @@ def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra
     return TemplateResponse(request, template, context)
 
 
-def sw_plot(request, edit, wheel_id=0, template="joscourses/sw-plot.html", extra_context=None):
+def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html", extra_context=None):
 
-    storywheel = get_object_or_404(JOSStorywheel, pk=wheel_id)
+    try:
+        storywheel = get_object_or_404(JOSStorywheel, pk=int(wheel_id))
+    except:
+        return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    plot_template, created = JOSPlotTemplate.objects.get_or_create(storywheel=storywheel)
-
-    if created:
+    try:
+        plot_template = get_object_or_404(JOSPlotTemplate, storywheel=storywheel)
+    except:
+        plot_template = JOSPlotTemplate.objects.create(storywheel=storywheel)
         plot_template.save()
-        return redirect('joinourstory.com/joscourses/plot_template/' + str(storywheel.id))
+
+        return redirect('https://joinourstory.com/joscourses/plot_template/' + str(storywheel.id))
 
     context = {
         'plot_template': plot_template,

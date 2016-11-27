@@ -172,11 +172,11 @@ class JOSPlotTemplate(TimeStamped, models.Model):
 
     storywheel = models.ForeignKey(JOSStorywheel, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
-    incite = models.TextField(default="Insert here", blank=True, null=True)
-    rising = models.TextField(default="Insert here", blank=True, null=True)
-    climax = models.TextField(default="Insert here", blank=True, null=True)
-    falling = models.TextField(default="Insert here", blank=True, null=True)
-    resolve = models.TextField(default="Insert here", blank=True, null=True)
+    incite = models.TextField(default="-- insert inciting incident --", blank=True, null=True)
+    rising = models.TextField(default="-- insert rising action --", blank=True, null=True)
+    climax = models.TextField(default="-- insert climax --", blank=True, null=True)
+    falling = models.TextField(default="-- insert falling action --", blank=True, null=True)
+    resolve = models.TextField(default="-- insert resolution --", blank=True, null=True)
 
 
 
