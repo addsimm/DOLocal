@@ -31,10 +31,8 @@ function cntrlCKEditStart(cntrl_section2edit) {
         return;
     }
 
-    $('.edit_btn_central').hide();
     $('.template_row').hide();
     $('#edit_mode_button').hide();
-    $('#background_image').css({opacity: 0.1});
 
     cntrlEditor = CKEDITOR.appendTo(
         cntrl_editor_container, ck_config_small, orig_text);
@@ -87,10 +85,8 @@ function cntrlCKDestroy() {
         return;
     }
 
-    $('.edit_btn_central').show();
     $('.template_row').show();
     $('#edit_mode_button').show();
-    $('#background_image').css({opacity: 1});
 
     $(cntrl_title).text(' ');
     $(edit_bucket).hide();
