@@ -227,3 +227,34 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
     return TemplateResponse(request, template, context)
 
 
+@login_required
+@csrf_exempt
+def ajax_storywheel_update(request):
+    if not request.is_ajax() or not request.method == 'POST':
+        return HttpResponse('not ok')
+
+    cntrl_new_content = request.POST.get('cntrl_new_content', 'missing')
+    sw_template = request.POST.get('sw_template', 'missing')
+    template_section = request.POST.get('template_section', 'missing')
+
+    storywheel_id = int(request.get_full_path().split('=')[1])
+
+    try:
+        storywheel = get_object_or_404(JOSStorywheel, pk=storywheel_id)
+    except:
+        return HttpResponse("Error JOSStorywheel missing, please call us")
+
+    template = ' '
+    if sw_template == 'plot':
+        try:
+            template = get_object_or_404(JOSPlotTemplate, storywheel=storywheel)
+        except:
+            return HttpResponse('Error JOSPlotTemplate missing, please call us')
+
+        setattr(template, template_section, cntrl_new_content)
+        template.save()
+
+    # info(request, "Template updated!")
+
+    return HttpResponse('cntrl_new_content: ' + cntrl_new_content)
+

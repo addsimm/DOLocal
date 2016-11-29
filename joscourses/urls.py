@@ -1,8 +1,10 @@
 from django.conf.urls import patterns, url
-from .views import course_week, course_week_list, josstory, ajax_story_update, storywheel, sw_plot # next_handout
+from .views import course_week, course_week_list, josstory, ajax_story_update, ajax_storywheel_update, storywheel, sw_plot
 
 urlpatterns = patterns(
         '',
+
+    url("courseweek$", course_week, name="course_week"),
 
     url("courseweeklist", course_week_list, name="course_week_list"),
 
@@ -15,16 +17,13 @@ urlpatterns = patterns(
 
     url("story_update/*$", ajax_story_update, name="story_update"),
 
-    url("courseweek$", course_week, name="course_week"),
-
     url("storywheel/(?P<wheel_id>\d+)/*$", storywheel, name="storywheel"),
     url("storywheel/*$", storywheel, name="storywheel"),
 
+    url("storywheel_update/*$", ajax_storywheel_update, name="storywheel_update"),
 
     url("plot_template/(?P<wheel_id>\d+)/edit$", sw_plot, {'edit': True}, name="sw_plot_edit"),
-
     url("plot_template/(?P<wheel_id>\d+)$", sw_plot, {'edit': False}, name="sw_plot"),
 
-    #url("sw_plot", sw_plot, name="sw_plot"),
 )
 

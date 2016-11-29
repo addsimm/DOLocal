@@ -15,7 +15,7 @@ function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
 
 var ck_config_small = {
     toolbar: [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy']},
+        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
         {'name': 'editing', 'items': ['SelectAll', 'Find']}
     ],
     contentsCss: '/static/ckeditor/ckeditor/contents.css',
@@ -29,7 +29,7 @@ var ck_config_small = {
 
 var ck_config_large = {
     toolbar: [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy']},
+        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
         {'name': 'styles', 'items': ['Font', 'FontSize']},
         {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
         {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']},

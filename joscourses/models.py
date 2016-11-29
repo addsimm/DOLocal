@@ -164,6 +164,9 @@ class JOSStorywheel(TimeStamped, models.Model):
     publish_permission = models.IntegerField(default=1)
     tags = TaggableManager()
 
+    def __str__(self):
+        return str(self.id)
+
 
 class JOSPlotTemplate(TimeStamped, models.Model):
     class Meta:

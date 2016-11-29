@@ -9,6 +9,7 @@
 
 {% endblock %}
 {% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+
 {% block all_content %}
 
 <style>
@@ -56,182 +57,195 @@
         width: 125px;
     }
 
+    .edit_btn_control {
+        position: absolute;
+        width: 125px;
+    }
+
 </style>
 
-<div id="container" style="position: relative; height: 950px; border: 1px solid transparent;">
+<img id='background_image' src="{% static 'img/plot-mountain-112916.png' %}"
+     style="margin-top: -90px;  z-index: -1;">
 
-{% if storywheel.author == request.user %}
+<div id="fixed-top-bar" style="position: fixed; top: 50px; height: 800px; width: 1090px; left: 41px;">
 
-    <a id="edit_mode_button" class="btn btn-info"
-       style="font-size: 22pt; position: absolute; left: 940px; top: 105px; width: 150px; z-index: 115;"
-       href="{% if edit %}
-                {% url "joscourses:sw_plot" storywheel.id %}
-             {% else %}
-                {% url "joscourses:sw_plot_edit" storywheel.id %}
-             {% endif %}">
-        {% if edit %}Hide{% else %}Edit{% endif %}
-    </a><br>
+    {% if storywheel.author == request.user %}
 
-{% endif %}
+        <a id="edit_mode_button" class="btn btn-info"
+           style="
+            position: absolute; top: 40px; left: 900px;
+            font-size: 22pt; width: 150px; height: 55px;
+            z-index: 225;"
+           href="{% if edit %}
+                        {% url "joscourses:sw_plot" storywheel.id %}
+                     {% else %}
+                        {% url "joscourses:sw_plot_edit" storywheel.id %}
+                     {% endif %}">
+            {% if edit %}Hide{% else %}Edit{% endif %}
+        </a><br>
 
-<img id='background_image' src="{% static 'img/plot-mountain-112816.png' %}" width=1050px height=1050px
-     style="position: absolute; top: -60px; left: 30px; z-index: -1">
+    {% endif %}
 
-<div style="position: absolute; top: 90px; height: 850px; width: 1130px;">
+    {% if edit %}
+
+        <!-- Editor -->
+        <div id='edit_bucket' style="position: absolute; left: 80px; top: 150px;  z-index: 115; display: none;">
+
+            <a id="cancel_btn_central"
+               class="btn btn-danger edit_btn_control"
+               style="top: 2px; left: 685px;"
+               onclick="cntrlCKDestroy();"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Warning: discards recent changes!"
+            >
+                Discard
+            </a>
+
+            <a id="save_btn_central"
+               class="btn btn-success edit_btn_control"
+               style="top: 2px; left: 825px;"
+               onclick="cntrlCKEditSave('plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Replaces template content"
+            >
+                Save
+            </a>
+
+            <div id="cntrl_editor_title"
+                 style="
+                        font-size: 42pt;
+                        font-weight: bold;
+                        position: absolute; top: -20px;
+                        height: 40px; width: 500px;
+                        background-color: white;
+                        z-index: 115;
+                ">Test
+            </div>
+
+            <div id="cntrl_editor_container"
+                 style="position: absolute; top: 45px; width: 950px;">
+            </div>
+
+        </div>
+
+        <!-- Edit Buttons -->
+        <div>
+            <a id="climax_edit_btn"
+               class="btn btn-info btn-xs edit_btn_central"
+               style="left: 0; top: -4px;"
+               onclick="cntrlCKEditStart('climax');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit climax
+            </a>
+
+            <a id="rising_edit_btn"
+               class="btn btn-info btn-xs edit_btn_central"
+               style="left: 0; top: 193px;"
+               onclick="cntrlCKEditStart('rising');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit rising
+            </a>
+
+            <a id="falling_edit_btn"
+               class="btn btn-info btn-xs edit_btn_central"
+               style="left: 963px; top: 193px;"
+               onclick="cntrlCKEditStart('falling');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit falling
+            </a>
+
+            <a id="incite_edit_btn"
+               class="btn btn-info btn-xs edit_btn_central"
+               style="left: 0; top: 643px;"
+               onclick="cntrlCKEditStart('incite');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit incite
+            </a>
+
+            <a id="resolve_edit_btn"
+               class="btn btn-info btn-xs edit_btn_central"
+               style="left: 963px; top: 642px;"
+               onclick="cntrlCKEditStart('resolve');"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Activates editor"
+            >
+                Edit resolve
+            </a>
+        </div>
+    {% endif %}
 
     <div class="template_row" style="justify-content: flex-start; height: 15%;">
 
         <!-- Climax -->
         <div class="template_component" style="width: 75%;">
 
-            <div id='original_content_climax' class='edit_box'>aaaaa</div>
+            <div id='original_content_climax' class='edit_box'>
+                {{ plot_template.climax }}
+            </div>
 
         </div>
+
     </div>
 
     <div class="template_row" style="height: 48%; margin-top: 7%;">
 
         <!-- Rising -->
         <div class="template_component" style="width: 58%;">
-            <div id='original_content_rising' class='edit_box'>bbbbb</div>
+            <div id='original_content_rising' class='edit_box'>
+                {{ plot_template.rising }}
+            </div>
         </div>
 
         <!-- Falling -->
         <div class="template_component" style="width: 37%;">
-            <div id='original_content_falling' class='edit_box'>ccccc</div>
+            <div id='original_content_falling' class='edit_box'>
+                {{ plot_template.falling }}
+            </div>
         </div>
 
     </div>
 
     <div class="template_row"
-         style="display: flex; justify-content: space-between; height: 24%; margin-top: 6%;">
+             style="display: flex; justify-content: space-between; height: 24%; margin-top: 6%;">
 
-        <!-- Incite -->
-        <div class="template_component">
+            <!-- Incite -->
+            <div class="template_component">
 
-            <div id='original_content_incite' class='edit_box'>ddddd</div>
+                <div id='original_content_incite' class='edit_box'>
+                    {{ plot_template.incite }}
+                </div>
 
+            </div>
+
+            <!-- Resolve -->
+            <div class="template_component">
+
+                <div id='original_content_resolve' class='edit_box'>
+                    {{ plot_template.resolve }}
+                </div>
+
+            </div>
         </div>
-
-        <!-- Resolve -->
-        <div class="template_component">
-
-            <div id='original_content_resolve' class='edit_box'>eeeee</div>
-
-        </div>
-    </div>
-</div>
-
-
-{% if edit %}
-
-    <!-- Editor -->
-    <div id='cntrl_editor_container'
-         style="positon: relative; margin-left: 80px; margin-top: 200px; display: none;">
-
-        <div id="cntrl_editor_title"
-             style="
-                font-size: 42pt;
-                font-weight: bold;
-                height: 40px; width: 500px;
-                position: absolute; top: 156px; left: 80px;
-                background-color: white;
-             ">Hello
-        </div>
-
-        <a id="cancel_btn_central"
-           class="btn btn-danger"
-           style="width: 125px; position: absolute; top: 181px; left: 860px;"
-           onclick="josCKDestroy();"
-           data-toggle="tooltip"
-           data-placement="bottom"
-           title="Warning: discards recent changes!"
-        >
-            Discard
-        </a>
-        <a id="save_btn_central"
-           class="btn btn-success"
-           style="width: 125px;  position: absolute; top: 181px; left: 1000px;"
-           onclick=" "
-           data-toggle="tooltip"
-           data-placement="bottom"
-           title="Replaces template content"
-        >
-            Save
-        </a>
-
-        <div id="cntrl_editor_container"
-             style="
-                background-color: blue;
-                width: 1050px;
-             "></div>
-
-    </div>
-
-    <!-- Edit Buttons -->
-    <a id="climax_edit_btn"
-       class="btn btn-info btn-xs edit_btn_central"
-       style="left: 0; top: 59px;"
-       onclick="cntrlCKEdit('climax');"
-       data-toggle="tooltip"
-       data-placement="bottom"
-       title="Activates editor"
-    >
-        Edit climax
-    </a>
-
-    <a id="rising_edit_btn"
-       class="btn btn-info btn-xs edit_btn_central"
-       style="left: 0; top: 266px;"
-       onclick="cntrlCKEdit('rising');"
-       data-toggle="tooltip"
-       data-placement="bottom"
-       title="Activates editor"
-    >
-        Edit rising
-    </a>
-
-    <a id="falling_edit_btn"
-       class="btn btn-info btn-xs edit_btn_central"
-       style="left: 1003px; top: 266px;"
-       onclick="cntrlCKEdit('falling');"
-       data-toggle="tooltip"
-       data-placement="bottom"
-       title="Activates editor"
-    >
-        Edit falling
-    </a>
-
-    <a id="incite_edit_btn"
-       class="btn btn-info btn-xs edit_btn_central"
-       style="left: 0; top: 740px;"
-       onclick="cntrlCKEdit('incite');"
-       data-toggle="tooltip"
-       data-placement="bottom"
-       title="Activates editor"
-    >
-        Edit incite
-    </a>
-
-    <a id="resolve_edit_btn"
-       class="btn btn-info btn-xs edit_btn_central"
-       style="left: 1003px; top: 740px;"
-       onclick="cntrlCKEdit('resolve');"
-       data-toggle="tooltip"
-       data-placement="bottom"
-       title="Activates editor"
-    >
-        Edit resolve
-    </a>
-
-{% endif %}
 
 </div>
 
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
-<script>
-
-</script>
+<script></script>
 
 {% endblock all_content %}
