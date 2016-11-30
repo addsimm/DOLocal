@@ -165,7 +165,7 @@ class JOSWheel(TimeStamped, models.Model):
     tags = TaggableManager()
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ': ' + str(self.title)
 
 
 class JOSCharacter(TimeStamped, models.Model):
@@ -180,7 +180,7 @@ class JOSCharacter(TimeStamped, models.Model):
     tags = TaggableManager()
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ': ' + str(self.nick_name)
 
 
 class JOSPlotTemplate(TimeStamped, models.Model):
@@ -195,6 +195,9 @@ class JOSPlotTemplate(TimeStamped, models.Model):
     climax = models.TextField(default="-- insert climax --", blank=True, null=True)
     falling = models.TextField(default="-- insert falling action --", blank=True, null=True)
     resolve = models.TextField(default="-- insert resolution --", blank=True, null=True)
+
+    def __str__(self):
+        return 'plot template: ' + str(self.id)
 
 
 

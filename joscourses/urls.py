@@ -25,8 +25,10 @@ urlpatterns = patterns(
     url("plot_template/(?P<wheel_id>\d+)/edit$", sw_plot, {'edit': True}, name="sw_plot_edit"),
     url("plot_template/(?P<wheel_id>\d+)$", sw_plot, {'edit': False}, name="sw_plot"),
 
-    url("characters_template/(?P<wheel_id>\d+)//(?P<character_id>\d+)/edit$", sw_characters, {'edit': True}, name="sw_characters_edit"),
+    url("characters_template/(?P<wheel_id>\d+)/(?P<character_id>\d+)/edit$", sw_characters, {'edit': True}, name="sw_characters_edit"),
     url("characters_template/(?P<wheel_id>\d+)/(?P<character_id>\d+)$", sw_characters, {'edit': False}, name="sw_characters"),
+    url("characters_template/(?P<wheel_id>\d+)$", sw_characters, {'edit': False},
+            name="sw_characters"),
 
 )
 

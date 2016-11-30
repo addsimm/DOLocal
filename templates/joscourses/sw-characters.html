@@ -90,7 +90,6 @@
         Back
     </button>{{ wheel.title }} - Characters</div>
 
-
 <!-- Background image -->
 <img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
  style="margin-top: 100px; opacity: 0; z-index: -1;">
@@ -99,7 +98,37 @@
 
     <div class="col-xs-10" style="height: 800px; background-color: lightpink;">
 
-        character: {{ character }}<br>
+        {% if wheel.author == request.user %}
+
+            <a id="edit_mode_button" class="btn btn-info"
+               style="
+                position: absolute; top: 30px; left: 720px;
+                font-size: 22pt; width: 150px; height: 55px;
+                z-index: 225;"
+               href="{% if edit %}
+                            {% url "joscourses:sw_characters" wheel.id %}
+                         {% else %}
+                            {% url "joscourses:sw_characters" wheel.id %}
+                         {% endif %}">
+                {% if edit %}Hide{% else %}Edit{% endif %}
+            </a><br>
+
+        {% endif %}
+
+         character #{{ character.id }} --
+        <input type="text" id="nick_name" value="{{ character.nick_name }}"><br><br>
+
+        <input type="text" id="first_name" value="{{ character.first_name }}">
+        <input type="text" id="last_name" value="{{ character.last_name }}"><br><br><br>
+
+        <button class="btn btn-danger"
+           style="margin-top: 10px; width: 50%;"
+           onclick="deleteCharacter('{{ character.id }}');">
+            Delete character: {{ character.nick_name }}
+        </button>
+        <br><br><br>
+
+
         all_characters: {{ all_characters }}<br>
         wheel: {{ wheel }}<br>
         edit: {{ edit }}<br>
@@ -110,7 +139,7 @@
 
         <a class="btn btn-default"
            style="margin-top: 10px; width: 100%;"
-           href="{% url 'joscourses:sw_characters' wheel.id 0 %}">
+           href="{% url 'joscourses:sw_characters' wheel.id 1 %}">
             New character
         </a>
 
@@ -118,11 +147,12 @@
             <span class="homehead" style="font-size: 20pt;">Cast:</span>
         </div>
 
-        {% for team in user.JOSProfile.teams.all %}
+        {% for char in all_characters %}
 
-            <button class="btn btn-link" style="margin-top: 15px; width: auto;" onclick="location.href='{% url "story_gallery" %}/?team={{ team.id }}';">
+            <button class="btn btn-link" style="font-size: 12pt; margin-top: 15px; width: auto;"
+                    onclick="location.href='{% url 'joscourses:sw_characters' wheel.id char.id %}';">
                 <i class="fa fa-user fa-fw"></i><span style="margin-left: 3px;">
-                    {{ team }}
+                    {{ char.id }} - {{ char.nick_name }}
                 </span>
             </button><br>
 
@@ -130,24 +160,41 @@
     </div>
 </div>
 
+<script src="{% static "js/central-editor-include.js" %}"></script>
+
+<script>
+
+    var upload_url = '/joscourses/wheel_update/?id=' + '{{ wheel.id }}';
+
+    function deleteCharacter(char_id) {
+        console.log('called delete: ' + char_id);
+        $.ajax({
+            type: "POST",
+            url: upload_url,
+            data: {
+                'action': 'delete',
+                'character_id': char_id,
+                'sw_template': 'characters'
+            },
+
+            success: function (serverResponse_data) {
+                console.log('deleted character:  ' + char_id + ' -- ' + serverResponse_data);
+                location.href = "{% url 'joscourses:sw_characters' wheel.id 0 %}";
+            }
+        });
+    }
+
+    if ('{{ edit }}' === 'True') {
+        $('.edit_btn_central').show();
+    } else {
+        $('.component_label').show();
+    }
+
+</script>
+
 <!-- Old stuff -->
 <div>
-{#    {% if wheel.author == request.user %}#}
-{##}
-{#        <a id="edit_mode_button" class="btn btn-info"#}
-{#           style="#}
-{#            position: absolute; top: 55px; left: 920px;#}
-{#            font-size: 22pt; width: 150px; height: 55px;#}
-{#            z-index: 225;"#}
-{#           href="{% if edit %}#}
-{#                        {% url "joscourses:sw_plot" wheel.id %}#}
-{#                     {% else %}#}
-{#                        {% url "joscourses:sw_plot_edit" wheel.id %}#}
-{#                     {% endif %}">#}
-{#            {% if edit %}Hide{% else %}Edit{% endif %}#}
-{#        </a><br>#}
-{##}
-{#    {% endif %}#}
+
 {##}
 {#    {% if edit %}#}
 {##}
@@ -307,16 +354,6 @@
 {##}
 </div>
 
-<script src="{% static "js/central-editor-include.js" %}"></script>
 
-    <script>
-
-        if ('{{ edit }}' === 'True') {
-            $('.edit_btn_central').show();
-        } else {
-            $('.component_label').show();
-        }
-
-    </script>
 
 {% endblock all_content %}

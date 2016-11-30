@@ -87,7 +87,7 @@ admin.site.register(JOSPlotTemplate, JOSPlotTemplateAdmin)
 
 
 class JOSCharacterAdmin(admin.ModelAdmin):
-    list_display = ("id", "first_name", "first_name", "updated")
+    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
 
     verbose_name = "Characters"
 

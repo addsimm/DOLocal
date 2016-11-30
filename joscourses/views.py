@@ -231,11 +231,13 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
 @csrf_exempt
 def ajax_wheel_update(request):
     if not request.is_ajax() or not request.method == 'POST':
-        return HttpResponse('not ok')
+        return HttpResponse('not ajax post')
 
     cntrl_new_content = request.POST.get('cntrl_new_content', 'missing')
     sw_template = request.POST.get('sw_template', 'missing')
     template_section = request.POST.get('template_section', 'missing')
+    action = request.POST.get('action', 'missing')
+    character_id = request.POST.get('character_id', 'missing')
 
     wheel_id = int(request.get_full_path().split('=')[1])
 
@@ -254,9 +256,18 @@ def ajax_wheel_update(request):
         setattr(template, template_section, cntrl_new_content)
         template.save()
 
-    # info(request, "Template updated!")
+    elif sw_template == 'characters':
+        if action == 'delete':
+            try:
+                character = get_object_or_404(JOSCharacter, pk=int(character_id))
+            except:
+                return HttpResponse("Error JOSCharacter missing, please call us")
 
-    return HttpResponse('cntrl_new_content: ' + cntrl_new_content)
+            character.delete()
+            info(request, "Character deleted!")
+            return HttpResponse('deleted character: ' + str(character_id))
+
+    return HttpResponse('nothing happened')
 
 
 def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="joscourses/sw-characters.html", extra_context=None):
@@ -265,11 +276,13 @@ def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="jos
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
+    if int(character_id) == 1:
+        character = JOSCharacter.objects.create(wheel=wheel)
+
     all_characters = JOSCharacter.objects.filter(wheel=wheel).order_by('first_name')
 
     if not all_characters:
         character = JOSCharacter.objects.create(wheel=wheel)
-
     else:
         try:
             character = get_object_or_404(JOSCharacter, pk=int(character_id))
