@@ -155,7 +155,7 @@ class JOSStory(TimeStamped, models.Model):
         return jos_name
 
 
-class JOSStorywheel(TimeStamped, models.Model):
+class JOSWheel(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Storywheel'
 
@@ -168,12 +168,27 @@ class JOSStorywheel(TimeStamped, models.Model):
         return str(self.id)
 
 
+class JOSCharacter(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Character'
+
+    storywheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+    first_name = models.CharField(max_length=150, default="-- Firsty --", blank=True, null=True)
+    last_name = models.CharField(max_length=150, default="-- Lasty --", blank=True, null=True)
+    nick_name = models.CharField(max_length=150, default="-- Nicky --", blank=True, null=True)
+    tags = TaggableManager()
+
+    def __str__(self):
+        return str(self.id)
+
+
 class JOSPlotTemplate(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Plot Template'
         verbose_name_plural = 'Plot Templates'
 
-    storywheel = models.ForeignKey(JOSStorywheel, blank=True, null=True)
+    storywheel = models.ForeignKey(JOSWheel, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
     incite = models.TextField(default="-- insert inciting incident --", blank=True, null=True)
     rising = models.TextField(default="-- insert rising action --", blank=True, null=True)

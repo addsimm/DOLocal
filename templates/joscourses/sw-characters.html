@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta_title %}{% endblock %}
+{% block title %}{% endblock %}
+
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+
+{% block all_content %}
+
+<style>
+
+    body {
+        padding-top: 0;
+    }
+
+    .component_label {
+        font-family: 'Architects Daughter';
+        font-size: 32pt;
+        line-height: 1.1;
+        background-color: white;
+        display: none;
+    }
+
+    .edit_btn_central {
+        font-size: 14pt;
+        width: auto;
+        display: none;
+    }
+
+    .edit_btn_control {
+        position: absolute;
+        width: 125px;
+    }
+
+    .edit_box {
+        background-color: rgba(255, 255, 255, .8);
+        border:
+            {% if edit %}
+                3px dashed #5bc0de
+            {% else %}
+                1px solid rgb(65,45,120)
+            {% endif %};
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 10px 15px;
+        text-align: left;
+        width:100%;
+        height: 100%;
+    }
+
+    .edit_box:hover {
+        background-color: white;
+    }
+
+    .template_row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .template_component {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+</style>
+
+<script>
+
+    if ('{{ edit }}' === 'False') {
+        $('.edit_btn_central').hide();
+    } else {
+        $('.component_label').hide();
+    }
+
+</script>
+
+<!-- Page title -->
+<div style="background-color: rgb(231, 209, 222);
+            border-radius: 0;
+            font-size: 24pt;
+            font-weight: bold;
+            height: 47px;
+            margin: 3px 0 0 0;
+            padding: 4px 0 0 0;
+            width: 630px;"><button class="btn btn-warning text-center"
+            style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
+            onclick=" window.history.back();">
+        Back
+    </button>{{ storywheel.title }} - Characters</div>
+
+
+<!-- Background image -->
+<img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
+ style="margin-top: 100px; opacity: 0; z-index: -1;">
+
+<div id="fixed-top-bar" class="row" style="position: fixed; top: 80px; height: 800px; width: 1090px; left: 41px;">
+
+    <div class="col-xs-10" style="height: 800px; background-color: lightpink;">
+
+        character: {{ character }}<br>
+        all_characters: {{ all_characters }}<br>
+        storywheel: {{ storywheel }}<br>
+        edit: {{ edit }}<br>
+
+    </div>
+
+    <div class="col-xs-2" style="height: 800px; padding: 0; margin-top: 50px; background-color: lightyellow;">
+
+        <a class="btn btn-default"
+           style="margin-top: 10px; width: 100%;"
+           href="{% url 'joscourses:storywheel' 0 %}">
+            New character
+        </a>
+
+        <div class="row" style="margin: 30px 0 0 0;">
+            <span class="homehead" style="font-size: 20pt;">Cast:</span>
+        </div>
+
+        {% for team in user.JOSProfile.teams.all %}
+
+            <button class="btn btn-link" style="margin-top: 15px; width: auto;" onclick="location.href='{% url "story_gallery" %}/?team={{ team.id }}';">
+                <i class="fa fa-user fa-fw"></i><span style="margin-left: 3px;">
+                    {{ team }}
+                </span>
+            </button><br>
+
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Old stuff -->
+<div>
+{#    {% if storywheel.author == request.user %}#}
+{##}
+{#        <a id="edit_mode_button" class="btn btn-info"#}
+{#           style="#}
+{#            position: absolute; top: 55px; left: 920px;#}
+{#            font-size: 22pt; width: 150px; height: 55px;#}
+{#            z-index: 225;"#}
+{#           href="{% if edit %}#}
+{#                        {% url "joscourses:sw_plot" storywheel.id %}#}
+{#                     {% else %}#}
+{#                        {% url "joscourses:sw_plot_edit" storywheel.id %}#}
+{#                     {% endif %}">#}
+{#            {% if edit %}Hide{% else %}Edit{% endif %}#}
+{#        </a><br>#}
+{##}
+{#    {% endif %}#}
+{##}
+{#    {% if edit %}#}
+{##}
+{#        <!-- Editor -->#}
+{#        <div id='edit_bucket' style="position: absolute; left: 80px; top: 150px;  z-index: 115; display: none;">#}
+{##}
+{#            <a id="cancel_btn_central"#}
+{#               class="btn btn-danger edit_btn_control"#}
+{#               style="top: 2px; left: 685px;"#}
+{#               onclick="cntrlCKDestroy();"#}
+{#               data-toggle="tooltip"#}
+{#               data-placement="bottom"#}
+{#               title="Warning: discards recent changes!"#}
+{#            >#}
+{#                Discard#}
+{#            </a>#}
+{##}
+{#            <a id="save_btn_central"#}
+{#               class="btn btn-success edit_btn_control"#}
+{#               style="top: 2px; left: 825px;"#}
+{#               onclick="cntrlCKEditSave('plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"#}
+{#               data-toggle="tooltip"#}
+{#               data-placement="bottom"#}
+{#               title="Replaces template content"#}
+{#            >#}
+{#                Save#}
+{#            </a>#}
+{##}
+{#            <div id="cntrl_editor_title"#}
+{#                 style="#}
+{#                        font-size: 42pt;#}
+{#                        font-weight: bold;#}
+{#                        position: absolute; top: -20px;#}
+{#                        height: 40px; width: 500px;#}
+{#                        background-color: white;#}
+{#                        z-index: 115;#}
+{#                ">Test#}
+{#            </div>#}
+{##}
+{#            <div id="cntrl_editor_container"#}
+{#                 style="position: absolute; top: 45px; width: 950px;">#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#     {% endif %}#}
+{##}
+{#    <div class="template_row" style="height: 19%;">#}
+{##}
+{#        <!-- Climax -->#}
+{#        <div class="template_component" style="width: 82%;">#}
+{#            <div class="component_label">Climax</div>#}
+{##}
+{#            <a id="climax_edit_btn"#}
+{#               class="btn btn-info edit_btn_central"#}
+{#               onclick="cntrlCKEditStart('climax');"#}
+{#               data-toggle="tooltip"#}
+{#               data-placement="bottom"#}
+{#               title="Activates editor"#}
+{#            >#}
+{#                Edit climax#}
+{#            </a>#}
+{##}
+{#            <div id='original_content_climax' class='edit_box'>#}
+{#                {{ plot_template.climax }}#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#    </div>#}
+{##}
+{#    <div class="template_row" style="height: 49%; margin-top: 3%;">#}
+{##}
+{#        <!-- Rising -->#}
+{#        <div class="template_component" style="width: 58%;">#}
+{#            <div class="component_label">Rising action</div>#}
+{##}
+{#            <a id="rising_edit_btn"#}
+{#               class="btn btn-info edit_btn_central"#}
+{#               onclick="cntrlCKEditStart('rising');"#}
+{#               data-toggle="tooltip"#}
+{#               data-placement="bottom"#}
+{#               title="Activates editor"#}
+{#            >#}
+{#                Edit rising action#}
+{#            </a>#}
+{##}
+{#            <div id='original_content_rising' class='edit_box'>#}
+{#                {{ plot_template.rising }}#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <!-- Falling -->#}
+{#        <div class="template_component" style="width: 37%; align-items: flex-end">#}
+{#            <div class="component_label">Falling action</div>#}
+{##}
+{#            <a id="falling_edit_btn"#}
+{#               class="btn btn-info edit_btn_central"#}
+{#               onclick="cntrlCKEditStart('falling');"#}
+{#               data-toggle="tooltip"#}
+{#               data-placement="bottom"#}
+{#               title="Activates editor"#}
+{#            >#}
+{#                Edit falling action#}
+{#            </a>#}
+{##}
+{#            <div id='original_content_falling' class='edit_box'>#}
+{#                {{ plot_template.falling }}#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{##}
+{#    <div class="template_row"#}
+{#             style="display: flex; justify-content: space-between; height: 26%; margin-top: 3%;">#}
+{##}
+{#            <!-- Incite -->#}
+{#            <div class="template_component" style="width: 47%;">#}
+{#                <div class="component_label">Inciting incident</div>#}
+{##}
+{#                <a id="incite_edit_btn"#}
+{#                   class="btn btn-info edit_btn_central"#}
+{#                   onclick="cntrlCKEditStart('incite');"#}
+{#                   data-toggle="tooltip"#}
+{#                   data-placement="bottom"#}
+{#                   title="Activates editor"#}
+{#                >#}
+{#                    Edit inciting incident#}
+{#                </a>#}
+{##}
+{##}
+{#                <div id='original_content_incite' class='edit_box'>#}
+{#                    {{ plot_template.incite }}#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{##}
+{#            <!-- Resolve -->#}
+{#            <div class="template_component" style="width: 47%;  align-items: flex-end">#}
+{#                <div class="component_label">Resolution</div>#}
+{##}
+{#                <a id="resolve_edit_btn"#}
+{#                   class="btn btn-info edit_btn_central"#}
+{#                   onclick="cntrlCKEditStart('resolve');"#}
+{#                   data-toggle="tooltip"#}
+{#                   data-placement="bottom"#}
+{#                   title="Activates editor"#}
+{#                >#}
+{#                    Edit resolution#}
+{#                </a>#}
+{#                <div id='original_content_resolve' class='edit_box'>#}
+{#                    {{ plot_template.resolve }}#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{##}
+</div>
+
+<script src="{% static "js/central-editor-include.js" %}"></script>
+
+    <script>
+
+        if ('{{ edit }}' === 'True') {
+            $('.edit_btn_central').show();
+        } else {
+            $('.component_label').show();
+        }
+
+    </script>
+
+{% endblock all_content %}

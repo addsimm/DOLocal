@@ -2,22 +2,36 @@
 {% load static %}
 {% block meta_title %}{% endblock %}
 {% block title %}{% endblock %}
-{% block breadcrumb_menu %}
-
-    {{ block.super }}
-    Storywheel {{ storywheel.title }}
-
-{% endblock %}
 {% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
 {% block all_content %}
 
 <style>
 
+    body {
+        padding-top: 0;
+    }
+
 </style>
 
-<div id="mouse_report"></div>
+    <div style="
+        background-color: rgb(231, 209, 222);
+        border-radius: 0;
+        font-size: 24pt;
+        font-weight: bold;
+        height: 47px;
+        margin: 3px 0 0 0;
+        padding: 4px 0 0 0;
+        width: 630px;
+        ">
+        <button class="btn btn-warning text-center"
+                style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
+                onclick=" window.history.back();">
+            Back
+        </button>
+        Storywheel: {{ storywheel.title }}
+    </div>
 
-<div class="row" style="padding: 0 0 20px 0; height: 800px;">
+    <div class="row" style="padding: 130px 0 20px 0; height: 800px;">
     <div class="col-xs-12 text-center">
         <canvas id="pie_canvas" width="800" height="800"
                 style="background-image: url('{% static 'img/storywheel-112016.png' %}'); position: absolute; top: -85px; left: 202px;">
@@ -36,6 +50,7 @@
         newWedge = 0;
 
     var url_plot = "https://joinourstory.com/joscourses/plot_template/" + "{{ storywheel.id }}";
+    var url_characters = "https://joinourstory.com/joscourses/characters_template/" + "{{ storywheel.id }}" + "/0}";
 
     function redraw() {
         console.log('drawing');
@@ -138,9 +153,11 @@
         }
 
         console.log(wedges[segment] + ' clicked');
+
         if (wedges[segment] === 'plot') {
-            console.log('url_plot: ' + url_plot);
             location.href = url_plot;
+        } else if (wedges[segment] === 'character') {
+            location.href = url_characters;
         }
     });
 

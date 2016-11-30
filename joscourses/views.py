@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
-from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSStorywheel, JOSPlotTemplate
+from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlotTemplate, JOSCharacter
 
 ### UNUSED
 @login_required
@@ -189,9 +189,9 @@ def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra
     activate('America/Los_Angeles')
 
     try:
-        storywheel = get_object_or_404(JOSStorywheel, pk=wheel_id)
+        storywheel = get_object_or_404(JOSWheel, pk=wheel_id)
     except:
-        storywheel = JOSStorywheel.objects.create(author=request.user, title="- Untitled -")
+        storywheel = JOSWheel.objects.create(author=request.user, title="- Untitled -")
         storywheel.save()
         return redirect('joinourstory.com/joscourses/storywheel/' + str(storywheel.id))
 
@@ -204,7 +204,7 @@ def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra
 def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html", extra_context=None):
 
     try:
-        storywheel = get_object_or_404(JOSStorywheel, pk=int(wheel_id))
+        storywheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
@@ -240,9 +240,9 @@ def ajax_storywheel_update(request):
     storywheel_id = int(request.get_full_path().split('=')[1])
 
     try:
-        storywheel = get_object_or_404(JOSStorywheel, pk=storywheel_id)
+        storywheel = get_object_or_404(JOSWheel, pk=storywheel_id)
     except:
-        return HttpResponse("Error JOSStorywheel missing, please call us")
+        return HttpResponse("Error JOSWheel missing, please call us")
 
     template = ' '
     if sw_template == 'plot':
@@ -257,4 +257,34 @@ def ajax_storywheel_update(request):
     # info(request, "Template updated!")
 
     return HttpResponse('cntrl_new_content: ' + cntrl_new_content)
+
+
+def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="joscourses/sw-characters.html", extra_context=None):
+    try:
+        storywheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+    except:
+        return HttpResponse('cant find wheel: ' + str(wheel_id))
+
+    all_characters = JOSCharacter.objects.filter(storywheel=storywheel).order_by('first_name')
+
+    if not all_characters:
+        character = JOSCharacter.objects.create(storywheel=storywheel)
+
+    else:
+        try:
+            character = get_object_or_404(JOSCharacter, pk=int(character_id))
+        except:
+            character = all_characters[0]
+
+    context = {
+        'character': character,
+        'all_characters': all_characters,
+        'storywheel': storywheel,
+        'edit': edit
+    }
+
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
 

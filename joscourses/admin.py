@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSStorywheel, JOSPlotTemplate
+from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlotTemplate, JOSCharacter
 
 
 # Register your models here.
@@ -53,9 +53,6 @@ admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 
 class JOSStoryAdmin(admin.ModelAdmin):
-    """
-    Admin class for JOSStory.
-    """
     list_display = ("id", "author", "publish_permission", "updated", "title", "content")
 
     verbose_name = "JOSStory"
@@ -67,10 +64,7 @@ class JOSStoryAdmin(admin.ModelAdmin):
 admin.site.register(JOSStory, JOSStoryAdmin)
 
 
-class JOSStorywheelAdmin(admin.ModelAdmin):
-    """
-    Admin class for JOSStorywheel.
-    """
+class JOSWheelAdmin(admin.ModelAdmin):
     list_display = ("id", "author", "publish_permission", "updated", "title")
 
     verbose_name = "Storywheel"
@@ -79,17 +73,25 @@ class JOSStorywheelAdmin(admin.ModelAdmin):
 
     list_editable = ("publish_permission",)
 
-admin.site.register(JOSStorywheel, JOSStorywheelAdmin)
+admin.site.register(JOSWheel, JOSWheelAdmin)
 
 
 class JOSPlotTemplateAdmin(admin.ModelAdmin):
-    """
-    Admin class for JOSStorywheel.
-    """
-    list_display = ("id", "incite", "rising", "climax", "falling", "resolve", "updated")
+    list_display = ("id", 'storywheel', "incite", "rising", "climax", "falling", "resolve", "updated")
 
-    verbose_name = "Storywheel"
+    verbose_name = "Plot"
 
     readonly_fields = ("created", "updated",)
 
 admin.site.register(JOSPlotTemplate, JOSPlotTemplateAdmin)
+
+
+class JOSCharacterAdmin(admin.ModelAdmin):
+    list_display = ("id", "first_name", "first_name", "updated")
+
+    verbose_name = "Characters"
+
+    readonly_fields = ("created", "updated",)
+
+
+admin.site.register(JOSCharacter, JOSCharacterAdmin)
