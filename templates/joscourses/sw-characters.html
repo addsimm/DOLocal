@@ -88,7 +88,7 @@
             style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
             onclick=" window.history.back();">
         Back
-    </button>{{ storywheel.title }} - Characters</div>
+    </button>{{ wheel.title }} - Characters</div>
 
 
 <!-- Background image -->
@@ -101,7 +101,7 @@
 
         character: {{ character }}<br>
         all_characters: {{ all_characters }}<br>
-        storywheel: {{ storywheel }}<br>
+        wheel: {{ wheel }}<br>
         edit: {{ edit }}<br>
 
     </div>
@@ -110,7 +110,7 @@
 
         <a class="btn btn-default"
            style="margin-top: 10px; width: 100%;"
-           href="{% url 'joscourses:storywheel' 0 %}">
+           href="{% url 'joscourses:sw_characters' wheel.id 0 %}">
             New character
         </a>
 
@@ -132,7 +132,7 @@
 
 <!-- Old stuff -->
 <div>
-{#    {% if storywheel.author == request.user %}#}
+{#    {% if wheel.author == request.user %}#}
 {##}
 {#        <a id="edit_mode_button" class="btn btn-info"#}
 {#           style="#}
@@ -140,9 +140,9 @@
 {#            font-size: 22pt; width: 150px; height: 55px;#}
 {#            z-index: 225;"#}
 {#           href="{% if edit %}#}
-{#                        {% url "joscourses:sw_plot" storywheel.id %}#}
+{#                        {% url "joscourses:sw_plot" wheel.id %}#}
 {#                     {% else %}#}
-{#                        {% url "joscourses:sw_plot_edit" storywheel.id %}#}
+{#                        {% url "joscourses:sw_plot_edit" wheel.id %}#}
 {#                     {% endif %}">#}
 {#            {% if edit %}Hide{% else %}Edit{% endif %}#}
 {#        </a><br>#}
@@ -168,7 +168,7 @@
 {#            <a id="save_btn_central"#}
 {#               class="btn btn-success edit_btn_control"#}
 {#               style="top: 2px; left: 825px;"#}
-{#               onclick="cntrlCKEditSave('plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"#}
+{#               onclick="cntrlCKEditSave('plot', '/joscourses/wheel_update/?id=' + '{{ wheel.id }}');"#}
 {#               data-toggle="tooltip"#}
 {#               data-placement="bottom"#}
 {#               title="Replaces template content"#}

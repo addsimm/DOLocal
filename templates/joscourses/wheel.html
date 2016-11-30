@@ -28,13 +28,13 @@
                 onclick=" window.history.back();">
             Back
         </button>
-        Storywheel: {{ storywheel.title }}
+        wheel: {{ wheel.title }}
     </div>
 
     <div class="row" style="padding: 130px 0 20px 0; height: 800px;">
     <div class="col-xs-12 text-center">
         <canvas id="pie_canvas" width="800" height="800"
-                style="background-image: url('{% static 'img/storywheel-112016.png' %}'); position: absolute; top: -85px; left: 202px;">
+                style="background-image: url('{% static 'img/wheel-112016.png' %}'); position: absolute; top: -85px; left: 202px;">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>
@@ -49,8 +49,8 @@
     var oldWedge = 0,
         newWedge = 0;
 
-    var url_plot = "https://joinourstory.com/joscourses/plot_template/" + "{{ storywheel.id }}";
-    var url_characters = "https://joinourstory.com/joscourses/characters_template/" + "{{ storywheel.id }}" + "/0}";
+    var url_plot = "https://joinourstory.com/joscourses/plot_template/" + "{{ wheel.id }}";
+    var url_characters = "https://joinourstory.com/joscourses/characters_template/" + "{{ wheel.id }}/0";
 
     function redraw() {
         console.log('drawing');

@@ -93,7 +93,7 @@
             onclick=" window.history.back();">
         Back
     </button>
-    {{ storywheel.title }} - Plot
+    {{ wheel.title }} - Plot
 
 </div>
 
@@ -103,7 +103,7 @@
 <div id="fixed-top-bar" style="position: fixed; top: 50px; height: 800px; width: 1090px; left: 41px;">
 
 
-    {% if storywheel.author == request.user %}
+    {% if wheel.author == request.user %}
 
         <a id="edit_mode_button" class="btn btn-info"
            style="
@@ -111,9 +111,9 @@
             font-size: 22pt; width: 150px; height: 55px;
             z-index: 225;"
            href="{% if edit %}
-                        {% url "joscourses:sw_plot" storywheel.id %}
+                        {% url "joscourses:sw_plot" wheel.id %}
                      {% else %}
-                        {% url "joscourses:sw_plot_edit" storywheel.id %}
+                        {% url "joscourses:sw_plot_edit" wheel.id %}
                      {% endif %}">
             {% if edit %}Hide{% else %}Edit{% endif %}
         </a><br>
@@ -139,7 +139,7 @@
             <a id="save_btn_central"
                class="btn btn-success edit_btn_control"
                style="top: 2px; left: 825px;"
-               onclick="cntrlCKEditSave('plot', '/joscourses/storywheel_update/?id=' + '{{ storywheel.id }}');"
+               onclick="cntrlCKEditSave('plot', '/joscourses/wheel_update/?id=' + '{{ wheel.id }}');"
                data-toggle="tooltip"
                data-placement="bottom"
                title="Replaces template content"

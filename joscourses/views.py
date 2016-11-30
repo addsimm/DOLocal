@@ -185,17 +185,17 @@ def ajax_story_update(request):
 
 
 @login_required
-def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra_context=None):
+def joswheel(request, wheel_id=0, template="joscourses/wheel.html", extra_context=None):
     activate('America/Los_Angeles')
 
     try:
-        storywheel = get_object_or_404(JOSWheel, pk=wheel_id)
+        wheel = get_object_or_404(JOSWheel, pk=wheel_id)
     except:
-        storywheel = JOSWheel.objects.create(author=request.user, title="- Untitled -")
-        storywheel.save()
-        return redirect('joinourstory.com/joscourses/storywheel/' + str(storywheel.id))
+        wheel = JOSWheel.objects.create(author=request.user, title="- Untitled -")
+        wheel.save()
+        return redirect('joinourstory.com/joscourses/wheel/' + str(wheel.id))
 
-    context = {'storywheel' : storywheel}
+    context = {'wheel' : wheel}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -204,21 +204,21 @@ def storywheel(request, wheel_id=0, template="joscourses/storywheel.html", extra
 def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html", extra_context=None):
 
     try:
-        storywheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
     try:
-        plot_template = get_object_or_404(JOSPlotTemplate, storywheel=storywheel)
+        plot_template = get_object_or_404(JOSPlotTemplate, wheel=wheel)
     except:
-        plot_template = JOSPlotTemplate.objects.create(storywheel=storywheel)
+        plot_template = JOSPlotTemplate.objects.create(wheel=wheel)
         plot_template.save()
 
-        return redirect('https://joinourstory.com/joscourses/plot_template/' + str(storywheel.id))
+        return redirect('https://joinourstory.com/joscourses/plot_template/' + str(wheel.id))
 
     context = {
         'plot_template': plot_template,
-        'storywheel': storywheel,
+        'wheel': wheel,
         'edit': edit
     }
 
@@ -229,7 +229,7 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
 
 @login_required
 @csrf_exempt
-def ajax_storywheel_update(request):
+def ajax_wheel_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ok')
 
@@ -237,17 +237,17 @@ def ajax_storywheel_update(request):
     sw_template = request.POST.get('sw_template', 'missing')
     template_section = request.POST.get('template_section', 'missing')
 
-    storywheel_id = int(request.get_full_path().split('=')[1])
+    wheel_id = int(request.get_full_path().split('=')[1])
 
     try:
-        storywheel = get_object_or_404(JOSWheel, pk=storywheel_id)
+        wheel = get_object_or_404(JOSWheel, pk=wheel_id)
     except:
         return HttpResponse("Error JOSWheel missing, please call us")
 
     template = ' '
     if sw_template == 'plot':
         try:
-            template = get_object_or_404(JOSPlotTemplate, storywheel=storywheel)
+            template = get_object_or_404(JOSPlotTemplate, wheel=wheel)
         except:
             return HttpResponse('Error JOSPlotTemplate missing, please call us')
 
@@ -261,14 +261,14 @@ def ajax_storywheel_update(request):
 
 def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="joscourses/sw-characters.html", extra_context=None):
     try:
-        storywheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    all_characters = JOSCharacter.objects.filter(storywheel=storywheel).order_by('first_name')
+    all_characters = JOSCharacter.objects.filter(wheel=wheel).order_by('first_name')
 
     if not all_characters:
-        character = JOSCharacter.objects.create(storywheel=storywheel)
+        character = JOSCharacter.objects.create(wheel=wheel)
 
     else:
         try:
@@ -279,7 +279,7 @@ def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="jos
     context = {
         'character': character,
         'all_characters': all_characters,
-        'storywheel': storywheel,
+        'wheel': wheel,
         'edit': edit
     }
 

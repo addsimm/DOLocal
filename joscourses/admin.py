@@ -67,7 +67,7 @@ admin.site.register(JOSStory, JOSStoryAdmin)
 class JOSWheelAdmin(admin.ModelAdmin):
     list_display = ("id", "author", "publish_permission", "updated", "title")
 
-    verbose_name = "Storywheel"
+    verbose_name = "wheel"
 
     readonly_fields = ("created", "updated",)
 
@@ -77,7 +77,7 @@ admin.site.register(JOSWheel, JOSWheelAdmin)
 
 
 class JOSPlotTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", 'storywheel', "incite", "rising", "climax", "falling", "resolve", "updated")
+    list_display = ("id", 'wheel', "incite", "rising", "climax", "falling", "resolve", "updated")
 
     verbose_name = "Plot"
 
