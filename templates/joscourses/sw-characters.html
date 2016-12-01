@@ -9,99 +9,130 @@
 
 <style>
 
-    .char_names {
-        margin: 0 10px 0 5px;
-        padding: 0 5px;
-        width: 185px;
+    body {
+        padding: 0;
+    }
+
+    #main_container {
+        padding: 0;
+    }
+
+
+    .flex_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    #template_title {
+        background-color: rgb(231, 209, 222);
+        font-size: 24pt;
+        font-weight: bold;
+        height: 47px;
+        padding: 3px 0;
+        width: 630px;
+    }
+
+    .component_label {
+        font-family: 'Architects Daughter';
+        font-size: 24pt;
+        line-height: 1.1;
+    }
+
+    .char_btns {
+        margin: 0 0 0 10px;
+        padding: 5px 10px;
+        width: 250px;
+        {% if edit %}
+            border: 3px dashed #5bc0de;
+        {% endif %}
     }
 
 </style>
 
 <!-- Page title -->
-<div style="background-color: rgb(231, 209, 222);
-            border-radius: 0;
-            font-size: 24pt;
-            font-weight: bold;
-            height: 47px;
-            margin: 3px 0 0 0;
-            padding: 4px 0 0 0;
-            width: 630px;"><button class="btn btn-warning text-center"
-            style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
-            onclick=" window.history.back();">
-        Back
-    </button>{{ wheel.title }} - Characters</div>
+<div>
+    <div id='template_title' >
+        <button class="btn btn-warning text-center"
+                style="font-size: 16pt; width: 70px; margin: -5px 15px 0 0; height: 47px;"
+                onclick=" window.history.back();">
+            Back
+        </button>{{ wheel.title }} - Characters
+        <span style="font-size: 12px;">#{{ character.id }}</span>
+    </div>
+</div>
 
 <!-- Background image -->
 <img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
- style="margin-top: 100px; opacity: 0; z-index: -1;">
+ style="margin-top: 50px; opacity: 0; z-index: -1;">
 
-<div id="fixed-top-bar" class="row" style="position: fixed; top: 80px; height: 800px; width: 1090px; left: 41px;">
-    <span style="font-size: 12px;">#{{ character.id }}</span>
+<!-- Main content -->
+<div id="fixed-top-bar" class="flex_container" style="position: fixed; top: 80px; left: 30px;
+flex-direction: row; width: 1090px; ">
 
     {% if wheel.author == request.user %}
 
         <a id="edit_mode_button" class="btn btn-info"
            style="
-                position: absolute; top: 40px; left: 770px;
+                position: absolute; top: 15px; left: 765px;
                 font-size: 18pt; width: 125px;
                 z-index: 225;"
            href="{% if edit %}
-                            {% url "joscourses:sw_characters" wheel.id character.id %}
-                         {% else %}
-                            {% url "joscourses:sw_characters_edit" wheel.id character.id %}
-                         {% endif %}">
+                    {% url "joscourses:sw_characters" wheel.id character.id %}
+                 {% else %}
+                    {% url "joscourses:sw_characters_edit" wheel.id character.id %}
+                 {% endif %}">
             {% if edit %}Hide{% else %}Edit{% endif %}
         </a><br>
 
     {% endif %}
 
-    <div class="col-xs-10" style="height: 800px; background-color: lightpink; outline: 1px solid rgb(65,45,120); padding: 10px;">
+    <!-- Center panel -->
+    <div class="flex_container" style="justify-content: space-between; height: 800px; width: 83%; padding: 10px; outline: 1px solid rgb(65,45,120); background-color: lightpink;">
 
-        <div class="row" style="width: 80%; margin-left: 15px; padding: 10px 0; {% if edit %}border: 3px dashed #5bc0de{% endif %};">
-            <div class="col-xs-12">
+        <div class="flex_container" style="justify-content: space-between; width: 50%; height: 18%;">
 
-                <input class="char_names" id="nick_name" value="{{ character.nick_name }}"> aka
-                <input class="char_names" id="first_name" value="{{ character.first_name }}">
-                <input class="char_names" id="last_name" value="{{ character.last_name }}">
+            <div>Nick: <input class="char_btns" id="nick_name" value="{{ character.nick_name }}"></div>
+            <div>First: <input class="char_btns" id="first_name" value="{{ character.first_name }}"></div>
+            <div>Last: <input class="char_btns" id="last_name" value="{{ character.last_name }}"></div>
 
-            </div>
         </div>
 
-        <div class="row text-center" style="margin-top: 50px">
-            <div class="col-xs-12">
+        <button class="btn btn-danger"
+               style="align-self: center; width: 50%;"
+               onclick="deleteCharacter('{{ character.id }}');">
+                Delete character: {{ character.nick_name }}
+        </button>
 
-                <button class="btn btn-danger"
-                   style="margin-top: 10px; width: 50%;"
-                   onclick="deleteCharacter('{{ character.id }}');">
-                    Delete character: {{ character.nick_name }}
-                </button>
-
-            </div>
-        </div>
     </div>
 
-    <div class="col-xs-2" style="height: 800px; padding: 0 0 0 15px; margin-top: 50px;">
+    <!-- Side panel -->
+    <div class="flex_container"
+         style="height: 800px; width: 17%; background-color: lightyellow;">
 
         <a class="btn btn-default"
-           style="margin-top: 10px; width: 100%;"
+           style="margin: 100px 0 0 0; width: auto; align-self: center"
            href="{% url 'joscourses:sw_characters' wheel.id 1 %}">
             New character
         </a>
 
-        <div class="row" style="margin: 30px 0 0 0;">
-            <span class="homehead" style="font-size: 20pt;">Cast:</span>
+        <div class="homehead" style="font-size: 20pt; margin: 30px 0 0 0;">Cast:</div>
+
+        <div style="margin: 0;" >
+            {% for char in all_characters %}
+
+                <button class="btn btn-link"
+                        style="font-size: 12pt;  margin: 15px 0 0 0;height: auto; width: auto;"
+                        onclick="location.href='{% url 'joscourses:sw_characters' wheel.id char.id %}';">
+                    <i class="fa fa-user fa-fw"></i>
+                        <span style="margin-left: 3px;">
+                            {{ char.id }} - {{ char.nick_name }}
+                        </span>
+                </button><br>
+
+            {% endfor %}
         </div>
-
-        {% for char in all_characters %}
-
-            <button class="btn btn-link" style="font-size: 12pt; margin-top: 15px; width: auto;"
-                    onclick="location.href='{% url 'joscourses:sw_characters' wheel.id char.id %}';">
-                <i class="fa fa-user fa-fw"></i><span style="margin-left: 3px;">
-                    {{ char.id }} - {{ char.nick_name }}
-                </span>
-            </button><br>
-
-        {% endfor %}
     </div>
 </div>
 
@@ -130,9 +161,9 @@
     }
 
     if ('{{ edit }}' === 'False') {
-        $('.char_names').prop("readonly", true);
+        $('.char_btns').prop("readonly", true);
     } else {
-        $('.char_names').prop("readonly", false);
+        $('.char_btns').prop("readonly", false);
     }
 
 </script>
