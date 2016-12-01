@@ -9,72 +9,13 @@
 
 <style>
 
-    body {
-        padding-top: 0;
-    }
-
-    .component_label {
-        font-family: 'Architects Daughter';
-        font-size: 32pt;
-        line-height: 1.1;
-        background-color: white;
-        display: none;
-    }
-
-    .edit_btn_central {
-        font-size: 14pt;
-        width: auto;
-        display: none;
-    }
-
-    .edit_btn_control {
-        position: absolute;
-        width: 125px;
-    }
-
-    .edit_box {
-        background-color: rgba(255, 255, 255, .8);
-        border:
-            {% if edit %}
-                3px dashed #5bc0de
-            {% else %}
-                1px solid rgb(65,45,120)
-            {% endif %};
-        overflow-x: hidden;
-        overflow-y: scroll;
-        padding: 10px 15px;
-        text-align: left;
-        width:100%;
-        height: 100%;
-    }
-
-    .edit_box:hover {
-        background-color: white;
-    }
-
-    .template_row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .template_component {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+    .char_names {
+        margin: 0 10px 0 5px;
+        padding: 0 5px;
+        width: 185px;
     }
 
 </style>
-
-<script>
-
-    if ('{{ edit }}' === 'False') {
-        $('.edit_btn_central').hide();
-    } else {
-        $('.component_label').hide();
-    }
-
-</script>
 
 <!-- Page title -->
 <div style="background-color: rgb(231, 209, 222);
@@ -95,47 +36,51 @@
  style="margin-top: 100px; opacity: 0; z-index: -1;">
 
 <div id="fixed-top-bar" class="row" style="position: fixed; top: 80px; height: 800px; width: 1090px; left: 41px;">
+    <span style="font-size: 12px;">#{{ character.id }}</span>
 
-    <div class="col-xs-10" style="height: 800px; background-color: lightpink;">
+    {% if wheel.author == request.user %}
 
-        {% if wheel.author == request.user %}
-
-            <a id="edit_mode_button" class="btn btn-info"
-               style="
-                position: absolute; top: 30px; left: 720px;
-                font-size: 22pt; width: 150px; height: 55px;
+        <a id="edit_mode_button" class="btn btn-info"
+           style="
+                position: absolute; top: 40px; left: 770px;
+                font-size: 18pt; width: 125px;
                 z-index: 225;"
-               href="{% if edit %}
-                            {% url "joscourses:sw_characters" wheel.id %}
+           href="{% if edit %}
+                            {% url "joscourses:sw_characters" wheel.id character.id %}
                          {% else %}
-                            {% url "joscourses:sw_characters" wheel.id %}
+                            {% url "joscourses:sw_characters_edit" wheel.id character.id %}
                          {% endif %}">
-                {% if edit %}Hide{% else %}Edit{% endif %}
-            </a><br>
+            {% if edit %}Hide{% else %}Edit{% endif %}
+        </a><br>
 
-        {% endif %}
+    {% endif %}
 
-         character #{{ character.id }} --
-        <input type="text" id="nick_name" value="{{ character.nick_name }}"><br><br>
+    <div class="col-xs-10" style="height: 800px; background-color: lightpink; outline: 1px solid rgb(65,45,120); padding: 10px;">
 
-        <input type="text" id="first_name" value="{{ character.first_name }}">
-        <input type="text" id="last_name" value="{{ character.last_name }}"><br><br><br>
+        <div class="row" style="width: 80%; margin-left: 15px; padding: 10px 0; {% if edit %}border: 3px dashed #5bc0de{% endif %};">
+            <div class="col-xs-12">
 
-        <button class="btn btn-danger"
-           style="margin-top: 10px; width: 50%;"
-           onclick="deleteCharacter('{{ character.id }}');">
-            Delete character: {{ character.nick_name }}
-        </button>
-        <br><br><br>
+                <input class="char_names" id="nick_name" value="{{ character.nick_name }}"> aka
+                <input class="char_names" id="first_name" value="{{ character.first_name }}">
+                <input class="char_names" id="last_name" value="{{ character.last_name }}">
 
+            </div>
+        </div>
 
-        all_characters: {{ all_characters }}<br>
-        wheel: {{ wheel }}<br>
-        edit: {{ edit }}<br>
+        <div class="row text-center" style="margin-top: 50px">
+            <div class="col-xs-12">
 
+                <button class="btn btn-danger"
+                   style="margin-top: 10px; width: 50%;"
+                   onclick="deleteCharacter('{{ character.id }}');">
+                    Delete character: {{ character.nick_name }}
+                </button>
+
+            </div>
+        </div>
     </div>
 
-    <div class="col-xs-2" style="height: 800px; padding: 0; margin-top: 50px; background-color: lightyellow;">
+    <div class="col-xs-2" style="height: 800px; padding: 0 0 0 15px; margin-top: 50px;">
 
         <a class="btn btn-default"
            style="margin-top: 10px; width: 100%;"
@@ -184,10 +129,10 @@
         });
     }
 
-    if ('{{ edit }}' === 'True') {
-        $('.edit_btn_central').show();
+    if ('{{ edit }}' === 'False') {
+        $('.char_names').prop("readonly", true);
     } else {
-        $('.component_label').show();
+        $('.char_names').prop("readonly", false);
     }
 
 </script>
