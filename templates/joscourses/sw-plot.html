@@ -13,14 +13,6 @@
         padding-top: 0;
     }
 
-    .component_label {
-        font-family: 'Architects Daughter';
-        font-size: 32pt;
-        line-height: 1.1;
-        background-color: white;
-        display: none;
-    }
-
     .edit_btn_central {
         font-size: 14pt;
         width: auto;
@@ -77,17 +69,8 @@
 </script>
 
 <!-- Page title -->
+<div class="storywheel_title_template">
 
-<div style="
-        background-color: rgb(231, 209, 222);
-        border-radius: 0;
-        font-size: 24pt;
-        font-weight: bold;
-        height: 47px;
-        margin: 3px 0 0 0;
-        padding: 4px 0 0 0;
-        width: 630px;
-        ">
     <button class="btn btn-warning text-center"
             style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
             onclick=" window.history.back();">
@@ -97,8 +80,7 @@
 
 </div>
 
-    <img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
- style="margin-top: 20px; z-index: -1;">
+<img id='background_image' src="{% static 'img/plot-template-113016.png' %}" style="margin-top: 20px; z-index: -1;">
 
 <div id="fixed-top-bar" style="position: fixed; top: 50px; height: 800px; width: 1090px; left: 41px;">
 

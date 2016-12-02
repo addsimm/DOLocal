@@ -174,19 +174,18 @@ class JOSCharacter(TimeStamped, models.Model):
 
     wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
-    first_name = models.CharField(max_length=150, default="-- Firsty --", blank=True, null=True)
-    last_name = models.CharField(max_length=150, default="-- Lasty --", blank=True, null=True)
-    nick_name = models.CharField(max_length=150, default="-- Nicky --", blank=True, null=True)
+    first_name = models.CharField(max_length=150, default="- First --", blank=True, null=True)
+    last_name = models.CharField(max_length=150, default="- Last --", blank=True, null=True)
+    nick_name = models.CharField(max_length=150, default="- Nicky -", blank=True, null=True)
     tags = TaggableManager()
 
     def __str__(self):
         return str(self.id) + ': ' + str(self.nick_name)
 
 
-class JOSPlotTemplate(TimeStamped, models.Model):
+class JOSPlot(TimeStamped, models.Model):
     class Meta:
-        verbose_name = 'Plot Template'
-        verbose_name_plural = 'Plot Templates'
+        verbose_name = 'Plot'
 
     wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
@@ -197,7 +196,37 @@ class JOSPlotTemplate(TimeStamped, models.Model):
     resolve = models.TextField(default="-- insert resolution --", blank=True, null=True)
 
     def __str__(self):
-        return 'plot template: ' + str(self.id)
+        return 'Plot: ' + str(self.id)
 
 
+class JOSWorld(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'World'
 
+    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+
+    def __str__(self):
+        return 'World: ' + str(self.id)
+
+
+class JOSTheme(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Theme'
+
+    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+
+    def __str__(self):
+        return 'Theme: ' + str(self.id)
+
+
+class JOSConflict(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Conflict'
+
+    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    publish_permission = models.IntegerField(default=1)
+
+    def __str__(self):
+        return 'Conflict: ' + str(self.id)

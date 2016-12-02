@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from .views import course_week, course_week_list, josstory, ajax_story_update, ajax_wheel_update, joswheel, sw_plot, sw_characters
+from .views import course_week, course_week_list, josstory, ajax_story_update, ajax_wheel_update, joswheel, sw_plot, sw_characters, sw_theme, sw_world, sw_conflict
 
 urlpatterns = patterns(
         '',
@@ -24,6 +24,17 @@ urlpatterns = patterns(
 
     url("plot_template/(?P<wheel_id>\d+)/edit$", sw_plot, {'edit': True}, name="sw_plot_edit"),
     url("plot_template/(?P<wheel_id>\d+)$", sw_plot, {'edit': False}, name="sw_plot"),
+
+
+    url("theme_template/(?P<wheel_id>\d+)/edit$", sw_theme, {'edit': True}, name="sw_theme_edit"),
+    url("theme_template/(?P<wheel_id>\d+)$", sw_theme, {'edit': False}, name="sw_theme"),
+
+    url("world_template/(?P<wheel_id>\d+)/edit$", sw_world, {'edit': True}, name="sw_world_edit"),
+    url("world_template/(?P<wheel_id>\d+)$", sw_world, {'edit': False}, name="sw_world"),
+
+    url("conflict_template/(?P<wheel_id>\d+)/edit$", sw_conflict, {'edit': True}, name="sw_conflict_edit"),
+    url("conflict_template/(?P<wheel_id>\d+)$", sw_conflict, {'edit': False}, name="sw_conflict"),
+
 
     url("characters_template/(?P<wheel_id>\d+)/(?P<character_id>\d+)/edit$", sw_characters, {'edit': True}, name="sw_characters_edit"),
     url("characters_template/(?P<wheel_id>\d+)/(?P<character_id>\d+)$", sw_characters, {'edit': False}, name="sw_characters"),

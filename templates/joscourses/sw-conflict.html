@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta_title %}{% endblock %}
+{% block title %}{% endblock %}
+
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+
+{% block all_content %}
+
+<style>
+
+    body {
+        padding: 0;
+    }
+
+    #main_container {
+        padding: 0;
+    }
+
+</style>
+
+<!-- Page title -->
+<div>
+    <div id='storywheel_template_title' >
+        <button class="btn btn-warning text-center"
+                style="font-size: 16pt; width: 70px; margin: -5px 15px 0 0; height: 47px;"
+                onclick=" window.history.back();">
+            Back
+        </button>{{ wheel.title }} - Conflict
+    </div>
+</div>
+
+<!-- Background image -->
+<img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
+ style="margin-top: 50px; opacity: 0; z-index: -1;">
+
+<!-- Main content -->
+<div id="fixed-top-bar" class="jos_flex_container" style="position: fixed; top: 80px; left: 30px;
+flex-direction: row; width: 1090px; ">
+
+    {% if wheel.author == request.user %}
+
+        <a id="edit_mode_button" class="btn btn-info"
+           style="
+                position: absolute; top: 15px; left: 765px;
+                font-size: 18pt; width: 125px;
+                z-index: 225;"
+           href="{% if edit %}
+                    {% url "joscourses:sw_characters" wheel.id character.id %}
+                 {% else %}
+                    {% url "joscourses:sw_characters_edit" wheel.id character.id %}
+                 {% endif %}">
+            {% if edit %}Hide{% else %}Edit{% endif %}
+        </a><br>
+
+    {% endif %}
+
+</div>
+
+{% endblock all_content %}

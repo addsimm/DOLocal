@@ -113,6 +113,7 @@
         paths.push(path5);
     }
 
+    // Handles hovering
     $(document).mousemove(function(e) {
         var mousePos = getMousePos(C, e);
 
@@ -124,10 +125,6 @@
                 newWedge = 0;
             }
         }
-
-        // var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y +
-        // ', old wedge: ' + oldWedge + ', new wedge: ' + newWedge;
-        // $('#mouse_report').text(message);
 
         if (newWedge !== oldWedge) {
             redraw();
@@ -154,6 +151,7 @@
 
         console.log(wedges[segment] + ' clicked');
 
+        //// add other wedges
         if (wedges[segment] === 'plot') {
             location.href = url_plot;
         } else if (wedges[segment] === 'character') {

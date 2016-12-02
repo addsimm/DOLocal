@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlotTemplate, JOSCharacter
+from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlot, JOSCharacter, JOSConflict, JOSTheme, JOSWorld
 
 
 # Register your models here.
@@ -76,14 +76,14 @@ class JOSWheelAdmin(admin.ModelAdmin):
 admin.site.register(JOSWheel, JOSWheelAdmin)
 
 
-class JOSPlotTemplateAdmin(admin.ModelAdmin):
+class JOSPlotAdmin(admin.ModelAdmin):
     list_display = ("id", 'wheel', "incite", "rising", "climax", "falling", "resolve", "updated")
 
     verbose_name = "Plot"
 
     readonly_fields = ("created", "updated",)
 
-admin.site.register(JOSPlotTemplate, JOSPlotTemplateAdmin)
+admin.site.register(JOSPlot, JOSPlotAdmin)
 
 
 class JOSCharacterAdmin(admin.ModelAdmin):
@@ -95,3 +95,36 @@ class JOSCharacterAdmin(admin.ModelAdmin):
 
 
 admin.site.register(JOSCharacter, JOSCharacterAdmin)
+
+
+class JOSThemeAdmin(admin.ModelAdmin):
+    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+
+    verbose_name = "Characters"
+
+    readonly_fields = ("created", "updated",)
+
+
+admin.site.register(JOSTheme, JOSThemeAdmin)
+
+
+class JOSWorldAdmin(admin.ModelAdmin):
+    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+
+    verbose_name = "Characters"
+
+    readonly_fields = ("created", "updated",)
+
+
+admin.site.register(JOSWorld, JOSWorldAdmin)
+
+
+class JOSConflictAdmin(admin.ModelAdmin):
+    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+
+    verbose_name = "Characters"
+
+    readonly_fields = ("created", "updated",)
+
+
+admin.site.register(JOSConflict, JOSConflictAdmin)

@@ -268,6 +268,27 @@ footer {
     text-decoration: none;
 }
 
+#storywheel_template_title {
+    background-color: rgb(231, 209, 222);
+    font-size: 24pt;
+    font-weight: bold;
+    height: 47px;
+    padding: 3px 0;
+    width: 630px;
+}
+
+.jos_flex_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.component_label {
+    font-family: 'Architects Daughter';
+    font-size: 24pt;
+    line-height: 1.1;
+}
 
 
 

@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
-from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlotTemplate, JOSCharacter
+from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlot, JOSCharacter, JOSWorld, JOSTheme, JOSConflict
 
 ### UNUSED
 @login_required
@@ -209,9 +209,9 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
     try:
-        plot_template = get_object_or_404(JOSPlotTemplate, wheel=wheel)
+        plot_template = get_object_or_404(JOSPlot, wheel=wheel)
     except:
-        plot_template = JOSPlotTemplate.objects.create(wheel=wheel)
+        plot_template = JOSPlot.objects.create(wheel=wheel)
         plot_template.save()
 
         return redirect('https://joinourstory.com/joscourses/plot_template/' + str(wheel.id))
@@ -220,6 +220,81 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
         'plot_template': plot_template,
         'wheel': wheel,
         'edit': edit
+    }
+
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+def sw_world(request, wheel_id=0, edit=False, template="joscourses/sw-world.html", extra_context=None):
+    try:
+        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+    except:
+        return HttpResponse('cant find wheel: ' + str(wheel_id))
+
+    try:
+        world_template = get_object_or_404(JOSWorld, wheel=wheel)
+    except:
+        world_template = JOSWorld.objects.create(wheel=wheel)
+        world_template.save()
+
+        return redirect('https://joinourstory.com/joscourses/world_template/' + str(wheel.id))
+
+    context = {
+        'world_template': world_template,
+        'wheel':         wheel,
+        'edit':          edit
+    }
+
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+def sw_theme(request, wheel_id=0, edit=False, template="joscourses/sw-theme.html", extra_context=None):
+    try:
+        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+    except:
+        return HttpResponse('cant find wheel: ' + str(wheel_id))
+
+    try:
+        theme_template = get_object_or_404(JOSTheme, wheel=wheel)
+    except:
+        theme_template = JOSTheme.objects.create(wheel=wheel)
+        theme_template.save()
+
+        return redirect('https://joinourstory.com/joscourses/theme_template/' + str(wheel.id))
+
+    context = {
+        'theme_template': theme_template,
+        'wheel':         wheel,
+        'edit':          edit
+    }
+
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+def sw_conflict(request, wheel_id=0, edit=False, template="joscourses/sw-conflict.html", extra_context=None):
+    try:
+        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
+    except:
+        return HttpResponse('cant find wheel: ' + str(wheel_id))
+
+    try:
+        conflict_template = get_object_or_404(JOSConflict, wheel=wheel)
+    except:
+        conflict_template = JOSConflict.objects.create(wheel=wheel)
+        conflict_template.save()
+
+        return redirect('https://joinourstory.com/joscourses/conflict_template/' + str(wheel.id))
+
+    context = {
+        'conflict_template': conflict_template,
+        'wheel':          wheel,
+        'edit':           edit
     }
 
     context.update(extra_context or {})
@@ -249,9 +324,9 @@ def ajax_wheel_update(request):
     template = ' '
     if sw_template == 'plot':
         try:
-            template = get_object_or_404(JOSPlotTemplate, wheel=wheel)
+            template = get_object_or_404(JOSPlot, wheel=wheel)
         except:
-            return HttpResponse('Error JOSPlotTemplate missing, please call us')
+            return HttpResponse('Error JOSPlot missing, please call us')
 
         setattr(template, template_section, cntrl_new_content)
         template.save()

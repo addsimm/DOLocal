@@ -17,29 +17,6 @@
         padding: 0;
     }
 
-
-    .flex_container {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-
-    #template_title {
-        background-color: rgb(231, 209, 222);
-        font-size: 24pt;
-        font-weight: bold;
-        height: 47px;
-        padding: 3px 0;
-        width: 630px;
-    }
-
-    .component_label {
-        font-family: 'Architects Daughter';
-        font-size: 24pt;
-        line-height: 1.1;
-    }
-
     .char_btns {
         margin: 0 0 0 10px;
         padding: 5px 10px;
@@ -53,7 +30,7 @@
 
 <!-- Page title -->
 <div>
-    <div id='template_title' >
+    <div id='storywheel_template_title' >
         <button class="btn btn-warning text-center"
                 style="font-size: 16pt; width: 70px; margin: -5px 15px 0 0; height: 47px;"
                 onclick=" window.history.back();">
@@ -68,7 +45,7 @@
  style="margin-top: 50px; opacity: 0; z-index: -1;">
 
 <!-- Main content -->
-<div id="fixed-top-bar" class="flex_container" style="position: fixed; top: 80px; left: 30px;
+<div id="fixed-top-bar" class="jos_flex_container" style="position: fixed; top: 80px; left: 30px;
 flex-direction: row; width: 1090px; ">
 
     {% if wheel.author == request.user %}
@@ -89,9 +66,9 @@ flex-direction: row; width: 1090px; ">
     {% endif %}
 
     <!-- Center panel -->
-    <div class="flex_container" style="justify-content: space-between; height: 800px; width: 83%; padding: 10px; outline: 1px solid rgb(65,45,120); background-color: lightpink;">
+    <div class="jos_flex_container" style="justify-content: space-between; height: 800px; width: 83%; padding: 10px; outline: 1px solid rgb(65,45,120); background-color: lightpink;">
 
-        <div class="flex_container" style="justify-content: space-between; width: 50%; height: 18%;">
+        <div class="jos_flex_container" style="justify-content: space-between; width: 50%; height: 18%;">
 
             <div>Nick: <input class="char_btns" id="nick_name" value="{{ character.nick_name }}"></div>
             <div>First: <input class="char_btns" id="first_name" value="{{ character.first_name }}"></div>
@@ -108,7 +85,7 @@ flex-direction: row; width: 1090px; ">
     </div>
 
     <!-- Side panel -->
-    <div class="flex_container"
+    <div class="jos_flex_container"
          style="height: 800px; width: 17%; background-color: lightyellow;">
 
         <a class="btn btn-default"
