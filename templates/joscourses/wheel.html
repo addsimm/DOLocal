@@ -13,16 +13,9 @@
 
 </style>
 
-    <div style="
-        background-color: rgb(231, 209, 222);
-        border-radius: 0;
-        font-size: 24pt;
-        font-weight: bold;
-        height: 47px;
-        margin: 3px 0 0 0;
-        padding: 4px 0 0 0;
-        width: 630px;
-        ">
+<div id="fixed_background" style="width: 1155px;">
+
+    <div class="storywheel_template_title" style="margin: -133px 0 -50px 0;">
         <button class="btn btn-warning text-center"
                 style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
                 onclick=" window.history.back();">
@@ -31,10 +24,9 @@
         wheel: {{ wheel.title }}
     </div>
 
-    <div class="row" style="padding: 130px 0 20px 0; height: 800px;">
-    <div class="col-xs-12 text-center">
+    <div class="col-xs-12 text-center" style="margin: 0 0 -50px 0;">
         <canvas id="pie_canvas" width="800" height="800"
-                style="background-image: url('{% static 'img/wheel-112016.png' %}'); position: absolute; top: -85px; left: 202px;">
+                style="background-image: url('{% static 'img/wheel-112016.png' %}'); position: absolute; top: 80px; left: 177px;">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>
@@ -51,6 +43,9 @@
 
     var url_plot = "https://joinourstory.com/joscourses/plot_template/" + "{{ wheel.id }}";
     var url_characters = "https://joinourstory.com/joscourses/characters_template/" + "{{ wheel.id }}/0";
+    var url_world = "https://joinourstory.com/joscourses/world_template/" + "{{ wheel.id }}";
+    var url_theme = "https://joinourstory.com/joscourses/theme_template/" + "{{ wheel.id }}";
+    var url_conflict = "https://joinourstory.com/joscourses/conflict_template/" + "{{ wheel.id }}";
 
     function redraw() {
         console.log('drawing');
@@ -156,6 +151,14 @@
             location.href = url_plot;
         } else if (wedges[segment] === 'character') {
             location.href = url_characters;
+        } else if (wedges[segment] === 'world') {
+            location.href = url_world;
+        } else if (wedges[segment] === 'theme') {
+            location.href = url_theme;
+        } else if (wedges[segment] === 'conflict') {
+            location.href = url_conflict;
+        } else {
+            console.log('click - no wedge found')
         }
     });
 

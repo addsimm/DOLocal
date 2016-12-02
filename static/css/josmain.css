@@ -268,12 +268,13 @@ footer {
     text-decoration: none;
 }
 
-#storywheel_template_title {
+.storywheel_template_title {
     background-color: rgb(231, 209, 222);
     font-size: 24pt;
     font-weight: bold;
     height: 47px;
-    padding: 3px 0;
+    margin-left: -15px;
+    padding-top: 4px;
     width: 630px;
 }
 

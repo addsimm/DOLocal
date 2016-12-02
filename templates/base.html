@@ -49,21 +49,14 @@
 
 </head>
 
-<style>
-
-    body {
+<body id="body" style="
         color: rgb(65, 45, 120);
         font-family: 'source sans pro', sans-serif;
         font-size: 16pt;
         line-height: normal;
         padding-top: 135px;
-        width: 1170px;
-    }
-
-</style>
-
-
-<body id="{% block body_id %}body{% endblock %}">
+        width: 1185px;
+        ">
 
 {% block help %}
 
@@ -100,7 +93,7 @@
                height:120px;
                outline: none;
                padding: 0;
-               position: absolute; top: 7px; left: 0;
+               position: absolute; top: 9px; left: -13px;
                width:219px;">
         </a>
     {% endblock logo %}
@@ -108,9 +101,9 @@
     {% if request.user.is_staff %}
 
         <a class="josstaffbutton text-center"
-           style="position: fixed; top: 80px; left: 990px; font-size: 12pt; width: 80px;"
+           style="position: fixed; top: 75px; left: 1005px; font-size: 12pt; width: 80px;"
            href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
-            {% trans "Staff" %}
+            Staff
         </a>
 
     {% endif %}
@@ -118,9 +111,9 @@
     {% if request.user.is_superuser %}
 
         <a class="josstaffbutton text-center"
-           style="position: fixed; top: 80px; left: 1080px;  font-size: 12pt; width: 80px;"
+           style="position: fixed; top: 75px; left: 1100px;  font-size: 12pt; width: 80px;"
            href="/admin">
-            {% trans "Admin" %}
+            Admin
         </a>
 
     {% endif %}
@@ -262,10 +255,10 @@
 <!-- MAIN CONTENT -->
 <div id="main_container" class="container"
      style="
-            width: 1170px;
-            margin-left: 20px;
-            min-height: 400px;
-            padding: 0 20px;
+            width: 1155px;
+            margin: 0 0 0 30px;
+            min-height: 800px;
+            padding: 0;
             transition: .6s ease-in-out all;
             z-index: 1;
             ">
@@ -292,7 +285,8 @@
 
 <!-- FOOTER -->
 <footer>
-    <div class="container" style="width: 1155px; padding: 30px 0 0 0; margin: 30px 0 15px 30px;">
+    <div id='fixed_footer' class="container" style="width: 1170px; padding: 30px 0 0 15px;">
+
         {% block phone_number %}
             <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
                 <span style="color: black;">
@@ -307,6 +301,7 @@
                 </a>
             </div>
         {% endblock phone_number %}
+
         {% page_menu "pages/menus/footer.html" %}
 
         <p class="text-left" style="font-size: 8pt; margin-top: 0;">
