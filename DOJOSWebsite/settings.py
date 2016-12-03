@@ -6,18 +6,17 @@ import os
 
 ###################
 # DJANGO SETTINGS #
-###################
 
-# Hosts/domain names that are valid for this site; required if DEBUG is False
+# Hosts/domain names that are valid; required if DEBUG is False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.241.204.118', '*']
 
 DATEFORMAT = "D, M d"
 TIMEFORMAT = 'f A'
 
-# Local time zone. Choice codes: wikipedia
+# Local time zone; codes: wikipedia
 TIME_ZONE = 'America/Los_Angeles'
 
-# If True, Django will use timezone-aware datetimes.
+# If True, Django will timezone-aware
 USE_TZ = True
 
 # Language code
@@ -28,24 +27,22 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-# Whether a user's session cookie expires when browser closed.
+# Session cookie expire when browser closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SITE_ID = 1
 
-# If set to False, Django will optimize and not load internationalization.
+# If False, Django will not load internationalization.
 USE_I18N = False
 USE_L10N = False
 
 AUTHENTICATION_BACKENDS = ('mezzanine.core.auth_backends.MezzanineBackend',)
 
-# The numeric mode to set newly-uploaded files to.
-# The value should be a mode you'd pass directly to os.chmod.
+# Numeric mode for newly-uploaded files passed to os.chmod.
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 #############
 # DATABASES #
-#############
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.',
@@ -60,7 +57,7 @@ DATABASES = {
 
 #########
 # PATHS #
-#########
+
 # Full filesystem path to the project.
 PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
@@ -71,7 +68,8 @@ MEDIA_URL = STATIC_URL + 'media/'
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip('/').split('/'))
 ROOT_URLCONF = '%s.urls' % PROJECT_APP
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
-# Every cache key will get prefixed with this value
+
+# Every cache key prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
 
 GEOIP_DATABASE = STATIC_ROOT + '/easy_timezones/GeoLiteCity.dat'
@@ -97,12 +95,14 @@ INSTALLED_APPS = (
     'mezzanine.core',
     'mezzanine.generic',
     'mezzanine.pages',
-    # 'mezzanine.blog',
     'mezzanine.forms',
     'mezzanine.galleries',
-    # 'mezzanine.twitter',
     'mezzanine.accounts',
-    ### NOT IMPLEMENTED 'mezzanine.mobile',
+
+    ### NOT IMPLEMENTED
+    # 'mezzanine.blog',
+    # 'mezzanine.twitter',
+    # 'mezzanine.mobile',
 
     # 'spirit',
     # 'spirit.core',
@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     # 'spirit.comment.poll',
     # 'spirit.core.tests'
 
-    # 'djconfig',
+    ### 3rd party apps
     'request',
     'floppyforms',
     'haystack',
@@ -141,13 +141,18 @@ INSTALLED_APPS = (
     'embed_video',
     'notification',
     'taggit',
-    ### NOT IMPLEMENTED 'mailer',
-    ### NOT IMPLEMENTED 'schedule',
 
+    ### NOT IMPLEMENTED
+    # 'mailer',
+    # 'schedule',
+    # 'djconfig',
+
+    ### Custom apps
     'josstaff',
     'josmembers',
     'josprojects',
     'joscourses',
+    'josplayground',
 )
 
 TEMPLATES = [
@@ -157,7 +162,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here
+                ### TEMPLATE_CONTEXT_PROCESSORS
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.debug',
@@ -170,9 +175,9 @@ TEMPLATES = [
                 'mezzanine.conf.context_processors.settings',
                 'mezzanine.pages.context_processors.page',
 
-                # 'djconfig.context_processors.config',
                 'josprojects.context_processors.help_sys',
                 'josmessages.context_processors.inbox',
+                # 'djconfig.context_processors.config',
             ]
         },
     },
@@ -191,13 +196,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mezzanine.conf.context_processors.settings',
     'mezzanine.pages.context_processors.page',
 
-    # 'djconfig.context_processors.config',
     'josprojects.context_processors.help_sys',
     'josmessages.context_processors.inbox',
-
+    # 'djconfig.context_processors.config',
 )
 
-# Middleware. Order is important; request classes will be applied in order, response in reverse order.
+# Middleware. Order is important; request classes in order, response in reverse order.
 MIDDLEWARE_CLASSES = (
     'request.middleware.RequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -208,7 +212,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    # If using localisation: 'django.middleware.locale.LocaleMiddleware',
+    # If localisation: 'django.middleware.locale.LocaleMiddleware',
 
     'mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware',
     'mezzanine.core.middleware.FetchFromCacheMiddleware',
@@ -233,28 +237,8 @@ MIDDLEWARE_CLASSES = (
     'tracking.middleware.VisitorTrackingMiddleware',
 )
 
-# Store these package names here as they may change in the future.
-PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
-PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
-
-##################
-# OTHER SETTINGS #
-TAGGIT_CASE_INSENSITIVE = True
-
-#########################
-# OPTIONAL APPLICATIONS #
-
-OPTIONAL_APPS = (
-    'debug_toolbar',
-    'django_extensions',
-    ### Not working: 'compressor',
-    PACKAGE_NAME_FILEBROWSER,
-    PACKAGE_NAME_GRAPPELLI,
-)
-
 ########################
 # DJANGO DEBUG TOOLBAR #
-########################
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -270,9 +254,23 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
+#########################
+# OPTIONAL APPLICATIONS #
+
+# Store as package names as they may change.
+PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
+PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
+
+OPTIONAL_APPS = (
+    'debug_toolbar',
+    'django_extensions',
+    PACKAGE_NAME_FILEBROWSER,
+    PACKAGE_NAME_GRAPPELLI,
+    ### Not working: 'compressor',
+)
+
 ###########
 # PROFILE #
-###########
 ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 AUTH_PROFILE_MODULE = 'josmembers.JOSProfile'
@@ -282,7 +280,6 @@ ACCOUNTS_PROFILE_FORM_CLASS = 'josmembers.forms.JOSProfileForm'
 
 ######################
 # TRACKER & REQUEST  #
-######################
 TRACK_AJAX_REQUESTS = True
 TRACK_PAGEVIEWS = True
 TRACK_REFERER = True
@@ -307,9 +304,12 @@ REQUEST_PLUGINS = (
     'request.plugins.TopErrorPaths',
 )
 
+##################
+# OTHER SETTINGS #
+TAGGIT_CASE_INSENSITIVE = True
+
 #########
 # EMAIL #
-#########
 # EMAIL_SUBJECT_PREFIX = 'Join Our Story'
 # SERVER_EMAIL = EMAIL_HOST_USER = 'joinus@joinourstory.com'
 # EMAIL_USE_TLS = True
@@ -321,12 +321,10 @@ DEFAULT_FROM_EMAIL = 'joinus@joinourstory.com'
 
 #########
 # FORUM #
-#########
 # from spirit.settings import *
 
 ##########
 # SEARCH #
-##########
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
@@ -336,16 +334,14 @@ HAYSTACK_CONNECTIONS = {
 
 ##################
 # LOCAL SETTINGS #
-##################
-# Instead of doing 'from .local_settings import *', we use exec for full access
+# Instead of 'from .local_settings import *', we use exec for full access
 f = os.path.join(PROJECT_APP_PATH, 'local_settings.py')
 if os.path.exists(f):
     exec (open(f, 'rb').read())
 
 ####################
 # DYNAMIC SETTINGS #
-####################
-# set_dynamic_settings() rewrites globals to provide some better defaults.
+# set_dynamic_settings() rewrites global  defaults.
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
@@ -355,9 +351,7 @@ else:
 
 DEBUG = False
 
-##############################################
 ### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
-
 def show_toolbar(request):
     return True
 

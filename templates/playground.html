@@ -1,239 +1,115 @@
 {% extends "base.html" %}
 {% block meta_title %}{% endblock %}
 {% block title %}{% endblock %}
-{% block breadcrumb_menu %}
-
-    {{ block.super }}
-    Dev Playground
-
-{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}Dev Playground{% endblock %}
+{% block help %}{% endblock %}
+{% block logout %}{% endblock %}
+{% block base-fixed-top-bar %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block all_content %}
 
-<style>
+<!-- HTML Section -->
 
-    .edit_box {
-        height: 95%;
-        width: 100%;
-        background-color: white;
-        border: 3px dashed #28a4c9;
-        opacity: .4;
-    }
-
-    .edit_box:hover {
-        opacity: 1;
-    }
-
-    .template_row {
-        display: flex;
-        width: 100%
-    }
-
-    .template_component {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-end;
-        width: 45%;
-    }
-
-    .template_component_label {
-        background-color: white;
-        padding: 0 20px;
-
-        font-family: 'Architects Daughter';
-        font-size: 28pt;
-    }
-
-</style>
-
-<div class="row text-center" style=" ">
-    <div class="col-xs-12"
-         style="background: pink url('/static/img/plot-template.png') no-repeat top center; margin-top: 20px; height: 800px; width: 100%; padding: 0;">
-
-
-        <div class="template_row" style="justify-content: center; height: 20%;">
-
-            <div class="template_component" style="width: 90%;">
-                <div class="template_component_label">Climax</div>
-
-                {% include "josprojects/jos_editor.html" with edit='True' section='Climax' %}
-
-                <div class='edit_box'>
-                    <form id='climax_form'
-                          method="post"
-                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-
-                        <div id='title' class="col-xs-12 homehead text-center">
-                            {{ story.title | striptags | safe }}<br>
-                        </div>
-
-                        <input id="title_holder" type="hidden" name='nucontent' value=" ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="climax">
-
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="template_row" style="justify-content: space-around; height: 50%;">
-
-            <div class="template_component" style="width: 55%;">
-                <div id='xxx' class='edit_box'></div>
-            </div>
-
-            <div class="template_component" style="width: 40%;">
-                <div id='xxx' class='edit_box'></div>
-            </div>
-
-        </div>
-
-        <div class="template_row" style="display: flex; justify-content: space-between; margin-top: 1%; height: 29%;">
-
-            <div class="template_component">
-                <div class="template_component_label" style="align-self: flex-start;">Inciting incident</div>
-
-                <div id='xxx' class='edit_box'></div>
-            </div>
-
-            <div class="template_component">
-                <div class="template_component_label" style="align-self: flex-end;">Resolution</div>
-
-                <div id='xxx' class='edit_box'></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="mouse_report"></div>
-
-<div class="row" style="margin-top: 15px; height: 800px;">
-    <div class="col-xs-12 text-center">
-        <img src="/static/img/wheel-112016.png" height=800px>
-    </div>
-</div>
+<div id="mouse_report" style="margin-top: -50px; height: 100px; width: 500px;">Mouse position:</div>
 
 <div class="row" >
     <div class="col-xs-12 text-center">
-        <canvas id="pie_canvas" width="800" height="800" style="position: relative; top: -802px; left: 0;">
+        <canvas id="test_canvas" width="800" height="800"
+                style="margin-top: 50px; outline: 3px solid blue;">
             Your browser does not support HTML5 Canvas.
         </canvas>
     </div>
 </div>
 
+<!-- SCRIPTS -->
 <script>
 
-    var C = document.getElementById('pie_canvas');
-    var ctx = C.getContext('2d');
-    var paths = [];
-    var wedges = ['none', 'conflict', 'character', 'theme', 'world', 'plot'];
-    var oldWedge = 0,
-        newWedge = 0;
+    var square_names = ['hub', 'enjoy', 'create', 'share'];
+    var MR = document.getElementById('mouse_report');
+    var C = document.getElementById('test_canvas');     // Canvas
+    var ctx = C.getContext('2d');                       // Canvas contest
 
+    var paths = [];                                     // Array to hold paths for ctx shapes
+
+    var oldSquare = 0, newSquare = 0;                   // Used for hover
+
+    // starts canvas
+    $(document).ready(function () {
+        redraw();
+    });
+
+    // Called on major page state changes to redraw canvas
     function redraw() {
         console.log('drawing');
         ctx.clearRect(0, 0, C.width, C.height);
         paths = [];
-        var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
-        var path4 = new Path2D(), path5 = new Path2D();
+        var path1 = new Path2D();
 
-        ctx.lineWidth = .01;
+        ctx.lineWidth = 2;
 
-        // pie/conflict
-        path1.moveTo(18.5, 278.4);
-        path1.bezierCurveTo(77.5, 112.7, 231.7, 6.5, 399.1, 1.7);
-        path1.lineTo(399.1, 402.0);
-        path1.lineTo(399.0, 401.9);
-        path1.lineTo(18.6, 278.3);
-        path1.closePath();
+        path1.rect(600, 100, 100, 400);
         ctx.stroke(path1);
         paths.push(path1);
 
-        // pie/character
-        path2.moveTo(784.6, 281.7);
-        path2.bezierCurveTo(834.3, 450.5, 772.0, 627.1, 639.4, 729.3);
-        path2.lineTo(404.1, 405.5);
-        path2.lineTo(404.2, 405.5);
-        path2.lineTo(784.7, 281.8);
-        path2.closePath();
-        ctx.stroke(path2);
-        paths.push(path2);
-
-        // pie/theme
-        path3.moveTo(637.7, 731.1);
-        path3.bezierCurveTo(492.6, 830.5, 305.4, 825.8, 167.1, 731.2);
-        path3.lineTo(402.4, 407.4);
-        path3.lineTo(402.5, 407.5);
-        path3.lineTo(637.6, 731.1);
-        path3.closePath();
-        ctx.stroke(path3);
-        paths.push(path3);
-
-        // pie/world
-        path4.moveTo(164.0, 729.5);
-        path4.bezierCurveTo(24.6, 622.2, -28.7, 442.7, 18.5, 282.0);
-        path4.lineTo(399.1, 405.7);
-        path4.lineTo(399.1, 405.8);
-        path4.lineTo(163.9, 729.4);
-        path4.closePath();
-        ctx.stroke(path4);
-        paths.push(path4);
-
-        // pie/plot
-        path5.moveTo(402.4, 2.5);
-        path5.bezierCurveTo(578.3, 7.3, 727.0, 121.2, 783.2, 278.9);
-        path5.lineTo(402.6, 402.6);
-        path5.lineTo(402.6, 402.5);
-        path5.lineTo(402.6, 2.5);
-        path5.lineTo(402.4, 2.5);
-        path5.closePath();
-        ctx.stroke(path5);
-        paths.push(path5);
     }
 
-    $(document).mousemove(function(e) {
+    // Tracks mouse in document
+    $(document).mousemove(function (e) {
+        var rect = C.getBoundingClientRect();
+
+        var hover = $('#test_canvas:hover').length;
+
         var mousePos = getMousePos(C, e);
 
-        for (i = 0; i < 5; i++) {
-            if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
-                newWedge = i+1;
-                break
-            } else {
-                newWedge = 0;
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y
+                + ' - hover: ' + hover;
+        // ', old square: ' + oldSquare + ', new square: ' + newSquare;
+
+        $(MR).text(message);
+
+        if (hover === 1) {
+
+            for (i = 0; i < 5; i++) {
+                if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
+                    $(MR).append('<br> -- in path');
+                    newSquare = i + 1;
+                    break
+                } else {
+                    newSquare = 0;
+                }
             }
         }
 
-        // var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y +
-        // ', old wedge: ' + oldWedge + ', new wedge: ' + newWedge;
-        // $('#mouse_report').text(message);
-
-        if (newWedge !== oldWedge) {
+        if (newSquare !== oldSquare) {
             redraw();
-            if (newWedge !== 0) {
+            if (newSquare !== 0) {
                 ctx.save();
-                ctx.fillStyle = "white";
+                ctx.fillStyle = "red";
                 ctx.globalAlpha = 0.6;
-                ctx.fill(paths[newWedge - 1]);
+                ctx.fill(paths[newSquare - 1]);
                 ctx.restore();
             }
-            oldWedge = newWedge;
+
+            oldSquare = newSquare;
         }
     });
 
-    C.addEventListener('click', function(e) {
+
+    // mouse events within canvas - click
+    C.addEventListener('click', function (e) {
         var segment = 0;
         var mousePos = getMousePos(C, e);
         for (i = 0; i < 5; i++) {
             if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
-                segment = i+1;
+                segment = i + 1;
                 break
             }
         }
 
-        console.log(wedges[segment] + ' clicked');
+        console.log(squares[segment] + ' clicked');
     });
+
 
     function getMousePos(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
@@ -243,9 +119,6 @@
         };
     }
 
-    $(document).ready(function() {
-        redraw()
-    });
 
 </script>
 
