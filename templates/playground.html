@@ -11,14 +11,27 @@
 
 <!-- HTML Section -->
 
-<div id="mouse_report" style="margin-top: -50px; height: 100px; width: 500px;">Mouse position:</div>
+<div id="mouse_report" style="margin-top: 650px; height: 100px; width: 400px;">Mouse position:</div>
 
-<div class="row" >
-    <div class="col-xs-12 text-center">
-        <canvas id="test_canvas" width="800" height="800"
-                style="margin-top: 50px; outline: 3px solid blue;">
-            Your browser does not support HTML5 Canvas.
-        </canvas>
+
+<div id="big_box" style="position: fixed; top: 0px; left: 0px;
+            height: 600px; width: 600px;
+            outline: 3px dashed black;">
+
+    <div id="square1" style="
+             position: absolute; top: 10px; left: 10px;
+             height: 50px; width: 50px;
+             background-color: red;">
+        square 1
+    </div>
+
+    <div id="square2" style="
+             color: white;
+             position: absolute; bottom: 10px; right: 10px;
+             height: 50px; width: 50px;
+             background: white url('/static/img/peeky-102216.png') no-repeat;
+             background-size: 100%;">
+        square 2
     </div>
 </div>
 
@@ -27,17 +40,61 @@
 
     var square_names = ['hub', 'enjoy', 'create', 'share'];
     var MR = document.getElementById('mouse_report');
-    var C = document.getElementById('test_canvas');     // Canvas
-    var ctx = C.getContext('2d');                       // Canvas contest
 
-    var paths = [];                                     // Array to hold paths for ctx shapes
+    var square1 = document.getElementById('square1');
+    var square2 = document.getElementById('square2');
 
-    var oldSquare = 0, newSquare = 0;                   // Used for hover
+    // Tracks mouse in document
+    $(document).mousemove(function (e) {
 
-    // starts canvas
-    $(document).ready(function () {
-        redraw();
+        var mousePos = getMousePos(e);
+        var message = 'Mouse position: ' + mousePos.x + ', ' + mousePos.y;
+        $(MR).text(message);
+
+        if (mousePos.x > 200 && mousePos.x < 400) {
+
+            $(square1).css('width', 50 + (200 - mousePos.x / 2));
+            $(square2).css('width', (mousePos.x / 2));
+
+
+        }
+
+        if (mousePos.y > 200 && mousePos.y < 400) {
+
+            $(square1).css('height', 50 + (200 - mousePos.y / 2));
+            $(square2).css('height', (mousePos.y / 2));
+        }
+
+        var hover1 = $('#square1:hover').length;
+        var hover2 = $('#square2:hover').length;
+
+        if (hover1 === 1) {
+            $(square1).css('background-color', 'blue');
+        } else {
+            $(square1).css('background-color', 'red');
+        }
+
+        if (hover2 === 1) {
+            $(square2).css('background-color', 'orange');
+        } else {
+            $(square2).css('background-color', 'green');
+        }
+
+
     });
+
+    function getMousePos(evt) {
+        return {
+            x: evt.clientX,
+            y: evt.clientY
+        };
+    }
+
+    /*
+var C = document.getElementById('test_canvas');     // Canvas
+var ctx = C.getContext('2d');                       // Canvas contest
+var paths = [];                                     // Array to hold paths for ctx shapes
+
 
     // Called on major page state changes to redraw canvas
     function redraw() {
@@ -51,23 +108,10 @@
         path1.rect(600, 100, 100, 400);
         ctx.stroke(path1);
         paths.push(path1);
-
     }
 
-    // Tracks mouse in document
-    $(document).mousemove(function (e) {
-        var rect = C.getBoundingClientRect();
 
-        var hover = $('#test_canvas:hover').length;
-
-        var mousePos = getMousePos(C, e);
-
-        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y
-                + ' - hover: ' + hover;
-        // ', old square: ' + oldSquare + ', new square: ' + newSquare;
-
-        $(MR).text(message);
-
+    function detectHover() {
         if (hover === 1) {
 
             for (i = 0; i < 5; i++) {
@@ -93,8 +137,7 @@
 
             oldSquare = newSquare;
         }
-    });
-
+    }
 
     // mouse events within canvas - click
     C.addEventListener('click', function (e) {
@@ -106,20 +149,27 @@
                 break
             }
         }
-
         console.log(squares[segment] + ' clicked');
     });
 
-
-    function getMousePos(canvas, evt) {
+    function getMousePosCanvas(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         return {
             x: evt.clientX - rect.left,
             y: evt.clientY - rect.top
-        };
+        }
     }
-
+*/
 
 </script>
 
 {% endblock all_content %}
+
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <canvas id="test_canvas" width="800" height="800"
+                style="margin-top: 350px; outline: 3px solid blue;">
+            Your browser does not support HTML5 Canvas.
+        </canvas>
+    </div>
+</div>
