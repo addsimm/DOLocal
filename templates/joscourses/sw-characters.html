@@ -56,9 +56,9 @@
         font-size: 22pt; width: 150px; height: 55px;
         z-index: 225;"
                href="{% if edit %}
-                    {% url "joscourses:sw_characters" wheel.id %}
+                    {% url "joscourses:sw_characters" wheel.id character.id %}
                  {% else %}
-                    {% url "joscourses:sw_characters_edit" wheel.id %}
+                    {% url "joscourses:sw_characters_edit" wheel.id  character.id %}
                  {% endif %}">
                 {% if edit %}Hide{% else %}Edit{% endif %}
             </a><br>
@@ -68,7 +68,7 @@
     </div>
 
     <!-- Center panel -->
-    <div class="jos_flex_container" style="justify-content: space-between; height: 800px; width: 83%; padding: 10px; outline: 1px solid rgb(65,45,120); border: 8px solid #99ca3c;">
+    <div class="jos_flex_container" style="justify-content: space-between; height: 800px; width: 70%; padding: 10px; border: 8px solid #99ca3c;">
 
         <div class="jos_flex_container" style="justify-content: space-between; width: 50%; height: 18%;">
 
