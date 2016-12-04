@@ -15,24 +15,29 @@
 
 
 <div id="big_box" style="position: fixed; top: 0px; left: 0px;
-            height: 600px; width: 600px;
+            height: 704px; width: 1024px;
             outline: 3px dashed black;">
 
     <div id="square1" style="
-             position: absolute; top: 10px; left: 10px;
-             height: 50px; width: 50px;
-             background-color: red;">
-        square 1
+             position: absolute; top: 0; left: 0;
+             height: 176px; width: 256px;
+             background-image: url('/static/img/3create_4.5.png');
+             background-repeat: no-repeat;
+             background-size: 100% 100%;
+             outline: 1px solid rgb(65, 45, 120);
+             ">
     </div>
 
-    <div id="square2" style="
-             color: white;
-             position: absolute; bottom: 10px; right: 10px;
-             height: 50px; width: 50px;
-             background: white url('/static/img/peeky-102216.png') no-repeat;
-             background-size: 100%;">
-        square 2
+    <div id="square3" style="
+             position: absolute; bottom: 0; right: 0px;
+             height: 176px; width: 256px;
+             background-image: url('/static/img/3enjoy_4.5.png');
+             background-repeat: no-repeat;
+             background-size: 100% 100%;
+             outline: 1px solid rgb(65, 45, 120);
+             ">
     </div>
+
 </div>
 
 <!-- SCRIPTS -->
@@ -42,45 +47,74 @@
     var MR = document.getElementById('mouse_report');
 
     var square1 = document.getElementById('square1');
-    var square2 = document.getElementById('square2');
+    var square3 = document.getElementById('square3');
 
     // Tracks mouse in document
     $(document).mousemove(function (e) {
 
         var mousePos = getMousePos(e);
-        var message = 'Mouse position: ' + mousePos.x + ', ' + mousePos.y;
+        var message = 'Mouse position: ' + (mousePos.x) + ', ' + (mousePos.y);
         $(MR).text(message);
 
-        if (mousePos.x > 200 && mousePos.x < 400) {
-
-            $(square1).css('width', 50 + (200 - mousePos.x / 2));
-            $(square2).css('width', (mousePos.x / 2));
-
-
+        var pos1x;
+        if (mousePos.x < 512) {
+            pos1x = 640;
+        } else if (mousePos.x > 768) {
+            pos1x = 768;
+        } else {
+            pos1x = mousePos.x
         }
 
-        if (mousePos.y > 200 && mousePos.y < 400) {
-
-            $(square1).css('height', 50 + (200 - mousePos.y / 2));
-            $(square2).css('height', (mousePos.y / 2));
+        var pos1y;
+        if (mousePos.y < 352) {
+            pos1y = 440;
+        } else if (mousePos.y > 528) {
+            pos1y = 528;
+        } else {
+            pos1y = mousePos.y
         }
+
+        $(square1).css('width', 512 + (512 - pos1x));
+        $(square1).css('height', 352 + (352 - pos1y));
+
+
+        var pos3x;
+        if (mousePos.x < 256) {
+            pos3x = 0;
+        } else if (mousePos.x > 512) {
+            pos3x = 256;
+        } else {
+            pos3x = mousePos.x - 256;
+        }
+
+        $(square3).css('width', 256 + pos3x);
+
+        var pos3y;
+        if (mousePos.y < 176) {
+            pos3y = 0;
+        } else if (mousePos.y > 352) {
+            pos3y = 176;
+        } else {
+            pos3y = mousePos.y - 176;
+        }
+
+        $(square3).css('height', 176 + pos3y);
+
+
+
+
+
+
+
+
 
         var hover1 = $('#square1:hover').length;
-        var hover2 = $('#square2:hover').length;
 
         if (hover1 === 1) {
             $(square1).css('background-color', 'blue');
         } else {
             $(square1).css('background-color', 'red');
         }
-
-        if (hover2 === 1) {
-            $(square2).css('background-color', 'orange');
-        } else {
-            $(square2).css('background-color', 'green');
-        }
-
-
     });
 
     function getMousePos(evt) {
