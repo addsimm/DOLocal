@@ -141,12 +141,12 @@ class JOSStory(TimeStamped, models.Model):
         verbose_name = 'Story'
         verbose_name_plural = 'Stories'
 
-    message_thread = models.ForeignKey(JOSMessageThread, null=True)
+    message_thread = models.ForeignKey(JOSMessageThread, blank=True, null=True)
     author = models.ForeignKey(User)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
-    publish_permission = models.IntegerField(default=1)
-    tags = TaggableManager()
+    publish_permission = models.IntegerField(default=2)
+    # tags = TaggableManager(blank = True, null = True)
 
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]

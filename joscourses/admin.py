@@ -87,7 +87,7 @@ admin.site.register(JOSPlot, JOSPlotAdmin)
 
 
 class JOSCharacterAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+    list_display = ("id", 'wheel', "updated")
 
     verbose_name = "Characters"
 
@@ -98,7 +98,7 @@ admin.site.register(JOSCharacter, JOSCharacterAdmin)
 
 
 class JOSThemeAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+    list_display = ("id", 'wheel', "updated")
 
     verbose_name = "Characters"
 
@@ -109,7 +109,7 @@ admin.site.register(JOSTheme, JOSThemeAdmin)
 
 
 class JOSWorldAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+    list_display = ("id", 'wheel', "updated")
 
     verbose_name = "Characters"
 
@@ -120,7 +120,7 @@ admin.site.register(JOSWorld, JOSWorldAdmin)
 
 
 class JOSConflictAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "nick_name", "first_name", "last_name", "updated")
+    list_display = ("id", 'wheel', "updated")
 
     verbose_name = "Characters"
 
