@@ -18,18 +18,53 @@
             height: 800px; width: 1280px;
             outline: 2px solid rgb(65,45,120);">
     <div>
-        <div id="square1" style="
-                 position: absolute; top: 0; left: 0;
-                 width: 320px; height: 200px;
-                 background-image: url('/static/img/JOSLogo121615.png');
-                 background-repeat: no-repeat;
-                 background-size: 100% 100%;
-                 outline: 1px solid rgb(65, 45, 120);
-                 ">
+
+
+        <div id="vertical_bar"
+             style="
+             position: absolute; top: 0; left: 570px;
+             width: 1px; height: 800px;
+             background-color: rgb(65,45,120);">
         </div>
 
-        <div id="square2" style="
-                 position: absolute; top: 0; right: 0;
+        <div id="vertical_bar"
+             style="
+             position: absolute; top: 0; left: 616px;
+             width: 72px; height: 800px;
+             background-color: rgb(65,45,120);">
+        </div>
+
+        <div id="vertical_bar"
+             style="
+             position: absolute; top: 0; left: 733px;
+             width: 1px; height: 800px;
+             background-color: rgb(65,45,120);">
+        </div>
+
+        <div id="horizontal_bar"
+             style="
+             position: absolute; top: 359px; left: 0;
+             width: 1280px; height: 1px;
+             background-color: rgb(65,45,120);">
+        </div>
+
+        <div id="horizontal_bar"
+             style="
+             position: absolute; top: 370px; left: 0;
+             width: 1280px; height: 60px;
+             background-color: rgb(65,45,120);">
+        </div>
+
+        <div id="horizontal_bar"
+             style="
+             position: absolute; top: 457px; left: 0;
+             width: 1280px; height: 1px;
+             background-color: rgb(65,45,120);">
+        </div>
+
+
+        <div id="square1" style="
+                 position: absolute; top: 0; left: 0;
                  width: 320px; height: 200px;
                  background-image: url('/static/img/3create_4.5.png');
                  background-repeat: no-repeat;
@@ -38,15 +73,25 @@
                  ">
         </div>
 
-        <div id="square3" style="
-                 position: absolute; bottom: 0; right: 0px;
-                 width: 320px; height: 200px;
-                 background-image: url('/static/img/3share-4.5.png');
-                 background-repeat: no-repeat;
-                 background-size: 100% 100%;
-                 outline: 1px solid rgb(65, 45, 120);
-                 ">
-        </div>
+{#        <div id="square2" style="#}
+{#                 position: absolute; top: 0; right: 0;#}
+{#                 width: 320px; height: 200px;#}
+{#                 background-image: url('/static/img/3create_4.5.png');#}
+{#                 background-repeat: no-repeat;#}
+{#                 background-size: 100% 100%;#}
+{#                 outline: 1px solid rgb(65, 45, 120);#}
+{#                 ">#}
+{#        </div>#}
+{##}
+{#        <div id="square3" style="#}
+{#                 position: absolute; bottom: 0; right: 0px;#}
+{#                 width: 320px; height: 200px;#}
+{#                 background-image: url('/static/img/3share-4.5.png');#}
+{#                 background-repeat: no-repeat;#}
+{#                 background-size: 100% 100%;#}
+{#                 outline: 1px solid rgb(65, 45, 120);#}
+{#                 ">#}
+{#        </div>#}
 
         <div id="square4" style="
                  position: absolute; bottom: 0; left: 0px;
@@ -82,17 +127,17 @@
         function getMousePos(evt) {
             return {
                 x: evt.clientX - 640,
+                // y: 391
                 y: evt.clientY - 400
             };
         }
 
-        // Block magnification
-        {
+        if (mousePos.x > -640 && mousePos.x < 640 && mousePos.y > -400 && mousePos.y < 400) {
             var pos1x;
-            if (mousePos.x > 12) {
-                pos1x = 12;
-            } else if (mousePos.x < -70) {
-                pos1x = -70;
+            if (mousePos.x > 13) {
+                pos1x = 13;
+            } else if (mousePos.x < -66) {
+                pos1x = -66;
             } else {
                 pos1x = mousePos.x;
             }
@@ -106,41 +151,14 @@
                 pos1y = mousePos.y;
             }
 
-            if (pos1x / 1280 < pos1y / 800) {
-                pos1x = pos1y * 1.6;
-            } else {
+            if (pos1x / 1280 > pos1y / 800) {
                 pos1y = pos1x * .625;
+            } else {
+                pos1x = pos1y * 1.6;
             }
 
             $(square1).css('width', 320 + pos1x * -12);
             $(square1).css('height', 200 + pos1y * -12);
-
-            var pos3x;
-            if (mousePos.x < 14) {
-                pos3x = 14;
-            } else if (mousePos.x > 93) {
-                pos3x = 93;
-            } else {
-                pos3x = mousePos.x;
-            }
-
-            var pos3y;
-            if (mousePos.y < 9) {
-                pos3y = 9;
-            } else if (mousePos.y > 58) {
-                pos3y = 58;
-            } else {
-                pos3y = mousePos.y;
-            }
-
-            if (pos3x / 1280 > pos3y / 800) {
-                pos3x = pos3y * 1.6;
-            } else {
-                pos3y = pos3x * .625;
-            }
-
-            $(square3).css('width', pos3x * 12);
-            $(square3).css('height', pos3y * 12);
 
             var pos2x;
             if (mousePos.x < 14) {
@@ -160,14 +178,42 @@
                 pos2y = mousePos.y;
             }
 
-            if (pos2x / -1280 < pos2y / 800) {
-                pos2x = pos2y * -1.6;
+            if (pos2x / 1280 > pos2y / -800) {
+                pos2x = -pos2y * 1.6;
             } else {
-                pos2y = pos2x * -.625;
+                pos2y = -pos2x *.625;
             }
 
             $(square2).css('width', pos2x * 12);
             $(square2).css('height', pos2y * -12);
+
+            var pos3x;
+            if (mousePos.x < 14) {
+                pos3x = 14;
+            } else if (mousePos.x > 93) {
+                pos3x = 93;
+            } else {
+                pos3x = mousePos.x;
+            }
+
+            var pos3y;
+            if (mousePos.y < 9) {
+                pos3y = 9;
+            } else if (mousePos.y > 58) {
+                pos3y = 58;
+            } else {
+                pos3y = mousePos.y;
+            }
+
+            if (pos3x / 1280 < pos3y / 800) {
+                pos3y = pos3x * .625;
+
+            } else {
+                pos3x = pos3y * 1.6;
+            }
+
+            $(square3).css('width', pos3x * 12);
+            $(square3).css('height', pos3y * 12);
 
             var pos4x;
             if (mousePos.x > -14) {
@@ -187,10 +233,12 @@
                 pos4y = mousePos.y;
             }
 
-            if (pos4x / 1280 < pos4y / -800) {
-                pos4x = pos4y * -1.6;
+            if (pos4x / -1280 > pos4y / 800) {
+                $('#big_box').css('background', 'pink');
+                pos4x = -pos4y * 1.6;
             } else {
-                pos4y = pos4x * -.625;
+                $('#big_box').css('background', 'lightgreen');
+                pos4y = -pos4x * .625;
             }
 
             $(square4).css('width', pos4x * -12);
