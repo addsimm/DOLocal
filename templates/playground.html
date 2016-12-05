@@ -11,33 +11,53 @@
 
 <!-- HTML Section -->
 
-<div id="mouse_report" style="margin-top: 650px; height: 100px; width: 400px;">Mouse position:</div>
+<div id="mouse_report" style="margin-top: 700px; height: 100px; width: 400px;">Mouse position:</div>
 
 
 <div id="big_box" style="position: fixed; top: 0px; left: 0px;
-            height: 704px; width: 1024px;
-            outline: 3px dashed black;">
+            height: 800px; width: 1280px;
+            outline: 2px solid rgb(65,45,120);">
+    <div>
+        <div id="square1" style="
+                 position: absolute; top: 0; left: 0;
+                 width: 320px; height: 200px;
+                 background-image: url('/static/img/JOSLogo121615.png');
+                 background-repeat: no-repeat;
+                 background-size: 100% 100%;
+                 outline: 1px solid rgb(65, 45, 120);
+                 ">
+        </div>
 
-    <div id="square1" style="
-             position: absolute; top: 0; left: 0;
-             height: 176px; width: 256px;
-             background-image: url('/static/img/3create_4.5.png');
-             background-repeat: no-repeat;
-             background-size: 100% 100%;
-             outline: 1px solid rgb(65, 45, 120);
-             ">
+        <div id="square2" style="
+                 position: absolute; top: 0; right: 0;
+                 width: 320px; height: 200px;
+                 background-image: url('/static/img/3create_4.5.png');
+                 background-repeat: no-repeat;
+                 background-size: 100% 100%;
+                 outline: 1px solid rgb(65, 45, 120);
+                 ">
+        </div>
+
+        <div id="square3" style="
+                 position: absolute; bottom: 0; right: 0px;
+                 width: 320px; height: 200px;
+                 background-image: url('/static/img/3share-4.5.png');
+                 background-repeat: no-repeat;
+                 background-size: 100% 100%;
+                 outline: 1px solid rgb(65, 45, 120);
+                 ">
+        </div>
+
+        <div id="square4" style="
+                 position: absolute; bottom: 0; left: 0px;
+                 width: 320px; height: 200px;
+                 background-image: url('/static/img/3enjoy_4.5.png');
+                 background-repeat: no-repeat;
+                 background-size: 100% 100%;
+                 outline: 1px solid rgb(65, 45, 120);
+                 ">
+        </div>
     </div>
-
-    <div id="square3" style="
-             position: absolute; bottom: 0; right: 0px;
-             height: 176px; width: 256px;
-             background-image: url('/static/img/3enjoy_4.5.png');
-             background-repeat: no-repeat;
-             background-size: 100% 100%;
-             outline: 1px solid rgb(65, 45, 120);
-             ">
-    </div>
-
 </div>
 
 <!-- SCRIPTS -->
@@ -47,82 +67,147 @@
     var MR = document.getElementById('mouse_report');
 
     var square1 = document.getElementById('square1');
+    var square2 = document.getElementById('square2');
     var square3 = document.getElementById('square3');
+    var square4 = document.getElementById('square4');
 
     // Tracks mouse in document
+
     $(document).mousemove(function (e) {
 
         var mousePos = getMousePos(e);
-        var message = 'Mouse position: ' + (mousePos.x) + ', ' + (mousePos.y);
+        message = 'mouse: ' + mousePos.x + ', ' + mousePos.y;
         $(MR).text(message);
 
-        var pos1x;
-        if (mousePos.x < 512) {
-            pos1x = 640;
-        } else if (mousePos.x > 768) {
-            pos1x = 768;
-        } else {
-            pos1x = mousePos.x
+        function getMousePos(evt) {
+            return {
+                x: evt.clientX - 640,
+                y: evt.clientY - 400
+            };
         }
 
-        var pos1y;
-        if (mousePos.y < 352) {
-            pos1y = 440;
-        } else if (mousePos.y > 528) {
-            pos1y = 528;
-        } else {
-            pos1y = mousePos.y
+        // Block magnification
+        {
+            var pos1x;
+            if (mousePos.x > 12) {
+                pos1x = 12;
+            } else if (mousePos.x < -70) {
+                pos1x = -70;
+            } else {
+                pos1x = mousePos.x;
+            }
+
+            var pos1y;
+            if (mousePos.y > 8) {
+                pos1y = 8;
+            } else if (mousePos.y < -41) {
+                pos1y = -41;
+            } else {
+                pos1y = mousePos.y;
+            }
+
+            if (pos1x / 1280 < pos1y / 800) {
+                pos1x = pos1y * 1.6;
+            } else {
+                pos1y = pos1x * .625;
+            }
+
+            $(square1).css('width', 320 + pos1x * -12);
+            $(square1).css('height', 200 + pos1y * -12);
+
+            var pos3x;
+            if (mousePos.x < 14) {
+                pos3x = 14;
+            } else if (mousePos.x > 93) {
+                pos3x = 93;
+            } else {
+                pos3x = mousePos.x;
+            }
+
+            var pos3y;
+            if (mousePos.y < 9) {
+                pos3y = 9;
+            } else if (mousePos.y > 58) {
+                pos3y = 58;
+            } else {
+                pos3y = mousePos.y;
+            }
+
+            if (pos3x / 1280 > pos3y / 800) {
+                pos3x = pos3y * 1.6;
+            } else {
+                pos3y = pos3x * .625;
+            }
+
+            $(square3).css('width', pos3x * 12);
+            $(square3).css('height', pos3y * 12);
+
+            var pos2x;
+            if (mousePos.x < 14) {
+                pos2x = 14;
+            } else if (mousePos.x > 93) {
+                pos2x = 93;
+            } else {
+                pos2x = mousePos.x;
+            }
+
+            var pos2y;
+            if (mousePos.y > -9) {
+                pos2y = -9;
+            } else if (mousePos.y < -58) {
+                pos2y = -58;
+            } else {
+                pos2y = mousePos.y;
+            }
+
+            if (pos2x / -1280 < pos2y / 800) {
+                pos2x = pos2y * -1.6;
+            } else {
+                pos2y = pos2x * -.625;
+            }
+
+            $(square2).css('width', pos2x * 12);
+            $(square2).css('height', pos2y * -12);
+
+            var pos4x;
+            if (mousePos.x > -14) {
+                pos4x = -14;
+            } else if (mousePos.x < -93) {
+                pos4x = -93;
+            } else {
+                pos4x = mousePos.x;
+            }
+
+            var pos4y;
+            if (mousePos.y < 9) {
+                pos4y = 9;
+            } else if (mousePos.y > 58) {
+                pos4y = 58;
+            } else {
+                pos4y = mousePos.y;
+            }
+
+            if (pos4x / 1280 < pos4y / -800) {
+                pos4x = pos4y * -1.6;
+            } else {
+                pos4y = pos4x * -.625;
+            }
+
+            $(square4).css('width', pos4x * -12);
+            $(square4).css('height', pos4y * 12);
         }
 
-        $(square1).css('width', 512 + (512 - pos1x));
-        $(square1).css('height', 352 + (352 - pos1y));
-
-
-        var pos3x;
-        if (mousePos.x < 256) {
-            pos3x = 0;
-        } else if (mousePos.x > 512) {
-            pos3x = 256;
-        } else {
-            pos3x = mousePos.x - 256;
-        }
-
-        $(square3).css('width', 256 + pos3x);
-
-        var pos3y;
-        if (mousePos.y < 176) {
-            pos3y = 0;
-        } else if (mousePos.y > 352) {
-            pos3y = 176;
-        } else {
-            pos3y = mousePos.y - 176;
-        }
-
-        $(square3).css('height', 176 + pos3y);
-
-
-
-
-
-
-
-
-
+        // Hover
         var hover1 = $('#square1:hover').length;
 
         if (hover1 === 1) {
-            $(square1).css('background-color', 'blue');
+            $(square1).css('background-color', 'lightblue');
         } else {
-            $(square1).css('background-color', 'red');
+            $(square1).css('background-color', 'lightred');
         }
     });
 
-    function getMousePos(evt) {
-        return {
-            x: evt.clientX,
-            y: evt.clientY
-        };
-    }
+
 
     /*
 var C = document.getElementById('test_canvas');     // Canvas
