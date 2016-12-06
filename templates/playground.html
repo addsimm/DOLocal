@@ -19,60 +19,83 @@
 
     .quadrant {
         position: absolute;
-        width: 240px;
-        height: 150px;
+        width: 574px;
+        height: 359px;
         background-repeat: no-repeat;
         background-size: 100% 100%;
         outline: 1px solid rgb(65, 45, 120);
     }
 
+    .desk_button {
+        font-size: 24pt;
+        color: white;
+        position: absolute;
+        height: 110px; width: 195px;
+        text-align: center;
+        border-radius: 12px;
+    }
+
+    .desk_button:hover {
+        border: 5px solid white;
+        background-color: white !important;
+    }
+
+
 </style>
 
 <!-- HTML Section -->
 
-<div id="mouse_report" style="margin-top: 700px; height: 100px; width: 400px;">Mouse position:</div>
+<div id="mouse_report" style="margin-top: 850px; height: 100px; width: 400px;">Mouse position:</div>
 
 
-<div id="big_box" style="position: fixed; top: 0px; left: 0px;
-            height: 800px; width: 1280px;
-            outline: 2px solid rgb(65,45,120);">
-
-    <div id="bars">
-
-
-        <div class="bar"
-             style="top: 0; left: 240px; width: 1px; height: 800px;"></div>
-
-        <div class="bar"
-             style="top: 150px; left: 0; width: 1280px; height: 1px;"></div>
-
-        <div class="bar"
-             style="top: 0; left: 1040px; width: 1px; height: 800px;"></div>
-
-        <div class="bar"
-             style="top: 650px; left: 0; width: 1280px; height: 1px;"></div>
-
-    </div>
+<div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px;">
 
     <div id="quadrants">
 
         <div id="quadrant1" class="quadrant"
              style="top: 0; left: 0;
-             background-image: url('/static/img/3create_4.5.png');"></div>
+             background-image: url('/static/img/3create_4.5.png');">
 
-        <div id="quadrant2" class="quadrant"
-             style="top: 0; right: 0;
-             background-image: url('/static/img/3create_4.5.png');"></div>
+        </div>
 
-        <div id="quadrant3" class="quadrant"
-             style="bottom: 0; right: 0;
-             background-image: url('/static/img/3share-4.5.png');"></div>
+{#        <div id="quadrant2" class="quadrant"#}
+{#             style="top: 0; right: 0;#}
+{#         background-image: url('/static/img/3create_4.5.png');"></div>#}
 
-        <div id="quadrant4" class="quadrant"
-             style="bottom: 0; left: 0;
-             background-image: url('/static/img/3enjoy_4.5.png');"></div>
+        {#        <div id="quadrant3" class="quadrant"#}
+        {#             style="bottom: 0; right: 0;#}
+        {#             background-image: url('/static/img/3share-4.5.png');"></div>#}
+        {##}
+        {#        <div id="quadrant4" class="quadrant"#}
+        {#             style="bottom: 0; left: 0;#}
+        {#             background-image: url('/static/img/3enjoy_4.5.png');"></div>#}
 
     </div>
+
+{#    <div id="link_placement_box"#}
+{#         style="position: absolute; left: 706px; top: 0;#}
+{#                width: 574px; height: 359px;#}
+{#                background-color: lightblue">#}
+{#    </div>#}
+
+    <div id="quadrant1_buttons" style="display: none;"></div>
+
+{#    <div id="guides" style=" ">#}
+{#        <!-- Vertical -->#}
+{#        <div class="bar"#}
+{#             style="top: 0; left: 604px; width: 2px; height: 800px;"></div>#}
+
+        <div class="bar"
+             style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
+
+        <!-- Horizontal -->
+        <div class="bar"
+             style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
+
+{#        <div class="bar"#}
+{#             style="top: 441px; left: 0; width: 1280px; height: 2px;"></div>#}
+{##}
+{#    </div>#}
 </div>
 
 <!-- SCRIPTS -->
@@ -87,13 +110,51 @@
     var quadrant3 = document.getElementById('quadrant3');
     var quadrant4 = document.getElementById('quadrant4');
 
-    // Tracks mouse in document
+    var buttons = [];
+    var button_colors =['red', 'blue', 'black', 'green', 'purple', 'pink'];
+    var quadrants = '#quadrant1_buttons';
+    layoutButtons = function () {
+        for (x = 0; x < 5; x++) {
+            var button = document.createElement('div');
+            button.id = 'quadrant2_button' + x;
+            buttons.push(button);
+            if (x < 3) {
+                $(buttons[x])
+                        .addClass('desk_button')
+                        .text(x)
+                        .css({
+                            'background-color': button_colors[x],
+                            'top': 15,
+                            'left': 15 + 204 * x
+                        });
+            } else if (x < 4) {
+                $(buttons[x])
+                        .addClass('desk_button')
+                        .text(x)
+                        .css({
+                            'background-color': button_colors[x],
+                            'top': 135,
+                            'left': 15
+                        });
+            } else {
+                $(buttons[x])
+                        .addClass('desk_button')
+                        .text(x)
+                        .css({
+                            'background-color': button_colors[x],
+                            'top': 255,
+                            'left': 15
+                        });
+            }
 
+            $(quadrants).append(buttons[x]);
+        }
+    }();
+
+    // Tracks mouse in document
     $(document).mousemove(function (e) {
 
         var mousePos = getMousePos(e);
-
-
 
         function getMousePos(evt) {
             return {x: evt.clientX - 640, y: evt.clientY - 400};
@@ -103,37 +164,51 @@
             message = 'mouse: ' + mousePos.x + ', ' + mousePos.y;
             $(MR).text(message);
 
+
+            if (mousePos.x < -32 && mousePos.y < 40) {
+                $('#quadrant1_buttons').show();
+            } else {
+                $('#quadrant1_buttons').hide();
+            }
+
+
             // Quadrant 1
             if (mousePos.x / 1280 > mousePos.y / 800) {
                 var pos1x;
-
-                if (mousePos.x > -15) {
-                    pos1x = -15;
-                } else if (mousePos.x < -66) {
-                    pos1x = -66;
+                // $('#big_box').css('background-color', 'grey');
+                if (mousePos.x > -35) {
+                    pos1x = -35;
+                } else if (mousePos.x < -80) {
+                    pos1x = -80;
                 } else {
                     pos1x = mousePos.x;
                 }
 
+                var opacity1x = -0.0087 * mousePos.x + 0.69565;
+
                 $(quadrant1).css({
                     "width": pos1x * -mag_speed,
-                    "height": pos1x * .625 * -mag_speed
+                    "height": pos1x * .625 * -mag_speed,
+                    "opacity": opacity1x
                 });
 
             } else {
                 var pos1y;
-
-                if (mousePos.y > -9) {
-                    pos1y = -9;
-                } else if (mousePos.y < -41) {
-                    pos1y = -41;
+                $('#big_box').css('background-color', 'white');
+                if (mousePos.y > -22) {
+                    pos1y = -22;
+                } else if (mousePos.y < -50) {
+                    pos1y = -50;
                 } else {
                     pos1y = mousePos.y;
                 }
 
+                var opacity1y = -0.014 * mousePos.y + 0.7;
+
                 $(quadrant1).css({
                     "width": pos1y * 1.6 * -mag_speed,
-                    "height": pos1y * -mag_speed
+                    "height": pos1y * -mag_speed,
+                    "opacity": opacity1y
                 });
             }
 
@@ -141,10 +216,11 @@
             if (mousePos.x / -1280 > mousePos.y / 800) {
                 var pos2x;
 
-                if (mousePos.x < 15) {
-                    pos2x = 15;
-                } else if (mousePos.x > 66) {
-                    pos2x = 66;
+                if (mousePos.x < 35) {
+                    pos2x = 35;
+
+                } else if (mousePos.x > 80) {
+                    pos2x = 80;
                 } else {
                     pos2x = mousePos.x;
                 }
@@ -157,10 +233,10 @@
             } else {
                 var pos2y;
 
-                if (mousePos.y > -9) {
-                    pos2y = 9;
-                } else if (mousePos.y < -41) {
-                    pos2y = 41;
+                if (mousePos.y > -22) {
+                    pos2y = 22;
+                } else if (mousePos.y < -50) {
+                    pos2y = 50;
                 } else {
                     pos2y = -mousePos.y;
                 }
@@ -207,7 +283,6 @@
 
             // Quadrant 4
             if (mousePos.x / -1280 < mousePos.y / 800) {
-                $('#big_box').css('background-color', 'white');
                 var pos4x;
 
                 if (mousePos.x < -66) {
@@ -223,7 +298,6 @@
                     "height": pos4x * .625 * mag_speed
                 });
             } else {
-                $('#big_box').css('background-color', 'grey');
                 if (mousePos.y < 9) {
                     pos4y = 9;
                 } else if (mousePos.y > 41) {
@@ -238,8 +312,6 @@
                 });
             }
         }
-
-
 
         // Hover
         var hover1 = $('#quadrant1:hover').length;
