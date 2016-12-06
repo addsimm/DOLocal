@@ -267,6 +267,12 @@
 <script>
 
     $(document).ready(function () {
+
+        if (Number(window.location.href.split('/')[5]) === 0) {
+            reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
+            window.location.href = reload_url;
+        }
+
         initJOSEditor('title', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.title | escapejs }}");
         initJOSEditor('content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.content | escapejs }}");
         initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");

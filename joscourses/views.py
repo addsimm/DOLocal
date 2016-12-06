@@ -101,7 +101,6 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         comment_thread = JOSMessageThread.objects.create(subject=story.title)
         story.message_thread = comment_thread
         story.save()
-        return redirect('joscourses.views.josstory', story_id=story.id)
 
     comment_thread = story.message_thread
 
