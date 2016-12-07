@@ -77,32 +77,46 @@
         background-position: center center;
     }
 
+    #circular div.left_eye,
+    #circular div.right_eye {
+        background-image: url("/static/img/circle.png");
+    }
+
     #ellipse div.left_eye,
     #ellipse div.right_eye {
-        background-image: url("/static/img/ellipse.png");
+        background-image: url("http://i.imgur.com/HLTwbEI.png");
+    }
+
+    #rectangular div.left_eye,
+    #rectangular div.right_eye {
+        background-image: url("http://i.imgur.com/lWwTCok.png");
+    }
+
+    #rounded_rectangular div.left_eye,
+    #rounded_rectangular div.right_eye {
+        background-image: url("http://i.imgur.com/bCmoBfN.png");
     }
 
 </style>
 
 <!-- HTML Section -->
 
-<div id="intro_box"
+<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
+
+<div id="big_box"
      style="position: fixed; top: 150px; left: 0px; height: 800px; width: 1280px;
      display: flex; justify-content: flex-start; align-items: center; flex-direction: column;">
     <div class="homehead">Welcome {{ request.user.get_short_name }}!</div>
-
     <div class="josinstructions" style="margin-top: 30px;">Touch Peeky with your mouse to get started ...</div>
-
-    <div id="ellipse" class="eyes" style="margin-top: 80px; background-color: red;">
-        <div class="left_eye" style="background-color: green;">
-            <div class="pupil" style="background-color: black;"></div>
+    <div id="circular" class="eyes" style="margin-top: 80px;">
+        <div class="left_eye">
+            <div class="pupil"></div>
         </div>
 
-        <div class="right_eye" style="background-color: blue;">
-            <div class="pupil" style="background-color: pink;"></div>
+        <div class="right_eye">
+            <div class="pupil"></div>
         </div>
     </div>
-
 </div>
 
 <div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px; display: none;">
@@ -134,14 +148,12 @@
 
 </div>
 
-<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
-
 <!-- SCRIPTS -->
 <script>
 
     // Invoke jqEye method when the page is loaded.
     $(document).ready(function () {
-        $("#ellipse div.pupil").jqEye({shape: "ellipse", width: 34, height: 14});
+        $("#circular div.pupil").jqEye({shape: "circle", radius: 12});
     });
 
     // jqEye plugin's definition
@@ -204,24 +216,21 @@
 
             var n = e.extend({shape: "circle", radius: 20, width: 40, height: 40}, t);
             return this.each(function () {
-
                 var t = e(this);
                 var u = e(this).position().left + e(this).width() / 2;
                 var a = e(this).position().top + e(this).height() / 2;
                 var f = e(this).offset().left + e(this).width() / 2;
                 var l = e(this).offset().top + e(this).height() / 2;
-
                 e(document).mousemove(function (e) {
-
                     var c = e.clientX;
                     var h = e.clientY;
                     var p = c - f;
                     var d = h - l;
 
-                    if (n.shape === "ellipse") {
-                        var g = s(p, d, n.width / 2, n.height / 2);
-                        p = g.x;
-                        d = g.y
+                    if (n.shape === "circle") {
+                        var m = i(p, d, n.radius);
+                        p = m.x;
+                        d = m.y
                     }
 
                     p = p + u - t.width() / 2;
