@@ -41,17 +41,18 @@
     }
 
     div.eyes {
-        width: 160px;
-        height: 60px;
+        width: 84px;
+        height: 30px;
+        top: 90px;
+        left: 85px;
         margin: 0 auto;
-        position: relative;
-        margin-bottom: 40px;
+        position: absolute;
     }
 
     div.left_eye,
     div.right_eye {
-        width: 60px;
-        height: 60px;
+        width: 30px;
+        height: 30px;
         top: 0;
         position: absolute;
         background-repeat: no-repeat;
@@ -63,43 +64,50 @@
     }
 
     div.right_eye {
+        top: -10px;
         right: 0;
     }
 
     div.eyes div.pupil {
-        left: 17px;
-        top: 17px;
-        width: 25px;
-        height: 25px;
+        left: 5px;
+        top: 5px;
+        width: 18px;
+        height: 18px;
         position: relative;
-        background-image: url("/static/img/pupil.png");
+        background-image: url("/static/img/pupilc.png");
         background-repeat: no-repeat;
         background-position: center center;
     }
 
     #circular div.left_eye,
     #circular div.right_eye {
-        background-image: url("/static/img/circle.png");
+        background-image: url("/static/img/circled.png");
     }
 
 </style>
 
 <!-- HTML Section -->
-
-<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
-
 <div id="big_box"
-     style="position: fixed; top: 150px; left: 0px; height: 800px; width: 1280px;
+     style="position: fixed; top: 80px; left: 0px; height: 650px; width: 1280px;
      display: flex; justify-content: flex-start; align-items: center; flex-direction: column;">
     <div class="homehead">Welcome {{ request.user.get_short_name }}!</div>
     <div class="josinstructions" style="margin-top: 30px;">Touch Peeky with your mouse to get started ...</div>
-    <div id="circular" class="eyes" style="margin-top: 80px;">
-        <div class="left_eye">
-            <div class="pupil"></div>
-        </div>
 
-        <div class="right_eye">
-            <div class="pupil"></div>
+    <div id="animated_peeky"
+         style="position: relative; margin-top: 65px;
+         background-image: url('/static/img/blank-peeky.png');
+         background-repeat: no-repeat;
+         background-position: top center;
+         background-size: 250px 250px;
+         width: 250px; height: 250px;">
+        <div id="circular" class="eyes">
+            <div class="left_eye">
+                <div class="pupil"></div>
+            </div>
+
+            <div class="right_eye">
+                <div class="pupil"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -127,21 +135,26 @@
 
     </div>
 
-    <div class="horizontal_guide" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
+    <div class="vertical_guide" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
 
-    <div class="vertical_guide" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
+    <div class="horizontal_guide" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
 
 </div>
+
+<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
+
 
 <!-- SCRIPTS -->
 <script>
 
-    // Invoke jqEye method when the page is loaded.
+    // jqEye
+{
+
     $(document).ready(function () {
-        $("div.pupil").jqEye({shape: "circle", radius: 12});
+        $("div.pupil").jqEye({shape: "circle", radius: 6});
     });
 
-    // jqEye plugin's definition
+    // jqEye plugin
     (function (evt) {
         evt.fn.jqEye = function (t) {
             function r(evt, t, n, r) {
@@ -220,13 +233,27 @@
 
                     p = p + u - t.width() / 2;
                     d = d + a - t.height() / 2;
-                    t.css({left: p, top: d})
+                    t.css({left: p, top: d});
+
+                    var AP = document.getElementById('animated_peeky');
+                    var CE = document.getElementById('circular');
+                    var hover = $('#animated_peeky:hover').length;
+
+                    if (hover === 1) {
+                        $(AP).css('background-image', "url('/static/img/peeky-102216.png')");
+                        $(CE).hide();
+                    } else {
+                        $(AP).css('background-image', "url('/static/img/blank-peeky.png')");
+                        $(CE).show();
+                    }
                 })
             });
         }
     })($);
+}
 
-/// needed
+
+// Page effects
 {
     var MR = document.getElementById('mouse_report');
     var mag_speed = 16;
