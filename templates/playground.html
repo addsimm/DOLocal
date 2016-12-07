@@ -86,12 +86,16 @@
 
 </style>
 
-<!-- HTML Section -->
-<div id="big_box"
+    <div class="horizontal_guide bar" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
+
+    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
+
+<!-- HTML -->
+<div id="start_box"
      style="position: fixed; top: 80px; left: 0px; height: 650px; width: 1280px;
      display: flex; justify-content: flex-start; align-items: center; flex-direction: column;">
-    <div class="homehead">Welcome {{ request.user.get_short_name }}!</div>
-    <div class="josinstructions" style="margin-top: 30px;">Touch Peeky with your mouse to get started ...</div>
+    <div class="homehead">Welcome {{ request.user.get_short_name }}</div>
+    <div class="josinstructions" style="margin-top: 30px;">Touch Peeky with your mouse to get started.</div>
 
     <div id="animated_peeky"
          style="position: relative; margin-top: 65px;
@@ -110,6 +114,12 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="message_box" class="josinstructions text-center"
+     style="position: fixed; top: 325px; left: 410px; line-height: 1.6; display: none;">
+    Great! Now use your mouse to explore,<br>and click when you find something fun.
+    <div id="countdown" style="font-size: 48pt;">3</div>
 </div>
 
 <div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px; display: none;">
@@ -135,10 +145,14 @@
 
     </div>
 
-    <div class="vertical_guide" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
-
-    <div class="horizontal_guide" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
-
+    <div id='center_pnp'
+         style="position: absolute; top: 350px; left: 590px;
+         background-image: url('/static/img/PnP.png');
+         background-repeat: no-repeat;
+         background-position: center center;
+         background-size: 100px;
+         width: 100px; height: 100px;">
+    </div>
 </div>
 
 <div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
@@ -149,7 +163,6 @@
 
     // jqEye
 {
-
     $(document).ready(function () {
         $("div.pupil").jqEye({shape: "circle", radius: 6});
     });
@@ -219,6 +232,8 @@
                 var a = evt(this).position().top + evt(this).height() / 2;
                 var f = evt(this).offset().left + evt(this).width() / 2;
                 var l = evt(this).offset().top + evt(this).height() / 2;
+
+                var touches = 0;
                 evt(document).mousemove(function (evt) {
                     var c = evt.clientX;
                     var h = evt.clientY;
@@ -240,11 +255,15 @@
                     var hover = $('#animated_peeky:hover').length;
 
                     if (hover === 1) {
-                        $(AP).css('background-image', "url('/static/img/peeky-102216.png')");
-                        $(CE).hide();
+                        $(AP).css('background-image', "url('/static/img/peeky-102216.png')");                    $(CE).hide();
+
+                        var delay = 1500; //1.5 second
+                        setTimeout(function () {
+                            moveToDesk();
+                        }, delay);
+
                     } else {
-                        $(AP).css('background-image', "url('/static/img/blank-peeky.png')");
-                        $(CE).show();
+                        $(AP).css('background-image', "url('/static/img/blank-peeky.png')");                      $(CE).show();
                     }
                 })
             });
@@ -268,6 +287,22 @@
         quadrant_button_containers.push(button_div);
         $(quadrant).append(button_div);
         quadrants.push(quadrant);
+    }
+
+
+    function moveToDesk() {
+        MB = document.getElementById('message_box');
+        CB = document.getElementById('countdown');
+        $('#start_box').fadeOut(300);
+        $(MB).fadeIn(100);
+        var delay = 3000;
+        setTimeout(function () {$(CB).text('2');}, delay / 3);
+        setTimeout(function () {$(CB).text('1');}, delay * 2 / 3);
+        setTimeout(function () {
+            $(MB).fadeOut(300);
+            $('#big_box').fadeIn(500);
+        }, delay);
+        console.log('hidden');
     }
 
     layoutButtons = function () {
