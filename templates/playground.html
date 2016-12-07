@@ -45,8 +45,7 @@
 
 <!-- HTML Section -->
 
-<div id="mouse_report" style="margin-top: 850px; height: 100px; width: 400px;">Mouse position:</div>
-
+<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
 
 <div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px;">
 
@@ -55,99 +54,86 @@
         <div id="quadrant1" class="quadrant"
              style="top: 0; left: 0;
              background-image: url('/static/img/3create_4.5.png');">
-
         </div>
 
-{#        <div id="quadrant2" class="quadrant"#}
-{#             style="top: 0; right: 0;#}
-{#         background-image: url('/static/img/3create_4.5.png');"></div>#}
+        <div id="quadrant2" class="quadrant"
+             style="top: 0; right: 0;
+         background-image: url('/static/img/3create_4.5.png');"></div>
 
-        {#        <div id="quadrant3" class="quadrant"#}
-        {#             style="bottom: 0; right: 0;#}
-        {#             background-image: url('/static/img/3share-4.5.png');"></div>#}
-        {##}
-        {#        <div id="quadrant4" class="quadrant"#}
-        {#             style="bottom: 0; left: 0;#}
-        {#             background-image: url('/static/img/3enjoy_4.5.png');"></div>#}
+        <div id="quadrant3" class="quadrant"
+             style="bottom: 0; right: 0;
+             background-image: url('/static/img/3share-4.5.png');"></div>
+
+        <div id="quadrant4" class="quadrant"
+             style="bottom: 0; left: 0;
+             background-image: url('/static/img/3enjoy_4.5.png');"></div>
 
     </div>
 
-{#    <div id="link_placement_box"#}
-{#         style="position: absolute; left: 706px; top: 0;#}
-{#                width: 574px; height: 359px;#}
-{#                background-color: lightblue">#}
-{#    </div>#}
+    <div class="horizontal_guide" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
 
-    <div id="quadrant1_buttons" style="display: none;"></div>
+    <div class="vertical_guide" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
 
-{#    <div id="guides" style=" ">#}
-{#        <!-- Vertical -->#}
-{#        <div class="bar"#}
-{#             style="top: 0; left: 604px; width: 2px; height: 800px;"></div>#}
-
-        <div class="bar"
-             style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
-
-        <!-- Horizontal -->
-        <div class="bar"
-             style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
-
-{#        <div class="bar"#}
-{#             style="top: 441px; left: 0; width: 1280px; height: 2px;"></div>#}
-{##}
-{#    </div>#}
 </div>
 
 <!-- SCRIPTS -->
 <script>
 
-    var quadrant_names = ['utility', 'enjoy', 'create', 'share'];
     var MR = document.getElementById('mouse_report');
-    var mag_speed = 16; ///////////
+    var mag_speed = 16;
+    var quadrants = [];
+    var quadrant_button_containers = [];
+    for (i=1;i<5; i++) {
+        var quad_name_string = 'quadrant' + i;
+        var quadrant = document.getElementById(quad_name_string);
+        var button_div = document.createElement('div');
+        button_div.id = quad_name_string + '_buttons';
+        $(button_div).css({'display': 'none'});
+        quadrant_button_containers.push(button_div);
+        $(quadrant).append(button_div);
+        quadrants.push(quadrant);
+    }
 
-    var quadrant1 = document.getElementById('quadrant1');
-    var quadrant2 = document.getElementById('quadrant2');
-    var quadrant3 = document.getElementById('quadrant3');
-    var quadrant4 = document.getElementById('quadrant4');
-
-    var buttons = [];
-    var button_colors =['red', 'blue', 'black', 'green', 'purple', 'pink'];
-    var quadrants = '#quadrant1_buttons';
     layoutButtons = function () {
-        for (x = 0; x < 5; x++) {
-            var button = document.createElement('div');
-            button.id = 'quadrant2_button' + x;
-            buttons.push(button);
-            if (x < 3) {
-                $(buttons[x])
-                        .addClass('desk_button')
-                        .text(x)
-                        .css({
-                            'background-color': button_colors[x],
-                            'top': 15,
-                            'left': 15 + 204 * x
-                        });
-            } else if (x < 4) {
-                $(buttons[x])
-                        .addClass('desk_button')
-                        .text(x)
-                        .css({
-                            'background-color': button_colors[x],
-                            'top': 135,
-                            'left': 15
-                        });
-            } else {
-                $(buttons[x])
-                        .addClass('desk_button')
-                        .text(x)
-                        .css({
-                            'background-color': button_colors[x],
-                            'top': 255,
-                            'left': 15
-                        });
-            }
+        for (qd = 0; qd < 4; qd++) {
+            for (bt = 0; bt < 5; bt++) {
+                var button = document.createElement('div');
+                button.id = 'btn_' + (qd+1)+ '_'+ bt;
+                $(button).addClass('desk_button').text(button.id);
+                $(button).css({'background-color': getRandomColor()});
 
-            $(quadrants).append(buttons[x]);
+                var qd_row = 0;
+                if (qd > 1) {
+                    qd_row = 1;
+                }
+                var qd_col = 0;
+                if (qd === 1 || qd === 2) {
+                    qd_col = 1
+                }
+
+                var btn_top = 15 + 650 * qd_row;
+                var btn_left = 15 + (204 * bt) + (645 * qd_col);
+
+                if (bt < 3) {
+                    $(button).css({
+                        'top': btn_top,
+                        'left': btn_left
+                    });
+
+                } else if (bt < 4) {
+                    $(button).css({
+                                'top': 135 + 290 * qd_row,
+                                'left': 15 + (1053 * qd_col)
+                            });
+                } else {
+                    $(button).css({
+                                'top': 255 + 290 * qd_row,
+                                'left': 15 + (1053 * qd_col)
+                            });
+                }
+
+                $('#quadrant' + (qd + 1) + '_buttons').append(button);
+            }
         }
     }();
 
@@ -164,13 +150,18 @@
             message = 'mouse: ' + mousePos.x + ', ' + mousePos.y;
             $(MR).text(message);
 
+            // Button hover
+            for (qd = 1; qd < 5; qd++) {
+                var hover_string = '#quadrant' + qd + ':hover';
+                var hover_buttons_string = '#quadrant' + qd + '_buttons';
+                var hover = $(hover_string).length;
 
-            if (mousePos.x < -32 && mousePos.y < 40) {
-                $('#quadrant1_buttons').show();
-            } else {
-                $('#quadrant1_buttons').hide();
+                if (hover === 1) {
+                    $(hover_buttons_string).show();
+                } else {
+                    $(hover_buttons_string).hide();
+                }
             }
-
 
             // Quadrant 1
             if (mousePos.x / 1280 > mousePos.y / 800) {
@@ -225,9 +216,12 @@
                     pos2x = mousePos.x;
                 }
 
+                var opacity2x = -0.0087 * -mousePos.x + 0.69565;
+
                 $(quadrant2).css({
                     "width": pos2x * mag_speed,
-                    "height": pos2x * .625 * mag_speed
+                    "height": pos2x * .625 * mag_speed,
+                    "opacity": opacity2x
                 });
 
             } else {
@@ -238,12 +232,15 @@
                 } else if (mousePos.y < -50) {
                     pos2y = 50;
                 } else {
-                    pos2y = -mousePos.y;
+                    pos2y = mousePos.y;
                 }
+
+                var opacity2y = -0.014 * mousePos.y + 0.7;
 
                 $(quadrant2).css({
                     "width": pos2y * 1.6 * mag_speed,
-                    "height": pos2y * mag_speed
+                    "height": pos2y * mag_speed,
+                    "opacity": opacity2y
                 });
             }
 
@@ -251,33 +248,39 @@
             if (mousePos.x / 1280 < mousePos.y / 800) {
                 var pos3x;
 
-                if (mousePos.x < 15) {
-                    pos3x = 15;
-                } else if (mousePos.x > 66) {
-                    pos3x = 66;
+                if (mousePos.x < 35) {
+                    pos3x = 35;
+                } else if (mousePos.x > 80) {
+                    pos3x = 80;
                 } else {
                     pos3x = mousePos.x;
                 }
 
+                var opacity3x = -0.0087 * -mousePos.x + 0.69565;
+
                 $(quadrant3).css({
                     "width": pos3x * mag_speed,
-                    "height": pos3x * .625 * mag_speed
+                    "height": pos3x * .625 * mag_speed,
+                    "opacity": opacity3x
                 });
 
             } else {
                 var pos3y;
 
-                if (mousePos.y < 9) {
-                    pos3y = 9;
-                } else if (mousePos.y > 41) {
-                    pos3y = 41;
+                if (mousePos.y < 22) {
+                    pos3y = 22;
+                } else if (mousePos.y > 50) {
+                    pos3y = 50;
                 } else {
                     pos3y = mousePos.y;
                 }
 
+                var opacity3y = -0.014 * -mousePos.y + 0.7;
+
                 $(quadrant3).css({
                     "width": pos3y * 1.6 * mag_speed,
-                    "height": pos3y * mag_speed
+                    "height": pos3y * mag_speed,
+                    "opacity": opacity3y
                 });
             }
 
@@ -285,43 +288,49 @@
             if (mousePos.x / -1280 < mousePos.y / 800) {
                 var pos4x;
 
-                if (mousePos.x < -66) {
-                    pos4x = 66;
-                } else if (mousePos.x > -15) {
-                    pos4x = 15;
+                if (mousePos.x < -80) {
+                    pos4x = 80;
+                } else if (mousePos.x > -35) {
+                    pos4x = 35;
                 } else {
                     pos4x = -mousePos.x;
                 }
 
+                var opacity4x = -0.0087 * mousePos.x + 0.69565;
+
                 $(quadrant4).css({
                     "width": pos4x * mag_speed,
-                    "height": pos4x * .625 * mag_speed
+                    "height": pos4x * .625 * mag_speed,
+                    "opacity": opacity4x
                 });
             } else {
-                if (mousePos.y < 9) {
-                    pos4y = 9;
-                } else if (mousePos.y > 41) {
-                    pos4y = 41;
+                if (mousePos.y < 22) {
+                    pos4y = 22;
+                } else if (mousePos.y > 50) {
+                    pos4y = 50;
                 } else {
                     pos4y = mousePos.y;
                 }
 
+                var opacity4y = -0.014 * -mousePos.y + 0.7;
+
                 $(quadrant4).css({
                     "width": pos4y * 1.6 * mag_speed,
-                    "height": pos4y * mag_speed
+                    "height": pos4y * mag_speed,
+                    "opacity": opacity4y
                 });
             }
         }
-
-        // Hover
-        var hover1 = $('#quadrant1:hover').length;
-
-        if (hover1 === 1) {
-            $(quadrant1).css('background-color', 'lightblue');
-        } else {
-            $(quadrant1).css('background-color', 'lightred');
-        }
     });
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
 
 </script>
 
