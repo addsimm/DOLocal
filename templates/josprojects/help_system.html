@@ -76,8 +76,8 @@
 </div> -->
 
 <!-- help button -->
-<button id="help_button" class="btn btn-info"
-        style="position: fixed; top: -5px; left: 800px; font-size: 18pt; width: 180px; height: 45px; z-index: 200;"
+<button id="help_button" class="j_test_button"
+        style="position: fixed; top: 0; left: 845px; width: 145px; z-index: 200; border-radius: 0;"
         data-toggle="tooltip"
         data-placement="bottom"
         title="To do - How do I? - My notes"
@@ -232,7 +232,6 @@
         // The Ajax help search function; attaches a listener
         var MILLS_TO_IGNORE_SEARCH = 100;
         $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
-
 
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {

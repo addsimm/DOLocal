@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% block meta_title %}{% endblock %}
 {% block title %}{% endblock %}
+
 {% block breadcrumb_menu %}{{ block.super }}Dev Playground{% endblock %}
-{% block help %}{% endblock %}
-{% block logout %}{% endblock %}
+
 {% block base-fixed-top-bar %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block all_content %}
-
 
 <style>
 
@@ -93,8 +92,10 @@
 <!-- HTML -->
 <div id="start_box"
      style="position: fixed; top: 80px; left: 0px; height: 650px; width: 1280px;
-     display: flex; justify-content: flex-start; align-items: center; flex-direction: column;">
+     display: none; justify-content: flex-start; align-items: center; flex-direction: column;">
+
     <div class="homehead">Welcome {{ request.user.get_short_name }}</div>
+
     <div class="josinstructions" style="margin-top: 30px;">Touch Peeky with your mouse to get started.</div>
 
     <div id="animated_peeky"
@@ -122,14 +123,15 @@
     <div id="countdown" style="font-size: 48pt;">3</div>
 </div>
 
-<div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px; display: none;">
+<div id="main_container">
+<div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px; display: inherit;">
 
     <div id="quadrants">
 
-        <div id="quadrant1" class="quadrant"
-             style="top: 0; left: 0;
-             background-image: url('/static/img/3create_4.5.png');">
-        </div>
+{#        <div id="quadrant1" class="quadrant"#}
+{#             style="top: 0; left: 0;#}
+{#             background-image: url('/static/img/3create_4.5.png');">#}
+{#        </div>#}
 
         <div id="quadrant2" class="quadrant"
              style="top: 0; right: 0;
@@ -161,117 +163,6 @@
 <!-- SCRIPTS -->
 <script>
 
-    // jqEye
-{
-    $(document).ready(function () {
-        $("div.pupil").jqEye({shape: "circle", radius: 6});
-    });
-
-    // jqEye plugin
-    (function (evt) {
-        evt.fn.jqEye = function (t) {
-            function r(evt, t, n, r) {
-                var i = {x: evt, y: t};
-                if (evt > n / 2)i.x = n / 2;
-                if (evt < -n / 2)i.x = -n / 2;
-                if (t > r / 2)i.y = r / 2;
-                if (t < -r / 2)i.y = -r / 2;
-                return i
-            }
-
-            function i(evt, t, n) {
-                var r = {x: evt, y: t};
-                if (evt * evt + t * t > n * n) {
-                    if (evt !== 0) {
-                        var i = t / evt;
-                        r.x = Math.sqrt(n * n / (i * i + 1));
-                        r.x = evt > 0 ? r.x : -r.x;
-                        r.y = Math.abs(i * r.x);
-                        r.y = t > 0 ? r.y : -r.y
-                    } else {
-                        r.y = t > 0 ? n : -n
-                    }
-                }
-                return r
-            }
-
-            function s(evt, t, n, r) {
-                var i = {x: evt, y: t};
-                if (evt * evt / (n * n) + t * t / (r * r) > 1) {
-                    if (evt !== 0) {
-                        var s = t / evt;
-                        i.x = Math.sqrt(1 / (1 / (n * n) + s * s / (r * r)));
-                        i.x = evt > 0 ? i.x : -i.x;
-                        i.y = Math.abs(s * i.x);
-                        i.y = t > 0 ? i.y : -i.y
-                    } else {
-                        i.y = t > 0 ? r : -r
-                    }
-                }
-                return i
-            }
-
-            function o(evt, t, n, s, o) {
-                var u = {x: evt, y: t};
-                var a = n / 2 - o;
-                var f = s / 2 - o;
-                if (Math.abs(evt) > a && Math.abs(t) > f) {
-                    var l = i(Math.abs(evt) - a, Math.abs(t) - f, o);
-                    u.x = evt > 0 ? l.x + a : -(l.x + a);
-                    u.y = t > 0 ? l.y + f : -(l.y + f)
-                } else {
-                    u = r(evt, t, n, s)
-                }
-                return u
-            }
-
-            var n = evt.extend({shape: "circle", radius: 20, width: 40, height: 40}, t);
-            return this.each(function () {
-                var t = evt(this);
-                var u = evt(this).position().left + evt(this).width() / 2;
-                var a = evt(this).position().top + evt(this).height() / 2;
-                var f = evt(this).offset().left + evt(this).width() / 2;
-                var l = evt(this).offset().top + evt(this).height() / 2;
-
-                var touches = 0;
-                evt(document).mousemove(function (evt) {
-                    var c = evt.clientX;
-                    var h = evt.clientY;
-                    var p = c - f;
-                    var d = h - l;
-
-                    if (n.shape === "circle") {
-                        var m = i(p, d, n.radius);
-                        p = m.x;
-                        d = m.y
-                    }
-
-                    p = p + u - t.width() / 2;
-                    d = d + a - t.height() / 2;
-                    t.css({left: p, top: d});
-
-                    var AP = document.getElementById('animated_peeky');
-                    var CE = document.getElementById('circular');
-                    var hover = $('#animated_peeky:hover').length;
-
-                    if (hover === 1) {
-                        $(AP).css('background-image', "url('/static/img/peeky-102216.png')");                    $(CE).hide();
-
-                        var delay = 1500; //1.5 second
-                        setTimeout(function () {
-                            moveToDesk();
-                        }, delay);
-
-                    } else {
-                        $(AP).css('background-image', "url('/static/img/blank-peeky.png')");                      $(CE).show();
-                    }
-                })
-            });
-        }
-    })($);
-}
-
-
 // Page effects
 {
     var MR = document.getElementById('mouse_report');
@@ -289,21 +180,24 @@
         quadrants.push(quadrant);
     }
 
+    $(document).ready(function () {
+        $("div.pupil").jqEye({shape: "circle", radius: 6});
+    });
 
-    function moveToDesk() {
-        MB = document.getElementById('message_box');
-        CB = document.getElementById('countdown');
-        $('#start_box').fadeOut(300);
-        $(MB).fadeIn(100);
-        var delay = 3000;
-        setTimeout(function () {$(CB).text('2');}, delay / 3);
-        setTimeout(function () {$(CB).text('1');}, delay * 2 / 3);
-        setTimeout(function () {
-            $(MB).fadeOut(300);
-            $('#big_box').fadeIn(500);
-        }, delay);
-        console.log('hidden');
-    }
+{#    function moveToDesk() {#}
+{#        MB = document.getElementById('message_box');#}
+{#        CB = document.getElementById('countdown');#}
+{#        $('#start_box').fadeOut(300);#}
+{#        $(MB).fadeIn(100);#}
+{#        var delay = 3000;#}
+{#        setTimeout(function () {$(CB).text('2');}, delay / 3);#}
+{#        setTimeout(function () {$(CB).text('1');}, delay * 2 / 3);#}
+{#        setTimeout(function () {#}
+{#            $(MB).fadeOut(300);#}
+{#            $('#big_box').fadeIn(500);#}
+{#        }, delay);#}
+{#        console.log('hidden');#}
+{#    }#}
 
     layoutButtons = function () {
         for (qd = 0; qd < 4; qd++) {
@@ -388,11 +282,11 @@
 
                 var opacity1x = -0.0087 * mousePos.x + 0.69565;
 
-                $(quadrant1).css({
-                    "width": pos1x * -mag_speed,
-                    "height": pos1x * .625 * -mag_speed,
-                    "opacity": opacity1x
-                });
+{#                $(quadrant1).css({#}
+{#                    "width": pos1x * -mag_speed,#}
+{#                    "height": pos1x * .625 * -mag_speed,#}
+{#                    "opacity": opacity1x#}
+{#                });#}
 
             } else {
                 var pos1y;
@@ -407,11 +301,11 @@
 
                 var opacity1y = -0.014 * mousePos.y + 0.7;
 
-                $(quadrant1).css({
-                    "width": pos1y * 1.6 * -mag_speed,
-                    "height": pos1y * -mag_speed,
-                    "opacity": opacity1y
-                });
+{#                $(quadrant1).css({#}
+{#                    "width": pos1y * 1.6 * -mag_speed,#}
+{#                    "height": pos1y * -mag_speed,#}
+{#                    "opacity": opacity1y#}
+{#                });#}
             }
 
             // Quadrant 2
@@ -543,6 +437,117 @@
         return color;
     }
 }
+
+// jqEye
+{
+
+
+    // jqEye plugin
+    (function (evt) {
+        evt.fn.jqEye = function (t) {
+            function r(evt, t, n, r) {
+                var i = {x: evt, y: t};
+                if (evt > n / 2)i.x = n / 2;
+                if (evt < -n / 2)i.x = -n / 2;
+                if (t > r / 2)i.y = r / 2;
+                if (t < -r / 2)i.y = -r / 2;
+                return i
+            }
+
+            function i(evt, t, n) {
+                var r = {x: evt, y: t};
+                if (evt * evt + t * t > n * n) {
+                    if (evt !== 0) {
+                        var i = t / evt;
+                        r.x = Math.sqrt(n * n / (i * i + 1));
+                        r.x = evt > 0 ? r.x : -r.x;
+                        r.y = Math.abs(i * r.x);
+                        r.y = t > 0 ? r.y : -r.y
+                    } else {
+                        r.y = t > 0 ? n : -n
+                    }
+                }
+                return r
+            }
+
+            function s(evt, t, n, r) {
+                var i = {x: evt, y: t};
+                if (evt * evt / (n * n) + t * t / (r * r) > 1) {
+                    if (evt !== 0) {
+                        var s = t / evt;
+                        i.x = Math.sqrt(1 / (1 / (n * n) + s * s / (r * r)));
+                        i.x = evt > 0 ? i.x : -i.x;
+                        i.y = Math.abs(s * i.x);
+                        i.y = t > 0 ? i.y : -i.y
+                    } else {
+                        i.y = t > 0 ? r : -r
+                    }
+                }
+                return i
+            }
+
+            function o(evt, t, n, s, o) {
+                var u = {x: evt, y: t};
+                var a = n / 2 - o;
+                var f = s / 2 - o;
+                if (Math.abs(evt) > a && Math.abs(t) > f) {
+                    var l = i(Math.abs(evt) - a, Math.abs(t) - f, o);
+                    u.x = evt > 0 ? l.x + a : -(l.x + a);
+                    u.y = t > 0 ? l.y + f : -(l.y + f)
+                } else {
+                    u = r(evt, t, n, s)
+                }
+                return u
+            }
+
+            var n = evt.extend({shape: "circle", radius: 20, width: 40, height: 40}, t);
+            return this.each(function () {
+                var t = evt(this);
+                var u = evt(this).position().left + evt(this).width() / 2;
+                var a = evt(this).position().top + evt(this).height() / 2;
+                var f = evt(this).offset().left + evt(this).width() / 2;
+                var l = evt(this).offset().top + evt(this).height() / 2;
+
+                var touches = 0;
+                evt(document).mousemove(function (evt) {
+                    var c = evt.clientX;
+                    var h = evt.clientY;
+                    var p = c - f;
+                    var d = h - l;
+
+                    if (n.shape === "circle") {
+                        var m = i(p, d, n.radius);
+                        p = m.x;
+                        d = m.y
+                    }
+
+                    p = p + u - t.width() / 2;
+                    d = d + a - t.height() / 2;
+                    t.css({left: p, top: d});
+
+                    var AP = document.getElementById('animated_peeky');
+                    var CE = document.getElementById('circular');
+                    var hover = $('#animated_peeky:hover').length;
+
+                    if (hover === 1) {
+                        $(AP).css('background-image', "url('/static/img/peeky-102216.png')");
+                        $(CE).hide();
+
+                        var delay = 1500; //1.5 second
+                        setTimeout(function () {
+                            moveToDesk();
+                        }, delay);
+
+                    } else {
+                        $(AP).css('background-image', "url('/static/img/blank-peeky.png')");
+                        $(CE).show();
+                    }
+                })
+            });
+        }
+    })($);
+}
+
 </script>
 
 {% endblock all_content %}

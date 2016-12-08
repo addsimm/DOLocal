@@ -49,238 +49,166 @@
 
 </head>
 
-<body id="body" style="
-        color: rgb(65, 45, 120);
-        font-family: 'source sans pro', sans-serif;
-        font-size: 16pt;
-        line-height: normal;
-        padding-top: 135px;
-        width: 1185px;
-        ">
+<body id="body">
 
-{% block help %}
-
-    {% include "josprojects/help_system.html" %}
-
-{% endblock help %}
-
-{% block logout %}
-
-    <button class="btn btn-default pull-right"
-       style="position: fixed; top: 5px; left: 1070px; width: 115px;  z-index: 250;"
-            {% if request.user.is_authenticated %}
-            onclick="location.href='{% url "logout" %}?next={{ request.path }}'">
-                Log out
-            {% else %}
-                onclick="location.href='{% url "login" %}';">
-                Members
-            {% endif %}
-    </button>
-
-{% endblock logout %}
+<!-- Log button -->
+<button class="j_test_button"
+        style="position: fixed; top: 5px; left: 1150px; width: 115px; z-index: 200;"
+        {% if request.user.is_authenticated %}
+        onclick="location.href='{% url "logout" %}?next={{ request.path }}'">
+            Log out
+        {% else %}
+            onclick="location.href='{% url "login" %}';">
+            Members
+        {% endif %}
+</button>
 
 {% block base-fixed-top-bar %}
 
-<!-- Fixed Top Nav -->
-<div id="fixed-top-bar" class="container" style="width: 1170px; padding: 0; left: 30px; position: fixed; top:-20px; background-color: white; transition: .6s ease-in-out all; z-index: 100;">
+    <!-- MESSAGES -->
+    {% nevercache %}
+        <div id="messageBox" class='hidden' style="
+            position: fixed; top: 30px; left: 150px; height: 125px; width: 1070px;
+            background-color: #b5fcb5; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+            font-size: 24pt; font-weight: bold; z-index: 300;">
 
-    {% block logo %}
-        <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-           {% else %}href="/"{% endif %}
-           style="
-               background: white url('/static/img/JOSLogo121615.png') no-repeat top center;
-               background-size: 202px 120px;
-               height:120px;
-               outline: none;
-               padding: 0;
-               position: absolute; top: 9px; left: -13px;
-               width:219px;">
-        </a>
-    {% endblock logo %}
+            <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+                 style="position: absolute; top: 10px; left: 10px; height: 65px">
+
+            <div id="messageSpace" style="
+                position: absolute; top: 20px; left: 90px; height: 85px; width: 87%;
+                display: inline-block; overflow-y: scroll; word-wrap: break-word;">
+                test message
+                {% for message in messages %}
+                    <input type="hidden" id="isMessage" name="isMessage"
+                           value="{{ message | striptags }}">
+                {% endfor %}
+            </div>
+        </div>
+    {% endnevercache %}
+
+
+    {% if request.user.is_authenticated %}
+
+        {% include "josprojects/help_system.html" %}
+
+    {% endif %}
+
+    <button class="j_test_button"
+            style="position: fixed; top: 10px; left: 30px; z-index: 200;"
+            onclick=" window.history.back();">
+        Back
+    </button>
+
+    {% if request.user.is_authenticated %}
+
+        <button class="j_test_button"
+                style="position: fixed; top: 10px; left: 115px; z-index: 200; "
+                onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
+            <i class="fa fa-home fa-fw"></i>
+            Desk
+        </button>
+
+    {% endif %}
+
+
+    {% block breadcrumb_menu %}
+        <div style="position: fixed;
+                    top: 0;
+                    left: 230px;
+                    padding-top: 8px;
+                    height: auto;
+                    width: auto;">
+
+            <div class=" " style="font-size: 24pt;
+                                  font-weight: bold;
+                                  padding-left: 15px;">
+                <span style="font-size: 16pt; margin: 0 5px;">Location:</span>
+
+    {% endblock %}
+            </div>
+        </div>
 
     {% if request.user.is_staff %}
 
-        <a class="josstaffbutton text-center"
-           style="position: fixed; top: 75px; left: 1005px; font-size: 12pt; width: 80px;"
-           href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">
-            Staff
-        </a>
+        {#        <a class="josstaffbutton text-center"#}
+        {#           style="position: fixed; top: 75px; left: 1005px; font-size: 12pt; width: 80px;"#}
+        {#           href="{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}">#}
+        {#            Staff#}
+        {#        </a>#}
+        {##}
+        {#    {% endif %}#}
+        {##}
+        {#    {% if request.user.is_superuser %}#}
+        {##}
+        {#        <a class="josstaffbutton text-center"#}
+        {#           style="position: fixed; top: 75px; left: 1100px;  font-size: 12pt; width: 80px;"#}
+        {#           href="/admin">#}
+        {#            Admin#}
+        {#        </a>#}
 
     {% endif %}
-
-    {% if request.user.is_superuser %}
-
-        <a class="josstaffbutton text-center"
-           style="position: fixed; top: 75px; left: 1100px;  font-size: 12pt; width: 80px;"
-           href="/admin">
-            Admin
-        </a>
-
-    {% endif %}
-
-    <!-- MESSAGES -->
-    {% nevercache %}
-    <div id="messageBox" class="row hidden"
-         style="
-            background-color: #b5fcb5;
-            border: 1px solid rgb(65,45,120);
-            font-size: 18pt;
-            font-weight: bold;
-            height: 135px;
-            left: 125px;
-            outline: 4px solid white;
-            padding: 10px 15px;
-            position: absolute;
-            top: 40px;
-            width: 900px;
-            z-index: 150;
-            ">
-        <div class="col-xs-1" style="padding: 15px 0 0 5px;">
-            <img src="https://www.joinourstory.com/static/img/peeky-102216.png" style="height: 60px">
-        </div>
-
-        <div id="messageSpace" class="col-xs-11"
-             style="
-                display: block;
-                padding: 0 0 0 15px;
-                max-width: 100%;
-                height: 100%;
-                overflow-y: scroll;
-                word-wrap: break-word;
-                ">
-            {% for message in messages %}
-                <input type="hidden" id="isMessage" name="isMessage" value="{{ message | striptags }}">
-                <script>
-
-                    messageBox = document.getElementById('messageBox');
-                    messageSpace = document.getElementById('messageSpace');
-                    var message = document.getElementById("isMessage").value;
-                    if (message) {
-                        $(messageBox).removeClass('hidden');
-                        $(messageBox).delay(3250).fadeOut(1000);
-                        $(messageSpace).text(message);
-                    }
-
-                </script>
-            {% endfor %}
-        </div>
-    </div>
-    {% endnevercache %}
-
-    <!-- BREADCRUMB -->
-    {% block outer_breadcrumb %}
-        {% block breadcrumb_menu %}
-            <div id="breadcrumb-bar"
-                 style= "background-color: rgb(231, 209, 222);
-                         border-radius: 0;
-                         height: 47px;
-                         margin-left: 220px;
-                         margin-top: 80px;
-                         width: 935px;">
-
-                <div class=" " style="
-                            color: black;
-                            display: inline;
-                            font-size: 24pt;
-                            font-weight: bold;
-                            padding-left: 30px;
-                            position: relative;
-                            top: 4px;
-                            ">
-                    <span style="font-size: 16pt; margin: 0 5px;">Location:</span>
-
-        {% endblock %}
-                </div>
-
-        {% block top-nav %}
-
-            {% if request.user.is_authenticated %}
-
-                <div style="position: absolute; top: 25px; left: 220px;">
-
-                    <button class="btn btn-warning text-center"
-                            style="font-size: 16pt; width: 70px; height: 47px;"
-                            onclick=" window.history.back();">
-                        Back
-                    </button>
-
-                    <button class="btn btn-link"
-                            style="height: 47px; margin: 0 0 0 7px; padding: 6px 8px;"
-                            onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
-                        <i class="fa fa-home fa-fw"></i>
-                        Desk
-                    </button>
-
-
-                    <button class="btn btn-link"
-                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 8px;"
-                            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
-                        <i class="fa fa-heart fa-fw"></i>
-                        Pals
-                    </button>
-
-                    <button class="btn btn-link"
-                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 0 6px 8px; width: 120px;"
-                            onclick="location.href='{% url "josmessages:messages_redirect" %}';">
-                        <i class="fa fa-envelope fa-fw"></i>
-                        <span style="margin-right: 3px;">Mail</span>
-
-                        {% inbox_count as my_var %}
-                        {% if my_var >= 1 %}
-
-                            <span style="color: white; padding: 0 5px; background-color: rgb(217, 83, 79);">
-                                {{ my_var }}
-                            </span>
-
-                        {% else %}
-                            <span style="padding: 0 5px; ">
-                                &nbsp&nbsp
-                            </span>
-                        {% endif %}
-                    </button>
-                </div>
-            {% endif %}
-            </div>
-
-        {% endblock top-nav %}
-
-    {% endblock outer_breadcrumb %}
-
-    {% block extra_bar %}{% endblock extra_bar %}
-
-</div>
 
 {% endblock base-fixed-top-bar %}
 
-<!-- MAIN CONTENT -->
-<div id="main_container" class="container"
-     style="
-            width: 1155px;
-            margin: 0 0 0 30px;
-            min-height: 870px;
-            padding: 0;
-            transition: .6s ease-in-out all;
-            z-index: 1;
-            ">
+{#    {% block logo %}#}
+{#        <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
+{#           {% else %}href="/"{% endif %}#}
+{#           style="#}
+{#               background: white url('/static/img/JOSLogo121615.png') no-repeat top center;#}
+{#               background-size: 202px 120px;#}
+{#               height:120px;#}
+{#               outline: none;#}
+{#               padding: 0;#}
+{#               position: absolute; top: 9px; left: -13px;#}
+{#               width:219px;">#}
+{#        </a>#}
+{#    {% endblock logo %}#}
+
+{#                    <button class="btn btn-link"#}
+{#                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 8px;"#}
+{#                            onclick="location.href='{% url "josmembers:josmembers_list" %}';">#}
+{#                        <i class="fa fa-heart fa-fw"></i>#}
+{#                        Pals#}
+{#                    </button>#}
+{##}
+{#                    <button class="btn btn-link"#}
+{#                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 0 6px 8px; width: 120px;"#}
+{#                            onclick="location.href='{% url "josmessages:messages_redirect" %}';">#}
+{#                        <i class="fa fa-envelope fa-fw"></i>#}
+{#                        <span style="margin-right: 3px;">Mail</span>#}
+{##}
+{#                        {% inbox_count as my_var %}#}
+{#                        {% if my_var >= 1 %}#}
+{##}
+{#                            <span style="color: white; padding: 0 5px; background-color: rgb(217, 83, 79);">#}
+{#                                {{ my_var }}#}
+{#                            </span>#}
+{##}
+{#                        {% else %}#}
+{#                            <span style="padding: 0 5px; ">#}
+{#                                &nbsp&nbsp#}
+{#                            </span>#}
+{#                        {% endif %}#}
+{#                    </button>#}
+
+
+
+{% block extra_bar %}{% endblock extra_bar %}
+
+
+
+<!-- ALL CONTENT -->
+<div id="main_container">
 
     {% block all_content %}
 
-        <div class="row" style="margin-top: 80px;">
-            <div class="col-xs-5 col-xs-offset-1">
-                Sorry, this content is missing - <br>
-                Click:
-                <button class="btn btn-warning btn "
-                        style="border-radius: 15px; margin: 20px 10px;width: 80px;"
-                        onclick="goBack()">
-                    Back
-                </button>
-                <script>function goBack() {
-                    window.history.back();
-                }</script> and call us for help.
-            </div>
+        <div style="margin-top: 80px; margin-left: 200px;">
+            Sorry, this content is missing - <br>Click: Back and call us for help.
         </div>
 
     {% endblock all_content %}
+
 </div>
 
 {% block footer %}
@@ -323,4 +251,21 @@
 {% endblock footer %}
 
 </body>
+
+<script>
+
+    $(document).ready( function() {
+        // Messages
+        messageBox = document.getElementById('messageBox');
+        messageSpace = document.getElementById('messageSpace');
+        var message = document.getElementById("isMessage").value;
+        if (message) {
+            $(messageBox).removeClass('hidden');
+            $(messageBox).delay(3250).fadeOut(1000);
+            $(messageSpace).text(message);
+        }
+    });
+
+</script>
+
 </html>
