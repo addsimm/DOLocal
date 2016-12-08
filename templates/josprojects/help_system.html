@@ -76,13 +76,14 @@
 </div> -->
 
 <!-- help button -->
-<button id="help_button" class="j_test_button"
-        style="position: fixed; top: 0; left: 845px; width: 145px; z-index: 200; border-radius: 0;"
+<button id="help_button" class="j_button j_info_button isopen"
+        style="position: fixed; top: 0; left: 845px; height: 50px; width: 185px; z-index: 401; border-radius: 0;"
         data-toggle="tooltip"
         data-placement="bottom"
         title="To do - How do I? - My notes"
         onclick="session_data_update('help_position');">
-    My drawer
+    <i class="fa fa-folder fa-fw" style='margin-right: 5px;'></i>
+    My folder
 </button>
 
 <!-- help screen -->
@@ -140,7 +141,7 @@
 
             <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
                    type="text" placeholder="start typing here">
-            <a class="btn btn-warning"
+            <a class="j_button j_action_button"
                style="font-size: 14pt; margin-top: -7px; width: 120px;"
                href="javascript:location.reload();">
                 Start over
@@ -152,7 +153,7 @@
              style="margin-top: 55px; padding: 10px 20px; height: 375px; margin-left: 10%; width: 80%; outline: 1px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
 
             {% if help_search_text %}
-                <div class="josinstructions" style="color: #d9534f; margin-top: 0;">
+                <div class="josinstructions" style="color: #5bc0de; margin-top: 0;">
                     Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
                 </div>
             {% endif %}
@@ -169,10 +170,10 @@
         </div>
     </div>
 
-    <button id='help_done_btn' class='btn btn-warning'
+    <button id='help_done_btn' class='j_button j_back_button'
             style = 'width: 100px; position: fixed; top: 100px; left: 1025px; display: none;'
             onclick='showHelpItem();'>
-        Back
+        Done
     </button>
 
     <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
@@ -236,7 +237,7 @@
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
 
-            $(hb).text("Close drawer").removeClass("btn-info").addClass("btn-warning").attr("data-original-title", "Closes drawer");
+            $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>Close folder").removeClass("isopen").addClass("isclosed").attr("data-original-title", "Saves changes");
             $("#fixed-top-bar").addClass('moveDown');
             $("#fixed_background").addClass('moveDown');
             $("#main_container").addClass('moveDown');
@@ -253,7 +254,7 @@
             }
 
         } else {
-            $(hb).text("My drawer").removeClass("btn-warning").addClass("btn-info").attr("data-original-title", "To do - How do I? - My notes");
+            $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>My folder").removeClass("isclosed").addClass("isopen").attr("data-original-title", "To do - How do I? - My notes");
             $("#fixed-top-bar").removeClass('moveDown');
             $("#fixed_background").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
@@ -273,7 +274,7 @@
                 case 'help_position':
                     var hlpBtn = document.getElementById('help_button');
                     var help_pos = 'up';
-                    if ($(hlpBtn).hasClass("btn-info")) {
+                    if ($(hlpBtn).hasClass("isopen")) {
                         help_pos = 'down';
                     }
                     data = {"help_position": help_pos};

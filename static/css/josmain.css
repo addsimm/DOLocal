@@ -5,7 +5,7 @@ p {
 
 body {
     position: relative;
-    color: rgb(65, 45, 120);
+    color: #412D78;
     font-family: 'source sans pro', sans-serif;
     font-size: 14pt;
     line-height: normal;
@@ -16,7 +16,7 @@ body {
 
 #main_container {
     width: 1280px;
-    padding: 50px 0 0 30px;
+    padding: 65px 0 0 30px;
     min-height: 870px;
 }
 
@@ -24,37 +24,80 @@ body {
     margin-top: 570px;
 }
 
-.j_test_button, .j_test_button:visited {
+/* Base button */
+.j_button, .j_button:visited {
     color: white;
-    background-color: black;
-    background-image: none;
-    border-radius: 12px;
     font-size: 16pt;
     padding: 7px 14px 9px 14px;
-    height: auto;
-    width: auto;
+    height: auto; width: auto;
+    border-radius: 12px; border: none; outline: none;
+    background-image: none;
+    -webkit-focus-ring-color: none;
+}
 
+.j_button:hover, .j_button:focus {
+    background-color: white;
     border: none;
     outline: none;
+    -webkit-focus-ring-color: none;
+}
 
+/* Other buttons */
+.j_test_button, .j_test_button:visited {
+    background-color: black;
 }
 
 .j_test_button:hover, .j_test_button:focus {
     color: black;
-    background-color: white;
-    border: none;
-    outline: none;
 }
 
+.j_action_button, .j_action_button:visited {
+    background-color: #412D78;
+}
 
+.j_action_button:hover, .j_action_button:focus {
+    color: #412D78;
+}
 
+.j_back_button, .j_back_button:visited {
+    background-color: #f0ad4e;
+}
 
+.j_back_button:hover, .j_back_button:focus {
+    color: #f0ad4e;
+}
 
+.j_relocate_button, .j_relocate_button:visited {
+    background-color: rgb(112, 154, 109);
+}
 
+.j_relocate_button:hover, .j_relocate_button:focus {
+    color: rgb(112, 154, 109);
+}
 
+.j_save_button, .j_save_button:visited {
+    background-color: #5cb85c;
+}
 
+.j_save_button:hover, .j_save_button:focus {
+    color: #5cb85c;
+}
 
+.j_discard_button, .j_discard_button:visited {
+    background-color: #d9534f;
+}
 
+.j_discard_button:hover, .j_discard_button:focus {
+    color: #d9534f;
+}
+
+.j_info_button, .j_info_button:visited {
+    background-color: #5bc0de;
+}
+
+.j_info_button:hover, .j_info_button:focus {
+    color: #5bc0de;
+}
 
 
 a, a:visited {
