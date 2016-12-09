@@ -46,18 +46,19 @@
        Now have fun!
     </div>
     <div class="col-xs-12 text-center" style="margin-top: 50px;">
-        <a id='join_button'
-           class="btn btn-default btn-lg"
-           style="width: 400px;"
-           href="https://www.joinourstory.com/community_room/{{ user.id }}">
+        <button id='join_button'
+           class="j_button j_action_button"
+           onclick="window.location.href='https://www.joinourstory.com/community_room/{{ user.id }}';">
+            <i class="fa fa-camera fa-fw"></i>"
             Join community room
-        </a>
+        </button>
         {% if request.user.is_staff %}
-            <a class="josstaffbutton btn btn-lg"
-               style="width: 200px;"
+            <button class="j_button j_action_button"
+               style="margin-left: 15px;"
                href="https://www.joinourstory.com/community_room/incognito">
-                > Join incognito <
-            </a>
+                <i class="fa fa-search"></i>
+                -- Join incognito --
+            </button>
         {% endif %}
     </div>
 </div>

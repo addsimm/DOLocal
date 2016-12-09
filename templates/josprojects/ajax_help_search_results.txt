@@ -9,7 +9,7 @@
 {% for help in help_items %}
     <ul style="list-style: none;">
         <li style="margin-top: 25px;">
-            <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
+            <button class="j_button j_relocate_button" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
                 {{ help.title }}
             </button>
         </li>

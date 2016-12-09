@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags accounts_tags %}
+{% load i18n mezzanine_tags accounts_tags inbox %}
 
 {% block meta_title %}{{ user.get_short_name }}'s Desk{% endblock %}
 {% block title %}{{ user.get_short_name }}'s Desk{% endblock %}
@@ -42,7 +42,7 @@
 
 </style>
 
-<div id='top-buttons' class="row" style="width: 1150px; margin: 0;">
+<div id='top-buttons' class="row" style="width: 1280px; margin: 0;">
 
     <button class="btn btn-link pull-right"
             style="margin: 0 30px; padding: 0 15px; width: auto;"
@@ -54,7 +54,7 @@
 
     <button class="btn btn-link pull-right text-left"
             onclick="location.href='{% url "profile" request.user.id %}';"
-            style="padding: 0; width: 240px; border: none;">
+            style="padding: 0; width: 240px; margin-left: 20px; border: none;">
         <img class="pull-left" style="margin-right: 15px; width: 65px; height: 65px;"
              src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}
                       https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}
@@ -66,13 +66,30 @@
 
     </button>
 
+    <button class="j_button j_relocate_button pull-right"
+            style="margin: 0 0 0 12px;"
+            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
+        <i class="fa fa-users fa-fw"></i>
+        Community
+    </button>
+
+    <button class="j_button j_relocate_button pull-right"
+            style="margin-right: 7px;"
+            onclick="location.href='{% url "josmessages:messages_redirect" %}';">
+        <i class="fa fa-envelope fa-fw"></i>
+        <span style="margin-left: 3px; ">Mail</span>
+        {% if inbox_count > 0 %}
+        <span style="background-color: red; margin-left: 5px; padding: 0 4px;">{% inbox_count %}</span>
+        {% endif %}
+
+    </button>
 </div>
 
-<div class="row" style="width: 1150px;">
+<div class="row" style="width: 1280px;">
     <div class="col-xs-10" style=" ">
 
         <div class="row text-center" style="margin: 45px 0 0 0;">
-            <span class="homehead" style="font-size: 36pt;">Better Storytelling</span>
+            <span class="josinstructions" style="font-size: 36pt; font-weight: bold;">Better Storytelling</span>
         </div>
 
         <div id='better-storytelling' class="row text-center" style="margin: 30px 0 0 0;">
@@ -117,18 +134,6 @@
     </div>
 
     <div class="col-xs-2" style="margin: 40px 0 0 0;">
-
-        <button class="j_button j_action_button" style=" "
-                onclick="window.location.href = '{% url 'joscourses:josstory' %}/0'">
-            <i class="fa fa-bolt fa-fw" style=""></i>
-            New story
-        </button>
-
-        <a class="btn btn-default"
-           style="margin-top: 10px; width: 80%;"
-           href="{% url 'joscourses:joswheel' 0 %}">
-            New wheel
-        </a>
 
         {% include 'josprojects/../jos_includes/library_include.html' %}
 

@@ -22,10 +22,10 @@
 
 </style>
 
-<div class="row" style="margin-top: 0;">
+<div class="row" style="margin-top: 0; width: 1280px;">
 
 <!-- Main Panel -->
-<div class="col-xs-10" style="height: 1050px; overflow-x: hidden; overflow-y: scroll;">
+<div class="col-xs-9" style="height: 1050px; overflow-x: hidden; overflow-y: scroll;">
 
     <div style="height: 20px; margin: 15px 0 10px 15px;">
 
@@ -44,7 +44,7 @@
 
             {% if edit %}
 
-                <a id="title_edit_btn"
+                <button id="j_button j_action_button"
                    class="btn btn-info btn-xs pull-right edit_section_button"
                    style="font-size: 14pt; width: 125px; margin-top: -31px;"
                    onclick="josCKEdit('title');"
@@ -53,7 +53,7 @@
                    title="Activates editor"
                 >
                     Edit title
-                </a>
+                </button>
 
                 <a id="title_cancel_btn"
                    class="btn btn-danger btn-xs pull-right edit_section_button"
@@ -220,7 +220,7 @@
 <!-- Side Panel Controls -->
 
 <div id="editing_side_panel"
-     style="position: fixed; width: 190px; left: 995px; top: 150px; min-height: 300px;
+     style="position: fixed; width: 500px; left: 995px; top: 150px; min-height: 300px;
         border-left: 1px solid rgb(65,45,120); background-color: white;">
 
     {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}<br>
@@ -241,26 +241,28 @@
     {% if story.author == request.user %}
 
         <!-- Share slider -->
-        <div class='row text-center' style="margin-top: 35px;">
-            <span class="homehead" style="font-size: 20pt;">Sharing</span>
+        <div class="row pull-left" style="margin: 40px 0 0 -150px;">
+            <span class="homehead" style="margin-left: 40px; font-size: 20pt;">Sharing</span>
 
-            <div class='text-left' style="margin: 30px 0 0 65px;">
+            <div class='' style="margin: 30px 0 0 40px;">
 
                 <input name="permission_slider" title='permission_slider' id="sharing_slider">
 
             </div>
-        </div>
+        </div><br>
 
     {% endif %}
 
     <!-- Go To Discuss -->
-    <a class="btn pull-left btn-default"
-       style="margin: 40px 0 20px 50px;" href="#discuss">
-        Discuss
-    </a><br>
-
-    {% include 'josprojects/../jos_includes/library_include.html' %}
-
+    <div class="row pull-left" style="margin: 200px 0 0 -150px;">
+        <button class="j_button j_action_button pull-left"
+           style="margin: 40px;" href="#discuss">
+            Discuss
+        </button><br>
+    </div>
+    <div class="row pull-left" style="margin: 250px 0 0 -150px;">
+        {% include 'josprojects/../jos_includes/library_include.html' %}
+    </div>
 </div>
 </div>
 

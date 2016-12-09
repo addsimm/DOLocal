@@ -19,23 +19,23 @@
                     {{ member.friendly_jos_name }}
                     </td>
                     <td style="width: 60%;">
-                        <a class="btn btn-default"
+                        <button class="j_button j_action_button"
                            style="margin-left: 10px; width: 150px;"
-                           href="{% url "profile" member.user.id %}">
+                           onclick="window.location.href='{% url 'profile' member.user.id %}';">
                             View profile
-                        </a>
+                        </button>
 
-                        <a class="btn btn-default"
+                        <button class="j_button j_action_button"
                            style="margin-left: 10px; width: 150px;"
-                           href="{% url 'josmessages:messages_compose' %}/{{ member.user.id }}">
+                           onclick="window.location.href='{% url 'josmessages:messages_compose' %}/{{ member.user.id }}';">
                             Message
-                        </a>
+                        </button>
 
-                        <a class="btn btn-default"
+                        <button class="j_button j_action_button"
                            style="margin-left: 10px; width: 150px;"
-                           href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ member.user.id }} ">
+                           onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?add_favorite={{ member.user.id }}';">
                             Favorite
-                        </a>
+                        </button>
 
                     </td>
                 </tr>

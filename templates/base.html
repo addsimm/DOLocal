@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/html">
-{% load pages_tags mezzanine_tags i18n staticfiles static inbox %}
+{% load pages_tags mezzanine_tags i18n staticfiles static %}
 
 <head>
     <meta content="text/html">
@@ -55,7 +55,7 @@
 <button class="j_button j_action_button"
         style="position: fixed; top: 10px; left: 1130px; width: 145px; z-index: 450;"
         {% if request.user.is_authenticated %}
-        onclick="location.href='{% url "logout" %}?next={{ request.path }}'">
+        onclick="location.href='{% url "logout" %}?next={{ request.path }}';">
             <i class="fa fa-sign-out fa-fw"></i>
             Log out
         {% else %}

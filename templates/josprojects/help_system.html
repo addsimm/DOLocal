@@ -116,11 +116,11 @@
             class="nav nav-tabs"
             style="background-color: white; position: fixed; top: 0; padding-top: 20px; left: 46px; width: 1107px; border-bottom: 3px solid rgb(65, 45, 120); z-index: 160;">
 
-            <li><a id='to_do_btn' data-toggle="tab" href="#to_do">To do</a></li>
+            <li><button id='to_do_btn' class="j_button j_action_button" data-toggle="tab" href="#to_do">To do</button></li>
 
-            <li><a id='how_do_i_btn' data-toggle="tab" href="#how_do_i">How do I?</a></li>
+            <li><button id='how_do_i_btn' class="j_button j_action_button" data-toggle="tab" href="#how_do_i">How do I?</button></li>
 
-            <li><a id='my_notes_btn' data-toggle="tab" href="#my_notes">My notes</a></li>
+            <li><button id='my_notes_btn' class="j_button j_action_button" data-toggle="tab" href="#my_notes">My notes</button></li>
 
         </ul>
     </div>
@@ -141,11 +141,11 @@
 
             <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
                    type="text" placeholder="start typing here">
-            <a class="j_button j_action_button"
+            <button class="j_button j_action_button"
                style="font-size: 14pt; margin-top: -7px; width: 120px;"
                href="javascript:location.reload();">
                 Start over
-            </a>
+            </button>
         </div>
 
         <div id="help_search_results"
@@ -181,19 +181,20 @@
 
 <div id="my_notes" class="tab-pane fade">
 
-    <a id="notes_edit_btn"
-       class="btn btn-info"
-       style="width: 125px; position: fixed; top: 100px; left: 1010px;"
+    <button id="notes_edit_btn"
+       class="j_button j_action_button"
+       style="position: fixed; top: 100px; left: 1010px;"
        onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Activates editor"
        >
+        <i class="fa fa-scissors"></i>
         Edit notes
-    </a>
+    </button>
 
-    <a id="notes_cancel_btn"
-       class="btn btn-danger"
+    <button id="notes_cancel_btn"
+       class="j_button j_danger_button"
        style="width: 125px; position: fixed; top: 160px; left: 1010px; display: none;"
        onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
@@ -201,7 +202,7 @@
        title="Warning: discards recent changes!"
     >
         Discard
-    </a>
+    </button>
 
     <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
 

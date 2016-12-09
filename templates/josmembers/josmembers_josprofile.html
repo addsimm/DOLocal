@@ -162,27 +162,27 @@
 
     {% else %}
 
-        <a class="btn pull-left btn-default"
+        <button class="j_button j_action_button pull-left"
            style="margin-top: 20px; margin-left: 40px;"
-           href="/messages/compose/{{ profile.user.id }}">
+           onclick="window.location.href='/messages/compose/{{ profile.user.id }}';">
             Message
-        </a>
+        </button>
 
         {% if requesterfollows %}
 
-            <a class="btn pull-left btn-default"
+            <button class="j_button j_action_button pull-left"
                style="margin-top: 20px; margin-left: 40px;"
-               href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ profile.user.id }} ">
+               onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ profile.user.id }}';">
                 Unfavor
-            </a>
+            </button>
 
         {% else %}
 
-            <a class="btn pull-left btn-default"
+            <button class="j_button j_action_button pull-left"
                style="margin-top: 20px; margin-left: 40px;"
-               href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }} ">
+               onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }}';">
                 Favor
-            </a>
+            </button>
 
         {% endif %}
 
