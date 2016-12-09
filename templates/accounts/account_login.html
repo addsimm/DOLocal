@@ -3,42 +3,30 @@
 
 {% block accounts_content %}
 
-    {% if request.user.is_authenticated %}
+    <div class="josinstructions" style="margin-top: 50px;">
 
-        <div class="josinstructions" style="margin-top: 50px;">
-            {% trans "You're are already signed in; please log out to sign in as a different user." %}
-        </div>
+        {% if request.user.is_authenticated %}
 
-    {% else %}
+            You're already signed in; please log out to sign in as a different user.
+
+        {% else %}
 
         {% url "jossignup" as signup_url %}
         {% url "jos_password_reset" as password_reset_url %}
         {% url "home" as home_url %}
 
+        <div class="josinstructions" style="margin: 50px 0 30px 0;">
 
-        <div class="josinstructions" style="margin-bottom: 30px;">
+            <b>Please enter your email and password, then click "{{ title }}"</b> or you can:
+            <button class="j_button j_action_button" style="margin-left: 5px;"
+                    onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}'">Reset Password
+            </button>
 
-                {#<li>#}
-                {#    Haven't signed up yet, please click here:#}
-                {#    <a class="joslargelinkbutton" href="{% url "josmembers:jossignup" %}">#}
-                {#        <span style="margin: 0 5px;">Sign Up</span>#}
-                {#    </a>#}
-                {#</li>#}
-            If you need a new password, click here:
-            <a class="joslargelinkbutton" href="{% url "josmembers:jos_password_reset" %}">
-                <span style="margin: 0 5px;">Reset Password</span>
-            </a><br><br>
+            {{ block.super }}
 
-            Otherwise:<br>
-            <b>&nbsp&nbsp&nbspPlease enter your email and password, then click "{{ title }}."</b>
         </div>
 
-
-        {{ block.super }}
-
     {% endif %}
-
-
 
 {% endblock accounts_content %}
 

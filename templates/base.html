@@ -245,13 +245,6 @@
 
         <p class="text-left" style="font-size: 8pt; margin-top: 0;">
             Join Our Story is a California Benefit Corporation &copy 2014
-
-            {% ifinstalled mezzanine.mobile %}
-                <span class="separator">|</span>
-                <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
-                    {% trans "View Mobile Site" %}
-                </a>
-            {% endifinstalled %}
         </p>
     </div>
     {% include "old/includes/footer_scripts.html" %}
@@ -267,7 +260,10 @@
         // Messages
         messageBox = document.getElementById('messageBox');
         messageSpace = document.getElementById('messageSpace');
-        var message = document.getElementById("isMessage").value;
+        isMessage = document.getElementById("isMessage");
+        if (isMessage != null) {
+            var message = isMessage.value;
+        }
         if (message) {
             $(messageBox).removeClass('hidden');
             $(messageBox).delay(3250).fadeOut(1000);

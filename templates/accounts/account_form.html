@@ -70,17 +70,12 @@
         <div class="form-actions"><!-- sumbit -->
             {% block account_form_actions %}
                 {% if title == "Sign up" %}
-                    <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
-                        I agree to the
-                        <a class="joslargelinkbutton" style=" " href="/community-rules">Community
-                            rules</a>
-                        &nbsp&nbsp&nbsp&
-                        <a class="joslargelinkbutton" style=" " href="/legals">Terms and
-                            conditions</a><br><br>
+                    <div class="josinstructions" style="margin-bottom: 20px;">
+                        <b>I agree to the Community rules & Terms and conditions</b><br>
                     </div>
                 {% endif %}
-                <input class="btn btn-default btn-lg pull-left"
-                       style="margin-top: 10px; width: 200px;"
+                <input class="j_button j_action_button pull-left"
+                       style=" "
                        type="submit"
                        value="{{ title }}">
             {% endblock account_form_actions %}
@@ -179,7 +174,6 @@
     });
 
 </script>
-
 
 {% endblock all_content %}
 

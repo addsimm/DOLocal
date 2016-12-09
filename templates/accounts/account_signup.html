@@ -8,36 +8,34 @@
         <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
 
     {% else %}
-        <div class="josinstructions" style="margin-bottom: 30px;">
+        <div class="josinstructions" style=" ">
             <b>Please complete this form to join Join Our Story!</b><br><br>
 
-            &nbsp&nbsp&nbsp&nbspBy signing up, you agree to our:
-            <a class="joslargelinkbutton" style=" " href="/community-rules">Community rules</a>
-            &nbsp&nbsp&nbsp&
-            <a class="joslargelinkbutton" style=" " href="/legals">Terms and conditions</a><br><br>
+            &nbsp&nbsp&nbsp&nbspNote: by signing up, you agree to our:&nbsp&nbsp&nbsp
+            <button class="j_button j_relocate_button"
+               onclick="windows.location.href='/community-rules'">
+                Community rules
+            </button>
+            &nbsp&nbsp&&nbsp&nbsp
+            <button class="j_button j_relocate_button" style=" "
+                    href="/legals">
+                Terms and conditions
+            </button><br><br>
+            <div style="line-height: 1.8; margin: 10px 0 15px 0;">
+            TO CREATE A PASSWORD,&nbsp&nbspYOU SHOULD:<br>
+                1.&nbsp&nbspChoose two words and a punctuation mark.<br>
+                2.&nbsp&nbspPut them all together (no spaces and no capitals).<br>
+                <i style="margin-left: 90px;">For example: "Happy", "Camper" and "!' becomes "happycamper!"</i><br>
+                3.&nbsp&nbspThen, enter it twice below.<br>
+                <i style="margin-left: 85px;">-- don't worry;&nbsp&nbspyou can reset your password anytime.</i><br>
 
-            TO CREATE YOUR PASSWORD,&nbsp&nbspWE SUGGEST THAT YOU:<br>
-            &nbsp&nbsp&nbsp&nbsp
-            1.&nbsp&nbsp&nbspChoose two words and a punctuation mark.<br>
-            &nbsp&nbsp&nbsp&nbsp
-            2.&nbsp&nbsp&nbspPut them together with no spaces and no capital letters.<br>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            Example: "Happy" and "Camper" and "!' becomes "happycamper!"<br>
-            &nbsp&nbsp&nbsp&nbsp
-            3.&nbsp&nbsp&nbspRemember your password!&nbsp&nbsp&nbspAnd, enter it twice below.<br>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            Don't worry;&nbsp&nbsp&nbspyou can easily reset your password anytime.<br><br>
-
-            When done, click "Sign up"&nbsp&nbsp-- the computer may indicate some issues. Call us, if necessary.<br><br>
-
-            After sign up, personalize your profile and let everyone know your here!<br>
-
-            {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
-                Once submitted, your account must be approved. You'll receive an email when it's activated; if you do not receive an email soon, please call."<br>
-            {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-                Once submitted, your account must be verfied. You'll receive an email with instructions. if you do not
-                receive an email soon, please call."<br>
-            {% endif %}
+                {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
+                    Once submitted, your account must be approved. You'll receive an email when it's activated; if you do not receive an email soon, please call."<br>
+                {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
+                    Once submitted, your account must be verfied. You'll receive an email with instructions. if you do not
+                    receive an email soon, please call."<br>
+                {% endif %}
+            </div>
 
         </div>
 
