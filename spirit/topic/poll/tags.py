@@ -8,7 +8,7 @@ from ...core.tags.registry import register
 from .forms import TopicPollVoteManyForm
 
 
-@register.inclusion_tag('old/spirit/topic/poll/_form.html')
+@register.inclusion_tag('aaold/spirit/topic/poll/_form.html')
 def render_poll_form(topic, user, next=None):
     try:
         poll = topic.poll

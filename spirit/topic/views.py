@@ -54,7 +54,7 @@ def publish(request, category_id=None):
         'form': form,
         'cform': cform}
 
-    return render(request, 'old/spirit/topic/publish.html', context)
+    return render(request, 'aaold/spirit/topic/publish.html', context)
 
 
 @login_required
@@ -77,7 +77,7 @@ def update(request, pk):
 
     context = {'form': form, }
 
-    return render(request, 'old/spirit/topic/update.html', context)
+    return render(request, 'aaold/spirit/topic/update.html', context)
 
 
 def detail(request, pk, slug):
@@ -105,7 +105,7 @@ def detail(request, pk, slug):
         'comments': comments
     }
 
-    return render(request, 'old/spirit/topic/detail.html', context)
+    return render(request, 'aaold/spirit/topic/detail.html', context)
 
 
 def index_active(request):
@@ -131,4 +131,4 @@ def index_active(request):
         'topics': topics
     }
 
-    return render(request, 'old/spirit/topic/active.html', context)
+    return render(request, 'aaold/spirit/topic/active.html', context)

@@ -557,10 +557,10 @@
 					// Flag that the transition has completed
 					isTransitioning = false;
 
-					// Remove the old slide
+					// Remove the aaold slide
 					previousSlide.remove();
 
-					// Remove old caption
+					// Remove aaold caption
 					if (previousCaption)
 						previousCaption.remove();
 

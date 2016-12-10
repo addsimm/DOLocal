@@ -21,9 +21,9 @@ var ck_config_small = {
     contentsCss: '/static/ckeditor/ckeditor/contents.css',
     disableNativeSpellChecker: false,
     width: '100%',
-    height: 420,
+    height: 360,
     tabSpaces: 4,
-    uiColor: '#28a4c9',
+    uiColor: '#412D78',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
 
@@ -41,7 +41,7 @@ var ck_config_large = {
     height: 360,
     tabSpaces: 4,
     toolbarRows: 1,
-    uiColor: '#28a4c9',
+    uiColor: '#412D78',
     extraPlugins: 'colorbutton',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
@@ -75,13 +75,14 @@ function josCKEdit(sect2edit) {
 
     //// console.log('edit_btn: ' + $(edit_btn).text());
 
-    if ($(edit_btn).hasClass('btn-info')) {
+    if ($(edit_btn).hasClass('j_action_button')) {
         //// console.log('starting editor; editors[sect2edit].section_editor: ' + editors[sect2edit].section_editor);
         if (editors[sect2edit].section_editor) {
             return;
         }
 
-        $(edit_btn).removeClass('btn-info').addClass('btn-success').text('Save').attr("data-original-title", "Saves changes");
+        var data_original_title_string = 'Updates ' + sect2edit;
+        $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('Save').attr("data-original-title", data_original_title_string);
         $('#' + sect2edit + '_cancel_btn').show();
         $(edit_element).hide();
 
@@ -128,7 +129,7 @@ function josCKDestroy(sect2destroy) {
 
     $(edit_element).show();
     $('#' + sect2destroy + '_cancel_btn').hide();
-    $(edit_btn).removeClass('btn-success').addClass('btn-info').text('Edit ' + sect2destroy).attr("data-original-title", "Activates editor");
+    $(edit_btn).removeClass('j_save_button').addClass('j_action_button').text('Edit ' + sect2destroy).attr("data-original-title", "Activates editor");
     editors[sect2destroy].section_editor.destroy();
     editors[sect2destroy].section_editor = null;
 

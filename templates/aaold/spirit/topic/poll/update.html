@@ -1,0 +1,19 @@
+{% extends "aaold/spirit/_base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Update poll" %}{% endblock %}
+
+{% block content %}
+
+    <h1 class="headline">{% trans "Update poll" %}</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% include "aaold/spirit/_form.html" %}
+        {% include "aaold/spirit/_formset.html" %}
+
+        <input class="button" type="submit" name="post" value="{% trans "Publish" %}" />
+    </form>
+
+{% endblock %}

@@ -36,7 +36,7 @@ def update(request, pk):
         'formset': formset
     }
 
-    return render(request, 'old/spirit/topic/poll/update.html', context)
+    return render(request, 'aaold/spirit/topic/poll/update.html', context)
 
 
 @login_required
@@ -52,7 +52,7 @@ def close(request, pk):
 
     context = {'poll': poll, }
 
-    return render(request, 'old/spirit/topic/poll/close.html', context)
+    return render(request, 'aaold/spirit/topic/poll/close.html', context)
 
 
 @require_POST

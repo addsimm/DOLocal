@@ -82,7 +82,7 @@ jQuery.fn = jQuery.prototype = {
 		} else if ( jQuery.isFunction( selector ) )
 			return jQuery( document ).ready( selector );
 
-		// Make sure that old selector state is passed along
+		// Make sure that aaold selector state is passed along
 		if ( selector.selector && selector.context ) {
 			this.selector = selector.selector;
 			this.context = selector.context;
@@ -122,7 +122,7 @@ jQuery.fn = jQuery.prototype = {
 		// Build a new jQuery matched element set
 		var ret = jQuery( elems );
 
-		// Add the old object onto the stack (as a reference)
+		// Add the aaold object onto the stack (as a reference)
 		ret.prevObject = this;
 
 		ret.context = this.context;
@@ -734,7 +734,7 @@ jQuery.extend({
 	// A method for quickly swapping in/out CSS properties to get correct calculations
 	swap: function( elem, options, callback ) {
 		var old = {};
-		// Remember the old values, and insert the new ones
+		// Remember the aaold values, and insert the new ones
 		for ( var name in options ) {
 			old[ name ] = elem.style[ name ];
 			elem.style[ name ] = options[ name ];
@@ -742,7 +742,7 @@ jQuery.extend({
 
 		callback.call( elem );
 
-		// Revert the old values
+		// Revert the aaold values
 		for ( var name in options )
 			elem.style[ name ] = old[ name ];
 	},
@@ -3222,7 +3222,7 @@ jQuery.props = {
 	tabindex: "tabIndex"
 };
 jQuery.fn.extend({
-	// Keep a copy of the old load
+	// Keep a copy of the aaold load
 	_load: jQuery.fn.load,
 
 	load: function( url, params, callback ) {
@@ -3842,7 +3842,7 @@ jQuery.fn.extend({
 		}
 	},
 
-	// Save the old toggle function
+	// Save the aaold toggle function
 	_toggle: jQuery.fn.toggle,
 
 	toggle: function( fn, fn2 ){

@@ -20,10 +20,6 @@
         top: 3px !important;
     }
 
-    #help_nav_tabs li {
-        text-align: center;
-    }
-
     .tab-pane {
         left: 50px;
         margin-top: 20px;
@@ -31,7 +27,7 @@
         position: fixed;
         top: 50px;
         height: 465px;
-        width: 1100px;
+        width: 1280px;
         z-index: 165;
     }
 
@@ -49,7 +45,7 @@
 
 </style>
 
-<!-- DEBUG -->
+<!-- DEBUG
 <div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 800;">
     DEBUG<br>
     <div class="row">
@@ -69,108 +65,80 @@
             {{ request.session.help_item_no }}<br>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- help button -->
-<button id="help_button" class="j_button j_info_button isopen"
-        style="position: fixed; top: 0; left: 845px; height: 50px; width: 185px; z-index: 401; border-radius: 0;"
-        data-toggle="tooltip"
-        data-placement="bottom"
-        title="To do -- How do I? -- My notes"
-        onclick="session_data_update('help_position');">
+<button id="help_button" class="j_button j_info_button isopen" style="position: fixed;
+        top: 0; left: 845px; height: 50px; width: 185px; border-radius: 0; z-index: 401;"
+    data-toggle="tooltip" data-placement="bottom"
+    title="To do - How do I? - My notes" onclick="session_data_update('help_position');">
     <i class="fa fa-folder fa-fw" style='margin-right: 5px;'></i>
     My folder
 </button>
 
-<!-- help screen 2do: change tab style -->
-<div id="help_screen" class=" "
-     style="
-         background-color: white;
-         display: none;
-         height: 560px;
-         left: 30px;
-         padding: 0;
-         position: fixed;
-         top: 0;
-         width: 1155px;
-         z-index: 150;
-     ">
+<div id="help_screen" style="background-color: white; display: none;
+     position: fixed; top: 0; left: 0; height: 560px; width: 1280px;
+     padding: 0; z-index: 150;">
 
-    <div id="help_inner"
-         style="
-             background-color: rgb(255, 255, 224);
-             height: 550px;
-             left: 50px;
-             outline: 3px solid rgb(112, 154, 109);
-             position: fixed;
-             top: 0;
-             width: 1125px;
-             z-index: 155;
-         ">
+    <div id="help_inner" style="position: fixed; top: 0; left: 50px;
+         height: 550px;  width: 1180px; background-color: rgb(255, 255, 224);
+         outline: 3px solid rgb(112, 154, 109); z-index: 155;">
 
-        <ul id="help_nav_tabs"
-            class="nav nav-tabs"
-            style="background-color: white; position: fixed; top: 0; padding-top: 25px; left: 46px; width: 1130px; border-bottom: 3px solid rgb(112, 154, 109); z-index: 160;">
+        <ul id="help_nav_tabs" class="nav nav-tabs" style="position: fixed; top: 0;
+            left: 50px; width: 1180px; padding-top: 25px; background-color: white;
+            border-bottom: 3px solid rgb(112, 154, 109); z-index: 160;">
 
-            <li><button id='to_do_btn' class="j_button j_relocate_button" data-toggle="tab" href="#to_do">To do</button></li>
+            <li><button id='to_do_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#to_do">To do</button></li>
 
-            <li><button id='how_do_i_btn' class="j_button j_relocate_button" data-toggle="tab" href="#how_do_i">How do I?</button></li>
+            <li><button id='how_do_i_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#how_do_i">How do I?</button></li>
 
-            <li><button id='my_notes_btn' class="j_button j_relocate_button" data-toggle="tab" href="#my_notes">My notes</button></li>
-
-        </ul>
+            <li><button id='my_notes_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#my_notes">My notes</button></li></ul>
     </div>
 </div>
 
 <div class="tab-content">
 
-<div id="to_do" class="tab-pane fade">
-    to_do
-</div>
+<div id="to_do" class="tab-pane fade">to_do</div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
     <div id="main_help">
 
-        <div style="position: absolute; top: 10px; left: 0;  padding: 25px 30px 0 60px; z-index: 170; width: 100%; background-color: rgb(255, 255, 224);">
+        <div style="position: absolute; top: 10px; left: 0; width: 100%; z-index: 170;
+        padding: 25px 30px 0 60px; background-color: rgb(255, 255, 224);">
             To search for a term:
 
             <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
                    type="text" placeholder="start typing here">
-            <button class="j_button j_action_button"
-               style="font-size: 14pt; margin-top: -7px; width: 120px;"
-               href="javascript:location.reload();">
+            <button class="j_button j_action_button" style="font-size: 14pt; margin-top: -7px;
+                    width: 120px;" href="javascript:location.reload();">
                 Start over
             </button>
         </div>
 
-        <div id="help_search_results"
-             class="row text-left"
-             style="margin: 90px 0 0 50px; padding: 10px 20px; height: 340px; width: 65%;
+        <div id="help_search_results" class="row text-left" style="height: 340px; width: 65%;
+             margin: 85px 0 0 45px; padding: 10px 20px;
              outline: 2px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
 
             {% if help_search_text %}
-                <div class="josinstructions" style="color: #5bc0de; margin-top: 0;">
+                <div class="josinstructions" style=" margin-top: 0; color: #5bc0de;">
                     Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
                 </div>
             {% endif %}
 
             {% for help in help_items %}
-                <ul style="list-style: none;">
-                    <li style="margin-top: 20px;">
-                        <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
-                            {{ help.title }}
-                        </button>
-                    </li>
-                </ul>
+                <ul style="list-style: none;"><li style="margin-top: 20px;">
+                    <button class="j_button j_relocate_button"
+                            onclick="showHelpItem('{{ help.id }}');">{{ help.title }}
+                    </button></li></ul>
             {% endfor %}
         </div>
     </div>
 
-    <button id='help_done_btn' class='j_button j_back_button'
-            style = 'width: 100px; position: fixed; top: 100px; left: 825px; display: none;'
-            onclick='showHelpItem();'>
-        Done
-    </button>
+    <button id='help_done_btn' class='j_button j_back_button' style=' position: fixed; top: 100px;
+            left: 825px; display: none;' onclick='showHelpItem();'>Done</button>
 
     <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
@@ -182,7 +150,7 @@
        style="position: fixed; top: 105px; left: 1005px;"
        onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
-       data-placement="bottom"
+       data-placement="right"
        title="Activates editor"
        >
         <i class="fa fa-scissors"></i>
@@ -190,12 +158,12 @@
     </button>
 
     <button id="notes_cancel_btn"
-       class="j_button j_danger_button"
+       class="j_button j_discard_button"
        style="width: 125px; position: fixed; top: 165px; left: 1005px; display: none;"
        onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
-       title="Warning: discards recent changes!"
+       title="Warning: does not save changes!"
     >
         Discard
     </button>
@@ -214,6 +182,7 @@
     </div>
 
 </div>
+
 </div>
 
 <!-- Drawer javascript -->
@@ -238,7 +207,6 @@
             $("#fixed-top-bar").addClass('moveDown');
             $("#fixed_background").addClass('moveDown');
             $("#main_container").addClass('moveDown');
-            $("#fixed_footer").addClass('moveDown');
             $("#help_screen").slideDown("slow");
 
             active_tab = '#{{ request.session.active_tab }}';
@@ -255,13 +223,12 @@
             $("#fixed-top-bar").removeClass('moveDown');
             $("#fixed_background").removeClass('moveDown');
             $("#main_container").removeClass('moveDown');
-            $("#fixed_footer").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
         }
     });
 
     function session_data_update(element) {
-        // console.log('updating: ' + element);
+        console.log('updating: ' + element);
         var data = {};
 
         if (Number.isInteger(parseInt(element))) {
@@ -278,7 +245,8 @@
                     break;
 
                 case 'active_tab':
-                    var active_tab = $('.nav-tabs .jos_tab_active').attr('id');
+                        console.log('active tab');
+                    var active_tab = $('.jos_tab_active').attr('id');
                     data = {"active_tab": active_tab};
                     break;
 
@@ -317,7 +285,7 @@
 
     $('.nav-tabs').on({
         'show.bs.tab': function (event) {
-            $('a').removeClass('jos_tab_active');
+            $('button').removeClass('jos_tab_active');
             $(event.target).addClass('jos_tab_active');
             session_data_update('active_tab');
         }

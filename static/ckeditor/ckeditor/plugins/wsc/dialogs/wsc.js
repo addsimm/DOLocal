@@ -1501,7 +1501,7 @@ CKEDITOR.dialog.add('checkspell', function(editor) {
 						type,
 						separatorStartIndex;
 
-					// @TODO: remove this line much later. Support of old format for options
+					// @TODO: remove this line much later. Support of aaold format for options
 					str = this.backCompatibility(str);
 
 					if(typeof str === 'string') {
@@ -1530,8 +1530,8 @@ CKEDITOR.dialog.add('checkspell', function(editor) {
 					}
 					return value;
 				},
-				// old data type support
-				// here we trying to convert data from old format into new
+				// aaold data type support
+				// here we trying to convert data from aaold format into new
 				// @TODO: remove this function much later
 				backCompatibility: function(str) {
 					var convertedStr = str,
@@ -1540,7 +1540,7 @@ CKEDITOR.dialog.add('checkspell', function(editor) {
 
 					if(typeof str === 'string') {
 						separatorStartIndex = str.indexOf(this.separator);
-						// is it old format?
+						// is it aaold format?
 						if(separatorStartIndex < 0) {
 							// try to get number from string
 							value = parseFloat(str);

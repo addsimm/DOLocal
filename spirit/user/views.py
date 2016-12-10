@@ -43,7 +43,7 @@ def update(request):
         'uform': uform
     }
 
-    return render(request, 'old/spirit/user/profile_update.html', context)
+    return render(request, 'aaold/spirit/user/profile_update.html', context)
 
 
 @login_required
@@ -61,7 +61,7 @@ def password_change(request):
 
     context = {'form': form, }
 
-    return render(request, 'old/spirit/user/profile_password_change.html', context)
+    return render(request, 'aaold/spirit/user/profile_password_change.html', context)
 
 
 @login_required
@@ -78,7 +78,7 @@ def email_change(request):
 
     context = {'form': form, }
 
-    return render(request, 'old/spirit/user/profile_email_change.html', context)
+    return render(request, 'aaold/spirit/user/profile_email_change.html', context)
 
 
 @login_required
@@ -177,4 +177,4 @@ def likes(request, pk, slug):
 
 @login_required
 def menu(request):
-    return render(request, 'old/spirit/user/menu.html')
+    return render(request, 'aaold/spirit/user/menu.html')

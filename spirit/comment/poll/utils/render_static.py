@@ -17,7 +17,7 @@ def _evaluate(polls_by_name):
             'poll': polls_by_name[name]
         }
 
-        return render_to_string('old/spirit/comment/poll/_static.html', context)
+        return render_to_string('aaold/spirit/comment/poll/_static.html', context)
 
     return evaluate
 

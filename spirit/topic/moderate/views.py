@@ -37,7 +37,7 @@ class BaseView(View):
         return redirect(request.POST.get('next', self.topic.get_absolute_url()))
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'old/spirit/topic/moderate.html', {'topic': self.topic,})
+        return render(request, 'aaold/spirit/topic/moderate.html', {'topic': self.topic,})
 
     def check_configuration(self):
         assert self.field_name is not None, "You forgot to set field_name attribute"

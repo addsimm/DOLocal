@@ -92,4 +92,4 @@ def voters(request, pk):
         'votes': choice_votes
     }
 
-    return render(request, 'old/spirit/comment/poll/voters.html', context)
+    return render(request, 'aaold/spirit/comment/poll/voters.html', context)

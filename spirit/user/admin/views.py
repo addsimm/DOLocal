@@ -38,7 +38,7 @@ def edit(request, user_id):
         'uform': uform
     }
 
-    return render(request, 'old/spirit/user/admin/edit.html', context)
+    return render(request, 'aaold/spirit/user/admin/edit.html', context)
 
 
 @administrator_required

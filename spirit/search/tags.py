@@ -6,7 +6,7 @@ from ..core.tags.registry import register
 from .forms import BasicSearchForm
 
 
-@register.inclusion_tag('old/spirit/search/_form.html')
+@register.inclusion_tag('aaold/spirit/search/_form.html')
 def render_search_form():
     form = BasicSearchForm()
     return {'form': form, }

@@ -30,4 +30,4 @@ def detail(request, comment_id):
 
     context = {'comments': comments, }
 
-    return render(request, 'old/spirit/comment/history/detail.html', context)
+    return render(request, 'aaold/spirit/comment/history/detail.html', context)

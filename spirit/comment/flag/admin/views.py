@@ -41,7 +41,7 @@ def detail(request, pk):
         'form': form
     }
 
-    return render(request, 'old/spirit/comment/flag/admin/detail.html', context)
+    return render(request, 'aaold/spirit/comment/flag/admin/detail.html', context)
 
 
 @administrator_required

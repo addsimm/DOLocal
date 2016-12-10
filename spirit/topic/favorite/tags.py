@@ -7,7 +7,7 @@ from .models import TopicFavorite
 from .forms import FavoriteForm
 
 
-@register.inclusion_tag('old/spirit/topic/favorite/_form.html')
+@register.inclusion_tag('aaold/spirit/topic/favorite/_form.html')
 def render_favorite_form(topic, user, next=None):
     try:
         favorite = TopicFavorite.objects.get(user=user, topic=topic)

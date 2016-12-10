@@ -13,7 +13,7 @@
   $pos: _position-flipper($val-1) _position-flipper($val-2) _position-flipper($val-3);
   $pos: unquote($pos + "");
 
-  // Use old spec for webkit
+  // Use aaold spec for webkit
   @if $val-1 == "to" {
     @return (
       webkit-image: -webkit- + $prefix + $pos + $suffix,

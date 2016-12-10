@@ -51,7 +51,7 @@ def outbox(request, template_name="josmessages/outbox.html"):
 def trash(request, template_name="josmessages/trash.html"):
     """
     Displays a list of deleted messages.
-    Hint: A Cron-Job could periodically clean up old messages
+    Hint: A Cron-Job could periodically clean up aaold messages
     """
     activate('America/Los_Angeles')
     message_list = JOSMessageThread.objects.trash_for(request.user)
@@ -65,7 +65,7 @@ def delete(request, message_thread_id=0):
     """
     Marks a message as deleted by sender or recipient. The message is not
     really removed from the database, because two users must delete
-    A cron-job should prune the database and remove old messages
+    A cron-job should prune the database and remove aaold messages
     As a side effect, this makes it easy to implement a trash with undelete.
 
     You can pass ?next=/foo/bar/ via the url to redirect the user to a different
