@@ -11,29 +11,13 @@
         -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
     }
 
-    #help_nav_tabs a, #help_nav_tabs a:visited {
-        color: rgb(112, 154, 109);
-        border: 3px dotted rgb(112, 154, 109);
-        font-size: 18pt;
-        font-weight: bold;
-        height: 50px;
-        margin: 0 15px;
-        padding: 5px 15px;
-        outline: none;
-        width: 150px !important;
-    }
-
-    #help_nav_tabs a:hover, #help_nav_tabs a:focus {
-        color: rgb(240, 173, 78);
-        border-color: rgb(240, 173, 78);
-    }
-
-    .jos_tab_active {
+    li.active .jos_tab_active {
         background-color: rgb(255, 255, 224) !important;
-        border: 3px solid rgb(65, 45, 120) !important;
+        border: 3px solid rgb(112, 154, 109) !important;
         border-bottom-color: rgb(255, 255, 224) !important;
-        bottom: -3px !important;
-        color: rgb(65, 45, 120) !important;
+        color: rgb(112, 154, 109) !important;
+        font-weight: bold;
+        top: 3px !important;
     }
 
     #help_nav_tabs li {
@@ -51,36 +35,48 @@
         z-index: 165;
     }
 
+    #help_nav_tabs .j_relocate_button, #help_nav_tabs .j_relocate_button:visited {
+        margin-left: 15px;
+        position: relative;
+        top: 5px;
+        width: 175px;
+        border-radius: 0;
+    }
+
+    #help_nav_tabs .j_relocate_button:hover {
+        background-color: rgb(255, 255, 224) !important;
+    }
+
 </style>
 
-<!-- DEBUG
+<!-- DEBUG -->
 <div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 800;">
     DEBUG<br>
     <div class="row">
         <div class="col-xs-6">
             uc_note: <br>
             editor_status:<br>
-{#            active tab: <br>#}
-{#            help pos: <br>#}
-{#            help item no: <br>#}
+            active tab: <br>
+            help pos: <br>
+            help item no: <br>
         </div>
         <div class="col-xs-6" style="color: red;">
             {{ user_created_note }}<br>
             {{ request.session.editor_status }}<br>
 
-{#            {{ request.session.active_tab }}<br>#}
-{#            {{ request.session.help_position }}<br>#}
-{#            {{ request.session.help_item_no }}<br>#}
+            {{ request.session.active_tab }}<br>
+            {{ request.session.help_position }}<br>
+            {{ request.session.help_item_no }}<br>
         </div>
     </div>
-</div> -->
+</div>
 
 <!-- help button -->
 <button id="help_button" class="j_button j_info_button isopen"
         style="position: fixed; top: 0; left: 845px; height: 50px; width: 185px; z-index: 401; border-radius: 0;"
         data-toggle="tooltip"
         data-placement="bottom"
-        title="To do - How do I? - My notes"
+        title="To do -- How do I? -- My notes"
         onclick="session_data_update('help_position');">
     <i class="fa fa-folder fa-fw" style='margin-right: 5px;'></i>
     My folder
@@ -105,22 +101,22 @@
              background-color: rgb(255, 255, 224);
              height: 550px;
              left: 50px;
-             outline: 3px solid rgb(65, 45, 120);
+             outline: 3px solid rgb(112, 154, 109);
              position: fixed;
              top: 0;
-             width: 1100px;
+             width: 1125px;
              z-index: 155;
          ">
 
         <ul id="help_nav_tabs"
             class="nav nav-tabs"
-            style="background-color: white; position: fixed; top: 0; padding-top: 20px; left: 46px; width: 1107px; border-bottom: 3px solid rgb(65, 45, 120); z-index: 160;">
+            style="background-color: white; position: fixed; top: 0; padding-top: 25px; left: 46px; width: 1130px; border-bottom: 3px solid rgb(112, 154, 109); z-index: 160;">
 
-            <li><button id='to_do_btn' class="j_button j_action_button" data-toggle="tab" href="#to_do">To do</button></li>
+            <li><button id='to_do_btn' class="j_button j_relocate_button" data-toggle="tab" href="#to_do">To do</button></li>
 
-            <li><button id='how_do_i_btn' class="j_button j_action_button" data-toggle="tab" href="#how_do_i">How do I?</button></li>
+            <li><button id='how_do_i_btn' class="j_button j_relocate_button" data-toggle="tab" href="#how_do_i">How do I?</button></li>
 
-            <li><button id='my_notes_btn' class="j_button j_action_button" data-toggle="tab" href="#my_notes">My notes</button></li>
+            <li><button id='my_notes_btn' class="j_button j_relocate_button" data-toggle="tab" href="#my_notes">My notes</button></li>
 
         </ul>
     </div>
@@ -133,10 +129,9 @@
 </div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
-    <div id="main_help"
-         style="padding: 15px 30px;">
+    <div id="main_help">
 
-        <div style="position: absolute; top: 3px; left: 0;  padding: 25px 30px 0 60px; z-index: 170; width: 100%; background-color: rgb(255, 255, 224);">
+        <div style="position: absolute; top: 10px; left: 0;  padding: 25px 30px 0 60px; z-index: 170; width: 100%; background-color: rgb(255, 255, 224);">
             To search for a term:
 
             <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
@@ -150,7 +145,8 @@
 
         <div id="help_search_results"
              class="row text-left"
-             style="margin-top: 55px; padding: 10px 20px; height: 375px; margin-left: 10%; width: 80%; outline: 1px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
+             style="margin: 90px 0 0 50px; padding: 10px 20px; height: 340px; width: 65%;
+             outline: 2px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
 
             {% if help_search_text %}
                 <div class="josinstructions" style="color: #5bc0de; margin-top: 0;">
@@ -160,7 +156,7 @@
 
             {% for help in help_items %}
                 <ul style="list-style: none;">
-                    <li style="margin-top: 25px;">
+                    <li style="margin-top: 20px;">
                         <button class="btn btn-link" style="width: auto;" onclick="showHelpItem('{{ help.id }}');">
                             {{ help.title }}
                         </button>
@@ -171,7 +167,7 @@
     </div>
 
     <button id='help_done_btn' class='j_button j_back_button'
-            style = 'width: 100px; position: fixed; top: 100px; left: 1025px; display: none;'
+            style = 'width: 100px; position: fixed; top: 100px; left: 825px; display: none;'
             onclick='showHelpItem();'>
         Done
     </button>
@@ -183,7 +179,7 @@
 
     <button id="notes_edit_btn"
        class="j_button j_action_button"
-       style="position: fixed; top: 100px; left: 1010px;"
+       style="position: fixed; top: 105px; left: 1005px;"
        onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
@@ -195,7 +191,7 @@
 
     <button id="notes_cancel_btn"
        class="j_button j_danger_button"
-       style="width: 125px; position: fixed; top: 160px; left: 1010px; display: none;"
+       style="width: 125px; position: fixed; top: 165px; left: 1005px; display: none;"
        onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"

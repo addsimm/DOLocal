@@ -21,7 +21,7 @@ body {
 }
 
 .moveDown {
-    margin-top: 570px;
+    margin-top: 465px;
 }
 
 /* Base button */
@@ -323,13 +323,13 @@ footer {
 
 .edit_border {
     background-color: white;
-    border: 3px dashed #28a4c9;
+    border: 3px dashed rgb(65, 45, 120);
 }
 
 .edit_border_active {
-    background-color: #28a4c9;
-    border: 3px solid #28a4c9;
-    border-top: 6px solid #28a4c9;
+    background-color: rgb(65, 45, 120);
+    border: 3px solid rgb(65, 45, 120);
+    border-top: 6px solid rgb(65, 45, 120);
 }
 
 .joshint {
