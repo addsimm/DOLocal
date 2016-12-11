@@ -185,7 +185,6 @@ def joswheel(request, wheel_id=0, template="joscourses/wheel.html", extra_contex
     except:
         wheel = JOSWheel.objects.create(author=request.user, title="- Untitled -")
         wheel.save()
-        return redirect('joinourstory.com/joscourses/wheel/' + str(wheel.id))
 
     context = {'wheel' : wheel}
     context.update(extra_context or {})
