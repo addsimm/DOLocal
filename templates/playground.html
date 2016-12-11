@@ -4,7 +4,6 @@
 
 {% block breadcrumb_menu %}{{ block.super }}Dev Playground{% endblock %}
 
-{% block base-fixed-top-bar %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block all_content %}
@@ -85,13 +84,13 @@
 
 </style>
 
-    <div class="horizontal_guide bar" style="top: 400px; left: 0; width: 1280px; height: 2px;"></div>
+    <div class="horizontal_guide bar" style="top: 465px; left: 0; width: 1280px; height: 2px;"></div>
 
     <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
 
 <!-- HTML -->
 <div id="start_box"
-     style="position: fixed; top: 80px; left: 0px; height: 650px; width: 1280px;
+     style="position: fixed; top: 145px; left: 0px; height: 650px; width: 1280px;
      display: none; justify-content: flex-start; align-items: center; flex-direction: column;">
 
     <div class="homehead">Welcome {{ request.user.get_short_name }}</div>
@@ -118,7 +117,7 @@
 </div>
 
 <div id="message_box" class="josinstructions text-center"
-     style="position: fixed; top: 275px; left: 410px; line-height: 1.6; display: none;">
+     style="position: fixed; top: 340px; left: 410px; line-height: 1.6; display: none;">
     Great! Now use your mouse to explore,<br>and click when you find something fun.<br><br>
     Remember: nothing can break!
 
@@ -126,7 +125,7 @@
 </div>
 
 <div id="main_container">
-<div id="big_box" style="position: fixed; top: 0px; left: 0px; height: 800px; width: 1280px; display: inherit;">
+<div id="big_box" style="position: fixed; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
 
     <div id="quadrants">
 
@@ -150,7 +149,7 @@
     </div>
 
     <div id='center_pnp'
-         style="position: absolute; top: 350px; left: 590px;
+         style="position: absolute; top: 415px; left: 590px;
          background-image: url('/static/img/PnP.png');
          background-repeat: no-repeat;
          background-position: center center;

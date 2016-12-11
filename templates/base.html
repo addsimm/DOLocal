@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
         <link rel="stylesheet" href="{% static "css/josmain.css" %}">
-        <link href='https://fonts.googleapis.com/css?family=Architects+Daughter|Abril+Fatface|Source+Sans+Pro:400,600|Stalemate|Muli:400,300' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Architects+Daughter|Abril+Fatface|Open+Sans|Stalemate|Muli:400,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
         <link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">
@@ -53,22 +53,22 @@
 
 <!-- Log button -->
 <button class="j_button j_action_button"
-        style="position: fixed; top: 10px; left: 1130px; width: 165px; z-index: 450;"
+        style="position: fixed; top: 10px; left: 1100px; width: 165px; z-index: 450;"
         {% if request.user.is_authenticated %}
         onclick="location.href='{% url "logout" %}?next={{ request.path }}';">
             <i class="fa fa-sign-out fa-fw"></i>
-            Log out
+            LOG OUT
         {% else %}
             onclick="location.href='{% url "login" %}';">
             <i class="fa fa-sign-in fa-fw"></i>
-            Members
+            MEMBERS
         {% endif %}
 </button>
 
 {% block base-fixed-top-bar %}
 <div id='base-fixed-top-bar' style="
     position: fixed; top: 0; left: 0; width: 1280px; height: 65px;
-    border-bottom: 1px solid #412D78; background-color: white; z-index: 400;">
+    background-color: white; border-bottom: 2px solid #412D78; z-index: 400;">
 
     <!-- Messages -->
     {% nevercache %}
@@ -101,10 +101,10 @@
 
     <!-- Back button -->
     <button class="j_button j_back_button"
-            style="position: absolute; top: 10px; left: 30px;"
+            style="position: absolute; top: 10px; left: 15px;"
             onclick=" window.history.back();">
         <i class="fa fa-arrow-left fa-fw"></i>
-        Back
+        BACK
     </button>
 
     <!-- Desk button -->
@@ -114,7 +114,7 @@
                 style="position: absolute; top: 10px; left: 145px;"
                 onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
             <i class="fa fa-home fa-fw"></i>
-            Desk
+            DESK
         </button>
 
     {% endif %}
@@ -224,7 +224,7 @@
 
 <!-- FOOTER -->
 <footer>
-    <div id='fixed_footer' class="container" style="width: 1170px; padding: 30px 0 0 15px;">
+    <div id='footer' class="container" style="width: 1280px; padding: 15px 0 0 0">
 
         {% block phone_number %}
             <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
@@ -243,11 +243,11 @@
 
         {% page_menu "pages/menus/footer.html" %}
 
-        <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+        <p class="text-left" style="font-size: 8pt; margin: 0 0 0 30px;">
             Join Our Story is a California Benefit Corporation &copy 2014
         </p>
     </div>
-    {% include "aaold/includes/footer_scripts.html" %}
+
 </footer>
 
 {% endblock footer %}
@@ -270,6 +270,18 @@
             $(messageSpace).text(message);
         }
     });
+
+    {% if settings.GOOGLE_ANALYTICS_ID and not request.user.is_staff %}
+        var _gaq = _gaq || [['_trackPageview']];
+        _gaq.unshift(['_setAccount', '{{ settings.GOOGLE_ANALYTICS_ID }}']);
+        (function (d, t) {
+            var g = d.createElement(t),
+                    s = d.getElementsByTagName(t)[0];
+            g.async = true;
+            g.src = '//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s);
+        })(document, 'script');
+    {% endif %}
 
 </script>
 

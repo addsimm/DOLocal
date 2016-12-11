@@ -4,9 +4,10 @@ p {
 }
 
 body {
+    padding: 0;
     position: relative;
     color: #412D78;
-    font-family: 'source sans pro', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14pt;
     line-height: normal;
     width: 1280px;
@@ -15,9 +16,10 @@ body {
 }
 
 #main_container {
-    width: 1280px;
-    padding: 65px 0 0 30px;
     min-height: 870px;
+    margin: 65px 0 0 15px;
+    padding-top: 30px;
+    width: 1250px;
 }
 
 .moveDown {
