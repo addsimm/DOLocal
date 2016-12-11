@@ -11,8 +11,9 @@
 <style>
 
     .bar {
-        position: absolute;
+        position: fixed;
         background-color: rgb(65, 45, 120);
+        z-index: 1000;
     }
 
     .quadrant {
@@ -86,7 +87,7 @@
 
     <div class="horizontal_guide bar" style="top: 465px; left: 0; width: 1280px; height: 2px;"></div>
 
-    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 800px;"></div>
+    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 865px;"></div>
 
 <!-- HTML -->
 <div id="start_box"
@@ -149,7 +150,7 @@
     </div>
 
     <div id='center_pnp'
-         style="position: absolute; top: 415px; left: 590px;
+         style="position: absolute; top: 350px; left: 590px;
          background-image: url('/static/img/PnP.png');
          background-repeat: no-repeat;
          background-position: center center;
