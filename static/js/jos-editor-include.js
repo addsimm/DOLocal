@@ -82,7 +82,7 @@ function josCKEdit(sect2edit) {
         }
 
         var data_original_title_string = 'Updates ' + sect2edit;
-        $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('Save').attr("data-original-title", data_original_title_string);
+        $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('SAVE').attr("data-original-title", data_original_title_string);
         $('#' + sect2edit + '_cancel_btn').show();
         $(edit_element).hide();
 
@@ -129,7 +129,10 @@ function josCKDestroy(sect2destroy) {
 
     $(edit_element).show();
     $('#' + sect2destroy + '_cancel_btn').hide();
-    $(edit_btn).removeClass('j_save_button').addClass('j_action_button').text('Edit ' + sect2destroy).attr("data-original-title", "Activates editor");
+    $(edit_btn)
+        .removeClass('j_save_button')
+        .addClass('j_action_button')
+        .text('EDIT ' + sect2destroy.toUpperCase()).attr("data-original-title", "Activates editor");
     editors[sect2destroy].section_editor.destroy();
     editors[sect2destroy].section_editor = null;
 

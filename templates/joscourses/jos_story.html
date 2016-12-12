@@ -189,8 +189,8 @@
 
 
             <a id="comment_cancel_btn"
-               class="btn btn-danger"
-               style="font-size: 16pt; width: 150px; margin-top: -31px; display: none;"
+               class="j_button j_discard_button"
+               style="font-size: 16pt; margin-top: -31px; display: none;"
                onclick="josCKDestroy('comment');"
                data-toggle="tooltip"
                data-placement="bottom"
@@ -200,8 +200,8 @@
             </a>
 
             <a id="comment_edit_btn"
-               class="btn btn-info"
-               style="font-size: 16pt; width: 375px; margin: -31px 0 0 30px;"
+               class="j_button j_action_button"
+               style="font-size: 16pt; margin: -31px 0 0 30px;"
                onclick="josCKEdit('comment');"
                data-toggle="tooltip"
                data-placement="bottom"
@@ -226,42 +226,39 @@
     {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}<br>
 
     {% if story.author == request.user %}
-        <a id="edit_mode_button" class="j_button j_help_button"
-           style="margin: 0 0 0 50px;"
-                {% if edit %}
-           href="{% url "joscourses:josstory" story.id %}">
-                    HIDE
-                {% else %}
-                    href="{% url "joscourses:josstory_edit" story.id %}">
-                    EDIT
-                {% endif %}
-        </a><br>
-    {% endif %}
 
-    {% if story.author == request.user %}
+        <div class = 'row'>
+            <button id="edit_mode_button" class="j_button j_info_button"
+               style="margin: 0 0 0 50px;"
+                    {% if edit %}
+               onclick="window.location.href='{% url "joscourses:josstory" story.id %}';"
+                        HIDE
+                    {% else %}
+               onclick="window.location.href='{% url "joscourses:josstory_edit" story.id %}';">
+                        EDIT
+                    {% endif %}
+            </button><br>
 
-        <!-- Share slider -->
-        <div class="row pull-left" style="margin: 40px 0 0 -150px;">
-            <span class="homehead" style="margin-left: 40px; font-size: 20pt;">Sharing</span>
+            <!-- Share slider -->
+            <div class="row pull-left" style="margin: 40px 0 0 0;">
+                <span class="homehead" style="margin-left: 40px; font-size: 20pt;">Sharing</span>
 
-            <div class='' style="margin: 30px 0 0 40px;">
+                <div class='' style="margin: 30px 0 0 40px;">
 
-                <input name="permission_slider" title='permission_slider' id="sharing_slider">
+                    <input name="permission_slider" title='permission_slider' id="sharing_slider">
 
-            </div>
-        </div><br>
+                </div>
+            </div><br>
+        </div>
 
     {% endif %}
 
     <!-- Go To Discuss -->
-    <div class="row pull-left" style="margin: 200px 0 0 -150px;">
+    <div class="row" style="margin: 20px 0 0 0">
         <button class="j_button j_action_button pull-left"
-           style="margin: 40px;" href="#discuss">
+           style="margin: 40px;" onclick="window.location.href='#discuss';">
             DISCUSS
-        </button><br>
-    </div>
-    <div class="row pull-left" style="margin: 250px 0 0 -150px;">
-        {% include 'josprojects/../jos_includes/library_include.html' %}
+        </button>
     </div>
 </div>
 </div>
