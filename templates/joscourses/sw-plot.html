@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block meta_title %}{% endblock %}
-{% block title %}{% endblock %}
+{% block title %}{{ wheel.title }} - Plot{% endblock %}
 
-{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+{% block breadcrumb_menu %}{{ block.super }}
+    {{ wheel.title }} - Plot
+{% endblock %}
 
 {% block all_content %}
 
@@ -61,17 +63,6 @@
 <!-- Page title -->
 
 <div id="fixed_background" style="position: fixed; top: 0; left: 60px;">
-
-    <div class="storywheel_template_title" style=" ">
-
-        <button class="btn btn-warning text-center"
-                style="font-size: 16pt; width: 70px; margin: -8px 15px 0 0; height: 47px;"
-                onclick=" window.history.back();">
-            Back
-        </button>
-        {{ wheel.title }} - Plot
-
-    </div>
 
     <div class="text-center" style="margin: 30px -30px 0 -45px; width: 1200px; height: 925px; border: 8px solid #EE3B38; z-index: 115;">
         <img id='background_image' src="{% static 'img/plot-template-113016.png' %}"

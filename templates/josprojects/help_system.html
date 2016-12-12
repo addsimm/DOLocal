@@ -89,13 +89,13 @@
             border-bottom: 3px solid rgb(112, 154, 109); z-index: 160;">
 
             <li><button id='to_do_btn' class="j_button j_relocate_button"
-                        data-toggle="tab" href="#to_do">To do</button></li>
+                        data-toggle="tab" href="#to_do">TO DO</button></li>
 
             <li><button id='how_do_i_btn' class="j_button j_relocate_button"
-                        data-toggle="tab" href="#how_do_i">How do I?</button></li>
+                        data-toggle="tab" href="#how_do_i">HOW DO I?</button></li>
 
             <li><button id='my_notes_btn' class="j_button j_relocate_button"
-                        data-toggle="tab" href="#my_notes">My notes</button></li></ul>
+                        data-toggle="tab" href="#my_notes">MY NOTES</button></li></ul>
     </div>
 </div>
 
@@ -114,7 +114,7 @@
                    type="text" placeholder="start typing here">
             <button class="j_button j_action_button" style="font-size: 14pt; margin-top: -7px;
                     width: 120px;" href="javascript:location.reload();">
-                Start over
+                START OVER
             </button>
         </div>
 
@@ -131,14 +131,14 @@
             {% for help in help_items %}
                 <ul style="list-style: none;"><li style="margin-top: 20px;">
                     <button class="j_button j_relocate_button"
-                            onclick="showHelpItem('{{ help.id }}');">{{ help.title }}
+                            onclick="showHelpItem('{{ help.id }}');">{{ help.title | upper }}
                     </button></li></ul>
             {% endfor %}
         </div>
     </div>
 
     <button id='help_done_btn' class='j_button j_back_button' style=' position: fixed; top: 100px;
-            left: 825px; display: none;' onclick='showHelpItem();'>Done</button>
+            left: 825px; display: none;' onclick='showHelpItem();'>DONE</button>
 
     <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
 </div>
@@ -154,7 +154,7 @@
        title="Activates editor"
        >
         <i class="fa fa-scissors"></i>
-        Edit notes
+        EDIT NOTES
     </button>
 
     <button id="notes_cancel_btn"
@@ -165,7 +165,7 @@
        data-placement="bottom"
        title="Warning: does not save changes!"
     >
-        Discard
+        DISCARD
     </button>
 
     <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">

@@ -37,7 +37,7 @@
                             <button class="j_button j_action_button"
                                style="margin: 15px 0 0 0;"
                                onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">
-                                Message
+                                MESSAGE
                             </button>
 
                         </div>
@@ -78,13 +78,13 @@
                             <button class="j_button j_action_button"
                                style="font-size: 14px; margin: 10px 0 0 0;"
                                onclick="window.location.href='{% url 'josmessages:messages_compose' favorite.id %}';">
-                                Message
+                                MESSAGE
                             </button>
 
                             <button class="j_button j_action_button"
                                style="font-size: 14px; margin: 10px 0 0 10px;"
                                onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }}';">
-                                Unfavor
+                                UNFAVOR
                             </button>
 
                         </div>
@@ -110,7 +110,7 @@
             <button class="j_button j_back_button"
                style="margin-left: 5px;"
                onclick="window.location.href='{% url "josmembers:josmembers_list" %}';">
-                Start over
+                START OVER
             </button>
 
             <div id="member_search_results"></div>

@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block meta_title %}{% endblock %}
-{% block title %}{% endblock %}
-{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+{% block title %}{{ wheel.title }}{% endblock %}
+
+{% block breadcrumb_menu %}{{ block.super }}
+    {{ wheel.title }}
+{% endblock %}
+
 {% block all_content %}
 
 <style>
@@ -14,15 +18,6 @@
 </style>
 
 <div id="fixed_background" style="width: 1155px;">
-
-    <div class="storywheel_template_title" style="margin: -133px 0 -50px 0;">
-        <button class="btn btn-warning text-center"
-                style="font-size: 16pt; width: 70px; margin: -7px 15px 0 0; height: 47px;"
-                onclick=" window.history.back();">
-            Back
-        </button>
-        wheel: {{ wheel.title }}
-    </div>
 
     <div class="col-xs-12 text-center" style="margin: 0 0 -50px 0;">
         <canvas id="pie_canvas" width="800" height="800"

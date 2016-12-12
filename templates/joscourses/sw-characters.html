@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block meta_title %}{% endblock %}
-{% block title %}{% endblock %}
+{% block meta_title %}{{ wheel.title }} - Characters{% endblock %}
+{% block title %}{{ wheel.title }} - Characters{% endblock %}
 
-{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+{% block breadcrumb_menu %}{{ block.super }}
+    {{ wheel.title }} - Characters
+{% endblock %}
 
 {% block all_content %}
 
@@ -37,7 +39,7 @@
                     onclick=" window.history.back();">
                 Back
             </button>
-            {{ wheel.title }} - Characters
+
 
         </div>
 
@@ -101,7 +103,7 @@
         <div style="margin: 0;" >
             {% for char in all_characters %}
 
-                <button class="btn btn-link"
+                <button class="j_button j_relocate_button"
                         style="font-size: 12pt;  margin: 15px 0 0 0;height: auto; width: auto;"
                         onclick="location.href='{% url 'joscourses:sw_characters' wheel.id char.id %}';">
                     <i class="fa fa-user fa-fw"></i>

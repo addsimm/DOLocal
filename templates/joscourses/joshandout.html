@@ -56,14 +56,14 @@
 
         <div class="col-xs-2" style="position: relative; left: -70px; margin-top: 105px;">
 
-            <button class="btn affix btn-default" onclick="printPDF();" style="width: 135px;">
-                Print
+            <button class="j_button j_action_button affix" onclick="printPDF();" style=" ">
+                PRINT
             </button>
 
-            <a class="btn affix btn-default" style="width: 135px; margin-top: 85px;"
-               href="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
+            <a class="j_button j_action_button affix" style="margin-top: 85px;"
+               onclick="window.location.href='https://joinourstory.com/static/media/{{ handout.pdf_handout }}';"
                download="{{ download_filename }}">
-                Download
+                DOWNLOAD
             </a>
 
         </div>

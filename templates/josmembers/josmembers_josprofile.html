@@ -165,7 +165,7 @@
         <button class="j_button j_action_button pull-left"
            style="margin-top: 20px; margin-left: 40px;"
            onclick="window.location.href='/messages/compose/{{ profile.user.id }}';">
-            Message
+            MESSAGE
         </button>
 
         {% if requesterfollows %}
@@ -173,7 +173,7 @@
             <button class="j_button j_action_button pull-left"
                style="margin-top: 20px; margin-left: 40px;"
                onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ profile.user.id }}';">
-                Unfavor
+                UNFAVOR
             </button>
 
         {% else %}
@@ -181,7 +181,7 @@
             <button class="j_button j_action_button pull-left"
                style="margin-top: 20px; margin-left: 40px;"
                onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?add_favorite={{ profile.user.id }}';">
-                Favor
+                FAVOR
             </button>
 
         {% endif %}

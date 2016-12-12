@@ -139,16 +139,16 @@
 <div class="row" onload="chatInstruct();" style="margin-top: -125px;">
 
     {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
-        <button id="share_button" class="j_button j_text_button startshare" style="margin-left: 30px; width: 150px;"
+        <button id="share_button" class="j_button j_text_button startshare" style="margin-left: 30px;"
                 onclick="controlShare('{{ JOSName }}')">
-            Share screen
+            SHARE SCREEN
         </button>
     {% endif %}
 
     <span id="workshop_progress_bar" style="display: none;"></span>
 
-    <button class="j_button j_action_button pull-right" style="width: 100px; margin: 0 0 0 8px;" onclick="newTab();">
-        New tab
+    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 8px;" onclick="newTab();">
+        NEW TAB
     </button>
 
     <script>
@@ -157,9 +157,9 @@
         }
     </script>
 
-    <button class="j_button j_action_button pull-right" style="width: 100px; margin: 0 0 0 15px;"
+    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 15px;"
             onclick="location.reload();">
-        Refresh
+        REFRESH
     </button>
 
 </div>
@@ -207,7 +207,7 @@
                 <td style="border: none; padding: 0; width: 17%">
                     <button class="j_button j_success_button btn-send"
                             onclick="sendMessage()">
-                        Send
+                        SEND
                     </button>
                 </td>
             </tr>

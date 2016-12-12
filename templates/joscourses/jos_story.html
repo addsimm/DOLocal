@@ -52,7 +52,7 @@
                    data-placement="bottom"
                    title="Activates editor"
                 >
-                    Edit title
+                    EDIT TITLE
                 </button>
 
                 <a id="title_cancel_btn"
@@ -63,7 +63,7 @@
                    data-placement="bottom"
                    title="Warning: discards recent changes!"
                 >
-                    Discard
+                    DISCARD
                 </a>
 
 
@@ -106,7 +106,7 @@
                    data-placement="bottom"
                    title="Activates editor"
                 >
-                    Edit content
+                    EDIT CONTENT
                 </a>
 
                 <a id="content_cancel_btn"
@@ -117,7 +117,7 @@
                    data-placement="bottom"
                    title="Warning: discards recent changes!"
                 >
-                    Discard
+                    DISCARD
                 </a>
 
 
@@ -196,7 +196,7 @@
                data-placement="bottom"
                title="Warning: discards recent changes!"
             >
-                Discard
+                DISCARD
             </a>
 
             <a id="comment_edit_btn"
@@ -207,7 +207,7 @@
                data-placement="bottom"
                title="Activates editor"
             >
-                Click to add your thought below ...
+                CLICK TO ADD YOUR THOUGHT BELOW ...
             </a>
 
             <!-- This div holds editor. -->
@@ -226,14 +226,14 @@
     {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}<br>
 
     {% if story.author == request.user %}
-        <a id="edit_mode_button" class="btn pull-left btn-info"
+        <a id="edit_mode_button" class="j_button j_help_button"
            style="margin: 0 0 0 50px;"
                 {% if edit %}
            href="{% url "joscourses:josstory" story.id %}">
-                    Hide
+                    HIDE
                 {% else %}
                     href="{% url "joscourses:josstory_edit" story.id %}">
-                    Edit
+                    EDIT
                 {% endif %}
         </a><br>
     {% endif %}
@@ -257,7 +257,7 @@
     <div class="row pull-left" style="margin: 200px 0 0 -150px;">
         <button class="j_button j_action_button pull-left"
            style="margin: 40px;" href="#discuss">
-            Discuss
+            DISCUSS
         </button><br>
     </div>
     <div class="row pull-left" style="margin: 250px 0 0 -150px;">

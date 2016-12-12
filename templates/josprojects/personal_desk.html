@@ -49,7 +49,7 @@
             onclick="location.href='http://www.joinourstory.com/workshop_connect';">
         <i class="fa fa-video-camera fa-fw"></i>
 
-        <div style="display: inline; padding-top: 11px;">Community room</div>
+        <div style="display: inline; padding-top: 11px;">COMMUNITY ROOM</div>
     </button>
 
     <button class="btn btn-link pull-right text-left"
@@ -62,7 +62,7 @@
                       /static/img/peeky-102216.png
                   {% endif %}">
 
-        <div class="pull-left" style="padding-top: 11px;">My profile</div>
+        <div class="pull-left" style="padding-top: 11px;">MY PROFILE</div>
 
     </button>
 
@@ -70,14 +70,14 @@
             style="margin: 0 0 0 12px;"
             onclick="location.href='{% url "josmembers:josmembers_list" %}';">
         <i class="fa fa-users fa-fw"></i>
-        Community
+        COMMUNITY
     </button>
 
     <button class="j_button j_relocate_button pull-right"
             style="margin-right: 7px;"
             onclick="location.href='{% url "josmessages:messages_redirect" %}';">
         <i class="fa fa-envelope fa-fw"></i>
-        <span style="margin-left: 3px; ">Mail</span>
+        <span style="margin-left: 3px; ">MAIL</span>
         {% if inbox_count > 0 %}
         <span style="background-color: red; margin-left: 5px; padding: 0 4px;">{% inbox_count %}</span>
         {% endif %}
