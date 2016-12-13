@@ -1,18 +1,15 @@
 
 
 {% if  help_search_text %}
-    <div class= "josinstructions" style="color: #d9534f; margin-top: 0;">
+    <div class= "josinstructions" style="color: red; margin: 0 0 15px 0;">
         Searching for "{{ help_search_text }}" - Found {{ help_items.count}} items:<br>
     </div>
 {% endif %}
 
 {% for help in help_items %}
-    <ul style="list-style: none;">
-        <li style="margin-top: 20px;">
-            <button class="j_button j_relocate_button" onclick="showHelpItem('{{ help.id }}');">
-                {{ help.title | upper }}
-            </button>
-        </li>
-    </ul>
+
+    <button class="j_button j_relocate_button" style="margin-bottom: 25px;"
+            onclick="showHelpItem('{{ help.id }}');">{{ help.title | upper }}
+    </button><br>
 
 {% endfor %}

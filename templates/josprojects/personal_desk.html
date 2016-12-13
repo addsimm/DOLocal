@@ -35,34 +35,33 @@
         outline: none;
     }
 
-    #top-buttons .btn-link {
-        font-size: 24pt;
-        height: 65px;
-    }
-
 </style>
 
-<div id='top-buttons' class="row" style="width: 1280px; margin: 0;">
+<div id='top-buttons' class="row" style="width: 1250px; margin: 0;">
 
-    <button class="btn btn-link pull-right"
-            style="margin: 0 30px; padding: 0 15px; width: auto;"
+    <button class="j_button j_relocate_button pull-right"
+            style="display: flex; justify-content: space-around; align-items: center;
+            font-size: 24px; margin-left: 15px;"
             onclick="location.href='http://www.joinourstory.com/workshop_connect';">
-        <i class="fa fa-video-camera fa-fw"></i>
+        <div class="fa fa-video-camera fa-fw"></div>
 
-        <div style="display: inline; padding-top: 11px;">COMMUNITY ROOM</div>
+        <div style="margin-left: 10px;">COMMUNITY ROOM</div>
     </button>
 
-    <button class="btn btn-link pull-right text-left"
-            onclick="location.href='{% url "profile" request.user.id %}';"
-            style="padding: 0; width: 240px; margin-left: 20px; border: none;">
-        <img class="pull-left" style="margin-right: 15px; width: 65px; height: 65px;"
-             src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}
-                      https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}
-                  {% else %}
-                      /static/img/peeky-102216.png
-                  {% endif %}">
+    <button class="j_button j_relocate_button pull-right" style="margin-left: 15px; padding: 0 15px 0 0;"
+            onclick="location.href='{% url "profile" request.user.id %}';">
 
-        <div class="pull-left" style="padding-top: 11px;">MY PROFILE</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;
+             font-size: 24px;">
+            <img class=" " style="width: 50px; height: 50px;"
+                 src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}
+                          https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}
+                      {% else %}
+                          /static/img/peeky-102216.png
+                      {% endif %}">
+
+            <div class=" " style="margin-left: 15px;">PROFILE</div>
+        </div>
 
     </button>
 

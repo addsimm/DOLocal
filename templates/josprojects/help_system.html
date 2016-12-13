@@ -106,42 +106,50 @@
 <div id="how_do_i" class="tab-pane fade josinstructions">
     <div id="main_help">
 
-        <div style="position: absolute; top: 10px; left: 0; width: 100%; z-index: 170;
-        padding: 25px 30px 0 60px; background-color: rgb(255, 255, 224);">
-            To search for a term:
+        <div style="position: absolute; top: 30px; left: 30px; z-index: 170;
+        display: flex; flex-direction: column; justify-content: space-around; align-items: flex-start;
+        background-color: rgb(255, 255, 224);">
 
-            <input id="help_search_text" style="margin-left: 5px; padding: 5px; width: 300px;"
-                   type="text" placeholder="start typing here">
-            <button class="j_button j_action_button" style="font-size: 14pt; margin-top: -7px;
-                    width: 120px;" href="javascript:location.reload();">
-                START OVER
-            </button>
-        </div>
+            <div class="josinstructions" style="display: flex; justify-content: space-around; align-items: center;">
+                To search:
 
-        <div id="help_search_results" class="row text-left" style="height: 340px; width: 65%;
-             margin: 85px 0 0 45px; padding: 10px 20px;
-             outline: 2px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
+                <input id="help_search_text" style="margin-left: 15px; padding: 5px; width: 330px;"
+                       type="text" placeholder="start typing here">
+                <button class="j_button j_action_button" style="font-size: 14pt; margin-left: 15px; "
+                        onclick="window.location.reload();">
+                    <i class="fa fa-refresh fa-fw"></i>
+                    START OVER
+                </button>
+            </div>
 
-            {% if help_search_text %}
-                <div class="josinstructions" style=" margin-top: 0; color: #5bc0de;">
-                    Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
-                </div>
-            {% endif %}
+            <div id="help_search_results" class="row text-left" style="height: 340px; width: 850px;
+                 margin: 15px 0 0 30px; padding: 15px 30px;
+                 outline: 2px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
 
-            {% for help in help_items %}
-                <ul style="list-style: none;"><li style="margin-top: 20px;">
-                    <button class="j_button j_relocate_button"
+                {% if help_search_text %}
+                    <div class="josinstructions" style=" margin-top: 15px; color: #5bc0de;">
+                        Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
+                    </div>
+                {% endif %}
+
+                {% for help in help_items %}
+                    <button class="j_button j_relocate_button" style="margin-bottom: 25px;"
                             onclick="showHelpItem('{{ help.id }}');">{{ help.title | upper }}
-                    </button></li></ul>
-            {% endfor %}
+                    </button><br>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <button id='help_done_btn' class='j_button j_back_button' style=' position: fixed; top: 100px;
-            left: 825px; display: none;' onclick='showHelpItem();'>DONE</button>
+    <div id='help_item_content'
+         style="position: absolute; top: 75px; left: 110px;">
+    </div>
 
-    <div id='help_item_content' class="row" style="margin-top: 15px; margin-left: 40px;"></div>
+    <button id='help_done_btn' class='j_button j_back_button' style='position: absolute; top: 50px;
+            left: 825px;' onclick='showHelpItem();'>DONE
+    </button>
 </div>
+
 
 <div id="my_notes" class="tab-pane fade">
 
@@ -204,9 +212,7 @@
         if ('{{ request.session.help_position }}' === 'down') {
 
             $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>Close folder").removeClass("isopen").addClass("isclosed").attr("data-original-title", "Saves changes");
-            $("#fixed-top-bar").addClass('moveDown');
-            $("#fixed_background").addClass('moveDown');
-            $("#main_container").addClass('moveDown');
+            $("body").addClass('moveDown');
             $("#help_screen").slideDown("slow");
 
             active_tab = '#{{ request.session.active_tab }}';
@@ -220,9 +226,7 @@
 
         } else {
             $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>MY FOLDER").removeClass("isclosed").addClass("isopen").attr("data-original-title", "To do - How do I? - My notes");
-            $("#fixed-top-bar").removeClass('moveDown');
-            $("#fixed_background").removeClass('moveDown');
-            $("#main_container").removeClass('moveDown');
+            $("body").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
         }
     });
@@ -293,6 +297,7 @@
 
     function showHelpItem(idno) {
         idno = typeof idno !== 'undefined' ? idno : 'none';
+        console.log('called help item: ' + idno);
 
         if ($.isNumeric(idno)) {
 
@@ -314,8 +319,8 @@
 
         } else {
             $('#main_help').show();
-            $('#help_item_box').hide();
-            $('#help_done_btn').hide();
+            // $('#help_item_box').hide();
+            // $('#help_done_btn').hide();
             $('#help_item_content').html(' ');
             idno = 'none';
         }
