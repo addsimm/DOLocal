@@ -136,7 +136,7 @@
 <div>
 
 <!-- Top Nav -->
-<div class="row" onload="chatInstruct();" style="margin-top: -125px;">
+<div class="row" onload="chatInstruct();" style="margin-top: -60px;">
 
     {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
         <button id="share_button" class="j_button j_text_button startshare" style="margin-left: 30px;"
@@ -165,7 +165,7 @@
 </div>
 
 <!-- Main Section -->
-<div class="row" style="padding: 10px 0 0 0;">
+<div class="row" style="margin-top: 65px; padding: 10px 0 0 0;">
 
     {# video_section #}
     <div style="margin: 5px 0 0 10px; min-height: 600px; width: 825px; padding: 0;">
@@ -239,42 +239,42 @@
 
         drawProgressBar();
 
-        var tc = (function timeClock() {
-            var today = new Date();
-            var hrs = today.getHours();
-            var min = today.getMinutes();
-            var day_part = 'am';
-            if (hrs > 12) {
-                hrs = hrs - 12;
-                day_part = 'pm';
-            }
-            var workshopMinutes = (hrs * 60) + min;
-            if (min < 10) {
-                min = "0" + min;
-            }
-
-            document.getElementById('time_clock').innerHTML = hrs + ":" + min + day_part;
-
-            /*
-            var offset = (9 * 60) + 30;
-
-            if (workshopMinutes > offset + 10) {
-
-                $('#segment_0').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 30) {
-                $('#segment_1').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 40) {
-                $('#segment_2').addClass('segment-active');
-            }
-            if (workshopMinutes > offset + 60) {
-                $('#segment_3').addClass('segment-active');
-            }
-
-            var t = setTimeout(timeClock, 10000);
-            */
-        }());
+{#        var tc = (function timeClock() {#}
+{#            var today = new Date();#}
+{#            var hrs = today.getHours();#}
+{#            var min = today.getMinutes();#}
+{#            var day_part = 'am';#}
+{#            if (hrs > 12) {#}
+{#                hrs = hrs - 12;#}
+{#                day_part = 'pm';#}
+{#            }#}
+{#            var workshopMinutes = (hrs * 60) + min;#}
+{#            if (min < 10) {#}
+{#                min = "0" + min;#}
+{#            }#}
+{##}
+{#            document.getElementById('time_clock').innerHTML = hrs + ":" + min + day_part;#}
+{##}
+{#            /*#}
+{#            var offset = (9 * 60) + 30;#}
+{##}
+{#            if (workshopMinutes > offset + 10) {#}
+{##}
+{#                $('#segment_0').addClass('segment-active');#}
+{#            }#}
+{#            if (workshopMinutes > offset + 30) {#}
+{#                $('#segment_1').addClass('segment-active');#}
+{#            }#}
+{#            if (workshopMinutes > offset + 40) {#}
+{#                $('#segment_2').addClass('segment-active');#}
+{#            }#}
+{#            if (workshopMinutes > offset + 60) {#}
+{#                $('#segment_3').addClass('segment-active');#}
+{#            }#}
+{##}
+{#            var t = setTimeout(timeClock, 10000);#}
+{#            */#}
+{#        }());#}
     }
 
     layoutVideoContainers();

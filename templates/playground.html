@@ -31,12 +31,12 @@
         border-radius: 12px;
         color: white;
         display: flex;
-        font-size: 26pt;
+        font-size: 22pt;
         height: 110px;
-        justify-content: space-around;
-        line-height: 1;
+        justify-content: flex-start;
+        line-height: 1.15;
         position: absolute;
-        padding: 0 5px;
+        padding: 0 0 0 15px;
         width: 195px;
     }
 
@@ -55,8 +55,7 @@
         position: absolute;
     }
 
-    div.left_eye,
-    div.right_eye {
+    div.left_eye, div.right_eye {
         width: 30px;
         height: 30px;
         top: 0;
@@ -166,15 +165,29 @@
          z-index: -1;">
     </div>
 </div>
-
-<div id="mouse_report" style="margin-top: 700px; height: 50px; width: 200px;">Mouse position:</div>
 </div>
+
+<!-- DEBUG --><!--  <div id="mouse_report" style="font-weight: bold; color: green; position:fixed; top: 80px; left: 700px; width: 500px; z-index: 8000;">Mouse position:</div>
+</div>
+
+<div id="y_report"
+     style="font-size: 36pt; font-weight: bold; color: red; position:fixed; top: 105px; left: 700px; width: 500px; z-index: 8000;">
+    y position:
+</div> -->
 
 <!-- SCRIPTS -->
 <script>
 
 // Page effects
 {
+    var button_data = {
+        0: {'icon': 'books.png', 'text': 'MY<br>WORK'},
+        1: {'icon': 'club.png', 'text': 'START<br>CLUB'},
+        2: {'icon': '222', 'text': 'NEW<br>STORY'},
+        3: {'icon': 'rocket.png', 'text': 'QUICK<br>WRITE'},
+        4: {'icon': 'puzzle.png', 'text': 'BRAIN<br>STORM'}
+    };
+
     var MR = document.getElementById('mouse_report');
     var mag_speed = 16;
     var quadrants = [];
@@ -215,7 +228,14 @@
                 var button = document.createElement('div');
                 button.id = 'btn_' + (qd + 1) + '_' + bt;
                 if (qd == 1) {
-                    html = "<div><img src='/static/img/club.png' height=50px width=50px></div><div>NEW<br>STORY</div>";
+                    // console.log('button_data[' + bt + '] ' + JSON.stringify(button_data[bt]));
+                    // console.log("button_data[" + bt + "].text: " + button_data[bt].text);
+                    html = [
+                        "<div>",
+                        "<img src='/static/img/" + button_data[bt].icon + "'",
+                        "height=50px width=50px>",
+                        "</div>",
+                        "<div style='margin-left: 17px;'>" + button_data[bt].text + "</div>"].join('\n');
                 } else {
                     html = button.id;
                 }
@@ -267,7 +287,7 @@
         }
 
         if (mousePos.x > -640 && mousePos.x < 640 && mousePos.y > -400 && mousePos.y < 400) {
-            message = 'mouse: ' + mousePos.x + ', ' + mousePos.y;
+            message = 'mouse y: ' + mousePos.y;
             $(MR).text(message);
 
             // Button hover
@@ -345,21 +365,20 @@
                 });
 
             } else {
-                var pos2y;
 
-                if (mousePos.y > -22) {
-                    pos2y = 22;
-                } else if (mousePos.y < -50) {
-                    pos2y = 50;
-                } else {
-                    pos2y = mousePos.y;
+                var pos2y = mousePos.y;
+                if (mousePos.y < -50) {
+                    console.log('less than -50');
+                    pos2y = -50;
+                } else if (mousePos.y > -22) {
+                    pos2y = -22;
                 }
 
                 var opacity2y = -0.014 * mousePos.y + 0.7;
 
                 $(quadrant2).css({
-                    "width": pos2y * 1.6 * mag_speed,
-                    "height": pos2y * mag_speed,
+                    "width": pos2y * 1.6 * mag_speed * -1,
+                    "height": pos2y * mag_speed * -1,
                     "opacity": opacity2y
                 });
             }
@@ -442,7 +461,6 @@
             }
         }
     });
-
 }
 
 // jqEye
