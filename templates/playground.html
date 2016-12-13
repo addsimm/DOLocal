@@ -11,7 +11,7 @@
 <style>
 
     .bar {
-        position: fixed;
+        position:absolute;
         background-color: rgb(65, 45, 120);
         z-index: 1000;
     }
@@ -26,16 +26,23 @@
     }
 
     .desk_button {
-        font-size: 24pt;
-        color: white;
-        position: absolute;
-        width: 195px; height: 110px;
-        text-align: center;
+        align-items: center;
+        background-color: rgb(65, 45, 120);
         border-radius: 12px;
+        color: white;
+        display: flex;
+        font-size: 26pt;
+        height: 110px;
+        justify-content: space-around;
+        line-height: 1;
+        position: absolute;
+        padding: 0 5px;
+        width: 195px;
     }
 
     .desk_button:hover {
-        border: 5px solid white;
+        border: 1px solid rgb(65, 45, 120) !important;
+        color: rgb(65, 45, 120) !important;
         background-color: white !important;
     }
 
@@ -91,7 +98,7 @@
 
 <!-- HTML -->
 <div id="start_box"
-     style="position: fixed; top: 145px; left: 0px; height: 650px; width: 1280px;
+     style="position:absolute; top: 145px; left: 0px; height: 650px; width: 1280px;
      display: none; justify-content: flex-start; align-items: center; flex-direction: column;">
 
     <div class="homehead">Welcome {{ request.user.get_short_name }}</div>
@@ -118,7 +125,7 @@
 </div>
 
 <div id="message_box" class="josinstructions text-center"
-     style="position: fixed; top: 340px; left: 410px; line-height: 1.6; display: none;">
+     style="position:absolute; top: 340px; left: 410px; line-height: 1.6; display: none;">
     Great! Now use your mouse to explore,<br>and click when you find something fun.<br><br>
     Remember: nothing can break!
 
@@ -126,7 +133,7 @@
 </div>
 
 <div id="main_container">
-<div id="big_box" style="position: fixed; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
+<div id="big_box" style="position:absolute; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
 
     <div id="quadrants">
 
@@ -203,12 +210,17 @@
 {#    }#}
 
     layoutButtons = function () {
-        for (qd = 0; qd < 4; qd++) {
+        for (qd = 1; qd < 4; qd++) {
             for (bt = 0; bt < 5; bt++) {
                 var button = document.createElement('div');
                 button.id = 'btn_' + (qd + 1) + '_' + bt;
-                $(button).addClass('desk_button').text(button.id);
-                $(button).css({'background-color': getRandomColor()});
+                if (qd == 1) {
+                    html = "<div><img src='/static/img/club.png' height=50px width=50px></div><div>NEW<br>STORY</div>";
+                } else {
+                    html = button.id;
+                }
+                $(button).addClass('desk_button').html(html);
+
 
                 var qd_row = 0;
                 if (qd > 1) {
@@ -272,7 +284,7 @@
             }
 
             // Quadrant 1
-            if (mousePos.x / 1280 > mousePos.y / 800) {
+            /* if (mousePos.x / 1280 > mousePos.y / 800) {
                 var pos1x;
                 // $('#big_box').css('background-color', 'grey');
                 if (mousePos.x > -35) {
@@ -285,11 +297,11 @@
 
                 var opacity1x = -0.0087 * mousePos.x + 0.69565;
 
-{#                $(quadrant1).css({#}
-{#                    "width": pos1x * -mag_speed,#}
-{#                    "height": pos1x * .625 * -mag_speed,#}
-{#                    "opacity": opacity1x#}
-{#                });#}
+                $(quadrant1).css({
+                    "width": pos1x * -mag_speed,
+                    "height": pos1x * .625 * -mag_speed,
+                    "opacity": opacity1x
+                });
 
             } else {
                 var pos1y;
@@ -304,12 +316,12 @@
 
                 var opacity1y = -0.014 * mousePos.y + 0.7;
 
-{#                $(quadrant1).css({#}
-{#                    "width": pos1y * 1.6 * -mag_speed,#}
-{#                    "height": pos1y * -mag_speed,#}
-{#                    "opacity": opacity1y#}
-{#                });#}
-            }
+                $(quadrant1).css({
+                    "width": pos1y * 1.6 * -mag_speed,
+                    "height": pos1y * -mag_speed,
+                    "opacity": opacity1y
+                });
+            } */
 
             // Quadrant 2
             if (mousePos.x / -1280 > mousePos.y / 800) {
@@ -431,14 +443,6 @@
         }
     });
 
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
 }
 
 // jqEye
