@@ -90,10 +90,9 @@
     }
 
 </style>
+<!-- Guides --><!-- div class="horizontal_guide bar" style="top: 465px; left: 0; width: 1280px; height: 2px;"></div>
 
-    <div class="horizontal_guide bar" style="top: 465px; left: 0; width: 1280px; height: 2px;"></div>
-
-    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 865px;"></div>
+    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 865px;"></div -->
 
 <!-- HTML -->
 <div id="start_box"
@@ -132,7 +131,7 @@
 </div>
 
 <div id="main_container">
-<div id="big_box" style="position:absolute; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
+<div id="big_box" style="position:fixed; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
 
     <div id="quadrants">
 
@@ -143,7 +142,7 @@
 
         <div id="quadrant2" class="quadrant"
              style="top: 0; right: 0;
-         background-image: url('/static/img/3create_4.5.png');"></div>
+         background-image: url('/static/img/quadcreate.png');"></div>
 
         <div id="quadrant3" class="quadrant"
              style="bottom: 0; right: 0;
@@ -183,7 +182,7 @@
     var button_data = {
         0: {'icon': 'books.png', 'text': 'MY<br>WORK'},
         1: {'icon': 'club.png', 'text': 'START<br>CLUB'},
-        2: {'icon': '222', 'text': 'NEW<br>STORY'},
+        2: {'icon': 'bolt.png', 'text': 'NEW<br>STORY'},
         3: {'icon': 'rocket.png', 'text': 'QUICK<br>WRITE'},
         4: {'icon': 'puzzle.png', 'text': 'BRAIN<br>STORM'}
     };
@@ -228,8 +227,8 @@
                 var button = document.createElement('div');
                 button.id = 'btn_' + (qd + 1) + '_' + bt;
                 if (qd == 1) {
-                    // console.log('button_data[' + bt + '] ' + JSON.stringify(button_data[bt]));
                     // console.log("button_data[" + bt + "].text: " + button_data[bt].text);
+
                     html = [
                         "<div>",
                         "<img src='/static/img/" + button_data[bt].icon + "'",
