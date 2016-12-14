@@ -181,18 +181,18 @@
 // Page effects
 {
     var button_data = {
-        0: {'icon': 'missing', 'text': ' '},
-        1: {'icon': 'work.png', 'text': 'MY<br>WORK'},
-        2: {'icon': 'bolt.png', 'text': 'NEW<br>STORY'},
-        3: {'icon': 'rocket.png', 'text': 'QUICK<br>WRITE'},
-        4: {'icon': 'storm.png', 'text': 'BRAIN<br>STORM'}
+        // 20: {'icon': 'missing', 'text': ' ', 'href': '/'},
+        21: {'icon': 'work.png', 'text': 'MY<br>WORK', 'href': '/'},
+        22: {'icon': 'bolt.png', 'text': 'NEW<br>STORY', 'href': '/'}
+        // 23: {'icon': 'rocket.png', 'text': 'QUICK<br>WRITE', 'href': '/'},
+        // 24: {'icon': 'storm.png', 'text': 'BRAIN<br>STORM', 'href': '/'}
     };
 
     var MR = document.getElementById('mouse_report');
     var mag_speed = 16;
     var quadrants = [];
     var quadrant_button_containers = [];
-    for (i = 1; i < 5; i++) {
+    for (var i = 2; i < 5; i++) {
         var quad_name_string = 'quadrant' + i;
         var quadrant = document.getElementById(quad_name_string);
         var button_div = document.createElement('div');
@@ -207,79 +207,87 @@
         $("div.pupil").jqEye({shape: "circle", radius: 6});
     });
 
-{#    function moveToDesk() {#}
-{#        MB = document.getElementById('message_box');#}
-{#        CB = document.getElementById('countdown');#}
-{#        $('#start_box').fadeOut(300);#}
-{#        $(MB).fadeIn(100);#}
-{#        var delay = 3000;#}
-{#        setTimeout(function () {$(CB).text('2');}, delay / 3);#}
-{#        setTimeout(function () {$(CB).text('1');}, delay * 2 / 3);#}
-{#        setTimeout(function () {#}
-{#            $(MB).fadeOut(300);#}
-{#            $('#big_box').fadeIn(500);#}
-{#        }, delay);#}
-{#        console.log('hidden');#}
-{#    }#}
+    /* function moveToDesk() {
+        MB = document.getElementById('message_box');
+        CB = document.getElementById('countdown');
+        $('#start_box').fadeOut(300);
+        $(MB).fadeIn(100);
+        var delay = 3000;
+        setTimeout(function () {$(CB).text('2');}, delay / 3);
+        setTimeout(function () {$(CB).text('1');}, delay * 2 / 3);
+        setTimeout(function () {
+            $(MB).fadeOut(300);
+            $('#big_box').fadeIn(500);
+        }, delay);
+        console.log('hidden');
+    } */ // moveToDesk
 
     layoutButtons = function () {
-        for (qd = 1; qd < 4; qd++) {
-            for (bt = 0; bt < 5; bt++) {
-                if (button_data[bt].icon !== 'missing') {
-                    var button = document.createElement('div');
-                    button.id = 'btn_' + (qd + 1) + '_' + bt;
-                    if (qd == 1) {
-                        // console.log("button_data[" + bt + "].text: " + button_data[bt].text);
 
-                        html = [
-                            "<div>",
-                            "<img src='/static/img/" + button_data[bt].icon + "'",
-                            "height=50px width=50px>",
-                            "</div>",
-                            "<div style='margin-left: 17px;'>" + button_data[bt].text + "</div>"].join('\n');
-                    } else {
-                        html = button.id;
-                    }
-                    $(button).addClass('desk_button').html(html);
-                    {
-                        var qd_row = 0, qd_col = 0;
-                        if (qd > 1) {
-                            qd_row = 1;
-                        }
-
-                        if (qd === 1 || qd === 2) {
-                            qd_col = 1
-                        }
-
-                        var btn_top = 15 + 650 * qd_row;
-                        var btn_left = 15 + (204 * bt) + (645 * qd_col);
-
-                        if (bt < 3) {
-                            $(button).css({
-                                'top': btn_top,
-                                'left': btn_left
-                            });
-
-                        } else if (bt < 4) {
-                            $(button).css({
-                                'top': 135 + 290 * qd_row,
-                                'left': 15 + (1053 * qd_col)
-                            });
-                        } else {
-                            $(button).css({
-                                'top': 255 + 290 * qd_row,
-                                'left': 15 + (1053 * qd_col)
-                            });
-                        }
-                    } // position button
-
-                    $('#quadrant' + (qd + 1) + '_buttons').append(button);
+        for (var qd = 1; qd < 4; qd++) {
+            for (var bt = 0; bt < 5; bt++) {
+                var button_test, button_index = (qd + 1) * 10 + bt;
+                if (button_data[button_index] === undefined) {
+                    button_test = 'missing';
+                } else {
+                    button_test = button_data[button_index].icon;
                 }
+
+                var button = document.createElement('div');
+                if (button_test !== 'missing') {
+                    let href = button_data[button_index].href;
+                    var html = [
+                        "<div>",
+                        "<img src='/static/img/" + button_data[button_index].icon + "'",
+                        "height=50px width=50px>",
+                        "</div>",
+                        "<div style='margin-left: 17px;'>" + button_data[button_index].text + "</div>"].join('\n');
+                    button.onclick = function() {
+                        window.location.href = href;
+                    };
+                } else {
+                    html = button_index;
+                    $(button).css("opacity", .05);
+                }
+
+                $(button).addClass('desk_button').html(html);
+                {
+                    var qd_row = 0, qd_col = 0;
+                    if (qd > 1) {
+                        qd_row = 1;
+                    }
+
+                    if (qd === 1 || qd === 2) {
+                        qd_col = 1
+                    }
+
+                    var btn_top = 15 + 650 * qd_row;
+                    var btn_left = 15 + (204 * bt) + (645 * qd_col);
+
+                    if (bt < 3) {
+                        $(button).css({
+                            'top': btn_top,
+                            'left': btn_left
+                        });
+
+                    } else if (bt < 4) {
+                        $(button).css({
+                            'top': 135 + 290 * qd_row,
+                            'left': 15 + (1053 * qd_col)
+                        });
+                    } else {
+                        $(button).css({
+                            'top': 255 + 290 * qd_row,
+                            'left': 15 + (1053 * qd_col)
+                        });
+                    }
+                } // position button
+                $('#quadrant' + (qd + 1) + '_buttons').append(button);
             }
         }
     }();
 
-    // Tracks mouse in document
+    // Tracks mouse
     $(document).mousemove(function (e) {
 
         var mousePos = getMousePos(e);
@@ -370,7 +378,6 @@
 
                 var pos2y = mousePos.y;
                 if (mousePos.y < -50) {
-                    console.log('less than -50');
                     pos2y = -50;
                 } else if (mousePos.y > -22) {
                     pos2y = -22;
