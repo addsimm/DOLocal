@@ -22,6 +22,7 @@
         height: 359px;
         background-repeat: no-repeat;
         background-size: 100% 100%;
+        background-color: white;
         outline: 1px solid rgb(65, 45, 120);
     }
 
@@ -135,10 +136,10 @@
 
     <div id="quadrants">
 
-{#        <div id="quadrant1" class="quadrant"#}
-{#             style="top: 0; left: 0;#}
-{#             background-image: url('/static/img/3create_4.5.png');">#}
-{#        </div>#}
+        <div id="quadrant1" class="quadrant"
+             style="top: 0; left: 0; outline: none; z-index: -1;
+             background-image: url('/static/img/quadlogo.png');">
+        </div>
 
         <div id="quadrant2" class="quadrant"
              style="top: 0; right: 0;
@@ -146,11 +147,11 @@
 
         <div id="quadrant3" class="quadrant"
              style="bottom: 0; right: 0;
-             background-image: url('/static/img/3share-4.5.png');"></div>
+             background-image: url('/static/img/quadshare.png');"></div>
 
         <div id="quadrant4" class="quadrant"
              style="bottom: 0; left: 0;
-             background-image: url('/static/img/3enjoy_4.5.png');"></div>
+             background-image: url('/static/img/quadenjoy.png');"></div>
 
     </div>
 
@@ -180,11 +181,11 @@
 // Page effects
 {
     var button_data = {
-        0: {'icon': 'books.png', 'text': 'MY<br>WORK'},
-        1: {'icon': 'club.png', 'text': 'START<br>CLUB'},
+        0: {'icon': 'missing', 'text': ' '},
+        1: {'icon': 'work.png', 'text': 'MY<br>WORK'},
         2: {'icon': 'bolt.png', 'text': 'NEW<br>STORY'},
         3: {'icon': 'rocket.png', 'text': 'QUICK<br>WRITE'},
-        4: {'icon': 'puzzle.png', 'text': 'BRAIN<br>STORM'}
+        4: {'icon': 'storm.png', 'text': 'BRAIN<br>STORM'}
     };
 
     var MR = document.getElementById('mouse_report');
@@ -224,54 +225,56 @@
     layoutButtons = function () {
         for (qd = 1; qd < 4; qd++) {
             for (bt = 0; bt < 5; bt++) {
-                var button = document.createElement('div');
-                button.id = 'btn_' + (qd + 1) + '_' + bt;
-                if (qd == 1) {
-                    // console.log("button_data[" + bt + "].text: " + button_data[bt].text);
+                if (button_data[bt].icon !== 'missing') {
+                    var button = document.createElement('div');
+                    button.id = 'btn_' + (qd + 1) + '_' + bt;
+                    if (qd == 1) {
+                        // console.log("button_data[" + bt + "].text: " + button_data[bt].text);
 
-                    html = [
-                        "<div>",
-                        "<img src='/static/img/" + button_data[bt].icon + "'",
-                        "height=50px width=50px>",
-                        "</div>",
-                        "<div style='margin-left: 17px;'>" + button_data[bt].text + "</div>"].join('\n');
-                } else {
-                    html = button.id;
+                        html = [
+                            "<div>",
+                            "<img src='/static/img/" + button_data[bt].icon + "'",
+                            "height=50px width=50px>",
+                            "</div>",
+                            "<div style='margin-left: 17px;'>" + button_data[bt].text + "</div>"].join('\n');
+                    } else {
+                        html = button.id;
+                    }
+                    $(button).addClass('desk_button').html(html);
+                    {
+                        var qd_row = 0, qd_col = 0;
+                        if (qd > 1) {
+                            qd_row = 1;
+                        }
+
+                        if (qd === 1 || qd === 2) {
+                            qd_col = 1
+                        }
+
+                        var btn_top = 15 + 650 * qd_row;
+                        var btn_left = 15 + (204 * bt) + (645 * qd_col);
+
+                        if (bt < 3) {
+                            $(button).css({
+                                'top': btn_top,
+                                'left': btn_left
+                            });
+
+                        } else if (bt < 4) {
+                            $(button).css({
+                                'top': 135 + 290 * qd_row,
+                                'left': 15 + (1053 * qd_col)
+                            });
+                        } else {
+                            $(button).css({
+                                'top': 255 + 290 * qd_row,
+                                'left': 15 + (1053 * qd_col)
+                            });
+                        }
+                    } // position button
+
+                    $('#quadrant' + (qd + 1) + '_buttons').append(button);
                 }
-                $(button).addClass('desk_button').html(html);
-
-
-                var qd_row = 0;
-                if (qd > 1) {
-                    qd_row = 1;
-                }
-                var qd_col = 0;
-                if (qd === 1 || qd === 2) {
-                    qd_col = 1
-                }
-
-                var btn_top = 15 + 650 * qd_row;
-                var btn_left = 15 + (204 * bt) + (645 * qd_col);
-
-                if (bt < 3) {
-                    $(button).css({
-                        'top': btn_top,
-                        'left': btn_left
-                    });
-
-                } else if (bt < 4) {
-                    $(button).css({
-                        'top': 135 + 290 * qd_row,
-                        'left': 15 + (1053 * qd_col)
-                    });
-                } else {
-                    $(button).css({
-                        'top': 255 + 290 * qd_row,
-                        'left': 15 + (1053 * qd_col)
-                    });
-                }
-
-                $('#quadrant' + (qd + 1) + '_buttons').append(button);
             }
         }
     }();
@@ -464,8 +467,6 @@
 
 // jqEye
 {
-
-
     // jqEye plugin
     (function (evt) {
         evt.fn.jqEye = function (t) {
