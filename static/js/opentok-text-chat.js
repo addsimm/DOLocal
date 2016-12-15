@@ -348,7 +348,7 @@
 
     ChatWidget = function (Chat, ChatUI, ChatMessage) {
         // This regular expression detect text fragments looking like URLs.
-        var links = /https?\:\/\/[^.]+\..+/g;
+        var links = /https?:\/\/[^.]+\..+/g;
 
         /**
          * An HTML widget enabling basic chat capabilities. Pass a `session` object the `options` hash.

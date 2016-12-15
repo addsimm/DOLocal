@@ -15,7 +15,7 @@ class StrippedCharField(models.CharField):
     def clean(self, value):
         if value is not None:
             value = value.strip()
-        return super(StrippedCharField, self).clean(value)
+        return super(StrippedCharField, self).clean(self, value)
 
 class JOSStaffMember(AdminThumbMixin, Orderable, Displayable):
     ''' A model for JOS Staff Members '''

@@ -39,7 +39,7 @@ jQuery(function($) {
             showError();
         }});
         return false;
-    })
+    });
 
     // Iterate through each of the editable areas and set them up:
     //  - position the editable area's edit link
@@ -76,7 +76,7 @@ jQuery(function($) {
     var toolbarOpen = function() {
         var at = ('; ' + document.cookie).indexOf('; ' + cookieName + '=');
         if (at > -1) {
-            at += cookieName.length + 1
+            at += cookieName.length + 1;
             return document.cookie.substr(at).split(';')[0] == cookieValue;
         }
         return null;

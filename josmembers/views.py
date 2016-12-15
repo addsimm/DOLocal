@@ -20,7 +20,6 @@ from mezzanine.utils.urls import next_url
 from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
 
-from josprojects.models import CKRichTextHolder
 from .models import JOSProfile
 
 from .forms import JOSSignupForm, JOSNewPasswordForm, JOSReserveSpaceForm

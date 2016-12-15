@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 
-from josmessages.utils import get_user_model, get_username_field
+from josmessages.utils import get_username_field
 
 class CommaSeparatedUserInput(widgets.Input):
     input_type = 'text'

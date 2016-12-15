@@ -476,12 +476,12 @@ var jconfirm, Jconfirm;
                 var style = {
                     'margin-top': minMargin / 2,
                     'margin-bottom': minMargin / 2
-                }
+                };
                 $('body').addClass('jconfirm-noscroll');
             } else {
                 var style = {
                     'margin-top': topMargin
-                }
+                };
                 $('body').removeClass('jconfirm-noscroll');
             }
             this.$b.css(style);

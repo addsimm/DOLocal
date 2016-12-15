@@ -1,11 +1,9 @@
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404
-from django.contrib.messages import info, error
+from django.contrib.messages import info
 from django.contrib.admin.views.decorators import staff_member_required
 
 from django.utils.translation import ugettext_lazy as _
-
-from mezzanine.utils.email import send_approve_mail
 
 from .models import JOSStaffMember, JOSStaffHoursEntry, JOSReferral
 from .forms import JOSStaffHoursEntryForm, JOSReferralForm

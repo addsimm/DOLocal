@@ -3,11 +3,7 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
 
-from josmessages.models import Message, JOSMessageThread
-from josmessages.fields import CommaSeparatedUserField
 from josmessages.utils import get_user_model
 
 User = get_user_model()

@@ -25,7 +25,7 @@ jQuery(function($) {
             keywords[keywords.length] = keyword;
             op = '-';
         }
-        field.attr('value', keywords.join(', '))
+        field.attr('value', keywords.join(', '));
         $(this).text(op + keyword);
         return false;
     });

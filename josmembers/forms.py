@@ -1,7 +1,6 @@
 ### josmembers/forms.py
 from __future__ import unicode_literals
 
-import datetime
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.manager import Manager

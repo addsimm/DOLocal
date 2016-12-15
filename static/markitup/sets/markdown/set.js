@@ -37,7 +37,7 @@ mySettings = {
 		{separator:'---------------'},
 		{name:'Preview', call:'preview', className:"preview"}
 	]
-}
+};
 
 // mIu nameSpace to avoid conflict.
 miu = {
@@ -51,4 +51,4 @@ miu = {
 		}
 		return '\n'+heading;
 	}
-}
+};

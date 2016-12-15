@@ -1,1 +1,0 @@
-{{ message_sender }} has sent you a message

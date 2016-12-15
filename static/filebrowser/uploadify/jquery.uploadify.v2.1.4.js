@@ -158,7 +158,7 @@ if(jQuery)(
 					}
 				});
 				jQuery(this).bind("uploadifyCheckExist", {'action': settings.onCheck}, function(event, checkScript, fileQueueObj, folder, single) {
-					var postData = new Object();
+					var postData = {};
 					postData = fileQueueObj;
 					postData.folder = (folder.substr(0,1) == '/') ? folder : pagePath + folder;
 					if (single) {
@@ -205,7 +205,7 @@ if(jQuery)(
 				var errorArray = [];
 				jQuery(this).bind("uploadifyError", {'action': settings.onError}, function(event, ID, fileObj, errorObj) {
 					if (event.data.action(event, ID, fileObj, errorObj) !== false) {
-						var fileArray = new Array(ID, fileObj, errorObj);
+						var fileArray = [ID, fileObj, errorObj];
 						errorArray.push(fileArray);
 						jQuery("#" + jQuery(this).attr('id') + ID).find('.percentage').text(" - " + errorObj.type + " Error");
 						jQuery("#" + jQuery(this).attr('id') + ID).find('.uploadifyProgress').hide();
@@ -266,7 +266,7 @@ if(jQuery)(
 			if (settingValue == null) {
 				if (settingName == 'scriptData') {
 					var returnSplit = unescape(returnValue).split('&');
-					var returnObj   = new Object();
+					var returnObj   = {};
 					for (var i = 0; i < returnSplit.length; i++) {
 						var iSplit = returnSplit[i].split('=');
 						returnObj[iSplit[0]] = iSplit[1];

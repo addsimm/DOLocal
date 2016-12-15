@@ -67,7 +67,11 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip('/'))
 MEDIA_URL = STATIC_URL + 'media/'
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip('/').split('/'))
 ROOT_URLCONF = '%s.urls' % PROJECT_APP
-TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
+
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/login/'
+
+# TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 
 # Every cache key prefixed with this value
 CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
@@ -103,38 +107,15 @@ INSTALLED_APPS = (
     # 'mezzanine.blog',
     # 'mezzanine.twitter',
     # 'mezzanine.mobile',
-
-    # 'spirit',
-    # 'spirit.core',
-    # 'spirit.admin',
-    # 'spirit.search',
-    # 'spirit.user',
-    # 'spirit.user.admin',
-    # 'spirit.user.auth',
-    # 'spirit.category',
-    # 'spirit.category.admin',
-    # 'spirit.topic',
-    # 'spirit.topic.admin',
-    # 'spirit.topic.favorite',
-    # 'spirit.topic.moderate',
-    # 'spirit.topic.notification',
-    # 'spirit.topic.poll',  # todo: remove in Spirit v0.5
-    # 'spirit.topic.private',
-    # 'spirit.topic.unread',
-    # 'spirit.comment',
-    # 'spirit.comment.bookmark',
-    # 'spirit.comment.flag',
-    # 'spirit.comment.flag.admin',
-    # 'spirit.comment.history',
-    # 'spirit.comment.like',
-    # 'spirit.comment.poll',
-    # 'spirit.core.tests'
+    # 'mailer',
+    # 'schedule',
+    # 'djconfig',
 
     ### 3rd party apps
     'request',
     'floppyforms',
-    'haystack',
-    'tracking',
+    # 'haystack',
+    # 'tracking',
     'friendship',
     'josmessages',
     'cloudinary',
@@ -143,9 +124,7 @@ INSTALLED_APPS = (
     'taggit',
 
     ### NOT IMPLEMENTED
-    # 'mailer',
-    # 'schedule',
-    # 'djconfig',
+
 
     ### Custom apps
     'josstaff',
@@ -165,12 +144,12 @@ TEMPLATES = [
                 ### TEMPLATE_CONTEXT_PROCESSORS
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.static',
-                'django.core.context_processors.media',
-                'django.core.context_processors.request',
-                'django.core.context_processors.tz',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.static',
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
+                'django.template.context_processors.tz',
 
                 'mezzanine.conf.context_processors.settings',
                 'mezzanine.pages.context_processors.page',
@@ -178,31 +157,34 @@ TEMPLATES = [
                 'josprojects.context_processors.help_sys',
                 'josmessages.context_processors.inbox',
                 # 'djconfig.context_processors.config',
-            ]
+            ],
+            "builtins": [
+                "mezzanine.template.loader_tags",
+            ],
         },
     },
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.static',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-    'django.core.context_processors.tz',
-
-    'mezzanine.conf.context_processors.settings',
-    'mezzanine.pages.context_processors.page',
-
-    'josprojects.context_processors.help_sys',
-    'josmessages.context_processors.inbox',
-    # 'djconfig.context_processors.config',
-)
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.contrib.auth.context_processors.auth',
+#     'django.contrib.messages.context_processors.messages',
+#     'django.template.context_processors.debug',
+#     'django.template.context_processors.i18n',
+#     'django.template.context_processors.static',
+#     'django.template.context_processors.media',
+#     'django.template.context_processors.request',
+#     'django.template.context_processors.tz',
+#
+#     'mezzanine.conf.context_processors.settings',
+#     'mezzanine.pages.context_processors.page',
+#
+#     'josprojects.context_processors.help_sys',
+#     'josmessages.context_processors.inbox',
+#     # 'djconfig.context_processors.config',
+# )
 
 # Middleware. Order is important; request classes in order, response in reverse order.
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'request.middleware.RequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -233,26 +215,26 @@ MIDDLEWARE_CLASSES = (
     # 'spirit.user.middleware.TimezoneMiddleware',
     # 'spirit.core.middleware.XForwardedForMiddleware',
 
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'tracking.middleware.VisitorTrackingMiddleware',
-)
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'tracking.middleware.VisitorTrackingMiddleware',
+]
 
 ########################
 # DJANGO DEBUG TOOLBAR #
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
+# DEBUG_TOOLBAR_PANELS = [
+#     'debug_toolbar.panels.versions.VersionsPanel',
+#     'debug_toolbar.panels.timer.TimerPanel',
+#     'debug_toolbar.panels.settings.SettingsPanel',
+#     'debug_toolbar.panels.headers.HeadersPanel',
+#     'debug_toolbar.panels.request.RequestPanel',
+#     'debug_toolbar.panels.sql.SQLPanel',
+#     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+#     'debug_toolbar.panels.templates.TemplatesPanel',
+#     'debug_toolbar.panels.cache.CachePanel',
+#     'debug_toolbar.panels.signals.SignalsPanel',
+#     'debug_toolbar.panels.logging.LoggingPanel',
+#     'debug_toolbar.panels.redirects.RedirectsPanel',
+# ]
 
 #########################
 # OPTIONAL APPLICATIONS #
@@ -262,7 +244,7 @@ PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
 PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
 
 OPTIONAL_APPS = (
-    'debug_toolbar',
+    # 'debug_toolbar',
     'django_extensions',
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
@@ -273,7 +255,7 @@ OPTIONAL_APPS = (
 # PROFILE #
 ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
-AUTH_PROFILE_MODULE = 'josmembers.JOSProfile'
+ACCOUNTS_PROFILE_MODEL = 'josmembers.JOSProfile'
 ACCOUNTS_PROFILE_FORM_CLASS = 'josmembers.forms.JOSProfileForm'
 # ACCOUNTS_VERIFICATION_REQUIRED = False
 # ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
@@ -323,15 +305,6 @@ DEFAULT_FROM_EMAIL = 'joinus@joinourstory.com'
 # FORUM #
 # from spirit.settings import *
 
-##########
-# SEARCH #
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'search/whoosh_index'),
-    },
-}
-
 ##################
 # LOCAL SETTINGS #
 # Instead of 'from .local_settings import *', we use exec for full access
@@ -358,5 +331,5 @@ DEBUG = False
 # DEBUG_TOOLBAR_CONFIG = {
 #     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 # }
-#
-# DEBUG = True
+
+DEBUG = True

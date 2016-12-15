@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns, include, url
-from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from mezzanine.conf import settings
+from mezzanine.pages.views import page
 
+from josmembers.views import jos_new_password, password_reset_verify
 from josprojects.views import help_update, ajax_help_search, workshop_connect, community_room
 from josplayground.views import playground_view
 
@@ -20,28 +21,28 @@ JOS_NEW_PASSWORD_URL = \
 
 admin.autodiscover()
 
-urlpatterns = i18n_patterns("",
+urlpatterns = [
     ### Admin
-    ("^admin/", include(admin.site.urls)),
-)
+    url("^admin/", include(admin.site.urls)),
+]
 
-urlpatterns += patterns('',
+urlpatterns += [
 
     ### HOMEPAGE
-    url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+    url("^$", page, {"slug": "/"}, name="home"),
 
     ### Password reset
-    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password",
+    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), jos_new_password,
         name="jos_new_password"),
     url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
-        "josmembers.views.password_reset_verify", name="password_reset_verify"),
-    ('^', include('josmembers.urls', namespace='josmembers')),
+        password_reset_verify, name="password_reset_verify"),
+    url('^', include('josmembers.urls', namespace='josmembers')),
 
     ##### Adam's test playground
     url("playground", playground_view, name="playground"),
 
     ### Tracking ###
-    url(r'^tracking/', include('tracking.urls')),
+    # url(r'^tracking/', include('tracking.urls')),
 
     ### Help w/ search
     url("help_update", help_update, name="help_update"),
@@ -57,27 +58,22 @@ urlpatterns += patterns('',
         include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
 
     ### JOS app includes
-    ("^", include("josstaff.urls", namespace='josstaff')),
-    ("^", include("josprojects.urls")),
-    ("^joscourses/", include("joscourses.urls", namespace='joscourses')),
+    url("^", include("josstaff.urls", namespace='josstaff')),
+    url("^", include("josprojects.urls")),
+    url("^joscourses/", include("joscourses.urls", namespace='joscourses')),
 
-    ### NOT IMPLEMENTED:
-    # url(r'^spirit/', include(spirit.urls)),
-    # url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
-    # url(r'^calendar/', include('schedule.urls')),
 
     ##### PLACE URls *ABOVE* MEZZANINE
-    ("^", include("mezzanine.urls")),
-)
+    url("^", include("mezzanine.urls")),
+]
 
 ### DJANGO-DEBUG-TOOLBAR
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += patterns('',
+
+    urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
-        )
-
-
+    ]
 
 ### Adds 'STATIC_URL' to error page's context, so they use JS, CSS and images.
 # handler404 = "mezzanine.core.views.page_not_found"

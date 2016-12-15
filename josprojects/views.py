@@ -2,15 +2,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template.response import TemplateResponse
-from django.utils import timezone
 from django.utils.timezone import activate
 from django.views.decorators.csrf import csrf_exempt
 
 from joscourses.models import JOSCourseWeek
 from josmembers.models import  JOSProfile, JOSUserCreatedNote
-from josmessages.models import Message, JOSMessageThread
 
 from josmembers.models import JOSTeam
 from joscourses.models import JOSStory

@@ -148,7 +148,7 @@ thead th.sorted .text {
 }
 
 .submit-row {
-    text-align: left
+    text-align: left;
 }
 
 .submit-row p.deletelink-box {
@@ -223,7 +223,7 @@ fieldset .field-box {
 /* MISC */
 
 .inline-related h2, .inline-group h2 {
-    text-align: right
+    text-align: right;
 }
 
 .inline-related h3 span.delete {
