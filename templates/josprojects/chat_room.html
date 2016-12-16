@@ -430,11 +430,11 @@
             bttn = document.getElementById('hidden_' + pstn);
             $(bttn).replaceWith("<button id='but_" + peerId + "' onclick='mutePeer(this.id);'>Mute</button>");
             $('#but_' + peerId).addClass('btn mute-button btn-success btn-xs');
-            $.confirm({
-                confirmButton: 'Will do!',
-                cancelButton: false,
-                content: "If you do not see video after clicking 'Will do!', please type 'hello' in the purple chat on the right. Call us, if there is a problem."
-            });
+{#            $.confirm({#}
+{#                confirmButton: 'Will do!',#}
+{#                cancelButton: false,#}
+{#                content: "If you do not see video after clicking 'Will do!', please type 'hello' in the purple chat on the right. Call us, if there is a problem."#}
+{#            });#}
         }
 
         if (peerJOSName !== '???') {
