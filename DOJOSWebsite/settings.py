@@ -69,7 +69,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip('/').split('/'))
 ROOT_URLCONF = '%s.urls' % PROJECT_APP
 
 LOGIN_URL = '/accounts/login/'
-LOGOUT_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 
 # TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 
@@ -115,7 +115,7 @@ INSTALLED_APPS = (
     'request',
     'floppyforms',
     # 'haystack',
-    # 'tracking',
+    'tracking',
     'friendship',
     'josmessages',
     'cloudinary',
@@ -221,20 +221,20 @@ MIDDLEWARE = [
 
 ########################
 # DJANGO DEBUG TOOLBAR #
-# DEBUG_TOOLBAR_PANELS = [
-#     'debug_toolbar.panels.versions.VersionsPanel',
-#     'debug_toolbar.panels.timer.TimerPanel',
-#     'debug_toolbar.panels.settings.SettingsPanel',
-#     'debug_toolbar.panels.headers.HeadersPanel',
-#     'debug_toolbar.panels.request.RequestPanel',
-#     'debug_toolbar.panels.sql.SQLPanel',
-#     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-#     'debug_toolbar.panels.templates.TemplatesPanel',
-#     'debug_toolbar.panels.cache.CachePanel',
-#     'debug_toolbar.panels.signals.SignalsPanel',
-#     'debug_toolbar.panels.logging.LoggingPanel',
-#     'debug_toolbar.panels.redirects.RedirectsPanel',
-# ]
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
 
 #########################
 # OPTIONAL APPLICATIONS #
@@ -244,7 +244,7 @@ PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
 PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
 
 OPTIONAL_APPS = (
-    # 'debug_toolbar',
+    'debug_toolbar',
     'django_extensions',
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
@@ -290,6 +290,8 @@ REQUEST_PLUGINS = (
 # OTHER SETTINGS #
 TAGGIT_CASE_INSENSITIVE = True
 
+JQUERY_FILENAME = 'jquery-1.7.2.min.js'
+
 #########
 # EMAIL #
 # EMAIL_SUBJECT_PREFIX = 'Join Our Story'
@@ -331,5 +333,5 @@ DEBUG = False
 # DEBUG_TOOLBAR_CONFIG = {
 #     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 # }
-
-DEBUG = True
+#
+# DEBUG = True
