@@ -206,7 +206,7 @@
 
         // The Ajax help search function; attaches a listener
         var MILLS_TO_IGNORE_SEARCH = 100;
-        $('#help_search_text').keyup(_.debounce(processSearch, MILLS_TO_IGNORE_SEARCH, true));
+        $('#help_search_text').keyup(processSearch, MILLS_TO_IGNORE_SEARCH, true);
 
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
