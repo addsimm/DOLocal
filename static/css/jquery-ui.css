@@ -99,9 +99,8 @@
 }
 .ui-resizable-handle {
 	position: absolute;
-	font-size: 0.1px;
+	font-size: 0.1pt;
 	display: block;
-	-ms-touch-action: none;
 	touch-action: none;
 }
 .ui-resizable-disabled .ui-resizable-handle,
@@ -883,10 +882,7 @@ body .ui-tooltip {
 
 /* Component containers
 ----------------------------------*/
-.ui-widget {
-	font-family: open sand, ,sans-serif;
-	font-size: 16pt;
-}
+
 .ui-widget .ui-widget {
 	font-size: 1em;
 }
@@ -894,7 +890,6 @@ body .ui-tooltip {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: open sand, ,sans-serif;
 	font-size: 1em;
 }
 .ui-widget.ui-widget-content {

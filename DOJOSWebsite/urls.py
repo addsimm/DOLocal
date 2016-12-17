@@ -8,7 +8,7 @@ from mezzanine.pages.views import page
 
 from josmembers.views import jos_new_password, password_reset_verify
 from josprojects.views import help_update, ajax_help_search, workshop_connect, community_room
-from josplayground.views import playground_view
+from josplayground.views import playground_view, jqui_demo_view
 
 _slash = "/" if settings.APPEND_SLASH else ""
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
@@ -40,6 +40,7 @@ urlpatterns += [
 
     ##### Adam's test playground
     url("playground", playground_view, name="playground"),
+    url("jqui_demo", jqui_demo_view, name="jqui_demo"),
 
     ### Tracking ###
     # url(r'^tracking/', include('tracking.urls')),
