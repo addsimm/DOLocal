@@ -75,7 +75,7 @@ body {
 }
 
 .j_relocate_button:hover, .j_relocate_button:focus {
-    color: rgb(112, 154, 109);
+    color: #709a6d;
 }
 
 .j_save_button, .j_save_button:visited {
