@@ -159,49 +159,6 @@
 </div>
 {% endblock base-fixed-top-bar %}
 
-{#    {% block logo %}#}
-{#        <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"#}
-{#           {% else %}href="/"{% endif %}#}
-{#           style="#}
-{#               background: white url('/static/img/JOSLogo121615.png') no-repeat top center;#}
-{#               background-size: 202px 120px;#}
-{#               height:120px;#}
-{#               outline: none;#}
-{#               padding: 0;#}
-{#               position: absolute; top: 9px; left: -13px;#}
-{#               width:219px;">#}
-{#        </a>#}
-{#    {% endblock logo %}#}
-
-{#                    <button class="btn btn-link"#}
-{#                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 8px;"#}
-{#                            onclick="location.href='{% url "josmembers:josmembers_list" %}';">#}
-{#                        <i class="fa fa-heart fa-fw"></i>#}
-{#                        Pals#}
-{#                    </button>#}
-{##}
-{#                    <button class="btn btn-link"#}
-{#                            style="height: 47px;  margin: 0 0 0 7px; padding: 6px 0 6px 8px; width: 120px;"#}
-{#                            onclick="location.href='{% url "josmessages:messages_redirect" %}';">#}
-{#                        <i class="fa fa-envelope fa-fw"></i>#}
-{#                        <span style="margin-right: 3px;">Mail</span>#}
-{##}
-{#                        {% inbox_count as my_var %}#}
-{#                        {% if my_var >= 1 %}#}
-{##}
-{#                            <span style="color: white; padding: 0 5px; background-color: rgb(217, 83, 79);">#}
-{#                                {{ my_var }}#}
-{#                            </span>#}
-{##}
-{#                        {% else %}#}
-{#                            <span style="padding: 0 5px; ">#}
-{#                                &nbsp&nbsp#}
-{#                            </span>#}
-{#                        {% endif %}#}
-{#                    </button>#}
-
-
-
 {% block extra_bar %}{% endblock extra_bar %}
 
 

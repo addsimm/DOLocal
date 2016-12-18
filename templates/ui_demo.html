@@ -8,49 +8,77 @@
 
 {% block all_content %}
 
-    <!-- checkboxes -->
-    <style>
 
-        #main {
-            margin: 50px;
-            padding: 50px;
-            border: 5px solid black;
-        }
+    <!-- css switch -->
+    <style>
 
         input {
             display: none;
         }
 
-        .container {
-            position: relative;
-            background-color: lightgreen;
-            width: 300px;
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative; top:3px; margin-left: 7px;
+            height: 35px; width: 85px;
+            border: 2px solid #412d78;
         }
 
-        .container label {
+        /* Hide default HTML checkbox */
 
-        }
 
-        /* Check-boxes */
-        .container label:before {
+        /* Slider */
+        .slider {
             position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+        }
+
+        .slider:before {
+            position: absolute;
+            color: white; font-size: 9pt; text-align: center;
+            content: "OFF";
+            top: 0; left: 0; height: 31px; width: 42px;
+            padding-top: 7px;
+            background-color: #5bc0de;
+        }
+
+        input:checked + .slider {
+            background-color: #5cb85c;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(39px);
+            content: "ON";
+        }
+
+        /* Checkbox */
+        .check_container label:before {
+            position: absolute;
+            left: 1205px;
             content: " ";
-            width: 20px;
-            height: 20px;
-            background-color: yellow;
-            border: 2px solid purple;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            border: 3px solid #412d78;
             transition: border-color .2s;
         }
 
-        .container label:hover {
+        .check_container label:hover::after {
             border: 3px solid red;
         }
 
-        .container label:after {
-            content: 'X';
-            left: -31px;
-            top: 2px;
-            color: blue;
+        .check_container label:after {
+            font-family: FontAwesome;
+            font-size: 24pt;
+            content: "\f00d";
+            display: inline-block;
+            padding-right: 3px;
+            vertical-align: middle;
+            color: #412D78;
             transition: color .2s;
         }
 
@@ -59,21 +87,62 @@
         }
 
     </style>
-    <div id="main">
-        <div class="container">
-            <input type="checkbox" name="group2" id="checkbox-1">
-            <label for="checkbox-1"><span>Oranges</span></label>
-        </div>
-        <div class="container">
-            <input type="checkbox" name="group2" id="checkbox-2">
-            <label for="checkbox-2"><span>Apples</span></label>
-        </div>
-        <div class="container">
-            <input type="checkbox" name="group2" id="checkbox-3">
-            <label for="checkbox-3"><span>Avocados</span></label>
-        </div>
-    </div>
 
+    <div id="main" style="
+        position: absolute;
+        top: 0px;
+        left: 30px;
+        display: flex; justify-content: flex-end;  align-items: center;
+        height: 50px; width: 1215px;
+        background-color: white;
+
+    ">
+
+        <button class="j_button_small j_info_button"
+                style="position: absolute; left: 10px;"
+                onclick=" ">
+            <i class="fa fa-circle fa-fw"></i>
+            STORYWHEEL
+        </button>
+
+        <button class="j_button_small j_relocate_button"
+                style="position: absolute; left: 170px;"
+                onclick=" ">
+            <i class="fa fa-square fa-fw"></i>
+            VERSIONS
+        </button>
+
+        <button class="j_button_small j_action_button"
+                style="position: absolute; left: 305px;"
+                onclick=" ">
+            <i class="fa fa-scissors fa-fw"></i>
+            NEW TITLE
+        </button>
+
+
+        <div style="font-size: 12pt; font-weight: bold;">Auto save:</div>
+        <label class="switch">
+            <input type="checkbox">
+            <div class="slider"></div>
+        </label>
+
+        <div style="font-size: 12pt; font-weight: bold; margin-left: 15px;">Sharing:</div>
+        <label class="switch"
+               style="width: 135px; background-color: black; border-radius: 8px;">
+            <input type="checkbox">
+        </label>
+
+        <div class="check_container">
+            <label for="checkbox-1">
+                <span style="font-size: 12pt; font-weight: bold; margin-left: 15px;">
+                    Show tools:
+                </span>
+            </label>
+            <input type="checkbox" name="group2" id="checkbox-1">
+
+        </div>
+
+    </div>
 
     <script>
 
@@ -84,143 +153,7 @@
 
 
 
-    <style>
 
-
-
-        /* Base styles for spans */
-        .container span::before,
-        .container span::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-        }
-
-        /* Radio buttons */
-        .container span.radio:hover {
-            cursor: pointer;
-        }
-
-        /* slide */
-        .container span.radio::before {
-            left: -52px;
-            width: 45px;
-            height: 25px;
-            background-color: lightblue;
-            border-radius: 10px;
-        }
-
-        /* slider handle */
-        .container span.radio::after {
-            left: -49px;
-            width: 17px;
-            height: 17px;
-            border-radius: 10px;
-            background-color:blue;
-            transition: left .25s, background-color .25s;
-        }
-
-        input[type="radio"]:checked + label span.radio::after {
-            left: -27px;
-            background-color: yellow;
-        }
-
-    </style>
-
-
-    <div id="main">
-        <section id="first" class="section">
-            <div class="container">
-                <input type="radio" name="group1" id="radio-1">
-                <label for="radio-1"><span class="radio">Coffee</span></label>
-            </div>
-            <div class="container">
-                <input type="radio" name="group1" id="radio-2">
-                <label for="radio-2"><span class="radio">Tea</span></label>
-            </div>
-            <div class="container">
-                <input type="radio" name="group1" id="radio-3">
-                <label for="radio-3"><span class="radio">Cappuccino</span></label>
-            </div>
-        </section>
-
-    </div>
-
-
-
-
-
-
-
-
-<!-- css switch -->
-<style>
-    /* The switch - the box around the slider */
-    .switch {
-        position: relative;
-        width: 60px;
-        height: 50px;
-    }
-
-    /* Hide default HTML checkbox */
-    .switch input {
-        display: none;
-    }
-
-    /* The slider */
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 30px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-    }
-
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-
-</style>
-
-
-<!-- Rectangular switch -->
-<label class="switch">
-    <input type="checkbox">
-    <div class="slider"></div>
-</label>
-
-<!-- Rounded switch -->
-<label class="switch" style="margin-left: 100px;">
-    <input type="checkbox">
-    <div class="slider round"></div>
-</label>
 
 
 

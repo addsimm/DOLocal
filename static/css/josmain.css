@@ -38,7 +38,19 @@ body {
     -webkit-focus-ring-color: none;
 }
 
-.j_button:hover, .j_button:focus {
+.j_button_small, .j_button_small:visited {
+    color: white;
+    font-family: "Open Sans";
+    font-size: 12pt;
+    padding: 7px 12px 7px 10px;
+    height: auto; width: auto;
+    border-radius: 8px; border: none; outline: none;
+    background-image: none;
+    -webkit-focus-ring-color: none;
+}
+
+.j_button:hover, .j_button:focus,
+.j_button_small:hover, .j_button_small:focus {
     background-color: white;
     border: none;
     outline: none;
