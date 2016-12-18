@@ -58,32 +58,32 @@
         /* Checkbox */
         .check_container label:before {
             position: absolute;
-            left: 1205px;
+            top: 9px;
+            left: 1201px;
             content: " ";
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
             background-color: transparent;
-            border: 3px solid #412d78;
+            border: 5px solid #412d78;
             transition: border-color .2s;
         }
 
-        .check_container label:hover::after {
-            border: 3px solid red;
+        .check_container label:hover::before {
+            border: 5px dotted #f0ad4e;
+        }
+
+        .check_container label:hover {
+            color: #f0ad4e;
         }
 
         .check_container label:after {
             font-family: FontAwesome;
-            font-size: 24pt;
+            font-size: 32pt;
             content: "\f00d";
             display: inline-block;
-            padding-right: 3px;
             vertical-align: middle;
             color: #412D78;
             transition: color .2s;
-        }
-
-        input[type="checkbox"]:checked + label:after {
-            color: red;
         }
 
     </style>
@@ -93,7 +93,7 @@
         top: 0px;
         left: 30px;
         display: flex; justify-content: flex-end;  align-items: center;
-        height: 50px; width: 1215px;
+        height: 50px; width: 1240px;
         background-color: white;
 
     ">
@@ -133,18 +133,23 @@
         </label>
 
         <div class="check_container">
-            <label for="checkbox-1">
-                <span style="font-size: 12pt; font-weight: bold; margin-left: 15px;">
-                    Show tools:
+            <label for="show_tools_checkbox" style="padding-top: 15px;">
+                <span style="font-size: 16pt; font-weight: bold; margin-left: 30px;">
+                    Show tools:&nbsp&nbsp
                 </span>
             </label>
-            <input type="checkbox" name="group2" id="checkbox-1">
+            <input id="show_tools_checkbox" type="checkbox"
+                   onclick="toolsHandler();">
 
         </div>
 
     </div>
 
     <script>
+
+    function toolsHandler() {
+        console.log('tools checked');
+    }
 
 
     </script>
