@@ -88,59 +88,30 @@
 
         <!-- three way -->
 
-        .toggle {
-            margin: 4px;
-            background-color: #EFEFEF;
-            border-radius: 4px;
-            border: 1px solid #D0D0D0;
-            overflow: auto;
-            float: left;
+
+        label {
+            display: inline;
         }
 
-        .toggle label {
-            float: left;
-            width: 2.0em;
-        }
 
         .toggle label span {
             text-align: center;
-            padding: 3px 0px;
-            display: block;
             cursor: pointer;
         }
 
-        .toggle label input {
-            position: absolute;
-            top: -20px;
-        }
-
         .toggle .input-checked {
-            background-color: #404040;
-            color: #F7F7F7;
+            background-color: #5bc0de;
+            color: white;
         }
 
     </style>
 
-
-    <div class="toggle">
-        <label><input type="radio" name="toggle"><span>On</span></label>
-    </div>
-    <div class="toggle">
-        <label><input type="radio" name="toggle"><span>Off</span></label>
-    </div>
-    <div class="toggle">
-        <label><input type="radio" name="toggle"><span>3</span></label>
-    </div>
-
-
-    <!-- div id="main" style="
+    <div id="main" style="
         position: absolute;
-        top: 0px;
+        top: 50px;
         left: 30px;
-        display: flex; justify-content: flex-end;  align-items: center;
-        height: 50px; width: 1240px;
-        background-color: white;
-
+        height: 50px; width: 450px;
+        background-color: pink;
     ">
 
         <button class="j_button_small j_info_button"
@@ -164,31 +135,46 @@
             NEW TITLE
         </button>
 
+        <div id="right_tools"
+             style= "display: flex; justify-content: flex-end;  align-items: center;
+                     position: absolute; top: 0; left: 450px;
+                     height: 50px; width: 800px;
+                     background-color: aliceblue;">
 
-        <div style="font-size: 12pt; font-weight: bold;">Auto save:</div>
-        <label class="switch">
-            <input type="checkbox">
-            <div class="slider"></div>
-        </label>
-
-        <div style="font-size: 12pt; font-weight: bold; margin-left: 15px;">Sharing:</div>
-        <label class="switch"
-               style="width: 135px; background-color: black; border-radius: 8px;">
-            <input type="checkbox">
-        </label>
-
-        <div class="check_container">
-            <label for="show_tools_checkbox" style="padding-top: 15px;">
-                <span style="font-size: 16pt; font-weight: bold; margin-left: 30px;">
-                    Show tools:&nbsp&nbsp
-                </span>
+            <div style="font-size: 12pt; font-weight: bold;">Auto save:</div>
+            <label class="switch">
+                <input type="checkbox">
+                <div class="slider"></div>
             </label>
-            <input id="show_tools_checkbox" type="checkbox"
-                   onclick="toolsHandler();">
+
+
+            <div style="font-size: 12pt; font-weight: bold; margin-left: 15px;">Sharing:</div>
+            <div style="border: 2px solid #412d78; width: 300px;">
+                <div class="toggle">
+                    <label style="display: inherit;><input type="radio" name="toggle"><span>None</span></label>
+                </div>
+                <div class="toggle">
+                    <label style="display: inherit;"><input type="radio" name="toggle"><span>Circles</span></label>
+                </div>
+                <div class="toggle">
+                    <label style="display: inherit;><input type="radio" name="toggle"><span>Publish</span></label>
+                </div>
+            </div>
+
+
+
+            <div class="check_container">
+                <label for="show_tools_checkbox" style="padding-top: 15px;">
+                    <span style="font-size: 16pt; font-weight: bold; margin-left: 30px;">
+                        Show tools:&nbsp&nbsp
+                    </span>
+                </label>
+                <input id="show_tools_checkbox" type="checkbox" onclick="toolsHandler();">
+            </div>
 
         </div>
+    </div>
 
-    </div -->
 
     <script>
 
@@ -200,6 +186,7 @@
         $(this).children('span').addClass('input-checked');
         $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
     });
+
     </script>
 
 
