@@ -86,9 +86,54 @@
             transition: color .2s;
         }
 
+        <!-- three way -->
+
+        .toggle {
+            margin: 4px;
+            background-color: #EFEFEF;
+            border-radius: 4px;
+            border: 1px solid #D0D0D0;
+            overflow: auto;
+            float: left;
+        }
+
+        .toggle label {
+            float: left;
+            width: 2.0em;
+        }
+
+        .toggle label span {
+            text-align: center;
+            padding: 3px 0px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .toggle label input {
+            position: absolute;
+            top: -20px;
+        }
+
+        .toggle .input-checked {
+            background-color: #404040;
+            color: #F7F7F7;
+        }
+
     </style>
 
-    <div id="main" style="
+
+    <div class="toggle">
+        <label><input type="radio" name="toggle"><span>On</span></label>
+    </div>
+    <div class="toggle">
+        <label><input type="radio" name="toggle"><span>Off</span></label>
+    </div>
+    <div class="toggle">
+        <label><input type="radio" name="toggle"><span>3</span></label>
+    </div>
+
+
+    <!-- div id="main" style="
         position: absolute;
         top: 0px;
         left: 30px;
@@ -143,7 +188,7 @@
 
         </div>
 
-    </div>
+    </div -->
 
     <script>
 
@@ -151,8 +196,13 @@
         console.log('tools checked');
     }
 
-
+    $('label').click(function () {
+        $(this).children('span').addClass('input-checked');
+        $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
+    });
     </script>
+
+
 
 {% endblock all_content %}
 
