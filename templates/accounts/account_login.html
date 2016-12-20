@@ -6,28 +6,27 @@
     <div class="josinstructions" style="margin-top: 50px;">
 
         {% if request.user.is_authenticated %}
-
-            You're already signed in; please log out to sign in as a different user.
-
+                You're already signed in; please log out to sign in as a different user.
+    </div>
         {% else %}
 
-        {% url "jossignup" as signup_url %}
-        {% url "jos_password_reset" as password_reset_url %}
-        {% url "home" as home_url %}
+            {% url "jossignup" as signup_url %}
+            {% url "jos_password_reset" as password_reset_url %}
+            {% url "home" as home_url %}
 
-        <div class="josinstructions" style="margin: 50px 0 30px 0;">
+            <div class="josinstructions" style="margin: 50px 0 30px 0;">
 
-            <b>Please enter your email and password, then click "{{ title }}"</b> or you can:
-            <button class="j_button j_action_button" style="margin-left: 5px;"
-                    onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}';">RESET PASSWORD
-            </button>
+                <b>Please enter your email and password, then click "{{ title }}"</b> or you can:
+                <button class="j_button j_action_button" style="margin-left: 5px;"
+                        onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}';">RESET PASSWORD
+                </button>
 
-            {{ block.super }}
+                {{ block.super }}
 
-        </div>
+            </div>
     </div>
 
-    {% endif %}
+        {% endif %}
 
 {% endblock accounts_content %}
 

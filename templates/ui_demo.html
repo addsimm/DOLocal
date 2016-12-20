@@ -1,15 +1,14 @@
 {% extends "base.html" %}
-{% block meta_title %}UI Demo{% endblock %}
-{% block title %}UI Demo{% endblock %}
-
-{% block breadcrumb_menu %}{{ block.super }}Adam&#39s UI Demo{% endblock %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+{% block meta_title %}{{ story.title | striptags | safe | truncatechars:25 }}{% endblock %}
+{% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block all_content %}
 
-
-    <!-- css switch -->
     <style>
 
         input {
@@ -22,9 +21,6 @@
             height: 40px; width: 100px;
             outline: 2px solid #412d78;
         }
-
-        /* Hide default HTML checkbox */
-
 
         /* Slider */
         .slider {
@@ -62,7 +58,7 @@
             font-size: 14pt;
             text-align: center;
             height: 40px;
-            width: 90px;
+            width: 100px;
             padding-top: 7px;
             color: #5bc0de;
             cursor: pointer;
@@ -99,107 +95,97 @@
             color: #f0ad4e;
         }
 
-        /*
-        #tools_tab::before {
-            position: absolute; top: 6px; left: 700px;
-            font-family: FontAwesome;
-            font-size: 32pt;
-            content: "\f00d";
-            color: #412D78;
-        }*/
+        #left_tools button {
+            margin-left: 10px;
+        }
 
-    </style>
+</style>
 
-    <div id="main" style="
-        position: absolute;
-        top: 0;
-        left: 15px;
-        height: 55px;
-        width: 1265px;
-        background-color: pink;
-    ">
+    <div id="left_tools" style="background-color: aliceblue; visibility: hidden;
+        position: absolute; top: 0; left: 5px; height: 55px; width: 547px;
+        display: flex; justify-content: flex-start; align-items: flex-end;">
 
         <button class="j_button_small j_info_button"
-                style="position: absolute; top: 15px; left: 0;"
                 onclick=" ">
             <i class="fa fa-circle fa-fw"></i>
-            STORYWHEEL
+            WHEEL
         </button>
 
         <button class="j_button_small j_relocate_button"
-                style="position: absolute; top: 15px; left: 160px;"
                 onclick=" ">
             <i class="fa fa-square fa-fw"></i>
             VERSIONS
         </button>
 
         <button class="j_button_small j_action_button"
-                style="position: absolute; top: 15px; left: 295px;"
                 onclick=" ">
             <i class="fa fa-scissors fa-fw"></i>
-            NEW TITLE
+            RE-TITLE
         </button>
 
         <button class="j_button_small j_action_button"
-                style="position: absolute; top: 15px; left: 435px;"
                 onclick=" ">
             <i class="fa fa-exclamation fa-fw"></i>
-            PREVIEW
+            READ / SEND
         </button>
+    </div>
 
-        <div id="right_tools"
-             style= "display: flex; justify-content: flex-start;
-             align-items: center;
-             position: absolute; top: 0; left: 550px;
-             padding-top: 5px;
-             height: 55px; width: 600px;
-             background-color: aliceblue;">
+    <div id="right_tools" style="background-color: aliceblue; visibility: visible;
+         position: absolute; top: 0; left: 550px; height: 55px; width: 600px;
+         display: flex; justify-content: flex-start; align-items: center;
+         padding-top: 5px;">
 
-            <div style="font-size: 12pt; margin-left: 25px; font-weight: bold; text-align: center">
-                Auto<br>save:</div>
-            <label class="switch">
-                <input type="checkbox">
-                <div class="slider"></div>
+        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
+            Auto<br>save:</div>
+
+        <label class="switch">
+            <input type="checkbox">
+            <div class="slider"></div>
+        </label>
+
+        <div style="font-size: 12pt; font-weight: bold;
+             margin-left: 25px; text-align: right">
+            Shared<br>with:
+        </div>
+
+        <div id="sharing_box" style="
+             position: relative; top:0; margin-left: 10px;
+             height: 40px; width: 310px;
+             outline: 2px solid #412d78;">
+
+            <label class="three_label">
+                <input type="radio" name="toggle">ONLY ME
             </label>
 
-            <div style="font-size: 12pt; font-weight: bold;
-                 margin-left: 25px; text-align: center">
-                Shared<br>with:
-            </div>
+            <label class="three_label">
+                <input type="radio" name="toggle">CIRCLES
+            </label>
 
-            <div id="sharing_box" style="
-                 position: relative; top:0; margin-left: 10px;
-                 height: 40px; width: 280px;
-                 outline: 2px solid #412d78;">
-
-                <label class="three_label">
-                    <input type="radio" name="toggle">NONE
-                </label>
-
-                <label class="three_label">
-                    <input type="radio" name="toggle">CIRCLES
-                </label>
-
-                <label class="three_label">
-                    <input type="radio" name="toggle">PUBLISH
-                </label>
-
-            </div>
+            <label class="three_label">
+                <input type="radio" name="toggle">PUBLISH
+            </label>
 
         </div>
 
-        <button id='tools_tab' class="j_button j_info_button"
-                style="position: absolute; top: 8px; left: 1130px; width: 135px; border-radius: 0;">
-            <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
-            STORY TOOLS
-        </button>
-
     </div>
+
+    <button id='tools_tab' class="j_button j_info_button" style="
+            position: absolute; top: 18px; left: 1155px; width: 125px;
+            font-size: 14pt; border-radius: 0;"
+            onclick="toolsTabHandler(this.id);"
+            data-toggle="tooltip" data-placement="bottom"
+            title="Shows toolbar">
+        <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+        TOOLS
+    </button>
 
     <script>
 
-    $('#sharing_box label').click(function () {
-        console.log('clicked: ' + this);
+    var tool_tab_html = "";
+    var labels = $('#sharing_box').children();
+
+    $(labels).click(function () {
+        console.log('sharing_box clicked: ' + JSON.stringify(this));
         $(this).addClass('input-checked')
                .removeClass('not-checked');
 
@@ -208,14 +194,307 @@
                 .addClass('not-checked');
     });
 
-    </script>
+    $(document).ready(function () {
 
+        if (Number(window.location.href.split('/')[5]) === 0) {
+            reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
+            window.location.href = reload_url;
+        }
 
+        initJOSEditor('title', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.title | escapejs }}");
+        initJOSEditor('content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.content | escapejs }}");
+        initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+{#    $("#sharing_slider").slider({#}
+{#                id: "slider13",#}
+{#                handle: 'triangle',#}
+{#                max: 3,#}
+{#                min: 1,#}
+{#                orientation: "vertical",#}
+{#                snap_bounds: 20,#}
+{#                step: 1,#}
+{#                ticks: [1, 2, 3],#}
+{#                ticks_labels: ["Only me", "My team", "Publish"],#}
+{#                tooltip: "hide",#}
+{#                value: {{ story.publish_permission }}#}
+{#            });#}
+{#            .on('slideStop', function (slideStopEvt) {#}
+{#                // window.location.href = "{% url "joscourses:josstory" story.id %}/?pubperm=" + slideStopEvt.value;#}
+{#            });#}
+
+    function toolsTabHandler(i) {
+        var tools_tab = document.getElementById(i);
+        console.log('tools_tab clicked: ' + $(tools_tab).attr('class').split(" "));
+
+        if ($(tools_tab).hasClass('j_info_button')) {
+            $(tools_tab)
+                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>CLOSE")
+                    .addClass("isopen j_back_button")
+                    .removeClass("isclosed j_info_button")
+                    .attr("data-original-title", "Hides toolbar");
+            $("#right_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+            $("#left_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+        } else {
+            $(tools_tab)
+                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
+                    .addClass("isclosed j_info_button")
+                    .removeClass("isopen j_back_button")
+                    .attr("data-original-title", "Shows toolbar");
+            $("#right_tools").css({visibility: "hidden"});
+            $("#left_tools").css({visibility: "hidden"});
+        }
+    }
+
+</script>
 
 {% endblock all_content %}
 
 
+<div class="row" style="margin-top: 0; width: 1280px;">
 
+        <!-- Main Panel -->
+        <div class="col-xs-9" style="height: 1050px; overflow-x: hidden; overflow-y: scroll;">
+
+            <div style="height: 20px; margin: 15px 0 10px 15px;">
+
+        <span class="joshint"
+              style="{% if not edit %}display: none;{% endif %} font-size: 14pt;"
+              data-toggle="tooltip"
+              title="Dragging bottom right triangle changes the editor's height"
+              data-placement="bottom">
+        Hint: Dragging changes editor size
+        </span>
+            </div>
+
+            <!-- Title -->
+            <div class="row" style=" ">
+                <div class="col-xs-12">
+
+                    {% if edit %}
+
+                        <button id="j_button j_action_button"
+                                class="btn btn-info btn-xs pull-right edit_section_button"
+                                style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                                onclick="josCKEdit('title');"
+                                data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="Activates editor"
+                        >
+                            EDIT TITLE
+                        </button>
+
+                        <a id="title_cancel_btn"
+                           class="btn btn-danger btn-xs pull-right edit_section_button"
+                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                           onclick="josCKDestroy('title');"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Warning: discards recent changes!"
+                        >
+                            DISCARD
+                        </a>
+
+
+                        <!-- This div holds editor. -->
+                        <div id="title_editor_container" style=" "></div>
+
+                    {% endif %}
+
+                    <!-- This div displays contents. -->
+                    <div id="title_original_content"
+                         class="homehead text-center {% if edit %}edit_border{% endif %} edit_border_class">
+                        {{ story.title | striptags | safe }}<br>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Author -->
+            <div class="row text-center" style="margin-top: 25px;">
+
+                <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
+                   style="padding: 0;">
+            <span style="font-size: 48pt; margin: 0 15px;">
+                {{ story.author.JOSProfile.friendly_jos_name }}
+            </span>
+                </a>
+
+            </div>
+
+            <!-- Content -->
+            <div class="row" style="margin-top: 20px; min-height: 500px;">
+                <div class="col-xs-12">
+
+                    {% if edit %}
+
+                        <a id="content_edit_btn"
+                           class="btn btn-info btn-xs pull-right edit_section_button"
+                           style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                           onclick="josCKEdit('content');"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Activates editor"
+                        >
+                            EDIT CONTENT
+                        </a>
+
+                        <a id="content_cancel_btn"
+                           class="btn btn-danger btn-xs pull-right edit_section_button"
+                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                           onclick="josCKDestroy('content');"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Warning: discards recent changes!"
+                        >
+                            DISCARD
+                        </a>
+
+
+                        <!-- This div holds editor. -->
+                        <div id="content_editor_container" style=" "></div>
+
+                    {% endif %}
+
+                    <!-- This div displays contents. -->
+                    <div id="content_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
+                         style="min-height: 450px; padding: 10px;">
+                        {{ story.content | safe }}<br>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion -->
+            <div class="row">
+
+                <div class="homehead" style="font-size: 28pt; margin-left: 30px; margin-top: 0;">
+                    Community discussion:
+                </div>
+
+                <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
+
+                    {% for comment in comments %}
+
+                        <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+                            <div class="col-xs-3">
+                                {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+                            </div>
+                        </div>
+
+                        <div class="row" style="font-size: 20pt; margin-top: 20px;">
+
+                            {% if comment.sender != request.user %}
+
+                                <div class="col-xs-2" style="padding: 0;">
+                                    {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                                </div>
+
+                                <div class="col-xs-9"
+                                     style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                                    "{{ comment.body | striptags | safe }}"
+                                </div>
+
+                            {% else %}
+
+                                <div class="col-xs-9"
+                                     style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                                    "{{ comment.body | striptags | safe }}"
+                                </div>
+
+                                <div class="col-xs-2">
+                                    {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div id="discuss" class="row" style="">
+                <div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
+
+
+                    <a id="comment_cancel_btn"
+                       class="j_button j_discard_button"
+                       style="font-size: 16pt; margin-top: -31px; display: none;"
+                       onclick="josCKDestroy('comment');"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       title="Warning: discards recent changes!"
+                    >
+                        DISCARD
+                    </a>
+
+                    <a id="comment_edit_btn"
+                       class="j_button j_action_button"
+                       style="font-size: 16pt; margin: -31px 0 0 30px;"
+                       onclick="josCKEdit('comment');"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       title="Activates editor"
+                    >
+                        CLICK TO ADD YOUR THOUGHT BELOW ...
+                    </a>
+
+                    <!-- This div holds editor. -->
+                    <div id="comment_editor_container" style=" "></div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panel Controls -->
+
+        <div id="editing_side_panel"
+             style="position: fixed; width: 500px; left: 995px; top: 150px; min-height: 300px;
+        border-left: 1px solid rgb(65,45,120); background-color: white;">
+
+            {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}<br>
+
+            {% if story.author == request.user %}
+
+                <div class='row'>
+                    <button id="edit_mode_button" class="j_button j_info_button"
+                            style="margin: 0 0 0 50px;"
+                            {% if edit %}
+                            onclick="window.location.href='{% url "joscourses:josstory" story.id %}';"
+                            HIDE
+                            {% else %}
+                            onclick="window.location.href='{% url "joscourses:josstory_edit" story.id %}';">
+                                EDIT
+                            {% endif %}
+                    </button>
+                    <br>
+
+                    <!-- Share slider -->
+                    <div class="row pull-left" style="margin: 40px 0 0 0;">
+                        <span class="homehead" style="margin-left: 40px; font-size: 20pt;">Sharing</span>
+
+                        <div class='' style="margin: 30px 0 0 40px;">
+
+                            <input name="permission_slider" title='permission_slider' id="sharing_slider">
+
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+            {% endif %}
+
+            <!-- Go To Discuss -->
+            <div class="row" style="margin: 20px 0 0 0;">
+                <button class="j_button j_action_button pull-left"
+                        style="margin: 40px;" onclick="window.location.href='#discuss';">
+                    DISCUSS
+                </button>
+            </div>
+        </div>
+    </div>
 
 
 
