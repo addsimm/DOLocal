@@ -73,7 +73,7 @@ function josCKEdit(sect2edit) {
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         edit_element = document.getElementById(sect2edit + '_original_content');
 
-    //// console.log('edit_btn: ' + $(edit_btn).text());
+    console.log('ck_editor_container.id: ' + ck_editor_container.id + ', edit_btn.text: ' + $(edit_btn).text());
 
     if ($(edit_btn).hasClass('j_action_button')) {
         //// console.log('starting editor; editors[sect2edit].section_editor: ' + editors[sect2edit].section_editor);

@@ -30,7 +30,7 @@
 <div class="row">
 
 <!-- Left Panel -->
-<div class="col-xs-10" style=" ">
+<div class="col-xs-11" style=" ">
 
     <!-- Image -->
     <div class="row">
@@ -102,37 +102,37 @@
         <div class="col-xs-12">
             {% if edit %}
 
-                <a id="about_edit_btn"
-                   class="btn btn-info btn-xs pull-right edit_section_button"
-                   style="font-size: 14pt; width: 125px; margin-top: -31px;"
+                <button id="about_edit_btn"
+                   class="j_button_small j_action_button pull-right edit_section_button"
+                   style=" "
                    onclick="josCKEdit('about');"
                    data-toggle="tooltip"
                    data-placement="bottom"
                    title="Activates editor"
                 >
-                    Edit about
-                </a>
+                    EDIT ABOUT
+                </button>
 
-                <a id="about_cancel_btn"
-                   class="btn btn-danger btn-xs pull-right edit_section_button"
-                   style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
+                <button id="about_cancel_btn"
+                   class="j_button_small j_discard_button  pull-right edit_section_button"
+                   style="margin-right: 10px; display: inherit;"
                    onclick="josCKDestroy('about');"
                    data-toggle="tooltip"
                    data-placement="bottom"
                    title="Warning: discards recent changes!"
                 >
-                    Discard
-                </a>
+                    DISCARD
+                </button>
 
 
                 <!-- This div holds editor. -->
-                <div id="about_editor_container" style=" "></div>
+                <div id="about_editor_container" style="margin-top: 40px;"></div>
 
             {% endif %}
 
             <!-- This div displays contents. -->
             <div id="about_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 20px; min-height: 415px;">
+                 style="margin-top: 40px; padding: 20px; min-height: 415px;">
                 {{ profile.about_me | safe }}<br>
             </div>
 
@@ -143,7 +143,7 @@
 <!-- Side panel -->
 
 <div id="editing_side_panel"
-     style="position: fixed; width: 190px; left: 995px; top: 150px; min-height: 300px;
+     style="position: fixed; width: 200px; left: 1050px; padding-left: 30px; top: 150px; height: 150px;
             border-left: 1px solid rgb(65,45,120); background-color: white;">
 
     {% include "josprojects/../jos_includes/updated_include.html" with myobj=profile %}<br>
