@@ -99,56 +99,63 @@
             color: #f0ad4e;
         }
 
-        .check_container label:after {
-            position: absolute; top: 6px; left: 755px;
+        /*
+        #tools_tab::before {
+            position: absolute; top: 6px; left: 700px;
             font-family: FontAwesome;
             font-size: 32pt;
             content: "\f00d";
             color: #412D78;
-            transition: color .2s;
-        }
+        }*/
 
     </style>
 
     <div id="main" style="
         position: absolute;
         top: 0;
-        padding-top: 15px;
-        left: 30px;
-        height: 55px; width: 450px;
+        left: 15px;
+        height: 55px;
+        width: 1265px;
         background-color: pink;
     ">
 
         <button class="j_button_small j_info_button"
-                style="position: absolute; left: 10px;"
+                style="position: absolute; top: 15px; left: 0;"
                 onclick=" ">
             <i class="fa fa-circle fa-fw"></i>
             STORYWHEEL
         </button>
 
         <button class="j_button_small j_relocate_button"
-                style="position: absolute; left: 170px;"
+                style="position: absolute; top: 15px; left: 160px;"
                 onclick=" ">
             <i class="fa fa-square fa-fw"></i>
             VERSIONS
         </button>
 
         <button class="j_button_small j_action_button"
-                style="position: absolute; left: 305px;"
+                style="position: absolute; top: 15px; left: 295px;"
                 onclick=" ">
             <i class="fa fa-scissors fa-fw"></i>
             NEW TITLE
         </button>
 
+        <button class="j_button_small j_action_button"
+                style="position: absolute; top: 15px; left: 435px;"
+                onclick=" ">
+            <i class="fa fa-exclamation fa-fw"></i>
+            PREVIEW
+        </button>
+
         <div id="right_tools"
-             style= "display: flex; justify-content: flex-end;
+             style= "display: flex; justify-content: flex-start;
              align-items: center;
-             position: absolute; top: 0; left: 450px;
+             position: absolute; top: 0; left: 550px;
              padding-top: 5px;
-             height: 55px; width: 800px;
+             height: 55px; width: 600px;
              background-color: aliceblue;">
 
-            <div style="font-size: 12pt; font-weight: bold; text-align: center">
+            <div style="font-size: 12pt; margin-left: 20px; font-weight: bold; text-align: center">
                 Auto<br>save:</div>
             <label class="switch">
                 <input type="checkbox">
@@ -156,7 +163,7 @@
             </label>
 
             <div style="font-size: 12pt; font-weight: bold;
-                 margin-left: 30px; text-align: center">
+                 margin-left: 20px; text-align: center">
                 Shared<br>with:
             </div>
 
@@ -179,22 +186,17 @@
 
             </div>
 
-            <div class="check_container" style="margin: 0 55px 0 45px;">
-                <label for="show_tools_checkbox" style="
-                font-size: 24pt; font-weight: bold;">
-                    Tools:
-                </label>
-                <input id="show_tools_checkbox" type="checkbox" onclick="toolsHandler();">
-            </div>
-
         </div>
+
+        <button id='tools_tab' class="j_button j_info_button"
+                style="position: absolute; top: 8px; left: 1130px; width: 135px; border-radius: 0;">
+            <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+            STORY TOOLS
+        </button>
+
     </div>
 
     <script>
-
-     function toolsHandler() {
-        console.log('tools checked');
-    }
 
     $('#sharing_box label').click(function () {
         console.log('clicked: ' + this);
