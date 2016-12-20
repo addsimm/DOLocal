@@ -55,7 +55,7 @@
 
 <!-- Log button -->
 <button class="j_button j_action_button"
-        style="position: fixed; top: 10px; left: 1100px; width: 165px; z-index: 450;"
+        style="position: fixed; top: 10px; left: 1115px; width: 165px; z-index: 450;"
         {% if request.user.is_authenticated %}
         onclick="location.href='{% url "logout" %}?next={{ request.path }}';">
             <i class="fa fa-sign-out fa-fw"></i>
@@ -149,7 +149,7 @@
     {% if request.user.is_superuser %}
 
         <button class="j_button j_test_button"
-           style="position: fixed; top: 5px; left: 1018px;  font-size: 8pt; z-index: 450;"
+           style="position: fixed; top: 5px; left: 1030px;  font-size: 8pt; z-index: 450;"
                 onclick="window.location.href='/admin';">
             ADMIN
         </button>

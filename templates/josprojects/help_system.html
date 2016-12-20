@@ -69,7 +69,7 @@
 
 <!-- help button -->
 <button id="help_button" class="j_button j_info_button isopen" style="position: fixed;
-        top: 0; left: 820px; height: 50px; width: 185px; border-radius: 0; z-index: 401;"
+        top: 0; left: 810px; height: 50px; width: 215px; border-radius: 0; z-index: 401;"
     data-toggle="tooltip" data-placement="bottom"
     title="To do - How do I? - My notes" onclick="session_data_update('help_position');">
     <i class="fa fa-folder fa-fw" style='margin-right: 5px;'></i>
@@ -211,7 +211,7 @@
         hb = document.getElementById('help_button');
         if ('{{ request.session.help_position }}' === 'down') {
 
-            $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>Close folder").removeClass("isopen").addClass("isclosed").attr("data-original-title", "Saves changes");
+            $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>CLOSE FOLDER").removeClass("isopen j_info_button").addClass("isclosed  j_back_button").attr("data-original-title", "Saves changes");
             $("body").addClass('moveDown');
             $("#help_screen").slideDown("slow");
 
@@ -225,7 +225,7 @@
             }
 
         } else {
-            $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>MY FOLDER").removeClass("isclosed").addClass("isopen").attr("data-original-title", "To do - How do I? - My notes");
+            $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>MY FOLDER").removeClass("isclosed  j_back_button").addClass("isopen j_info_button").attr("data-original-title", "To do - How do I? - My notes");
             $("body").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
         }
