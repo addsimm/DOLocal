@@ -165,24 +165,6 @@ TEMPLATES = [
     },
 ]
 
-# TEMPLATE_CONTEXT_PROCESSORS = (
-#     'django.contrib.auth.context_processors.auth',
-#     'django.contrib.messages.context_processors.messages',
-#     'django.template.context_processors.debug',
-#     'django.template.context_processors.i18n',
-#     'django.template.context_processors.static',
-#     'django.template.context_processors.media',
-#     'django.template.context_processors.request',
-#     'django.template.context_processors.tz',
-#
-#     'mezzanine.conf.context_processors.settings',
-#     'mezzanine.pages.context_processors.page',
-#
-#     'josprojects.context_processors.help_sys',
-#     'josmessages.context_processors.inbox',
-#     # 'djconfig.context_processors.config',
-# )
-
 # Middleware. Order is important; request classes in order, response in reverse order.
 MIDDLEWARE = [
     'request.middleware.RequestMiddleware',
@@ -206,14 +188,6 @@ MIDDLEWARE = [
     'mezzanine.core.request.CurrentRequestMiddleware',
     'mezzanine.pages.middleware.PageMiddleware',
     # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
-
-    # 'djconfig.middleware.DjConfigMiddleware',
-    # 'spirit.core.middleware.PrivateForumMiddleware',
-    # 'spirit.user.middleware.ActiveUserMiddleware',
-    # 'spirit.user.middleware.LastIPMiddleware',
-    # 'spirit.user.middleware.LastSeenMiddleware',
-    # 'spirit.user.middleware.TimezoneMiddleware',
-    # 'spirit.core.middleware.XForwardedForMiddleware',
 
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'tracking.middleware.VisitorTrackingMiddleware',
