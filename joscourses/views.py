@@ -95,7 +95,7 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
     try:
         story = get_object_or_404(JOSStory, pk=story_id)
     except:
-        story = JOSStory.objects.create(author=request.user, title="- Untitled -", content="- Content goes here -")
+        story = JOSStory.objects.create(author=request.user, title="- Untitled -", story_content="- Enter content here -")
 
     if not story.message_thread:
         comment_thread = JOSMessageThread.objects.create(subject=story.title)
@@ -152,8 +152,8 @@ def ajax_story_update(request):
 
     if new_content != 'missing':
 
-        if section == 'content':
-            story.content = new_content
+        if section == 'story_content':
+            story.story_content = new_content
             story.save()
             info(request, "Story content updated!")
 

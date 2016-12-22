@@ -72,14 +72,19 @@
             cursor: pointer;
         }
 
+        .three_label:hover {
+            color: white;
+            background-color: #5bc0de;
+        }
+
         .not-checked {
             color: #5bc0de;
             background-color: white;
         }
 
         .input-checked {
-            background-color: #5bc0de !important;
             color: white !important;
+            background-color: #5bc0de !important;
         }
 
         /* Sho tools checkbox */
@@ -143,15 +148,16 @@
          display: flex; justify-content: flex-start; align-items: center;
          padding-top: 5px;">
 
+        <!-- Autosavce -->
         <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
             Auto<br>save:
         </div>
-
         <label class="switch">
-            <input type="checkbox">
+            <input id="autosave_switch" type="checkbox" onchange="toggleAutosave(this);">
             <div class="slider"></div>
         </label>
 
+        <!-- Permission -->
         <div style="font-size: 12pt; font-weight: bold;
              margin-left: 25px; text-align: right">
             Shared<br>with:
@@ -192,15 +198,16 @@
 
     <div style="margin: 60px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
 
-        <button id="content_edit_btn" class="j_button_small j_save_button"
-                style=" " onclick="josCKEdit('story_content');"
+        story.publish_permission: {{ story.publish_permission }}
+        <button id="story_content_edit_btn" class="j_button_small j_save_button"
+                style=" " onclick="josCKSave('story_content');"
                 data-toggle="tooltip" data-placement="bottom"
-                title="Updates content">
+                title="Updates story content">
             <i class="fa fa-arrow-circle-up fa-fw"></i>
             SAVE STORY NOW
         </button>
 
-        <button id="content_discard_btn" class="j_button_small j_discard_button"
+        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
                 style="margin-left: 5px;"
                 onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
                 data-toggle="tooltip" data-placement="bottom"
@@ -225,13 +232,10 @@
     <div style="margin: 5px 0 0 30px; background-color: pink; min-height: 500px;">
 
     <!-- This div holds editor. -->
-    <div id="content_editor_container" style=" "></div>
+    <div id="story_content_editor_container" style=" "></div>
 
 
     </div>
-
-
-
 
 <script>
 
@@ -242,12 +246,18 @@
             window.location.href = reload_url;
         }
 
-        initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.content | escapejs }}");
+        initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
         initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+
+        var permission_element_id = 'perm_' + {{ story.publish_permission }};
+        var permission_element = document.getElementById(permission_element_id);
+        $(permission_element).addClass('input-checked');
+
         josCKEdit('story_content');
 
-    });
 
+
+    });
 
     var labels = $('#sharing_box').children();
     $(labels).click(function () {
@@ -256,6 +266,10 @@
         $(this).addClass('input-checked').removeClass('not-checked');
         $(this).siblings().removeClass('input-checked').addClass('not-checked');
     });
+
+    function toggleAutosave(t) {
+        alert('toggleAutosave: ' + t.id);
+    }
 
     function toolsTabHandler(i) {
         var tools_tab = document.getElementById(i);

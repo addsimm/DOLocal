@@ -144,7 +144,7 @@ class JOSStory(TimeStamped, models.Model):
     message_thread = models.ForeignKey(JOSMessageThread, blank=True, null=True)
     author = models.ForeignKey(User)
     title = models.TextField(default="Untitled")
-    content = models.TextField(default="Coming soon")
+    story_content = models.TextField(default="Coming soon")
     publish_permission = models.IntegerField(default=2)
     # tags = TaggableManager(blank = True, null = True)
 

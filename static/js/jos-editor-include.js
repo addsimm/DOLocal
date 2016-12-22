@@ -7,6 +7,7 @@
 var editors = {};
 
 function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
+    console.log('sctn: ' + sctn + ', org_cntnt: ' + org_cntnt);
     editors[sctn] = {
         section: sctn, section_editor: null, toolbar: tlbr,
         editor_ajax_post_url: eapurl, original_content: org_cntnt, present_content: org_cntnt
@@ -23,7 +24,7 @@ var ck_config_small = {
     width: '100%',
     height: 360,
     tabSpaces: 4,
-    uiColor: '#412D78',
+    uiColor: 'yellow',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
 
@@ -38,10 +39,10 @@ var ck_config_large = {
     ],
     contentsCss: '/static/ckeditor/ckeditor/contents.css',
     width: '100%',
-    height: 360,
+    height: 650,
     tabSpaces: 4,
     toolbarRows: 1,
-    uiColor: '#412D78',
+    uiColor: '#ffff00',
     extraPlugins: 'colorbutton',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
@@ -71,63 +72,80 @@ function josCKEdit(sect2edit) {
 
     var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
-        edit_element = document.getElementById(sect2edit + '_original_content');
+        segment_element = document.getElementById(sect2edit + '_original_content');
 
-    console.log('ck_editor_container.id: ' + ck_editor_container.id + ', edit_btn.text: ' + $(edit_btn).text());
+    // console.log('ck_editor_container: ' + ck_editor_container.id + ', edit_btn.text: ' + $(edit_btn).text());
 
-    if ($(edit_btn).hasClass('j_action_button')) {
-        //// console.log('starting editor; editors[sect2edit].section_editor: ' + editors[sect2edit].section_editor);
+
+    if ($(edit_btn).hasClass('j_action_button') || sect2edit.search('story') !== -1) {
+
+        if (sect2edit.search('story') === -1) {
+            var data_original_title_string = 'Updates ' + sect2edit;
+            $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('SAVE').attr("data-original-title", data_original_title_string);
+            $('#' + sect2edit + '_cancel_btn').show();
+            $(segment_element).hide();
+        }
+
         if (editors[sect2edit].section_editor) {
             return;
         }
 
-        var data_original_title_string = 'Updates ' + sect2edit;
-        $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('SAVE').attr("data-original-title", data_original_title_string);
-        $('#' + sect2edit + '_cancel_btn').show();
-        $(edit_element).hide();
-
         editors[sect2edit].section_editor = CKEDITOR.appendTo(
             ck_editor_container,
             ck_config,
-            $(edit_element).html());
+            editors[sect2edit].original_content);
+
+        console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
 
     } else { //Save
 
-        //// console.log('trying to save');
-        if (!editors[sect2edit].section_editor) {
-            return;
-        }
-
-        // Retrieve the editor contents. Ajax send to server.
-
-        var new_content = editors[sect2edit].section_editor.getData();
-        $(edit_element).html(new_content);
-        josCKDestroy(sect2edit);
-        $.ajax({
-            type: "POST",
-            url: editors[sect2edit].editor_ajax_post_url,
-            data: {
-                'new_content': new_content,
-                'section': sect2edit
-            },
-            success: function (serverResponse_data) {
-                console.log('successfully posted:  ' + new_content + ' to: ' + sect2edit + ' -- ' + serverResponse_data);
-                if (editors[sect2edit].editor_ajax_post_url.search('help') === -1) {
-                    location.reload();
-                }
-            }
-        });
+        josCKSave(sect2edit);
     }
 }
+
+
+function josCKSave(sect2save) {
+    console.log('trying to save');
+    if (!editors[sect2save].section_editor) {
+        return;
+    }
+
+    // Retrieve the editor contents. Ajax send to server.
+    var segment_element = document.getElementById(sect2save + '_original_content');
+    var new_content = editors[sect2save].section_editor.getData();
+
+    editors[sect2save].original_content = new_content;
+
+    if (sect2save.search('story') === -1) {
+        $(segment_element).html(new_content);
+        josCKDestroy(sect2save);
+    }
+
+    $.ajax({
+        type: "POST",
+        url: editors[sect2save].editor_ajax_post_url,
+        data: {
+            'new_content': new_content,
+            'section': sect2save
+        },
+        success: function (serverResponse_data) {
+            console.log('successfully posted:  ' + new_content + ' to: ' + sect2save + ' -- ' + serverResponse_data);
+            if (editors[sect2save].editor_ajax_post_url.search('help') === -1 || sect2edit.search('story') != -1 ) {
+                location.reload();
+            }
+        }
+    });
+}
+
 
 
 function josCKDestroy(sect2destroy) {
     console.log('editor destroy; section: ' + sect2destroy);
 
-    var edit_element = document.getElementById(sect2destroy + '_original_content');
+    var segment_element = document.getElementById(sect2destroy + '_original_content');
     var edit_btn = document.getElementById(sect2destroy + '_edit_btn');
 
-    $(edit_element).show();
+    $(segment_element).show();
     $('#' + sect2destroy + '_cancel_btn').hide();
     $(edit_btn)
         .removeClass('j_save_button')

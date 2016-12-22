@@ -53,7 +53,7 @@ admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 
 class JOSStoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "author", "publish_permission", "updated", "title", "content")
+    list_display = ("id", "author", "publish_permission", "updated", "title", "story_content")
 
     verbose_name = "JOSStory"
 
