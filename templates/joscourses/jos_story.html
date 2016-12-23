@@ -9,352 +9,373 @@
 
 {% block all_content %}
 
-    <style>
+<style>
 
-        input {
-            display: none;
-        }
+    input {
+        display: none;
+    }
 
-        /* The autosave_checkbox, around the autosave_slider */
-        .autosave_checkbox {
-            position: relative;
-            top: 3px;
-            margin-left: 10px;
-            height: 40px;
-            width: 100px;
-            outline: 2px solid #412d78;
-        }
+    /* The auto_save_checkbox, around the autosave_slider */
+    .auto_save_checkbox {
+        position: relative;
+        top: 3px;
+        margin-left: 10px;
+        height: 40px;
+        width: 100px;
+        outline: 2px solid #412d78;
+    }
 
-        /* autosave_slider */
-        .autosave_slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: white;
-        }
+    /* autosave_slider */
+    .autosave_slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+    }
 
-        .autosave_slider:before {
-            position: absolute;
-            color: white;
-            font-size: 14pt;
-            text-align: center;
-            content: "OFF";
-            top: 0;
-            left: 0;
-            height: 40px;
-            width: 50px;
-            padding-top: 7px;
-            background-color: #5bc0de;
-        }
+    .autosave_slider:before {
+        position: absolute;
+        color: white;
+        font-size: 14pt;
+        text-align: center;
+        content: "OFF";
+        top: 0;
+        left: 0;
+        height: 40px;
+        width: 50px;
+        padding-top: 7px;
+        background-color: #5bc0de;
+    }
 
-        .autosave_slider:hover::before {
-            border: 3px dotted #f0ad4e;
-            color:  #f0ad4e;
-            background-color: white;
-        }
+    .autosave_slider:hover::before {
+        border: 3px dotted #f0ad4e;
+        color:  #f0ad4e;
+        background-color: white;
+    }
 
-        input:checked + .autosave_slider {
-            background-color: #5cb85c;
-        }
+    input:checked + .autosave_slider {
+        background-color: #5cb85c;
+    }
 
-        input:checked + .autosave_slider:before {
-            transform: translateX(50px);
-            content: "ON";
-        }
+    input:checked + .autosave_slider:before {
+        transform: translateX(50px);
+        content: "ON";
+    }
 
-        /* permissions radio */
-        .perm_label {
-            background-color: white;
-            font-size: 14pt;
-            text-align: center;
-            height: 40px;
-            width: 100px;
-            padding-top: 7px;
-            color: #5bc0de;
-            cursor: pointer;
-        }
+    /* permissions radio */
+    .perm_label {
+        background-color: white;
+        font-size: 14pt;
+        text-align: center;
+        height: 40px;
+        width: 100px;
+        padding-top: 7px;
+        color: #5bc0de;
+        cursor: pointer;
+    }
 
-        .perm_label:hover {
-            border: 3px dotted #f0ad4e;
-            color: #f0ad4e;
-            background-color: white;
-        }
+    .perm_label:hover {
+        border: 3px dotted #f0ad4e;
+        color: #f0ad4e;
+        background-color: white;
+    }
 
-        .perm_uncheck {
-            color: #5bc0de;
-            background-color: white;
-        }
+    .perm_uncheck {
+        color: #5bc0de;
+        background-color: white;
+    }
 
-        .perm_checked {
-            color: white !important;
-            background-color: #5bc0de !important;
-        }
+    .perm_checked {
+        color: white !important;
+        background-color: #5bc0de !important;
+    }
 
-        #left_story_tools button {
-            margin-left: 10px;
-        }
+    #left_story_tools button {
+        margin-left: 10px;
+    }
 
-    </style>
+</style>
 
-    <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
-        position: absolute; top: 0; left: 5px; height: 55px; width: 547px;
-        display: flex; justify-content: flex-start; align-items: flex-end;">
+<div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
+    position: absolute; top: 0; left: 5px; height: 55px; width: 547px;
+    display: flex; justify-content: flex-start; align-items: flex-end;">
 
-        <button class="j_button_small j_info_button"
-                onclick=" ">
-            <i class="fa fa-circle fa-fw"></i>
-            WHEEL
-        </button>
+    <button class="j_button_small j_info_button"
+            onclick=" ">
+        <i class="fa fa-circle fa-fw"></i>
+        WHEEL
+    </button>
 
-        <button class="j_button_small j_relocate_button"
-                onclick=" ">
-            <i class="fa fa-square fa-fw"></i>
-            VERSIONS
-        </button>
+    <button class="j_button_small j_relocate_button"
+            onclick=" ">
+        <i class="fa fa-square fa-fw"></i>
+        VERSIONS
+    </button>
 
-        <button class="j_button_small j_action_button"
-                onclick=" ">
-            <i class="fa fa-scissors fa-fw"></i>
-            RE-TITLE
-        </button>
+    <button class="j_button_small j_action_button"
+            onclick=" ">
+        <i class="fa fa-scissors fa-fw"></i>
+        RE-TITLE
+    </button>
 
-        <button class="j_button_small j_action_button"
-                onclick=" ">
-            <i class="fa fa-exclamation fa-fw"></i>
-            READ / SEND
-        </button>
+    <button class="j_button_small j_action_button"
+            onclick=" ">
+        <i class="fa fa-exclamation fa-fw"></i>
+        READ / SEND
+    </button>
+</div>
+
+<div id="right_story_tools" style="background-color: aliceblue; visibility: visible;
+     position: absolute; top: 0; left: 550px; height: 55px; width: 600px;
+     display: flex; justify-content: flex-start; align-items: center;
+     padding-top: 5px;">
+
+    <!-- Autosave -->
+    <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
+        Auto<br>save:
+    </div>
+    <label class="auto_save_checkbox">
+        <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave(this);">
+        <div class="autosave_slider"></div>
+    </label>
+
+    <!-- Permission -->
+    <div style="font-size: 12pt; font-weight: bold;
+         margin-left: 25px; text-align: right">
+        Shared<br>with:
     </div>
 
-    <div id="right_story_tools" style="background-color: aliceblue; visibility: visible;
-         position: absolute; top: 0; left: 550px; height: 55px; width: 600px;
-         display: flex; justify-content: flex-start; align-items: center;
-         padding-top: 5px;">
+    <div id="sharing_box" style="
+         position: relative; top:0; margin-left: 10px;
+         height: 40px; width: 310px;
+         outline: 2px solid #412d78;">
 
-        <!-- Autosavce -->
-        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
-            Auto<br>save:
-        </div>
-        <label class="autosave_checkbox">
-            <input id="autosave_checkbox" type="checkbox" onchange="toggleAutosave(this);">
-            <div class="autosave_slider"></div>
+        <label id="perm_1" class="perm_label">
+            <input type="radio" name="toggle">ONLY ME
         </label>
 
-        <!-- Permission -->
-        <div style="font-size: 12pt; font-weight: bold;
-             margin-left: 25px; text-align: right">
-            Shared<br>with:
-        </div>
+        <label id="perm_2" class="perm_label">
+            <input type="radio" name="toggle">CIRCLES
+        </label>
 
-        <div id="sharing_box" style="
-             position: relative; top:0; margin-left: 10px;
-             height: 40px; width: 310px;
-             outline: 2px solid #412d78;">
-
-            <label id="perm_1" class="perm_label">
-                <input type="radio" name="toggle">ONLY ME
-            </label>
-
-            <label id="perm_2" class="perm_label">
-                <input type="radio" name="toggle">CIRCLES
-            </label>
-
-            <label id="perm_3" class="perm_label">
-                <input type="radio" name="toggle">PUBLISH
-            </label>
-
-        </div>
+        <label id="perm_3" class="perm_label">
+            <input type="radio" name="toggle">PUBLISH
+        </label>
 
     </div>
 
-    {% if story.author == request.user %}
-        <button id='story_tools_tab' class="j_button j_info_button" style="
-                position: absolute; top: 18px; left: 1155px; width: 125px;
-                font-size: 14pt; border-radius: 0;"
-            onclick="toolsTabHandler(this.id);"
+</div>
+
+{% if story.author == request.user %}
+    <button id='story_tools_tab' class="j_button j_info_button" style="
+            position: absolute; top: 18px; left: 1155px; width: 125px;
+            font-size: 14pt; border-radius: 0;"
+        onclick="toolsTabHandler(this.id);"
+        data-toggle="tooltip" data-placement="bottom"
+        title="Shows toolbar">
+    <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+    TOOLS
+</button>
+{% endif %}
+
+<!-- Editor buttons -->
+<div style="margin: 60px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
+
+    <button id="story_content_edit_btn" class="j_button_small j_save_button"
+            style=" " onclick="josCKSave('story_content');"
             data-toggle="tooltip" data-placement="bottom"
-            title="Shows toolbar">
-        <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
-        TOOLS
+            title="Updates story content">
+        <i class="fa fa-arrow-circle-up fa-fw"></i>
+        SAVE STORY NOW
     </button>
-    {% endif %}
 
-    <!-- Editor buttons -->
-    <div style="margin: 60px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
+    <button id="story_content_discard_btn" class="j_button_small j_discard_button"
+            style="margin-left: 5px;"
+            onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+            data-toggle="tooltip" data-placement="bottom"
+            title="Reloads recent save and discards changes">
+        <i class="fa fa-trash fa-fw"></i>
+        RESTART EDIT SESSION
+    </button>
 
-        <button id="story_content_edit_btn" class="j_button_small j_save_button"
-                style=" " onclick="josCKSave('story_content');"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Updates story content">
-            <i class="fa fa-arrow-circle-up fa-fw"></i>
-            SAVE STORY NOW
-        </button>
+    <span style="margin-left: 20px;">
+        wheel: {{ story.wheek }}
+    </span>
 
-        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
-                style="margin-left: 5px;"
-                onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Reloads recent save and discards changes">
-            <i class="fa fa-trash fa-fw"></i>
-            RESTART EDIT SESSION
-        </button>
-
-        <div style="margin-left: auto;">
-            {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
-        </div>
-
-        <!-- Go To Discuss -->
-        <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
-                onclick="window.location.href='#discuss';">
-            <i class="fa fa-comments fa-fw"></i>
-            DISCUSS
-        </button>
+    <div style="margin-left: auto;">
+        {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
     </div>
 
-    <!-- Story content, holds editor -->
-    <div id="story_content_editor_container" style="margin: 5px 0 0 30px; background-color: pink; min-height: 500px;"></div>
+    <!-- Go To Discuss -->
+    <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
+            onclick="window.location.href='#discuss';">
+        <i class="fa fa-comments fa-fw"></i>
+        DISCUSS
+    </button>
+</div>
+
+<!-- Story content, holds editor -->
+<div id="story_content_editor_container" style="margin: 5px 0 0 30px; background-color: pink; min-height: 500px;"></div>
 
 
-    <!-- Discussion -->
-    <div class="row">
+<!-- Discussion -->
+<div class="row">
 
-        <div class="homehead" style="font-size: 28pt; margin: 50px 0 0 45px;">
-            Community discussion:
-        </div>
+    <div class="homehead" style="font-size: 28pt; margin: 50px 0 0 45px;">
+        Community discussion:
+    </div>
 
-        <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
+    <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
 
-            {% for comment in comments %}
+        {% for comment in comments %}
 
-                <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
-                    <div class="col-xs-3">
-                        {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+            <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+                <div class="col-xs-3">
+                    {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+                </div>
+            </div>
+
+            <div class="row" style="font-size: 20pt; margin-top: 20px;">
+
+                {% if comment.sender != request.user %}
+
+                    <div class="col-xs-2" style="padding: 0;">
+                        {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
                     </div>
-                </div>
 
-                <div class="row" style="font-size: 20pt; margin-top: 20px;">
+                    <div class="col-xs-9"
+                         style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                        "{{ comment.body | striptags | safe }}"
+                    </div>
 
-                    {% if comment.sender != request.user %}
+                {% else %}
 
-                        <div class="col-xs-2" style="padding: 0;">
-                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
-                        </div>
+                    <div class="col-xs-9"
+                         style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                        "{{ comment.body | striptags | safe }}"
+                    </div>
 
-                        <div class="col-xs-9"
-                             style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
-                            "{{ comment.body | striptags | safe }}"
-                        </div>
+                    <div class="col-xs-2">
+                        {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                    </div>
 
-                    {% else %}
-
-                        <div class="col-xs-9"
-                             style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
-                            "{{ comment.body | striptags | safe }}"
-                        </div>
-
-                        <div class="col-xs-2">
-                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            {% endfor %}
-        </div>
-
-    </div>
-
-    <div id="discuss" class="row" style="margin: 50px 0 100px 0;">
-        <div class="col-xs-10 col-xs-offset-1">
-
-            <!-- Editor buttons -->
-            <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
-
-                <button id="comment_edit_btn" class="j_button j_action_button"
-                        style=" " onclick="josCKEdit('comment');"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="Activates editor">
-                    <i class="fa fa-comments fa-fw"></i>
-                    ADD YOUR THOUGHT ...
-                </button>
-
-                <button id="comment_cancel_btn" class="j_button j_discard_button"
-                        style="margin-left: 5px; display: none;"
-                        onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="Discards comment">
-                    <i class="fa fa-trash fa-fw"></i>
-                    DISCARD
-                </button>
+                {% endif %}
 
             </div>
 
-            <!-- This div holds editor -->
-            <div id="comment_editor_container" style=" "></div>
-
-        </div>
+        {% endfor %}
     </div>
 
+</div>
 
+<div id="discuss" class="row" style="margin: 50px 0 100px 0;">
+    <div class="col-xs-10 col-xs-offset-1">
 
+        <!-- Editor buttons -->
+        <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
 
-    <script>
+            <button id="comment_edit_btn" class="j_button j_action_button"
+                    style=" " onclick="josCKEdit('comment');"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Activates editor">
+                <i class="fa fa-comments fa-fw"></i>
+                ADD YOUR THOUGHT ...
+            </button>
 
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        if (Number(window.location.href.split('/')[5]) === 0) {
-            reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
-            window.location.href = reload_url;
-        }
+            <button id="comment_cancel_btn" class="j_button j_discard_button"
+                    style="margin-left: 5px; display: none;"
+                    onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Discards comment">
+                <i class="fa fa-trash fa-fw"></i>
+                DISCARD
+            </button>
 
-        initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
-        initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+        </div>
 
-        var permission_element_id = 'perm_' + {{ story.publish_permission }};
-        var permission_element = document.getElementById(permission_element_id);
-        $(permission_element).addClass('perm_checked');
+        <!-- This div holds editor -->
+        <div id="comment_editor_container" style=" "></div>
 
-        josCKEdit('story_content');
+    </div>
+</div>
 
-    });
+<script>
 
-    var labels = $('#sharing_box').children();
-    $(labels).click(function () {
-        window.location.href =
-            "{% url "joscourses:josstory" story.id %}/?pubperm=" + this.id.split("_")[1];
-        $(this).addClass('perm_checked').removeClass('perm_uncheck');
-        $(this).siblings().removeClass('perm_checked').addClass('perm_uncheck');
-    });
-
-    function toggleAutosave(t) {
-        alert('toggleAutosave: ' + t.id);
+$(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    if (Number(window.location.href.split('/')[5]) === 0) {
+        reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
+        window.location.href = reload_url;
     }
 
-    function toolsTabHandler(i) {
-        var story_tools_tab = document.getElementById(i);
-        console.log('story_tools_tab clicked: ' + $(story_tools_tab).attr('class').split(" "));
+    var auto_save = '{{ story.auto_save }}';
+    if (auto_save === 'True') {
+        var auto_save_control = document.getElementById('auto_save_checkbox');
+        $(auto_save_control).prop('checked', true);
 
-        if ($(story_tools_tab).hasClass('j_info_button')) {
-            $(story_tools_tab)
-                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>CLOSE")
-                    .addClass("isopen j_back_button")
-                    .removeClass("isclosed j_info_button")
-                    .attr("data-original-title", "Hides toolbar");
-            $("#right_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
-            $("#left_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
-        } else {
-            $(story_tools_tab)
-                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
-                    .addClass("isclosed j_info_button")
-                    .removeClass("isopen j_back_button")
-                    .attr("data-original-title", "Shows toolbar");
-            $("#right_story_tools").css({visibility: "hidden"});
-            $("#left_story_tools").css({visibility: "hidden"});
+        function autoSave() {
+            josCKSave('story_content');
         }
+
+        var t = setTimeout(autoSave, 240000);
     }
+
+    var permission_control_id = 'perm_' + {{ story.publish_permission }};
+    var permission_control = document.getElementById(permission_control_id);
+    $(permission_control).addClass('perm_checked');
+
+
+    initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
+    initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+
+    josCKEdit('story_content');
+
+});
+
+var labels = $('#sharing_box').children();
+$(labels).click(function () {
+    window.location.href =
+        "{% url "joscourses:josstory" story.id %}/?pubperm=" + this.id.split("_")[1];
+    $(this).addClass('perm_checked').removeClass('perm_uncheck');
+    $(this).siblings().removeClass('perm_checked').addClass('perm_uncheck');
+});
+
+function toggleAutosave(t) {
+    console.log('toggle auto_save: ' + t.id);
+    var auto_save = '{{ story.auto_save }}';
+    var auto_save_value = 'True';
+    if (auto_save === 'True') {
+        auto_save_value = 'False';
+    }
+    window.location.href =
+    "{% url "joscourses:josstory" story.id %}/?autosave=" + auto_save_value;
+}
+
+function toolsTabHandler(i) {
+    var story_tools_tab = document.getElementById(i);
+    console.log('story_tools_tab clicked: ' + $(story_tools_tab).attr('class').split(" "));
+
+    if ($(story_tools_tab).hasClass('j_info_button')) {
+        $(story_tools_tab)
+                .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>CLOSE")
+                .addClass("isopen j_back_button")
+                .removeClass("isclosed j_info_button")
+                .attr("data-original-title", "Hides toolbar");
+        $("#right_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+        $("#left_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+    } else {
+        $(story_tools_tab)
+                .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
+                .addClass("isclosed j_info_button")
+                .removeClass("isopen j_back_button")
+                .attr("data-original-title", "Shows toolbar");
+        $("#right_story_tools").css({visibility: "hidden"});
+        $("#left_story_tools").css({visibility: "hidden"});
+    }
+}
 
 </script>
 

@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import User
+from django.template.defaultfilters import truncatechars
 
 from mezzanine.core.models import TimeStamped
 from mezzanine.utils.models import upload_to
@@ -136,25 +137,6 @@ class JOSHandout(TimeStamped, models.Model):
         return 'Handout #'+str(self.id)
 
 
-class JOSStory(TimeStamped, models.Model):
-    class Meta:
-        verbose_name = 'Story'
-        verbose_name_plural = 'Stories'
-
-    message_thread = models.ForeignKey(JOSMessageThread, blank=True, null=True)
-    author = models.ForeignKey(User)
-    title = models.TextField(default="Untitled")
-    story_content = models.TextField(default="Coming soon")
-    publish_permission = models.IntegerField(default=2)
-    # tags = TaggableManager(blank = True, null = True)
-
-    def get_jos_name(author):
-        first_name = author.get_short_name()[:9]
-        last_initial = author.user.last_name[:1].upper()
-        jos_name = first_name + " " + last_initial + "."
-        return jos_name
-
-
 class JOSWheel(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'wheel'
@@ -166,6 +148,33 @@ class JOSWheel(TimeStamped, models.Model):
 
     def __str__(self):
         return str(self.id) + ': ' + str(self.title)
+
+
+class JOSStory(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Story'
+        verbose_name_plural = 'Stories'
+
+    wheel = models.OneToOneField(JOSWheel, blank = True, null = True)
+    author = models.ForeignKey(User)
+    message_thread = models.ForeignKey(JOSMessageThread, blank=True, null=True)
+
+    title = models.TextField(default="Untitled")
+    story_content = models.TextField(default="Coming soon")
+    publish_permission = models.IntegerField(default=2)
+    auto_save = models.BooleanField(default=1)
+
+    tags = TaggableManager()
+
+    def get_jos_name(author):
+        first_name = author.get_short_name()[:9]
+        last_initial = author.user.last_name[:1].upper()
+        jos_name = first_name + " " + last_initial + "."
+        return jos_name
+
+    @property
+    def content_start(self):
+        return truncatechars(self.story_content, 150)
 
 
 class JOSCharacter(TimeStamped, models.Model):

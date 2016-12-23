@@ -12,9 +12,9 @@ urlpatterns = [
         course_week,
         name="course_week"),
 
-    url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
-    url("josstory/(?P<story_id>\d+)/*$", josstory, {'edit': False}, name="josstory"),
-    url("josstory/*$", josstory, {'story_id': 0, 'edit': False}, name="josstory"),
+    # url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
+    url("josstory/(?P<story_id>\d+)/*$", josstory, name="josstory"),
+    url("josstory/*$", josstory, {'story_id': 0}, name="josstory"),
 
     url("story_update/*$", ajax_story_update, name="story_update"),
 

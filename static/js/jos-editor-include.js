@@ -7,7 +7,7 @@
 var editors = {};
 
 function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
-    console.log('sctn: ' + sctn + ', org_cntnt: ' + org_cntnt);
+    // console.log('sctn: ' + sctn + ', org_cntnt: ' + org_cntnt);
     editors[sctn] = {
         section: sctn, section_editor: null, toolbar: tlbr,
         editor_ajax_post_url: eapurl, original_content: org_cntnt, present_content: org_cntnt
@@ -95,14 +95,13 @@ function josCKEdit(sect2edit) {
             ck_config,
             editors[sect2edit].original_content);
 
-        console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
+        // console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
 
     } else { //Save
 
         josCKSave(sect2edit);
     }
 }
-
 
 function josCKSave(sect2save) {
     console.log('trying to save');
@@ -136,7 +135,6 @@ function josCKSave(sect2save) {
         }
     });
 }
-
 
 
 function josCKDestroy(sect2destroy) {

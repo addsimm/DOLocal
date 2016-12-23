@@ -125,6 +125,19 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         info(request, "Sharing changed, now: " + permission_change_message + "!")
         return redirect('joinourstory.com/josstory/' + str(story_id))
 
+    new_auto_save_value = request.GET.get('autosave', 'none')
+    if new_auto_save_value != 'none':
+        story.auto_save = new_permission_value
+        story.save()
+
+        if new_auto_save_value == 'True':
+            auto_save_message = 'Auto save is now on!'
+        else:
+            auto_save_message = 'Warning: auto save is off!'
+
+        info(request, auto_save_message)
+        return redirect('joinourstory.com/josstory/' + str(story_id))
+
     context = {'story': story, 'edit': edit, "comments": comments}
     context.update(extra_context or {})
 
@@ -155,12 +168,12 @@ def ajax_story_update(request):
         if section == 'story_content':
             story.story_content = new_content
             story.save()
-            info(request, "Story content updated!")
+            info(request, "Story saved!")
 
         elif section == 'title':
             story.title = new_content
             story.save()
-            info(request, "Story title updated!")
+            info(request, "Story title changed!")
 
         elif section == "comment":
             send_message = Message.objects.create(
