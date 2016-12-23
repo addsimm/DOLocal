@@ -99,66 +99,71 @@
 
 </style>
 
-<div id="change_title_box" class=' ' style="
+<div id="change_title_box" style="display: none;
+     position: fixed; top: 0px; left: 0px; height: 1000px; width: 1290px;
+     background-color: grey; opacity: .95; z-index: 500;">
+
+    <div id="change_title" style="
         position: fixed; top: 105px; left: 160px; height: 215px; width: 640px;
         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
-        font-size: 24pt; font-weight: bold; z-index: 600;">
+        font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
-    <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
-         style="position: absolute; top: 10px; left: 10px; height: 65px;">
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 10px; left: 10px; height: 65px;">
 
-    <div id="messageSpace" style="
-         display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
-         position: absolute; top: 20px; left: 90px; height: 185px; width: 530px">
-        <div>
-            Enter new title:
-        </div>
+        <div id="messageSpace" style="
+             display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+             position: absolute; top: 20px; left: 90px; height: 185px; width: 530px">
+            <div>
+                Enter new title:
+            </div>
 
-        <input id="new_title_input" type="text" style="
-               margin-top: 15px; padding: 8px 12px; width: 515px;
-               color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
-               placeholder="{{ story.title }}">
+            <input id="new_title_input" type="text" style="
+                   margin-top: 15px; padding: 8px 12px; width: 515px;
+                   color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
+                   placeholder="{{ story.title }}">
 
-        <div style="display: flex; align-self: flex-end; justify-content: flex-end;
-             align-items: flex-end; margin-top: 30px;">
-            <button id="story_content_edit_btn" class="j_button_small j_save_button"
-                    style=" " onclick="titleUpdate();"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="Updates story content">
-                <i class="fa fa-arrow-circle-up fa-fw"></i>
-                SAVE NEW TITLE
-            </button>
+            <div style="display: flex; align-self: flex-end; justify-content: flex-end;
+                 align-items: flex-end; margin-top: 30px;">
+                <button id="title_save_btn" class="j_button_small j_save_button"
+                        style=" " onclick="event.stopPropagation(); titleUpdate();"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Updates story content">
+                    <i class="fa fa-arrow-circle-up fa-fw"></i>
+                    SAVE NEW TITLE
+                </button>
 
-            <button id="story_content_discard_btn" class="j_button_small j_discard_button"
-                    style="margin-left: 10px; "
-                    onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="Reloads recent save and discards changes">
-                <i class="fa fa-trash fa-fw"></i>
-                CANCEL
-            </button>
+                <button id="title_discard_btn" class="j_button_small j_discard_button"
+                        style="margin-left: 10px; "
+                        onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Reloads recent save and discards changes">
+                    <i class="fa fa-trash fa-fw"></i>
+                    CANCEL
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<div id="left_story_tools" style="background-color: aliceblue; visibility: visible;
+<div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
     position: absolute; top: 0; left: 15px; height: 45px; width: 445px;
     display: flex; justify-content: flex-start; align-items: flex-end;">
 
     <button class="j_button_small j_relocate_button"
-            onclick=" ">
+            onclick=" " style="opacity: .1;">
         <i class="fa fa-square fa-fw"></i>
         VERSIONS
     </button>
 
     <button class="j_button_small j_action_button"
-            onclick=" ">
+            onclick="showTitleUpdate();">
         <i class="fa fa-scissors fa-fw"></i>
         RE-TITLE
     </button>
 
     <button class="j_button_small j_action_button"
-            onclick=" ">
+            onclick=" " style="opacity: .1;">
         <i class="fa fa-exclamation fa-fw"></i>
         READ / SEND
     </button>
@@ -174,7 +179,7 @@
         Auto<br>save:
     </div>
     <label class="auto_save_checkbox">
-        <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave(this);">
+        <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
         <div class="autosave_slider"></div>
     </label>
 
@@ -388,8 +393,8 @@ $(labels).click(function () {
     $(this).siblings().removeClass('perm_checked').addClass('perm_uncheck');
 });
 
-function toggleAutosave(t) {
-    console.log('toggle auto_save: ' + t.id);
+function toggleAutosave() {
+    console.log('toggle auto_save');
     var auto_save = '{{ story.auto_save }}';
     var auto_save_value = 'True';
     if (auto_save === 'True') {
@@ -401,9 +406,17 @@ function toggleAutosave(t) {
 
 function titleUpdate() {
     var new_title_input = document.getElementById('new_title_input');
-    var new_title = $(new_title_input).text();
+    var new_title = new_title_input.value;
     window.location.href =
             "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
+}
+
+function showTitleUpdate() {
+    $('#change_title_box')
+            .show()
+            .click(function () {
+                $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
+            })
 }
 
 
@@ -413,7 +426,7 @@ function toolsTabHandler(i) {
 
     if ($(story_tools_tab).hasClass('j_info_button')) {
         $(story_tools_tab)
-                .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>CLOSE")
+                .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>HIDE")
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button")
                 .attr("data-original-title", "Hides toolbar");
