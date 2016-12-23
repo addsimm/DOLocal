@@ -110,6 +110,16 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
 
     comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
 
+    new_title = request.GET.get('newtitle', 'none')
+    if new_title != 'none':
+        story.title = new_title
+        story.save()
+
+        title_message = 'Story title changed to: ' + new_title
+
+        info(request, title_message)
+        return redirect('joinourstory.com/josstory/' + str(story_id))
+
     new_permission_value = int(request.GET.get('pubperm', 0))
     if new_permission_value != 0:
         story.publish_permission = new_permission_value

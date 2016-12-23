@@ -3,6 +3,8 @@
 
 {% block meta_title %}Comm. Room{% endblock %}
 {% block title %}Comm. Room{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}Community Room{% endblock %}
 
 {% block all_content %}
 
@@ -131,25 +133,27 @@
 
 </style>
 
-
 <!-- HTML -->
 <div>
 
 <!-- Top Nav -->
-<div class="row" onload="chatInstruct();" style="margin-top: -60px;">
+<div class="row" onload="chatInstruct();" style="margin: -15px 310px 0 0;">
 
-    {% if JOSName == "Celeste_D" or JOSName == "Adam_S" %}
-        <button id="share_button" class="j_button j_text_button startshare" style="margin-left: 30px;"
+    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 15px;"
+            onclick="location.reload();">
+        REFRESH
+    </button>
+
+    <button class="j_button j_relocate_button pull-right" style="margin: 0 0 0 15px;" onclick="newTab();">
+        NEW TAB
+    </button>
+
+    {% if JOSName == "Celeste D." or JOSName == "Adam S." %}
+        <button id="share_button" class="j_button  j_test_button startshare pull-right"
                 onclick="controlShare('{{ JOSName }}')">
             SHARE SCREEN
         </button>
     {% endif %}
-
-    <span id="workshop_progress_bar" style="display: none;"></span>
-
-    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 8px;" onclick="newTab();">
-        NEW TAB
-    </button>
 
     <script>
         function newTab() {
@@ -157,30 +161,26 @@
         }
     </script>
 
-    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 15px;"
-            onclick="location.reload();">
-        REFRESH
-    </button>
-
 </div>
 
 <!-- Main Section -->
 <div class="row" style="margin-top: 65px; padding: 10px 0 0 0;">
 
     {# video_section #}
-    <div style="margin: 5px 0 0 10px; min-height: 600px; width: 825px; padding: 0;">
+    <div style="margin: 5px 0 0 10px; min-height: 600px; width: 875px; padding: 0;">
 
         <div id="screen_share_container" class="text-center hidden" style="padding: 0;">
             <video id="shared_video" autoplay></video>
         </div>
 
-        <div id="audience_container"></div>
+        <div id="audience_container" style="margin-top: -60px; padding: 0 30px;" ></div>
 
     </div>
 
     {# chat_section #}
     <div id="messages_section"
-        style="position: absolute; top: 60px; left: 860px; background-color: rgb(209,209,209); padding: 0; width: 335px;">
+        style="position: absolute; top: 90px; left: 885px; background-color: rgb(209,209,209); padding: 0;
+         width: 390px;">
 
         <div id="messages_container"
              class="text-center"
@@ -205,7 +205,7 @@
                            placeholder="Chat ...">
                 </td>
                 <td style="border: none; padding: 0; width: 17%;">
-                    <button class="j_button j_success_button btn-send"
+                    <button class="btn-success btn-xs btn-send"
                             onclick="sendMessage();">
                         SEND
                     </button>
@@ -220,62 +220,6 @@
 {# Scripts #}
 <script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
 <script charset="utf-8">
-
-    // Clock
-    {
-        var segments = ['Share 1', 'Prompt', 'Share2', 'Template'];
-
-        function drawProgressBar() {
-
-            var wpb = document.getElementById('workshop_progress_bar');
-            for (var i in segments) {
-                var segment = document.createElement("p");
-                $(segment).addClass('segment');
-                segment.textContent = segments[i];
-                segment.id = 'segment_' + i;
-                wpb.appendChild(segment);
-            }
-        }
-
-        drawProgressBar();
-
-{#        var tc = (function timeClock() {#}
-{#            var today = new Date();#}
-{#            var hrs = today.getHours();#}
-{#            var min = today.getMinutes();#}
-{#            var day_part = 'am';#}
-{#            if (hrs > 12) {#}
-{#                hrs = hrs - 12;#}
-{#                day_part = 'pm';#}
-{#            }#}
-{#            var workshopMinutes = (hrs * 60) + min;#}
-{#            if (min < 10) {#}
-{#                min = "0" + min;#}
-{#            }#}
-{##}
-{#            document.getElementById('time_clock').innerHTML = hrs + ":" + min + day_part;#}
-{##}
-{#            /*#}
-{#            var offset = (9 * 60) + 30;#}
-{##}
-{#            if (workshopMinutes > offset + 10) {#}
-{##}
-{#                $('#segment_0').addClass('segment-active');#}
-{#            }#}
-{#            if (workshopMinutes > offset + 30) {#}
-{#                $('#segment_1').addClass('segment-active');#}
-{#            }#}
-{#            if (workshopMinutes > offset + 40) {#}
-{#                $('#segment_2').addClass('segment-active');#}
-{#            }#}
-{#            if (workshopMinutes > offset + 60) {#}
-{#                $('#segment_3').addClass('segment-active');#}
-{#            }#}
-{##}
-{#            var t = setTimeout(timeClock, 10000);#}
-{#            */#}
-{#        }());#}
-    }
 
     layoutVideoContainers();
 
