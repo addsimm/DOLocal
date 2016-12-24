@@ -11,6 +11,10 @@
 
 <style>
 
+    .wheel_open {
+        margin-top: 830px;
+    }
+
     #right_story_tools input {
         display: none;
     }
@@ -99,132 +103,11 @@
 
 </style>
 
-<div id="change_title_box" style="display: none;
-     position: fixed; top: 0px; left: 0px; height: 1000px; width: 1290px;
-     background-color: grey; opacity: .95; z-index: 500;">
-
-    <div id="change_title" style="
-        position: fixed; top: 105px; left: 160px; height: 215px; width: 640px;
-        background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
-        font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
-
-        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
-             style="position: absolute; top: 10px; left: 10px; height: 65px;">
-
-        <div id="messageSpace" style="
-             display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
-             position: absolute; top: 20px; left: 90px; height: 185px; width: 530px">
-            <div>
-                Enter new title:
-            </div>
-
-            <input id="new_title_input" type="text" style="
-                   margin-top: 15px; padding: 8px 12px; width: 515px;
-                   color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
-                   placeholder="{{ story.title }}">
-
-            <div style="display: flex; align-self: flex-end; justify-content: flex-end;
-                 align-items: flex-end; margin-top: 30px;">
-                <button id="title_save_btn" class="j_button_small j_save_button"
-                        style=" " onclick="event.stopPropagation(); titleUpdate();"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="Updates story content">
-                    <i class="fa fa-arrow-circle-up fa-fw"></i>
-                    SAVE NEW TITLE
-                </button>
-
-                <button id="title_discard_btn" class="j_button_small j_discard_button"
-                        style="margin-left: 10px; "
-                        onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="Reloads recent save and discards changes">
-                    <i class="fa fa-trash fa-fw"></i>
-                    CANCEL
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
-    position: absolute; top: 0; left: 155px; height: 55px; width: 445px;
-    display: flex; justify-content: flex-start; align-items: center;">
-
-    <button class="j_button_small j_relocate_button"
-            onclick=" " style="opacity: .1;">
-        <i class="fa fa-square fa-fw"></i>
-        VERSIONS
-    </button>
-
-    <button class="j_button_small j_action_button"
-            onclick="showTitleUpdate();">
-        <i class="fa fa-scissors fa-fw"></i>
-        RE-TITLE
-    </button>
-
-    <button class="j_button_small j_action_button"
-            onclick=" " style="opacity: .1;">
-        <i class="fa fa-exclamation fa-fw"></i>
-        READ / SEND
-    </button>
-</div>
-
-<div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
-     position: absolute; top: 0; left: 570px; height: 55px; width: 600px;
-     display: flex; justify-content: flex-start; align-items: center;
-     padding-top: 5px;">
-
-    <!-- Autosave -->
-    <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
-        Auto<br>save:
-    </div>
-    <label class="auto_save_checkbox">
-        <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
-        <div class="autosave_slider"></div>
-    </label>
-
-    <!-- Permission -->
-    <div style="font-size: 12pt; font-weight: bold;
-         margin-left: 25px; text-align: right">
-        Shared<br>with:
-    </div>
-
-    <div id="sharing_box" style="
-         position: relative; top:0; margin-left: 10px;
-         height: 40px; width: 310px;
-         outline: 2px solid #412d78;">
-
-        <label id="perm_1" class="perm_label">
-            <input type="radio" name="toggle">ONLY ME
-        </label>
-
-        <label id="perm_2" class="perm_label">
-            <input type="radio" name="toggle">CIRCLES
-        </label>
-
-        <label id="perm_3" class="perm_label">
-            <input type="radio" name="toggle">PUBLISH
-        </label>
-
-    </div>
-
-</div>
-
 {% if story.author == request.user %}
-    <button id='story_tools_tab' class="j_button j_info_button" style="
-            position: absolute; top: 0; left: 1155px; width: 125px;
-            font-size: 14pt; border-radius: 0;"
-            onclick="toolsTabHandler(this.id);"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Shows story options">
-        <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
-        TOOLS
-    </button>
-
     <button id='story_wheel_tab' class="j_button j_info_button" style="
-                position: absolute; top: 0; left: 0px; width: 120px;
-                font-size: 14pt; border-radius: 0;"
-            onclick=" "
+            position: fixed; top: 65px; left: 1160px; width: 120px;
+            font-size: 14pt; border-radius: 0; z-index: 501;"
+            onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
             title="Displays storywheel in new section">
         <i class="fa fa-circle fa-fw"></i>
@@ -232,127 +115,254 @@
     </button>
 {% endif %}
 
-<!-- Editor buttons -->
-<div style="margin: 75px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
-
-    <button id="story_content_edit_btn" class="j_button_small j_save_button"
-            style=" " onclick="josCKSave('story_content');"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Updates story content">
-        <i class="fa fa-arrow-circle-up fa-fw"></i>
-        SAVE STORY NOW
-    </button>
-
-    <button id="story_content_discard_btn" class="j_button_small j_discard_button"
-            style="margin-left: 5px;"
-            onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Reloads recent save and discards changes">
-        <i class="fa fa-trash fa-fw"></i>
-        RESTART EDIT SESSION
-    </button>
-
-    <span style="margin-left: 20px;">
-        wheel: {{ story.wheek }}
-    </span>
-
-    <div style="margin-left: auto;">
-        {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
-    </div>
-
-    <!-- Go To Discuss -->
-    <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
-            onclick="window.location.href='#discuss';">
-        <i class="fa fa-comments fa-fw"></i>
-        DISCUSS
-    </button>
+<div id="wheel_box" style="display: none;
+     position: fixed; top: 65px; left: 0px; height: 830px; width: 1280px;
+     background-color: white; z-index: 500;">
+    {% include 'joscourses/wheel.html' with wheel=story.wheel %}
 </div>
 
-<!-- Story content, holds editor -->
-<div id="story_content_editor_container" style="margin: 5px 0 0 30px; background-color: white; min-height: 500px;"></div>
+<div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
+    <div id="change_title_box" style="display: none;
+         position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
+         background-color: grey; opacity: .95; z-index: 500;">
 
+        <div id="change_title" style="
+            position: absolute; top: 105px; left: 160px; height: 215px; width: 640px;
+            background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+            font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
-<!-- Discussion -->
-<div class="row">
+            <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+                 style="position: absolute; top: 10px; left: 10px; height: 65px;">
 
-    <div class="homehead" style="font-size: 28pt; margin: 50px 0 0 45px;">
-        Community discussion:
-    </div>
+            <div id="messageSpace" style="
+                 display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+                 position: absolute; top: 20px; left: 90px; height: 185px; width: 530px">
+                <div>
+                    Enter new title:
+                </div>
 
-    <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
+                <input id="new_title_input" type="text" style="
+                       margin-top: 15px; padding: 8px 12px; width: 515px;
+                       color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
+                       placeholder="{{ story.title }}">
 
-        {% for comment in comments %}
+                <div style="display: flex; align-self: flex-end; justify-content: flex-end;
+                     align-items: flex-end; margin-top: 30px;">
+                    <button id="title_save_btn" class="j_button_small j_save_button"
+                            style=" " onclick="event.stopPropagation(); titleUpdate();"
+                            data-toggle="tooltip" data-placement="bottom"
+                            title="Updates story content">
+                        <i class="fa fa-arrow-circle-up fa-fw"></i>
+                        SAVE NEW TITLE
+                    </button>
 
-            <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
-                <div class="col-xs-3">
-                    {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+                    <button id="title_discard_btn" class="j_button_small j_discard_button"
+                            style="margin-left: 10px; "
+                            onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                            data-toggle="tooltip" data-placement="bottom"
+                            title="Reloads recent save and discards changes">
+                        <i class="fa fa-trash fa-fw"></i>
+                        CANCEL
+                    </button>
                 </div>
             </div>
-
-            <div class="row" style="font-size: 20pt; margin-top: 20px;">
-
-                {% if comment.sender != request.user %}
-
-                    <div class="col-xs-2" style="padding: 0;">
-                        {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
-                    </div>
-
-                    <div class="col-xs-9"
-                         style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
-                        "{{ comment.body | striptags | safe }}"
-                    </div>
-
-                {% else %}
-
-                    <div class="col-xs-9"
-                         style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
-                        "{{ comment.body | striptags | safe }}"
-                    </div>
-
-                    <div class="col-xs-2">
-                        {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-        {% endfor %}
+        </div>
     </div>
 
-</div>
+    <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
+        position: absolute; top: 0; left: 135px; height: 55px; width: 450px;
+        display: flex; justify-content: flex-start; align-items: center;">
 
-<div id="discuss" class="row" style="margin: 50px 0 100px 0;">
-    <div class="col-xs-10 col-xs-offset-1">
+        <button class="j_button_small j_relocate_button"
+                onclick=" " style="opacity: .1;">
+            <i class="fa fa-square fa-fw"></i>
+            VERSIONS
+        </button>
 
-        <!-- Editor buttons -->
-        <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
+        <button class="j_button_small j_action_button"
+                onclick="showTitleUpdate();">
+            <i class="fa fa-scissors fa-fw"></i>
+            RE-TITLE
+        </button>
 
-            <button id="comment_edit_btn" class="j_button j_action_button"
-                    style=" " onclick="josCKEdit('comment');"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="Activates editor">
-                <i class="fa fa-comments fa-fw"></i>
-                ADD YOUR THOUGHT ...
-            </button>
+        <button class="j_button_small j_action_button"
+                onclick=" " style="opacity: .1;">
+            <i class="fa fa-exclamation fa-fw"></i>
+            READ / SEND
+        </button>
+    </div>
 
-            <button id="comment_cancel_btn" class="j_button j_discard_button"
-                    style="margin-left: 5px; display: none;"
-                    onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="Discards comment">
-                <i class="fa fa-trash fa-fw"></i>
-                DISCARD
-            </button>
+    <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
+         position: absolute; top: 0; left: 545px; height: 55px; width: 600px;
+         display: flex; justify-content: flex-start; align-items: center;
+         padding-top: 5px;">
+
+        <!-- Autosave -->
+        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
+            Auto<br>save:
+        </div>
+        <label class="auto_save_checkbox">
+            <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
+            <div class="autosave_slider"></div>
+        </label>
+
+        <!-- Permission -->
+        <div style="font-size: 12pt; font-weight: bold;
+             margin-left: 25px; text-align: right">
+            Shared<br>with:
+        </div>
+
+        <div id="sharing_box" style="
+             position: relative; top:0; margin-left: 10px;
+             height: 40px; width: 310px;
+             outline: 2px solid #412d78;">
+
+            <label id="perm_1" class="perm_label">
+                <input type="radio" name="toggle">ONLY ME
+            </label>
+
+            <label id="perm_2" class="perm_label">
+                <input type="radio" name="toggle">CIRCLES
+            </label>
+
+            <label id="perm_3" class="perm_label">
+                <input type="radio" name="toggle">PUBLISH
+            </label>
 
         </div>
 
-        <!-- This div holds editor -->
-        <div id="comment_editor_container" style=" "></div>
+    </div>
+
+    {% if story.author == request.user %}
+        <button id='story_tools_tab' class="j_button j_info_button" style="
+                position: absolute; top: 0; left: 0px; width: 125px;
+                font-size: 14pt; border-radius: 0;"
+                onclick="toolsTabHandler(this.id);"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Shows story options">
+            <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+            TOOLS
+        </button>
+    {% endif %}
+
+    <!-- Editor buttons -->
+    <div style="margin: 75px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
+
+        <button id="story_content_edit_btn" class="j_button_small j_save_button"
+                style=" " onclick="josCKSave('story_content');"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Updates story content">
+            <i class="fa fa-arrow-circle-up fa-fw"></i>
+            SAVE STORY NOW
+        </button>
+
+        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
+                style="margin-left: 5px;"
+                onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Reloads last save, discarding changes">
+            <i class="fa fa-trash fa-fw"></i>
+            RESTART EDIT SESSION
+        </button>
+
+        <div style="margin-left: 325px;">
+            {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
+        </div>
+
+        <!-- Discuss -->
+        <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
+                onclick="window.location.href='#discuss';">
+            <i class="fa fa-comments fa-fw"></i>
+            DISCUSS
+        </button>
 
     </div>
-</div>
 
+    <!-- Story content, holds editor -->
+    <div id="story_content_editor_container" style="margin: 5px 0 0 30px; background-color: white; min-height: 500px;"></div>
+
+
+    <!-- Discussion -->
+    <div class="row">
+
+        <div class="homehead" style="font-size: 28pt; margin: 50px 0 0 45px;">
+            Community discussion:
+        </div>
+
+        <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
+
+            {% for comment in comments %}
+
+                <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+                    <div class="col-xs-3">
+                        {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+                    </div>
+                </div>
+
+                <div class="row" style="font-size: 20pt; margin-top: 20px;">
+
+                    {% if comment.sender != request.user %}
+
+                        <div class="col-xs-2" style="padding: 0;">
+                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                        </div>
+
+                        <div class="col-xs-9"
+                             style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                            "{{ comment.body | striptags | safe }}"
+                        </div>
+
+                    {% else %}
+
+                        <div class="col-xs-9"
+                             style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                            "{{ comment.body | striptags | safe }}"
+                        </div>
+
+                        <div class="col-xs-2">
+                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div id="discuss" class="row" style="margin: 50px 0 100px 0;">
+        <div class="col-xs-10 col-xs-offset-1">
+
+            <!-- Editor buttons -->
+            <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
+
+                <button id="comment_edit_btn" class="j_button j_action_button"
+                        style=" " onclick="josCKEdit('comment');"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Activates editor">
+                    <i class="fa fa-comments fa-fw"></i>
+                    ADD YOUR THOUGHT ...
+                </button>
+
+                <button id="comment_cancel_btn" class="j_button j_discard_button"
+                        style="margin-left: 5px; display: none;"
+                        onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Discards comment">
+                    <i class="fa fa-trash fa-fw"></i>
+                    DISCARD
+                </button>
+
+            </div>
+
+            <!-- This div holds editor -->
+            <div id="comment_editor_container" style=" "></div>
+
+        </div>
+    </div>
+</div>
 <script>
 
 $(document).ready(function () {
@@ -419,7 +429,6 @@ function showTitleUpdate() {
             })
 }
 
-
 function toolsTabHandler(i) {
     var story_tools_tab = document.getElementById(i);
     console.log('story_tools_tab clicked: ' + $(story_tools_tab).attr('class').split(" "));
@@ -440,6 +449,29 @@ function toolsTabHandler(i) {
                 .attr("data-original-title", "Shows toolbar");
         $("#right_story_tools").css({visibility: "hidden"});
         $("#left_story_tools").css({visibility: "hidden"});
+    }
+}
+
+function wheelHandler(i) {
+    var wheel_tab = document.getElementById(i);
+    console.log('wheel_tab clicked: ' + $(wheel_tab).attr('class').split(" "));
+
+    if ($(wheel_tab).hasClass('j_info_button')) {
+        $('#story_container').addClass('wheel_open');
+        $(wheel_tab)
+                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE WHEEL")
+                .addClass("isopen j_back_button")
+                .removeClass("isclosed j_info_button")
+                .attr("data-original-title", "Hides storywheel");
+        $('#wheel_box').show();
+    } else {
+        $('#story_container').removeClass('wheel_open');
+        $(wheel_tab)
+                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>STORY WHEEL")
+                .addClass("isclosed j_info_button")
+                .removeClass("isopen j_back_button")
+                .attr("data-original-title", "Shows storywheel");
+        $('#wheel_box').hide();
     }
 }
 

@@ -65,13 +65,14 @@ admin.site.register(JOSStory, JOSStoryAdmin)
 
 
 class JOSWheelAdmin(admin.ModelAdmin):
-    list_display = ("id", "author", "publish_permission", "updated", "title")
+    list_display = ("id", "author", "title", "updated")
 
     verbose_name = "wheel"
 
-    readonly_fields = ("created", "updated",)
+    readonly_fields = ("author", "title", "created", "updated",)
 
-    list_editable = ("publish_permission",)
+    def wheel_story_id(self, instance):
+        return instance.josstory.id
 
 admin.site.register(JOSWheel, JOSWheelAdmin)
 

@@ -141,21 +141,37 @@ class JOSWheel(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'wheel'
 
-    author = models.ForeignKey(User, blank=True, null=True)
-    title = models.TextField(default="Untitled", blank=True, null=True)
+
     publish_permission = models.IntegerField(default=1)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return str(self.id) + ': ' + str(self.title)
 
+    @property
+    def title(self):
+        try:
+            title = self.josstory.title
+        except:
+            title ='missing'
+
+        return title
+
+    @property
+    def author(self):
+        try:
+            author = self.josstory.author
+        except:
+            author = 'missing'
+
+        return author
 
 class JOSStory(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Story'
         verbose_name_plural = 'Stories'
 
-    wheel = models.OneToOneField(JOSWheel, blank = True, null = True)
+    wheel = models.OneToOneField(JOSWheel, on_delete=models.CASCADE, blank = True, null = True)
     author = models.ForeignKey(User)
     message_thread = models.ForeignKey(JOSMessageThread, blank=True, null=True)
 
@@ -164,8 +180,9 @@ class JOSStory(TimeStamped, models.Model):
     publish_permission = models.IntegerField(default=2)
     auto_save = models.BooleanField(default=1)
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
+    @property
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]
         last_initial = author.user.last_name[:1].upper()
@@ -181,12 +198,12 @@ class JOSCharacter(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Character'
 
-    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    wheel = models.ForeignKey(JOSWheel, on_delete=models.CASCADE, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
     first_name = models.CharField(max_length=150, default="- First --", blank=True, null=True)
     last_name = models.CharField(max_length=150, default="- Last --", blank=True, null=True)
     nick_name = models.CharField(max_length=150, default="- Nicky -", blank=True, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return str(self.id) + ': ' + str(self.nick_name)
@@ -196,7 +213,7 @@ class JOSPlot(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Plot'
 
-    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    wheel = models.ForeignKey(JOSWheel, on_delete=models.CASCADE, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
     incite = models.TextField(default="-- insert inciting incident --", blank=True, null=True)
     rising = models.TextField(default="-- insert rising action --", blank=True, null=True)
@@ -212,7 +229,7 @@ class JOSWorld(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'World'
 
-    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    wheel = models.ForeignKey(JOSWheel, on_delete=models.CASCADE, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
 
     def __str__(self):
@@ -223,7 +240,7 @@ class JOSTheme(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Theme'
 
-    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    wheel = models.ForeignKey(JOSWheel, on_delete=models.CASCADE, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
 
     def __str__(self):
@@ -234,7 +251,7 @@ class JOSConflict(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Conflict'
 
-    wheel = models.ForeignKey(JOSWheel, blank=True, null=True)
+    wheel = models.ForeignKey(JOSWheel, on_delete=models.CASCADE, blank=True, null=True)
     publish_permission = models.IntegerField(default=1)
 
     def __str__(self):

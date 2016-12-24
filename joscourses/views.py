@@ -97,18 +97,15 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
     except:
         story = JOSStory.objects.create(author=request.user, title="- Untitled -", story_content="- Enter content here -")
 
-    if not story.message_thread:
-        comment_thread = JOSMessageThread.objects.create(subject=story.title)
-        story.message_thread = comment_thread
+    if not story.wheel:
+        story.wheel = JOSWheel.objects.create()
         story.save()
 
-    comment_thread = story.message_thread
+    if not story.message_thread:
+        story.message_thread = JOSMessageThread.objects.create(subject=story.title)
+        story.save()
 
-    if comment_thread.subject != story.title:
-        comment_thread.subject = story.title
-        comment_thread.save()
-
-    comments = Message.objects.filter(message_thread=comment_thread).order_by('sent_at')
+    comments = Message.objects.filter(message_thread=story.message_thread).order_by('sent_at')
 
     new_title = request.GET.get('newtitle', 'none')
     if new_title != 'none':
