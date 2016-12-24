@@ -72,17 +72,16 @@
     /* permissions radio */
     .perm_label {
         background-color: white;
-        font-size: 14pt;
+        font-size: 20pt;
         text-align: center;
         height: 40px;
-        width: 100px;
-        padding-top: 7px;
+        width: 65px;
+        padding-top: 2px;
         color: #5bc0de;
         cursor: pointer;
     }
 
-    .perm_label:hover {
-        border: 3px dotted #f0ad4e;
+    i:hover, .perm_label:hover {
         color: #f0ad4e;
         background-color: white;
     }
@@ -105,13 +104,13 @@
 
 {% if story.author == request.user %}
     <button id='story_wheel_tab' class="j_button j_info_button" style="
-            position: fixed; top: 65px; left: 1160px; width: 120px;
+            position: fixed; top: 65px; left: 1159px;
             font-size: 14pt; border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
-            title="Displays storywheel in new section">
+            title="Displays storywheel">
         <i class="fa fa-circle fa-fw"></i>
-        STORY<br>WHEEL
+        WHEEL
     </button>
 {% endif %}
 
@@ -174,19 +173,26 @@
         display: flex; justify-content: flex-start; align-items: center;">
 
         <button class="j_button_small j_relocate_button"
-                onclick=" " style="opacity: .1;">
+                onclick=" " style="opacity: .1;"
+                data-toggle="tooltip" data-placement="bottom"
+                title="View previous versions">
             <i class="fa fa-square fa-fw"></i>
             VERSIONS
         </button>
 
-        <button class="j_button_small j_action_button"
-                onclick="showTitleUpdate();">
-            <i class="fa fa-scissors fa-fw"></i>
-            RE-TITLE
+        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
+                style="margin-left: 5px;"
+                onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Loads last save, discarding changes">
+            <i class="fa fa-trash fa-fw"></i>
+            RESTART
         </button>
 
         <button class="j_button_small j_action_button"
-                onclick=" " style="opacity: .1;">
+                onclick=" " style="opacity: .1;"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Preview format / email to friends">
             <i class="fa fa-exclamation fa-fw"></i>
             READ / SEND
         </button>
@@ -198,7 +204,7 @@
          padding-top: 5px;">
 
         <!-- Autosave -->
-        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
+        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 40px;">
             Auto<br>save:
         </div>
         <label class="auto_save_checkbox">
@@ -208,25 +214,34 @@
 
         <!-- Permission -->
         <div style="font-size: 12pt; font-weight: bold;
-             margin-left: 25px; text-align: right">
-            Shared<br>with:
+             margin-left: 40px; text-align: right">
+            Share:
         </div>
 
         <div id="sharing_box" style="
              position: relative; top:0; margin-left: 10px;
-             height: 40px; width: 310px;
+             height: 40px; width: 208px;
              outline: 2px solid #412d78;">
 
-            <label id="perm_1" class="perm_label">
-                <input type="radio" name="toggle">ONLY ME
+            <label id="perm_1" class="perm_label" style="font-size: 16pt;"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="Only me">
+                <input type="radio" name="toggle">
+                OFF
             </label>
 
-            <label id="perm_2" class="perm_label">
-                <input type="radio" name="toggle">CIRCLES
+            <label id="perm_2" class="perm_label"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="My circles">
+                <input type="radio" name="toggle">
+                <i class="fa fa-link fa-fw"></i>
             </label>
 
-            <label id="perm_3" class="perm_label">
-                <input type="radio" name="toggle">PUBLISH
+            <label id="perm_3" class="perm_label"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="Publish">
+                <input type="radio" name="toggle">
+                <i class="fa fa-users fa-fw"></i>
             </label>
 
         </div>
@@ -239,7 +254,7 @@
                 font-size: 14pt; border-radius: 0;"
                 onclick="toolsTabHandler(this.id);"
                 data-toggle="tooltip" data-placement="bottom"
-                title="Shows story options">
+                title="Versions / Restart / Read">
             <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
             TOOLS
         </button>
@@ -248,29 +263,27 @@
     <!-- Editor buttons -->
     <div style="margin: 75px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
 
+        <button class="j_button_small j_action_button"
+                onclick="showTitleUpdate();">
+            <i class="fa fa-scissors fa-fw"></i>
+            CHANGE TITLE
+        </button>
+
         <button id="story_content_edit_btn" class="j_button_small j_save_button"
-                style=" " onclick="josCKSave('story_content');"
+                style="margin-left: 10px" onclick="josCKSave('story_content');"
                 data-toggle="tooltip" data-placement="bottom"
                 title="Updates story content">
             <i class="fa fa-arrow-circle-up fa-fw"></i>
-            SAVE STORY NOW
+            SAVE STORY
         </button>
 
-        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
-                style="margin-left: 5px;"
-                onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Reloads last save, discarding changes">
-            <i class="fa fa-trash fa-fw"></i>
-            RESTART EDIT SESSION
-        </button>
 
-        <div style="margin-left: 325px;">
+        <div style="margin-left: 15px;">
             {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
         </div>
 
         <!-- Discuss -->
-        <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
+        <button class="j_button_small j_relocate_button" style="margin-left: auto;"
                 onclick="window.location.href='#discuss';">
             <i class="fa fa-comments fa-fw"></i>
             DISCUSS
@@ -436,9 +449,9 @@ function toolsTabHandler(i) {
     if ($(story_tools_tab).hasClass('j_info_button')) {
         $(story_tools_tab)
                 .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>HIDE")
+                .tooltip('disable')
                 .addClass("isopen j_back_button")
-                .removeClass("isclosed j_info_button")
-                .attr("data-original-title", "Hides toolbar");
+                .removeClass("isclosed j_info_button");
         $("#right_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
         $("#left_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
     } else {
@@ -446,7 +459,7 @@ function toolsTabHandler(i) {
                 .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
                 .addClass("isclosed j_info_button")
                 .removeClass("isopen j_back_button")
-                .attr("data-original-title", "Shows toolbar");
+                .tooltip('enable');
         $("#right_story_tools").css({visibility: "hidden"});
         $("#left_story_tools").css({visibility: "hidden"});
     }
@@ -459,18 +472,18 @@ function wheelHandler(i) {
     if ($(wheel_tab).hasClass('j_info_button')) {
         $('#story_container').addClass('wheel_open');
         $(wheel_tab)
-                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE WHEEL")
+                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button")
-                .attr("data-original-title", "Hides storywheel");
+                .tooltip('disable');
         $('#wheel_box').show();
     } else {
         $('#story_container').removeClass('wheel_open');
         $(wheel_tab)
-                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>STORY WHEEL")
+                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
                 .addClass("isclosed j_info_button")
                 .removeClass("isopen j_back_button")
-                .attr("data-original-title", "Shows storywheel");
+                .tooltip('enable');
         $('#wheel_box').hide();
     }
 }
