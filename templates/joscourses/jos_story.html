@@ -147,8 +147,8 @@
 </div>
 
 <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
-    position: absolute; top: 0; left: 15px; height: 45px; width: 445px;
-    display: flex; justify-content: flex-start; align-items: flex-end;">
+    position: absolute; top: 0; left: 155px; height: 55px; width: 445px;
+    display: flex; justify-content: flex-start; align-items: center;">
 
     <button class="j_button_small j_relocate_button"
             onclick=" " style="opacity: .1;">
@@ -170,7 +170,7 @@
 </div>
 
 <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
-     position: absolute; top: 0; left: 430px; height: 55px; width: 600px;
+     position: absolute; top: 0; left: 570px; height: 55px; width: 600px;
      display: flex; justify-content: flex-start; align-items: center;
      padding-top: 5px;">
 
@@ -212,7 +212,7 @@
 
 {% if story.author == request.user %}
     <button id='story_tools_tab' class="j_button j_info_button" style="
-            position: absolute; top: 0; left: 1020px; width: 125px;
+            position: absolute; top: 0; left: 1155px; width: 125px;
             font-size: 14pt; border-radius: 0;"
             onclick="toolsTabHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
@@ -222,7 +222,7 @@
     </button>
 
     <button id='story_wheel_tab' class="j_button j_info_button" style="
-                position: absolute; top: 0; left: 1160px; width: 120px;
+                position: absolute; top: 0; left: 0px; width: 120px;
                 font-size: 14pt; border-radius: 0;"
             onclick=" "
             data-toggle="tooltip" data-placement="bottom"
@@ -233,7 +233,7 @@
 {% endif %}
 
 <!-- Editor buttons -->
-<div style="margin: 60px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
+<div style="margin: 75px 0 0 30px; display: flex; justify-content: flex-start; align-items: center;">
 
     <button id="story_content_edit_btn" class="j_button_small j_save_button"
             style=" " onclick="josCKSave('story_content');"
