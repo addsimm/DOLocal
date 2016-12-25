@@ -1,14 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
-{% block meta_title %}{% endblock %}
-{% block title %}{{ wheel.title }} - Plot{% endblock %}
-
-{% block breadcrumb_menu %}{{ block.super }}
-    {{ wheel.title }} - Plot
-{% endblock %}
-
-{% block all_content %}
-
+{% load i18n mezzanine_tags accounts_tags  static %}
 <style>
 
     body {
@@ -62,7 +52,7 @@
 
 <!-- Page title -->
 
-<div id="fixed_background" style="position: fixed; top: 0; left: 60px;">
+<div id="fixed_background" style="position: absolute; top: 0; left: 60px;">
 
     <div class="text-center" style="margin: 30px -30px 0 -45px; width: 1200px; height: 925px; border: 8px solid #EE3B38; z-index: 115;">
         <img id='background_image' src="{% static 'img/plot-template-113016.png' %}"
@@ -71,7 +61,7 @@
 </div>
 
 <div id="fixed-top-bar"
-     style="position: fixed; top: 75px; height: 850px; width: 1140px; left: 45px;">
+     style="position: absolute; top: 75px; height: 850px; width: 1140px; left: 45px;">
 
     {% if wheel.author == request.user %}
 
@@ -259,7 +249,7 @@
 
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
-    <script>
+<script>
 
         if ('{{ edit }}' === 'True') {
             $('.edit_btn_central').show();
@@ -267,7 +257,6 @@
             $('.component_label').show();
         }
 
-    </script>
+</script>
 
-{% endblock all_content %}
-adam
+

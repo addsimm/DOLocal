@@ -114,13 +114,24 @@
     </button>
 {% endif %}
 
-<div id="wheel_box" style="display: none;
-     position: fixed; top: 65px; left: 0px; height: 830px; width: 1280px;
-     background-color: white; z-index: 500;">
+<div id="wheel_box" style="
+     position: fixed; top: 80px; left: 15px; height: 800px; width: 1265px;
+     display: flex; justify-content: flex-start; align-items: center;
+     background-color: pink; z-index: 500;">
     {% include 'joscourses/wheel.html' with wheel=story.wheel %}
-</div>
 
-<div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
+
+    <div id="component_template" style="
+         display: flex; justify-content: flex-start; align-self: flex-start;
+         background-color: white;">
+        <iframe src="https://joinourstory.com/joscourses/plot_template/39"
+                style="height: 800px; width: 865px;">
+
+        </iframe>
+    </div>
+
+</div>
+<div id="story_container" style="position: absolute; top: 0; left: 0;" class="wheel_open">
     <div id="change_title_box" style="display: none;
          position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
          background-color: grey; opacity: .95; z-index: 500;">
