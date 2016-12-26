@@ -53,7 +53,7 @@
 
 <body id="body">
 
-<!-- Login / out button -->
+{% block login_button %}
 <button class="j_button j_action_button"
         style="position: fixed; top: 10px; left: 1115px; width: 165px; z-index: 450;"
         {% if request.user.is_authenticated %}
@@ -66,6 +66,7 @@
             MEMBERS
         {% endif %}
 </button>
+{% endblock login_button %}
 
 {% block base-fixed-top-bar %}
 <div id='base-fixed-top-bar' style="

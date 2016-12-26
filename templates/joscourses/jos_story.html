@@ -5,14 +5,12 @@
 {% block breadcrumb_menu %}
     {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
 
-{% block footer %}{% endblock %}
-
 {% block all_content %}
 
 <style>
 
     .wheel_open {
-        margin-top: 830px;
+        margin-top: 775px;
     }
 
     #right_story_tools input {
@@ -114,24 +112,25 @@
     </button>
 {% endif %}
 
-<div id="wheel_box" style="
-     position: fixed; top: 80px; left: 15px; height: 800px; width: 1265px;
-     display: flex; justify-content: flex-start; align-items: center;
-     background-color: pink; z-index: 500;">
-    {% include 'joscourses/wheel.html' with wheel=story.wheel %}
+<div id="wheel_box" style="display: none;
+     position: absolute; top: 10px; left: 12px; height: 750px; width: 1265px;
+     ">
 
+    <div id="wheel_navigation" style="background-color: transparent;
+        position: absolute; top: 10px; left: 10px; height: 280px; width: 280px; z-index: 130;">
+        {% include 'joscourses/wheel.html' with wheel=story.wheel %}
+    </div>
 
-    <div id="component_template" style="
-         display: flex; justify-content: flex-start; align-self: flex-start;
-         background-color: white;">
+    <div id="element_template" style="background-color: white;">
         <iframe src="https://joinourstory.com/joscourses/plot_template/39"
-                style="height: 800px; width: 865px;">
-
+                style="position: absolute; top: 0; left: 0;
+                height: 750px; width: 1265px;  outline: 3px solid #EE3B38; z-index: 125;">
         </iframe>
     </div>
 
 </div>
-<div id="story_container" style="position: absolute; top: 0; left: 0;" class="wheel_open">
+
+<div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
     <div id="change_title_box" style="display: none;
          position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
          background-color: grey; opacity: .95; z-index: 500;">
@@ -231,7 +230,7 @@
 
         <div id="sharing_box" style="
              position: relative; top:0; margin-left: 10px;
-             height: 40px; width: 208px;
+             height: 40px; width: 205px;
              outline: 2px solid #412d78;">
 
             <label id="perm_1" class="perm_label" style="font-size: 16pt;"
@@ -272,7 +271,7 @@
     {% endif %}
 
     <!-- Editor buttons -->
-    <div style="margin: 75px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
+    <div style="margin: 70px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
 
         <button class="j_button_small j_action_button"
                 onclick="showTitleUpdate();">
@@ -483,7 +482,7 @@ function wheelHandler(i) {
     if ($(wheel_tab).hasClass('j_info_button')) {
         $('#story_container').addClass('wheel_open');
         $(wheel_tab)
-                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
+                .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE")
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button")
                 .tooltip('disable');
@@ -504,3 +503,4 @@ function wheelHandler(i) {
 {% endblock all_content %}
 
 
+{% block footer %}{% endblock %}
