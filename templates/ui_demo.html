@@ -387,7 +387,7 @@
                             {% if comment.sender != request.user %}
 
                                 <div class="col-xs-2" style="padding: 0;">
-                                    {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                                    {% include "josmembers/jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
                                 </div>
 
                                 <div class="col-xs-9"
@@ -403,7 +403,7 @@
                                 </div>
 
                                 <div class="col-xs-2">
-                                    {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                                    {% include "josmembers/jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
                                 </div>
 
                             {% endif %}

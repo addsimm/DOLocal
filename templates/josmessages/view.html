@@ -33,7 +33,7 @@
         {% if msg.sender != request.user %}
 
             <div class="col-xs-2" style="padding: 0;">
-                {% include "josmembers/user_picture_include.html" with user=msg.sender height=60 %}
+                {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
             </div>
 
             <div class="col-xs-10" style="margin-left: -25px; border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
@@ -47,7 +47,7 @@
             </div>
 
             <div class="col-xs-2">
-                {% include "josmembers/user_picture_include.html" with user=msg.sender height=60 %}
+                {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
             </div>
 
         {% endif %}

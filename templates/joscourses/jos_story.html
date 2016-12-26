@@ -22,7 +22,7 @@
         position: relative;
         top: 3px;
         margin-left: 10px;
-        height: 40px;
+        height: 38px;
         width: 100px;
         outline: 2px solid #412d78;
     }
@@ -46,14 +46,13 @@
         content: "OFF";
         top: 0;
         left: 0;
-        height: 40px;
+        height: 38px;
         width: 50px;
         padding-top: 7px;
         background-color: #5bc0de;
     }
 
     .autosave_slider:hover::before {
-        border: 3px dotted #f0ad4e;
         color:  #f0ad4e;
         background-color: white;
     }
@@ -70,11 +69,10 @@
     /* permissions radio */
     .perm_label {
         background-color: white;
-        font-size: 20pt;
+        font-size: 16pt;
         text-align: center;
         height: 40px;
         width: 65px;
-        padding-top: 2px;
         color: #5bc0de;
         cursor: pointer;
     }
@@ -98,36 +96,85 @@
         margin-left: 10px;
     }
 
+    .story_control_button {
+        width: 140px;
+        height: 46px;
+    }
+
+    .right_triangle {
+        position: absolute;
+        top: 0;
+        left: 140px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 23px 0 23px 23px;
+        border-color: transparent transparent transparent #5bc0de;
+    }
+
+    .left_triangle {
+        position: absolute;
+        top: 0;
+        left: 140px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 23px 23px 23px 0;
+        border-color: transparent #f0ad4e transparent transparent;
+    }
+
+    .up_triangle {
+        position: absolute;
+        top: 46px;
+        left: 1141px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 70px 23px 70px;
+        border-color: transparent transparent #f0ad4e transparent;
+    }
+
+    .down_triangle {
+        position: absolute;
+        top: 46px;
+        left: 1141px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 23px 70px 0 70px;
+        border-color: #5bc0de transparent transparent transparent;
+    }
+
 </style>
 
 {% if story.author == request.user %}
-    <button id='story_wheel_tab' class="j_button j_info_button" style="
-            position: fixed; top: 65px; left: 1159px;
-            font-size: 14pt; border-radius: 0; z-index: 501;"
+    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
+            position: fixed; top: 65px; left: 1141px;
+            border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
-            title="Displays storywheel">
+            title="Storywheel / Templates">
         <i class="fa fa-circle fa-fw"></i>
         WHEEL
     </button>
+
+    <div id="wheel_triangle" class="down_triangle"></div>
 {% endif %}
 
 <div id="wheel_box" style="display: none;
-     position: absolute; top: 10px; left: 12px; height: 750px; width: 1265px;
-     ">
+     position: absolute; top: 15px; left: 12px; height: 750px; width: 1265px;">
 
     <div id="wheel_navigation" style="background-color: transparent;
-        position: absolute; top: 10px; left: 10px; height: 280px; width: 280px; z-index: 130;">
+        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
         {% include 'joscourses/wheel.html' with wheel=story.wheel %}
     </div>
 
     <div id="element_template" style="background-color: white;">
         <iframe src="https://joinourstory.com/joscourses/plot_template/39"
                 style="position: absolute; top: 0; left: 0;
-                height: 750px; width: 1265px;  outline: 3px solid #EE3B38; z-index: 125;">
+                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">
         </iframe>
     </div>
-
 </div>
 
 <div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
@@ -179,7 +226,7 @@
     </div>
 
     <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
-        position: absolute; top: 0; left: 135px; height: 55px; width: 450px;
+        position: absolute; top: 0; left: 170px; height: 55px; width: 485px;
         display: flex; justify-content: flex-start; align-items: center;">
 
         <button class="j_button_small j_relocate_button"
@@ -209,13 +256,13 @@
     </div>
 
     <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
-         position: absolute; top: 0; left: 545px; height: 55px; width: 600px;
+         position: absolute; top: 0; left: 580px; height: 55px; width: 515px;
          display: flex; justify-content: flex-start; align-items: center;
          padding-top: 5px;">
 
         <!-- Autosave -->
-        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 40px;">
-            Auto<br>save:
+        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 30px;">
+            Autosave:
         </div>
         <label class="auto_save_checkbox">
             <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
@@ -224,34 +271,36 @@
 
         <!-- Permission -->
         <div style="font-size: 12pt; font-weight: bold;
-             margin-left: 40px; text-align: right">
+             margin-left: 30px; text-align: right">
             Share:
         </div>
 
         <div id="sharing_box" style="
              position: relative; top:0; margin-left: 10px;
-             height: 40px; width: 205px;
+             display: flex;  justify-content: space-between; align-items: flex-start;
+
+             height: 40px; width: 198px;
              outline: 2px solid #412d78;">
 
-            <label id="perm_1" class="perm_label" style="font-size: 16pt;"
+            <label id="perm_1" class="perm_label" style="font-size: 14pt; padding-top: 7px;"
                    data-toggle="tooltip" data-placement="bottom"
                    title="Only me">
                 <input type="radio" name="toggle">
                 OFF
             </label>
 
-            <label id="perm_2" class="perm_label"
+            <label id="perm_2" class="perm_label" style="padding-top: 4px;"
                    data-toggle="tooltip" data-placement="bottom"
                    title="My circles">
                 <input type="radio" name="toggle">
-                <i class="fa fa-link fa-fw"></i>
+                <i class="fa fa-opera fa-fw"></i>
             </label>
 
-            <label id="perm_3" class="perm_label"
+            <label id="perm_3" class="perm_label" style="font-size: 20pt; padding-top: 1px;"
                    data-toggle="tooltip" data-placement="bottom"
                    title="Publish">
                 <input type="radio" name="toggle">
-                <i class="fa fa-users fa-fw"></i>
+                <i class="fa fa-globe fa-fw"></i>
             </label>
 
         </div>
@@ -259,15 +308,17 @@
     </div>
 
     {% if story.author == request.user %}
-        <button id='story_tools_tab' class="j_button j_info_button" style="
-                position: absolute; top: 0; left: 0px; width: 125px;
-                font-size: 14pt; border-radius: 0;"
+        <button id='story_tools_tab' class="j_button j_info_button story_control_button" style="
+                position: absolute; top: 0; left: 0px;
+                border-radius: 0;"
                 onclick="toolsTabHandler(this.id);"
                 data-toggle="tooltip" data-placement="bottom"
-                title="Versions / Restart / Read">
+                title="Versions / Restart / Read / Autosave / Sharing">
             <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
             TOOLS
         </button>
+
+        <div id="tools_triangle" class="right_triangle"></div>
     {% endif %}
 
     <!-- Editor buttons -->
@@ -287,13 +338,13 @@
             SAVE STORY
         </button>
 
-
-        <div style="margin-left: 15px;">
+        <!-- Updated -->
+        <div style="margin-left: 25px;">
             {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
         </div>
 
         <!-- Discuss -->
-        <button class="j_button_small j_relocate_button" style="margin-left: auto;"
+        <button class="j_button_small j_relocate_button" style="margin-left: 25px;"
                 onclick="window.location.href='#discuss';">
             <i class="fa fa-comments fa-fw"></i>
             DISCUSS
@@ -327,7 +378,7 @@
                     {% if comment.sender != request.user %}
 
                         <div class="col-xs-2" style="padding: 0;">
-                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
                         </div>
 
                         <div class="col-xs-9"
@@ -343,7 +394,7 @@
                         </div>
 
                         <div class="col-xs-2">
-                            {% include "josmembers/user_picture_include.html" with user=comment.sender height=60 %}
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
                         </div>
 
                     {% endif %}
@@ -386,6 +437,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
 
 $(document).ready(function () {
@@ -454,7 +507,7 @@ function showTitleUpdate() {
 
 function toolsTabHandler(i) {
     var story_tools_tab = document.getElementById(i);
-    console.log('story_tools_tab clicked: ' + $(story_tools_tab).attr('class').split(" "));
+    var tools_triangle = document.getElementById('tools_triangle');
 
     if ($(story_tools_tab).hasClass('j_info_button')) {
         $(story_tools_tab)
@@ -462,6 +515,7 @@ function toolsTabHandler(i) {
                 .tooltip('disable')
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button");
+        $(tools_triangle).removeClass('right_triangle').addClass('left_triangle');
         $("#right_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
         $("#left_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
     } else {
@@ -470,6 +524,7 @@ function toolsTabHandler(i) {
                 .addClass("isclosed j_info_button")
                 .removeClass("isopen j_back_button")
                 .tooltip('enable');
+        $(tools_triangle).removeClass('left_triangle').addClass('right_triangle');
         $("#right_story_tools").css({visibility: "hidden"});
         $("#left_story_tools").css({visibility: "hidden"});
     }
@@ -477,7 +532,7 @@ function toolsTabHandler(i) {
 
 function wheelHandler(i) {
     var wheel_tab = document.getElementById(i);
-    console.log('wheel_tab clicked: ' + $(wheel_tab).attr('class').split(" "));
+    var wheel_triangle = document.getElementById('wheel_triangle');
 
     if ($(wheel_tab).hasClass('j_info_button')) {
         $('#story_container').addClass('wheel_open');
@@ -486,6 +541,7 @@ function wheelHandler(i) {
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button")
                 .tooltip('disable');
+        $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
         $('#wheel_box').show();
     } else {
         $('#story_container').removeClass('wheel_open');
@@ -495,12 +551,13 @@ function wheelHandler(i) {
                 .removeClass("isopen j_back_button")
                 .tooltip('enable');
         $('#wheel_box').hide();
+        $(wheel_triangle).removeClass('up_triangle').addClass('down_triangle');
     }
 }
 
 </script>
 
-{% endblock all_content %}
 
+{% endblock all_content %}
 
 {% block footer %}{% endblock %}

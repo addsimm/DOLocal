@@ -44,6 +44,24 @@
         background-color: rgb(255, 255, 224) !important;
     }
 
+    .up_triangle {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 54px 18px 54px;
+        border-color: transparent transparent #f0ad4e transparent;
+    }
+
+    .down_triangle {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 18px 54px 0 54px;
+        border-color: #5bc0de transparent transparent transparent;
+    }
+
 </style>
 
 <!-- DEBUG
@@ -69,13 +87,16 @@
 </div> -->
 
 <!-- help button -->
-<button id="help_button" class="j_button j_info_button isopen" style="position: fixed;
-        top: 0; left: 820px; height: 50px; width: 145px; border-radius: 0; z-index: 401;"
+<button id="help_button" class="j_button_small j_info_button isopen" style="position: fixed;
+        top: -3px; left: 870px; height: 36px; width: 108px;
+        border-radius: 0; z-index: 401; padding-top: 10px;"
     data-toggle="tooltip" data-placement="bottom"
-    title="To do - How do I? - My notes" onclick="session_data_update('help_position');">
+    title="To do / How do I? / My notes" onclick="session_data_update('help_position');">
     <i class="fa fa-folder fa-fw" style='margin-right: 5px;'></i>
     FOLDER
 </button>
+
+<div id="help_triangle" class="down_triangle" style="top: 33px; left: 870px; z-index: 401;"></div>
 
 <div id="help_screen" style="background-color: white; display: none;
      position: fixed; top: 0; left: 0; height: 560px; width: 1280px;
@@ -210,9 +231,12 @@
         $('#help_search_text').keyup(processSearch, MILLS_TO_IGNORE_SEARCH, true);
 
         hb = document.getElementById('help_button');
+        help_triangle = document.getElementById('help_triangle');
         if ('{{ request.session.help_position }}' === 'down') {
 
             $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>CLOSE").removeClass("isopen j_info_button").addClass("isclosed  j_back_button").attr("data-original-title", "Saves changes");
+            $(help_triangle).removeClass('down_triangle').addClass('up_triangle');
+
             $("body").addClass('moveDown');
             $("#help_screen").slideDown("slow");
 
@@ -227,6 +251,7 @@
 
         } else {
             $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>FOLDER").removeClass("isclosed  j_back_button").addClass("isopen j_info_button").attr("data-original-title", "To do - How do I? - My notes");
+            $(help_triangle).removeClass('up_triangle').addClass('down_triangle');
             $("body").removeClass('moveDown');
             $("#help_screen").slideUp("slow");
         }
