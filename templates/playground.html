@@ -91,14 +91,11 @@
     }
 
 </style>
-<!-- Guides --><!-- div class="horizontal_guide bar" style="top: 465px; left: 0; width: 1280px; height: 2px;"></div>
-
-    <div class="vertical_guide bar" style="top: 0; left: 640px; width: 2px; height: 865px;"></div -->
 
 <!-- HTML -->
-<div id="start_box"
-     style="position:absolute; top: 145px; left: 0px; height: 650px; width: 1280px;
-     display: none; justify-content: flex-start; align-items: center; flex-direction: column;">
+<div id="start_box" style="position:absolute; top: 0px; left: 0px; height: 800px; width: 1280px;
+     display: flex; justify-content: center; align-items: center; flex-direction: column;
+     background-color: white; z-index: 600;">
 
     <div class="homehead">Welcome {{ request.user.get_short_name }}</div>
 
@@ -132,7 +129,7 @@
 </div>
 
 <div id="main_container">
-<div id="big_box" style="position:fixed; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
+    <div id="big_box" style="position:fixed; top: 65px; left: 0; height: 800px; width: 1280px; display: inherit;">
 
     <div id="quadrants">
 
@@ -167,14 +164,6 @@
 </div>
 </div>
 
-<!-- DEBUG --><!--  <div id="mouse_report" style="font-weight: bold; color: green; position:fixed; top: 80px; left: 700px; width: 500px; z-index: 8000;">Mouse position:</div>
-</div>
-
-<div id="y_report"
-     style="font-size: 36pt; font-weight: bold; color: red; position:fixed; top: 105px; left: 700px; width: 500px; z-index: 8000;">
-    y position:
-</div> -->
-
 <!-- SCRIPTS -->
 <script>
 
@@ -207,7 +196,7 @@
         $("div.pupil").jqEye({shape: "circle", radius: 6});
     });
 
-    /* function moveToDesk() {
+    function moveToDesk() {
         MB = document.getElementById('message_box');
         CB = document.getElementById('countdown');
         $('#start_box').fadeOut(300);
@@ -220,7 +209,7 @@
             $('#big_box').fadeIn(500);
         }, delay);
         console.log('hidden');
-    } */ // moveToDesk
+    }  // moveToDesk
 
     layoutButtons = function () {
 
@@ -569,7 +558,7 @@
 
                         var delay = 1500; //1.5 second
                         setTimeout(function () {
-                            // moveToDesk();
+                            moveToDesk();
                         }, delay);
 
                     } else {
@@ -586,3 +575,5 @@
 
 {% endblock all_content %}
 
+<!-- DEBUG --><!--  <div id="mouse_report" style="font-weight: bold; color: green; position:fixed; top: 80px; left: 700px; width: 500px; z-index: 8000;">Mouse position:</div>
+</div>-->
