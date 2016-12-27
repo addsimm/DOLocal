@@ -31,7 +31,7 @@ body {
 }
 
 /* Base button */
-.j_button, .j_button:visited {
+.j_button, .j_button:visited, .j_button:focus {
     color: white;
     font-family: "Open Sans";
     font-size: 16pt;
@@ -42,7 +42,7 @@ body {
     -webkit-focus-ring-color: none;
 }
 
-.j_button_small, .j_button_small:visited {
+.j_button_small, .j_button_small:visited, .j_button_small:focus {
     color: white;
     font-family: "Open Sans";
     font-size: 12pt;
@@ -53,8 +53,8 @@ body {
     -webkit-focus-ring-color: none;
 }
 
-.j_button:hover, .j_button:focus,
-.j_button_small:hover, .j_button_small:focus {
+.j_button:hover,
+.j_button_small:hover  {
     background-color: white;
     border: none;
     outline: none;
@@ -62,59 +62,59 @@ body {
 }
 
 /* Other buttons */
-.j_test_button, .j_test_button:visited {
+.j_test_button, .j_test_button:visited, .j_test_button:focus {
     background-color: black;
 }
 
-.j_test_button:hover, .j_test_button:focus {
+.j_test_button:hover {
     color: black;
 }
 
-.j_action_button, .j_action_button:visited {
+.j_action_button, .j_action_button:visited, .j_action_button:focus {
     background-color: #412D78;
 }
 
-.j_action_button:hover, .j_action_button:focus {
+.j_action_button:hover {
     color: #412D78;
 }
 
-.j_back_button, .j_back_button:visited {
+.j_back_button, .j_back_button:visited, .j_back_button:focus {
     background-color: #f0ad4e;
 }
 
-.j_back_button:hover, .j_back_button:focus {
+.j_back_button:hover {
     color: #f0ad4e;
 }
 
-.j_relocate_button, .j_relocate_button:visited {
+.j_relocate_button, .j_relocate_button:visited, .j_relocate_button:focus {
     background-color: rgb(112, 154, 109);
 }
 
-.j_relocate_button:hover, .j_relocate_button:focus {
+.j_relocate_button:hover {
     color: #709a6d;
 }
 
-.j_save_button, .j_save_button:visited {
+.j_save_button, .j_save_button:visited, .j_save_button:focus {
     background-color: #5cb85c;
 }
 
-.j_save_button:hover, .j_save_button:focus {
+.j_save_button:hover {
     color: #5cb85c;
 }
 
-.j_discard_button, .j_discard_button:visited {
+.j_discard_button, .j_discard_button:visited, .j_discard_button:focus {
     background-color: #d9534f;
 }
 
-.j_discard_button:hover, .j_discard_button:focus {
+.j_discard_button:hover {
     color: #d9534f;
 }
 
-.j_info_button, .j_info_button:visited {
+.j_info_button, .j_info_button:visited, .j_info_button:focus {
     background-color: #5bc0de;
 }
 
-.j_info_button:hover, .j_info_button:focus {
+.j_info_button:hover {
     color: #5bc0de;
 }
 
