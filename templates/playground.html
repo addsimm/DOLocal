@@ -120,8 +120,10 @@
     </div>
 </div>
 
-<div id="message_box" class="josinstructions text-center"
-     style="position:absolute; top: 340px; left: 410px; line-height: 1.6; display: none;">
+<div id="message_box" class="josinstructions text-center" style="
+     position:absolute; top: 0px; left: 0px; height: 800px; width: 1280px;
+     display: flex; justify-content: center; align-items: center; flex-direction: column;
+     background-color: white; z-index: 599;">
     Great! Now use your mouse to explore,<br>and click when you find something fun.<br><br>
     Remember: nothing can break!
 
@@ -236,7 +238,7 @@
                     };
                 } else {
                     html = button_index;
-                    $(button).css("opacity", .05);
+                    $(button).css("opacity", 1); // set opacity to hide button
                 }
 
                 $(button).addClass('desk_button').html(html);
