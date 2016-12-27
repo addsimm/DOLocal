@@ -1,4 +1,4 @@
-jQuery(function($) {
+(function ($) {
 
     // TICKET #11447: td containing a.add-another need.nowrap
     $('table').find('a.add-another').parent('td').addClass('nowrap');
@@ -20,4 +20,4 @@ jQuery(function($) {
         }
     });
 
-});
+})(jQuery);

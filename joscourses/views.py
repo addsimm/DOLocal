@@ -197,7 +197,7 @@ def ajax_story_update(request):
 
 
 @login_required
-def joswheel(request, wheel_id=0, template="joscourses/wheel.html", extra_context=None):
+def joswheel(request, wheel_id=0, template="joscourses/training_wheel.html", extra_context=None):
     activate('America/Los_Angeles')
 
     try:

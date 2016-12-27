@@ -22,9 +22,9 @@ var ck_config_small = {
     contentsCss: '/static/ckeditor/ckeditor/contents.css',
     disableNativeSpellChecker: false,
     width: '100%',
-    height: 360,
+    height: 300,
     tabSpaces: 4,
-    uiColor: 'yellow',
+    uiColor: '#ffff00',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
 
@@ -52,7 +52,7 @@ window.onbeforeunload = function () {
     var lngth = Object.keys(editors).length;
     for (var i = 0; i < lngth; i++) {
         var section = Object.keys(editors)[i];
-        if (editors[section].section_editor) {
+        if (editors[section].section_editor && editors[section].section === 'notes') {
             console.log('unload called; ckeditor found: ' + section + ' -- trying to save');
             josCKEdit(section);
         } else {
@@ -81,7 +81,8 @@ function josCKEdit(sect2edit) {
 
         if (sect2edit.search('story') === -1) {
             var data_original_title_string = 'Updates ' + sect2edit;
-            $(edit_btn).removeClass('j_action_button').addClass('j_save_button').text('SAVE').attr("data-original-title", data_original_title_string);
+            var edit_button_html = "<i class = 'fa fa-arrow-circle-up fa-fw'></i>SAVE " + sect2edit.toUpperCase();
+            $(edit_btn).removeClass('j_action_button').addClass('j_save_button').html(edit_button_html).attr("data-original-title", data_original_title_string);
             $('#' + sect2edit + '_cancel_btn').show();
             $(segment_element).hide();
         }

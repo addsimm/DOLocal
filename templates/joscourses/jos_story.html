@@ -124,8 +124,8 @@
     }
 
     .up_triangle {
-        position: absolute;
-        top: 46px;
+        position: fixed;
+        top: 111px;
         left: 1141px;
         width: 0;
         height: 0;
@@ -135,14 +135,18 @@
     }
 
     .down_triangle {
-        position: absolute;
-        top: 46px;
+        border-width: 23px 70px 0 70px;
+        border-color: #5bc0de transparent transparent transparent;
+    }
+
+    #wheel_triangle {
+        position: fixed;
+        top: 111px;
         left: 1141px;
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 23px 70px 0 70px;
-        border-color: #5bc0de transparent transparent transparent;
+        z-index: 501;
     }
 
 </style>
@@ -243,7 +247,7 @@
                 data-toggle="tooltip" data-placement="bottom"
                 title="Loads last save, discarding changes">
             <i class="fa fa-trash fa-fw"></i>
-            RESTART
+            DISCARD
         </button>
 
         <button class="j_button_small j_action_button"
@@ -467,7 +471,7 @@ $(document).ready(function () {
     initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
     initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
 
-    josCKEdit('story_content');
+    // josCKEdit('story_content');
 
 });
 

@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="{% static "css/josmain.css" %}">
     <link href='https://fonts.googleapis.com/css?family=
         Architects+Daughter|Abril+Fatface|Open+Sans|Stalemate' rel='stylesheet'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet">
 <style>
 
     .edit_box {
@@ -47,7 +49,6 @@
 </style>
 </head>
 
-
 <body id=" " style="position: relative; height: 750px; width: 1265px; margin: 0; padding: 0">
 
 {#    <div id="wheel_navigation" style="background-color: transparent;#}
@@ -60,56 +61,47 @@
          background-size: 1265px 750px;">
 
         <!-- Editor -->
-        <div id='edit_bucket' style="
-             position: absolute; left: 0; top: 120px; z-index: 115; display: none">
+        <div id='edit_bucket' style="background-color: rgba(255, 255, 255, .9); z-index: 499;
+             position: absolute; left: 5px; top: 5px; width: 1260px; height: 735px;
+             display: none;">
 
-
-            <div id="component_hints"
-                 style="position: absolute; left: 0; top: 15px;
-                        height: 540px; width: 325px;
-                        border: 1px solid rgb(65,45,120);
-                        background-color: lightyellow;">
-
+            <div id="component_hints" style="
+                 position: absolute; left: 5px; top: 355px; height: 380px; width: 340px;
+                 border: 1px solid rgb(65,45,120); background-color: lightyellow;">
             </div>
 
-            <a id="cancel_btn_central"
-               class="btn btn-danger edit_btn_control"
-               style="top: 2px; left: 875px;"
-               onclick="cntrlCKDestroy();"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Warning: discards recent changes!"
-            >
-                Discard
-            </a>
+            <div class="jos_flex_container" style="flex-direction: row; align-items: flex-end;
+                 position: absolute; top: 300px; left: 360px; width: 875px;">
 
-            <a id="save_btn_central"
-               class="btn btn-success edit_btn_control"
-               style="top: 2px; left: 1015px;"
-               onclick="cntrlCKEditSave('plot', '/joscourses/wheel_update/?id=' + '{{ wheel.id }}');"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Replaces template content"
-            >
-                Save
-            </a>
+                <div id="cntrl_editor_title" style="font-size: 28pt; font-weight: bold;
+                     padding: 0 8px; background-color: white;">
+                    Test
+                </div>
 
-            <div id="cntrl_editor_title"
-                 style="
-                        font-size: 42pt;
-                        font-weight: bold;
-                        position: absolute; top: -30px; left: 345px;
-                        height: 75px; width: 500px;
-                        background-color: white;
-                        z-index: 115;
-                ">Test
+                <button id="cancel_btn_central" class="j_button_small j_discard_button" style="
+                        margin-left: auto;" onclick="cntrlCKDestroy();"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Loads last save, discarding changes">
+                    <i class="fa fa-trash fa-fw"></i>
+                    DISCARD CHANGES
+                </button>
+
+                <button id="save_btn_central" class="j_button_small j_save_button" style="
+                        margin-left: 10px;"
+                        onclick="cntrlCKEditSave('plot', '/joscourses/wheel_update/?id='
+                           + '{{ wheel.id }}');"
+                        data-toggle="tooltip" data-placement="bottom" title="Replaces content">
+                    <i class="fa fa-arrow-circle-up fa-fw"></i>
+                    UPDATE INPUT
+                </button>
             </div>
-
-            <div id="cntrl_editor_container"
-                 style="position: absolute; top: 45px; left: 340px; width: 800px; height: 490px; background-color: lightblue;">
-            </div>
-
         </div>
+            <div id="cntrl_editor_container" style="
+                 position: absolute; top: 355px; left: 360px; width: 875px; height: 380px;
+                 background-color: lightblue;">
+            </div>
+
+
 
         <div class="template_row" style="height: 17%; margin-top: 1%;
              justify-content: flex-end;">
@@ -207,13 +199,14 @@
     </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.6.0/standard-all/ckeditor.js"></script>
+<script src="{% static "js/jos-editor-include.js" %}"></script>
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
 <script>
 
         $('.edit_btn_central').show();
         $('.component_label').show();
-
 
 </script>
 

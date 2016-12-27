@@ -300,7 +300,7 @@ else:
 
 DEBUG = False
 
-### COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
+## COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
 # def show_toolbar(request):
 #     return True
 #
