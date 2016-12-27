@@ -3,6 +3,10 @@ p {
     margin: 0;
 }
 
+i {
+    margin-right: 2px;
+}
+
 body {
     padding: 0;
     position: relative;
@@ -23,7 +27,7 @@ body {
 }
 
 .moveDown {
-    margin-top: 550px;
+    margin-top: 560px;
 }
 
 /* Base button */

@@ -141,8 +141,8 @@
 
     #wheel_triangle {
         position: fixed;
-        top: 111px;
-        left: 1141px;
+        top: 114px;
+        left: 1135px;
         width: 0;
         height: 0;
         border-style: solid;
@@ -151,37 +151,39 @@
 
 </style>
 
-{#{% if story.author == request.user %}#}
-{#    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="#}
-{#            position: fixed; top: 65px; left: 1141px;#}
-{#            border-radius: 0; z-index: 501;"#}
-{#            onclick="wheelHandler(this.id);"#}
-{#            data-toggle="tooltip" data-placement="bottom"#}
-{#            title="Storywheel / Templates">#}
-{#        <i class="fa fa-circle fa-fw"></i>#}
-{#        WHEEL#}
-{#    </button>#}
-{##}
-{#    <div id="wheel_triangle" class="down_triangle"></div>#}
-{#{% endif %}#}
+<!-- Wheel tab -->
+{% if story.author == request.user %}
+    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
+            position: fixed; top: 68px; left: 1135px;
+            border-radius: 0; z-index: 501;"
+            onclick="wheelHandler(this.id);"
+            data-toggle="tooltip" data-placement="bottom"
+            title="Storywheel / Templates">
+        <i class="fa fa-circle fa-fw"></i>
+        WHEEL
+    </button>
 
-{#<div id="wheel_box" style="display: none;#}
-{#     position: absolute; top: 15px; left: 12px; height: 750px; width: 1265px;">#}
-{##}
-{#    <div id="wheel_navigation" style="background-color: transparent;#}
-{#        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">#}
-{#        {% include 'joscourses/wheel.html' with wheel=story.wheel %}#}
-{#    </div>#}
-{##}
-{#    <div id="element_template" style="background-color: white;">#}
-{#        <iframe src="https://joinourstory.com/joscourses/plot_template/39"#}
-{#                style="position: absolute; top: 0; left: 0;#}
-{#                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">#}
-{#        </iframe>#}
-{#    </div>#}
-{#</div>#}
+    <div id="wheel_triangle" class="down_triangle"></div>
+{% endif %}
 
-<div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
+<div id="wheel_box" style="display: none;
+     position: fixed; top: 67px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+
+    <div id="wheel_navigation" style="background-color: transparent;
+        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
+        {% include 'joscourses/wheel.html' with wheel=story.wheel %}
+    </div>
+
+    <div id="element_template" style="background-color: white;">
+        <iframe src="https://joinourstory.com/joscourses/plot_template/39"
+                style="position: absolute; top: 0; left: 0;
+                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">
+        </iframe>
+    </div>
+</div>
+
+<div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
+     border-right: 2px solid rgb(65,45,120)">
     <div id="change_title_box" style="display: none;
          position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
          background-color: grey; opacity: .95; z-index: 500;">
@@ -229,38 +231,53 @@
         </div>
     </div>
 
-    <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
-        position: absolute; top: 0; left: 170px; height: 55px; width: 485px;
-        display: flex; justify-content: flex-start; align-items: center;">
+    <div id="story_tools_section">
+        {% if story.author == request.user %}
+            <button id='story_tools_tab' class="j_button j_info_button story_control_button" style="
+                    position: absolute; top: 0; left: 0px;
+                    border-radius: 0;"
+                    onclick="toolsTabHandler(this.id);"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Versions / Restart / Read / Autosave / Sharing">
+                <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+                TOOLS
+            </button>
 
-        <button class="j_button_small j_relocate_button"
-                onclick=" " style="opacity: .1;"
-                data-toggle="tooltip" data-placement="bottom"
-                title="View previous versions">
-            <i class="fa fa-square fa-fw"></i>
-            VERSIONS
-        </button>
+            <div id="tools_triangle" class="right_triangle"></div>
+        {% endif %}
 
-        <button id="story_content_discard_btn" class="j_button_small j_discard_button"
-                style="margin-left: 10px;"
-                onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Loads last save, discarding changes">
-            <i class="fa fa-trash fa-fw"></i>
-            DISCARD
-        </button>
+        <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
+            position: absolute; top: 0; left: 170px; height: 55px; width: 495px;
+            display: flex; justify-content: flex-start; align-items: center;">
 
-        <button class="j_button_small j_action_button"
-                onclick=" " style="opacity: .1; margin-left: 10px;"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Preview format / email to friends">
-            <i class="fa fa-exclamation fa-fw"></i>
-            READ / SEND
-        </button>
-    </div>
+            <button class="j_button_small j_relocate_button"
+                    onclick=" " style=" "
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="View previous versions">
+                <i class="fa fa-square fa-fw"></i>
+                VERSIONS
+            </button>
 
-    <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
-         position: absolute; top: 0; left: 580px; height: 55px; width: 515px;
+            <button id="story_content_discard_btn" class="j_button_small j_discard_button"
+                    style="margin-left: 10px;"
+                    onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Loads last save, discarding changes">
+                <i class="fa fa-trash fa-fw"></i>
+                DISCARD
+            </button>
+
+            <button class="j_button_small j_action_button"
+                    onclick=" " style="margin-left: 10px;"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Preview format / email to friends">
+                <i class="fa fa-exclamation fa-fw"></i>
+                READ / SEND
+            </button>
+        </div>
+
+        <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
+         position: absolute; top: 0; left: 590px; height: 55px; width: 515px;
          display: flex; justify-content: flex-start; align-items: center;
          padding-top: 5px;">
 
@@ -310,45 +327,33 @@
         </div>
 
     </div>
-
-    {% if story.author == request.user %}
-        <button id='story_tools_tab' class="j_button j_info_button story_control_button" style="
-                position: absolute; top: 0; left: 0px;
-                border-radius: 0;"
-                onclick="toolsTabHandler(this.id);"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Versions / Restart / Read / Autosave / Sharing">
-            <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
-            TOOLS
-        </button>
-
-        <div id="tools_triangle" class="right_triangle"></div>
-    {% endif %}
+    </div>
 
     <!-- Editor buttons -->
-    <div style="margin: 70px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
-
-        <button class="j_button_small j_action_button"
-                onclick="showTitleUpdate();">
-            <i class="fa fa-scissors fa-fw"></i>
-            CHANGE TITLE
-        </button>
+    <div style="margin: 80px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
 
         <button id="story_content_edit_btn" class="j_button_small j_save_button"
-                style="margin-left: 10px" onclick="josCKSave('story_content');"
+                style="" onclick="josCKSave('story_content');"
                 data-toggle="tooltip" data-placement="bottom"
                 title="Updates story content">
             <i class="fa fa-arrow-circle-up fa-fw"></i>
-            SAVE STORY
+            SAVE NOW
         </button>
 
         <!-- Updated -->
-        <div style="margin-left: 25px;">
+        <div style="margin-left: 45px;">
             {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
         </div>
 
+        <button id="change_title" class="j_button_small j_action_button" style="
+                margin-left: 45px;"
+                onclick="showTitleUpdate();">
+            <i class="fa fa-pencil fa-fw"></i>
+            TITLE
+        </button>
+
         <!-- Discuss -->
-        <button class="j_button_small j_relocate_button" style="margin-left: 25px;"
+        <button class="j_button_small j_relocate_button" style="margin-left: 10px;"
                 onclick="window.location.href='#discuss';">
             <i class="fa fa-comments fa-fw"></i>
             DISCUSS
@@ -357,7 +362,8 @@
     </div>
 
     <!-- Story content, holds editor -->
-    <div id="story_content_editor_container" style="margin: 5px 0 0 30px; background-color: white; min-height: 500px;"></div>
+    <div id="story_content_editor_container" style="margin: 5px 0 0 30px; width: 1220px;
+         background-color: white; "></div>
 
 
     <!-- Discussion -->
@@ -410,7 +416,7 @@
 
     </div>
 
-    <div id="discuss" class="row" style="margin: 50px 0 100px 0;">
+    <div id="discuss" class="row" style="margin: 30px 0 15px 0;">
         <div class="col-xs-10 col-xs-offset-1">
 
             <!-- Editor buttons -->

@@ -111,7 +111,7 @@
             border-bottom: 3px solid rgb(112, 154, 109); z-index: 160;">
 
             <li><button id='to_do_btn' class="j_button j_relocate_button"
-                        data-toggle="tab" href="#to_do">TO DO</button></li>
+                        data-toggle="tab" href="#to_do">REMINDERS</button></li>
 
             <li><button id='how_do_i_btn' class="j_button j_relocate_button"
                         data-toggle="tab" href="#how_do_i">HOW DO I?</button></li>
@@ -123,7 +123,7 @@
 
 <div class="tab-content">
 
-<div id="to_do" class="tab-pane fade">to_do</div>
+<div id="to_do" class="tab-pane fade">REMINDERS HERE</div>
 
 <div id="how_do_i" class="tab-pane fade josinstructions">
     <div id="main_help">
@@ -176,25 +176,26 @@
 <div id="my_notes" class="tab-pane fade">
 
     <button id="notes_edit_btn"
-       class="j_button j_action_button"
-       style="position: fixed; top: 105px; left: 1005px;"
+       class="j_button_small j_action_button"
+       style="position: fixed; top: 105px; left: 1015px;"
        onclick="josCKEdit('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="right"
        title="Activates editor"
        >
-        <i class="fa fa-scissors"></i>
+        <i class="fa fa-pencil fa-fw"></i>
         EDIT NOTES
     </button>
 
     <button id="notes_cancel_btn"
-       class="j_button j_discard_button"
-       style="width: 125px; position: fixed; top: 165px; left: 1005px; display: none;"
+       class="j_button_small j_discard_button"
+       style="position: fixed; top: 160px; left: 1015px; display: none;"
        onclick="josCKDestroy('notes'); session_data_update('editor_status');"
        data-toggle="tooltip"
        data-placement="bottom"
        title="Warning: does not save changes!"
     >
+        <i class="fa fa-trash fa-fw"></i>
         DISCARD
     </button>
 

@@ -149,7 +149,7 @@ function josCKDestroy(sect2destroy) {
     $(edit_btn)
         .removeClass('j_save_button')
         .addClass('j_action_button')
-        .text('EDIT ' + sect2destroy.toUpperCase()).attr("data-original-title", "Activates editor");
+        .html('<i class = "fa fa-pencil fa-fw"></i>EDIT ' + sect2destroy.toUpperCase()).attr("data-original-title", "Activates editor");
     editors[sect2destroy].section_editor.destroy();
     editors[sect2destroy].section_editor = null;
 
