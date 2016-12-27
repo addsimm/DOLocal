@@ -1,12 +1,14 @@
 {% load i18n mezzanine_tags accounts_tags  static %}
 
 <head>
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
     <link rel="stylesheet" href="{% static "css/josmain.css" %}">
     <link href='https://fonts.googleapis.com/css?family=
         Architects+Daughter|Abril+Fatface|Open+Sans|Stalemate' rel='stylesheet'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet">
-<style>
+
+    <style>
 
     .edit_box {
         border: 2px dashed #5bc0de;
@@ -49,7 +51,7 @@
 </style>
 </head>
 
-<body id=" " style="position: relative; height: 750px; width: 1265px; margin: 0; padding: 0">
+<body style="position: relative; height: 750px; width: 1265px; margin: 0; padding: 0;">
 
 {#    <div id="wheel_navigation" style="background-color: transparent;#}
 {#         position: absolute; top: 0; left: 0; height: 300px; width: 300px; z-index: 130;">#}
@@ -71,37 +73,36 @@
             </div>
 
             <div class="jos_flex_container" style="flex-direction: row; align-items: flex-end;
-                 position: absolute; top: 300px; left: 360px; width: 875px;">
+                 position: absolute; top: 302px; left: 360px; width: 875px;">
 
-                <div id="cntrl_editor_title" style="font-size: 28pt; font-weight: bold;
+                <div id="central_editor_title" style="font-size: 28pt; font-weight: bold;
                      padding: 0 8px; background-color: white;">
                     Test
                 </div>
 
                 <button id="cancel_btn_central" class="j_button_small j_discard_button" style="
-                        margin-left: auto;" onclick="cntrlCKDestroy();"
+                        margin-left: auto;" onclick="centralCKDestroy();"
                         data-toggle="tooltip" data-placement="bottom"
                         title="Loads last save, discarding changes">
                     <i class="fa fa-trash fa-fw"></i>
-                    DISCARD CHANGES
+                    DISCARD
                 </button>
 
                 <button id="save_btn_central" class="j_button_small j_save_button" style="
                         margin-left: 10px;"
-                        onclick="cntrlCKEditSave('plot', '/joscourses/wheel_update/?id='
+                        onclick="centralCKEditSave('plot', '/joscourses/wheel_update/?id='
                            + '{{ wheel.id }}');"
                         data-toggle="tooltip" data-placement="bottom" title="Replaces content">
                     <i class="fa fa-arrow-circle-up fa-fw"></i>
-                    UPDATE INPUT
+                    UPDATE
                 </button>
             </div>
-        </div>
-            <div id="cntrl_editor_container" style="
-                 position: absolute; top: 355px; left: 360px; width: 875px; height: 380px;
+
+            <div id="central_editor_container" style="
+                 position: absolute; top: 357px; left: 360px; width: 875px; height: 380px; z-index: 505;
                  background-color: lightblue;">
             </div>
-
-
+        </div>
 
         <div class="template_row" style="height: 17%; margin-top: 1%;
              justify-content: flex-end;">
@@ -110,7 +111,7 @@
             <div class="template_component" style="width: 71%; margin-right: 1%;">
                 <div>
                     <button id="climax_edit_btn" class="j_button_small j_info_button"
-                            onclick="cntrlCKEditStart('climax');">
+                            onclick="centralCKEditStart('climax');">
                         Edit
                     </button>
 
@@ -130,7 +131,7 @@
             <div class="template_component" style="width: 39%; margin-right: 25px;">
                 <div>
                     <button id="rising_edit_btn" class="j_button_small j_info_button"
-                            onclick="cntrlCKEditStart('rising');">
+                            onclick="centralCKEditStart('rising');">
                         Edit
                     </button>
 
@@ -143,12 +144,12 @@
             </div>
 
             <!-- Falling -->
-            <div class="template_component" style="width: 29%;  margin-right: 2%; align-items: flex-end">
+            <div class="template_component" style="width: 29%;  margin-right: 2%; align-items: flex-end;">
                 <div>
                     <span class="component_label">Falling action</span>
 
                     <button id="falling_edit_btn" class="j_button_small j_info_button"
-                            onclick="cntrlCKEditStart('falling');">
+                            onclick="centralCKEditStart('falling');">
                         Edit
                     </button>
                 </div>
@@ -167,7 +168,7 @@
             <div class="template_component" style="width: 49%; margin-left: 1%;">
                 <div>
                     <button id="incite_edit_btn" class="j_button_small j_info_button"
-                            onclick="cntrlCKEditStart('incite');">
+                            onclick="centralCKEditStart('incite');">
                         Edit
                     </button>
 
@@ -181,12 +182,12 @@
             </div>
 
             <!-- Resolve -->
-            <div class="template_component" style="width: 47%; margin-right: 2%; align-items: flex-end">
+            <div class="template_component" style="width: 47%; margin-right: 2%; align-items: flex-end;">
                 <div>
                     <span class="component_label">Resolution</span>
 
                     <button id="resolve_edit_btn" class="j_button_small j_info_button"
-                            onclick="cntrlCKEditStart('resolve');">
+                            onclick="centralCKEditStart('resolve');">
                         Edit
                     </button>
                 </div>
@@ -203,11 +204,6 @@
 <script src="{% static "js/jos-editor-include.js" %}"></script>
 <script src="{% static "js/central-editor-include.js" %}"></script>
 
-<script>
-
-        $('.edit_btn_central').show();
-        $('.component_label').show();
-
-</script>
+<script></script>
 
 </body>

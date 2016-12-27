@@ -22,7 +22,7 @@ var ck_config_small = {
     contentsCss: '/static/ckeditor/ckeditor/contents.css',
     disableNativeSpellChecker: false,
     width: '100%',
-    height: 300,
+    height: 309,
     tabSpaces: 4,
     uiColor: '#ffff00',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'

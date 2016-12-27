@@ -151,35 +151,35 @@
 
 </style>
 
-{% if story.author == request.user %}
-    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
-            position: fixed; top: 65px; left: 1141px;
-            border-radius: 0; z-index: 501;"
-            onclick="wheelHandler(this.id);"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Storywheel / Templates">
-        <i class="fa fa-circle fa-fw"></i>
-        WHEEL
-    </button>
+{#{% if story.author == request.user %}#}
+{#    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="#}
+{#            position: fixed; top: 65px; left: 1141px;#}
+{#            border-radius: 0; z-index: 501;"#}
+{#            onclick="wheelHandler(this.id);"#}
+{#            data-toggle="tooltip" data-placement="bottom"#}
+{#            title="Storywheel / Templates">#}
+{#        <i class="fa fa-circle fa-fw"></i>#}
+{#        WHEEL#}
+{#    </button>#}
+{##}
+{#    <div id="wheel_triangle" class="down_triangle"></div>#}
+{#{% endif %}#}
 
-    <div id="wheel_triangle" class="down_triangle"></div>
-{% endif %}
-
-<div id="wheel_box" style="display: none;
-     position: absolute; top: 15px; left: 12px; height: 750px; width: 1265px;">
-
-    <div id="wheel_navigation" style="background-color: transparent;
-        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
-        {% include 'joscourses/wheel.html' with wheel=story.wheel %}
-    </div>
-
-    <div id="element_template" style="background-color: white;">
-        <iframe src="https://joinourstory.com/joscourses/plot_template/39"
-                style="position: absolute; top: 0; left: 0;
-                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">
-        </iframe>
-    </div>
-</div>
+{#<div id="wheel_box" style="display: none;#}
+{#     position: absolute; top: 15px; left: 12px; height: 750px; width: 1265px;">#}
+{##}
+{#    <div id="wheel_navigation" style="background-color: transparent;#}
+{#        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">#}
+{#        {% include 'joscourses/wheel.html' with wheel=story.wheel %}#}
+{#    </div>#}
+{##}
+{#    <div id="element_template" style="background-color: white;">#}
+{#        <iframe src="https://joinourstory.com/joscourses/plot_template/39"#}
+{#                style="position: absolute; top: 0; left: 0;#}
+{#                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">#}
+{#        </iframe>#}
+{#    </div>#}
+{#</div>#}
 
 <div id="story_container" style="position: absolute; top: 0; left: 0;" class=" ">
     <div id="change_title_box" style="display: none;
@@ -442,11 +442,10 @@
     </div>
 </div>
 
-
 <script>
 
 $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    // $('[data-toggle="tooltip"]').tooltip();
     if (Number(window.location.href.split('/')[5]) === 0) {
         reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
         window.location.href = reload_url;
@@ -471,7 +470,7 @@ $(document).ready(function () {
     initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
     initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
 
-    // josCKEdit('story_content');
+    josCKEdit('story_content');
 
 });
 
@@ -516,7 +515,7 @@ function toolsTabHandler(i) {
     if ($(story_tools_tab).hasClass('j_info_button')) {
         $(story_tools_tab)
                 .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>HIDE")
-                .tooltip('disable')
+                // .tooltip('disable')
                 .addClass("isopen j_back_button")
                 .removeClass("isclosed j_info_button");
         $(tools_triangle).removeClass('right_triangle').addClass('left_triangle');
@@ -526,8 +525,8 @@ function toolsTabHandler(i) {
         $(story_tools_tab)
                 .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
                 .addClass("isclosed j_info_button")
-                .removeClass("isopen j_back_button")
-                .tooltip('enable');
+                .removeClass("isopen j_back_button");
+                // .tooltip('enable');
         $(tools_triangle).removeClass('left_triangle').addClass('right_triangle');
         $("#right_story_tools").css({visibility: "hidden"});
         $("#left_story_tools").css({visibility: "hidden"});
@@ -543,8 +542,8 @@ function wheelHandler(i) {
         $(wheel_tab)
                 .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE")
                 .addClass("isopen j_back_button")
-                .removeClass("isclosed j_info_button")
-                .tooltip('disable');
+                .removeClass("isclosed j_info_button");
+                // .tooltip('disable');
         $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
         $('#wheel_box').show();
     } else {
@@ -552,15 +551,14 @@ function wheelHandler(i) {
         $(wheel_tab)
                 .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
                 .addClass("isclosed j_info_button")
-                .removeClass("isopen j_back_button")
-                .tooltip('enable');
+                .removeClass("isopen j_back_button");
+                // .tooltip('enable');
         $('#wheel_box').hide();
         $(wheel_triangle).removeClass('up_triangle').addClass('down_triangle');
     }
 }
 
 </script>
-
 
 {% endblock all_content %}
 

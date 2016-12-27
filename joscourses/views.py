@@ -197,7 +197,7 @@ def ajax_story_update(request):
 
 
 @login_required
-def joswheel(request, wheel_id=0, template="joscourses/training_wheel.html", extra_context=None):
+def joswheel(request, wheel_id=0, template="joscourses/wheel.html", extra_context=None):
     activate('America/Los_Angeles')
 
     try:
@@ -212,6 +212,7 @@ def joswheel(request, wheel_id=0, template="joscourses/training_wheel.html", ext
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html", extra_context=None):
 
     try:
@@ -238,6 +239,7 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def sw_world(request, wheel_id=0, edit=False, template="joscourses/sw-world.html", extra_context=None):
     try:
         wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
@@ -263,6 +265,7 @@ def sw_world(request, wheel_id=0, edit=False, template="joscourses/sw-world.html
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def sw_theme(request, wheel_id=0, edit=False, template="joscourses/sw-theme.html", extra_context=None):
     try:
         wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
@@ -288,6 +291,7 @@ def sw_theme(request, wheel_id=0, edit=False, template="joscourses/sw-theme.html
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def sw_conflict(request, wheel_id=0, edit=False, template="joscourses/sw-conflict.html", extra_context=None):
     try:
         wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
@@ -319,7 +323,7 @@ def ajax_wheel_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ajax post')
 
-    cntrl_new_content = request.POST.get('cntrl_new_content', 'missing')
+    central_new_content = request.POST.get('central_new_content', 'missing')
     sw_template = request.POST.get('sw_template', 'missing')
     template_section = request.POST.get('template_section', 'missing')
     action = request.POST.get('action', 'missing')
@@ -339,7 +343,7 @@ def ajax_wheel_update(request):
         except:
             return HttpResponse('Error JOSPlot missing, please call us')
 
-        setattr(template, template_section, cntrl_new_content)
+        setattr(template, template_section, central_new_content)
         template.save()
 
     elif sw_template == 'characters':
