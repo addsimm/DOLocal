@@ -422,7 +422,7 @@
             <!-- Editor buttons -->
             <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
 
-                <button id="comment_edit_btn" class="j_button j_action_button"
+                <button id="comment_edit_btn" class="j_button j_info_button"
                         style=" " onclick="josCKEdit('comment');"
                         data-toggle="tooltip" data-placement="bottom"
                         title="Activates editor">
@@ -451,7 +451,6 @@
 <script>
 
 $(document).ready(function () {
-    // $('[data-toggle="tooltip"]').tooltip();
     if (Number(window.location.href.split('/')[5]) === 0) {
         reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
         window.location.href = reload_url;

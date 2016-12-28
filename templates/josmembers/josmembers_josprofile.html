@@ -103,7 +103,7 @@
             {% if edit %}
 
                 <button id="about_edit_btn"
-                   class="j_button_small j_action_button pull-right edit_section_button"
+                   class="j_button_small j_info_button pull-right edit_section_button"
                    style=" "
                    onclick="josCKEdit('about');"
                    data-toggle="tooltip"
@@ -195,7 +195,6 @@
 
     $(document).ready(function () {
         initJOSEditor('about', 'large', 'member_profile_update', "{{ profile.about_me | escapejs }}");
-        $('[data-toggle="tooltip"]').tooltip();
     });
 
 </script>

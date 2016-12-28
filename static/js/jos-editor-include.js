@@ -5,6 +5,7 @@
  */
 
 var editors = {};
+initJOSEditor('notes', 'small', 'help_update', "{{ user_created_note | escapejs }}");
 
 function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
     // console.log('sctn: ' + sctn + ', org_cntnt: ' + org_cntnt);
@@ -77,12 +78,12 @@ function josCKEdit(sect2edit) {
     // console.log('ck_editor_container: ' + ck_editor_container.id + ', edit_btn.text: ' + $(edit_btn).text());
 
 
-    if ($(edit_btn).hasClass('j_action_button') || sect2edit.search('story') !== -1) {
+    if ($(edit_btn).hasClass('j_info_button') || sect2edit.search('story') !== -1) {
 
         if (sect2edit.search('story') === -1) {
             var data_original_title_string = 'Updates ' + sect2edit;
             var edit_button_html = "<i class = 'fa fa-arrow-circle-up fa-fw'></i>SAVE " + sect2edit.toUpperCase();
-            $(edit_btn).removeClass('j_action_button').addClass('j_save_button').html(edit_button_html).attr("data-original-title", data_original_title_string);
+            $(edit_btn).removeClass('j_info_button').addClass('j_save_button').html(edit_button_html).attr("data-original-title", data_original_title_string);
             $('#' + sect2edit + '_cancel_btn').show();
             $(segment_element).hide();
         }
@@ -148,7 +149,7 @@ function josCKDestroy(sect2destroy) {
     $('#' + sect2destroy + '_cancel_btn').hide();
     $(edit_btn)
         .removeClass('j_save_button')
-        .addClass('j_action_button')
+        .addClass('j_info_button')
         .html('<i class = "fa fa-pencil fa-fw"></i>EDIT ' + sect2destroy.toUpperCase()).attr("data-original-title", "Activates editor");
     editors[sect2destroy].section_editor.destroy();
     editors[sect2destroy].section_editor = null;

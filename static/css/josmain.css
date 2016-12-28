@@ -118,7 +118,6 @@ body {
     color: #5bc0de;
 }
 
-
 a, a:visited {
     background-color: white;
     color: rgb(112, 154, 109);
@@ -131,35 +130,6 @@ a, a:visited {
 a:hover {
     color: #f0ad4e;
     outline: 2px solid #f0ad4e;
-    text-decoration: none;
-}
-
-.josstaffbutton, .josstaffbutton:visited {
-    color: white;
-    background-color: black;
-    border: 1px solid black;
-    font-size: 12pt;
-    outline: none;
-}
-
-.josstaffbutton:hover, .josstaffbutton:focus {
-    color: black;
-    background-color: white;
-}
-
-.joslargelinkbutton, .joslargelinkbutton:visited {
-    background-color: rgb(112, 154, 109);
-    border-radius: 4px;
-    color: white;
-    font-size: 16pt;
-    padding: 6px 9px;
-    outline: none;
-}
-
-.joslargelinkbutton:hover, .joslargelinkbutton:focus {
-    color: #f0ad4e;
-    outline: 2px solid #f0ad4e;
-    background-color: white;
     text-decoration: none;
 }
 
@@ -265,99 +235,15 @@ footer {
     padding-bottom: 0;
 }
 
-.btn, .btn:visited {
-    background-image: none;
-    background-repeat: no-repeat;
-    border-radius: 6px;
-    box-shadow: none;
-    color: white;
-    font-size: 16pt;
-    font-weight: bold;
-    outline: none !important;
-    text-decoration: none;
-    text-shadow: none;
-    width: 100px;
-}
-
-.btn:focus {
-    outline: none;
-}
-
-.btn-default, .btn-default:visited,
-.btn-primary:visited, .btn-primary:focus {
-    background-color: rgb(231, 209, 222);
-    border-color: rgb(65, 25, 140);
-    color: rgb(65, 25, 140);
-}
-
-
-.btn-link, .btn-link:visited {
-    background-color: rgb(112, 154, 109);
-    border-color: rgb(112, 154, 109);
-    color: white;
-    -webkit-focus-ring-color: none;
-}
-
-
-.btn-success:visited, .btn-success:focus {
-    background-color: #5cb85c;
-    color: white;
-    border-color: #5cb85c;
-    -webkit-focus-ring-color: none;
-}
-
-.btn-info:visited, .btn-info:focus {
-    background-color: #5bc0de;
-    color: white;
-    border-color: #5bc0de;
-    -webkit-focus-ring-color: none;
-}
-
-.btn-warning:visited, .btn-warning:focus {
-    background-color: #f0ad4e;
-    color: white;
-    border-color: #f0ad4e;
-}
-
-.btn-danger:visited, .btn-danger:focus {
-    background-color: #d9534f;
-    color: white;
-    border-color: #d9534f;
-}
-
-.btn-default:hover,
-.btn-link:hover,
-.btn-primary:hover,
-.btn-success:hover,
-.btn-info:hover,
-.btn-warning:hover,
-.btn-danger:hover {
-    background-color: white;
-    border-color: black;
-    color: black;
-    opacity: .8;
-    text-decoration: none;
-}
-
 .edit_border {
     background-color: white;
-    border: 3px dashed rgb(65, 45, 120);
-}
-
-.edit_border_active {
-    background-color: rgb(65, 45, 120);
-    border: 3px solid rgb(65, 45, 120);
-    border-top: 6px solid rgb(65, 45, 120);
-}
-
-.joshint {
-    font-size: 10pt;
+    border: 3px dashed #5bc0de;
 }
 
 .tooltip {
     background-color: lightyellow;
     position: absolute;
-    z-index: 999;
+    z-index: 1000;
     display: block;
     line-height: 1.4;
     visibility: visible;
@@ -366,24 +252,14 @@ footer {
 .tooltip-inner {
     background: rgb(255, 255, 224);
     border-radius: 4px;
-    border: 3px dotted black;
-    color: black;
+    border: 3px dotted rgb(65, 45, 120);
+    color: rgb(65, 45, 120);
     font-family: 'Open sans', sans-serif;
-    font-size: 18pt;
+    font-size: 16pt;
     font-weight: bold;
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     text-decoration: none;
-}
-
-.storywheel_template_title {
-    background-color: rgb(231, 209, 222);
-    font-size: 24pt;
-    font-weight: bold;
-    height: 47px;
-    margin-left: -15px;
-    padding-top: 4px;
-    width: 630px;
 }
 
 .jos_flex_container {
