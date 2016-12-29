@@ -1,10 +1,6 @@
 {% load i18n mezzanine_tags accounts_tags  static %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-<div id="fixed_background" style="
-     width: 330px; height: 330px; ">
-    WI: {{ wheel.id }}
+<div id="fixed_background" style="width: 330px; height: 330px;">
     <canvas id="pie_canvas" width="330" height="330" style="
             background-image: url('{% static 'img/wheel-112016.png' %}');
             background-size: 330px;">

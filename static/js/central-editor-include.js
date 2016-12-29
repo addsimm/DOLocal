@@ -5,12 +5,6 @@
 
 var centralEditor;
 
-var edit_bucket = document.getElementById('edit_bucket'),
-    central_editor_container = document.getElementById('central_editor_container'),
-    central_title = document.getElementById('central_editor_title');
-    // central_save_btn = document.getElementById('save_btn_central'),
-    // central_cancel_btn = document.getElementById('cancel_btn_central');
-
 window.onbeforeunload = function () {
     if (centralEditor) {
         preventDefault();
@@ -23,8 +17,16 @@ window.onbeforeunload = function () {
 function centralCKEditStart(central_section2edit) {
     console.log('start called; central_section2edit: ' + central_section2edit);
 
+    var edit_bucket = document.getElementById('edit_bucket'),
+        central_editor_container = document.getElementById('central_editor_container'),
+        central_title = document.getElementById('central_editor_title');
+
     var central_orig_elmnt = document.getElementById('original_content_' + central_section2edit);
     var orig_text = $(central_orig_elmnt).text();
+
+    console.log('central_orig_elmnt: ' + central_orig_elmnt.id);
+    console.log('central_editor_container: ' + central_editor_container);
+
 
     if (centralEditor) {
         console.log('return on exist');
@@ -44,8 +46,8 @@ function centralCKEditSave(sw_template, upload_url) {
     if (!centralEditor) {
         return;
     }
-
-    var central_sect2save = $(central_title).text().split(' ')[1];
+    var central_title = document.getElementById('central_editor_title'),
+        central_sect2save = $(central_title).text().split(' ')[1];
     
     console.log('save called; central_sect2save: ' + central_sect2save);
     console.log('url: ' + upload_url);
@@ -65,7 +67,7 @@ function centralCKEditSave(sw_template, upload_url) {
         },
 
         success: function (serverResponse_data) {
-            console.log('successfully posted:  ' + central_new_content);
+            console.log(serverResponse_data + ', successfully posted:  ' + central_new_content + ', template_section: ' + central_sect2save);
 
             centralCKDestroy();
             location.reload();
@@ -75,7 +77,9 @@ function centralCKEditSave(sw_template, upload_url) {
 
 function centralCKDestroy() {
 
-    var central_sect2destroy = $(central_title).text().split(' ')[1];
+    var edit_bucket = document.getElementById('edit_bucket'),
+        central_title = document.getElementById('central_editor_title'),
+        central_sect2destroy = $(central_title).text().split(' ')[1];
 
     console.log('destroy called; central_sect2destroy: ' + central_sect2destroy);
 
@@ -83,10 +87,6 @@ function centralCKDestroy() {
         return;
     }
 
-    $('.template_row').show();
-    $('#edit_mode_button').show();
-
-    $(central_title).text(' ');
     $(edit_bucket).hide();
 
     centralEditor.destroy();

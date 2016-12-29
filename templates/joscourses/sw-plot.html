@@ -1,13 +1,5 @@
 {% load i18n mezzanine_tags accounts_tags  static %}
 
-<head>
-    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
-    <link rel="stylesheet" href="{% static "css/josmain.css" %}">
-    <link href='https://fonts.googleapis.com/css?family=
-        Architects+Daughter|Abril+Fatface|Open+Sans|Stalemate' rel='stylesheet'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet">
-
     <style>
 
     .edit_box {
@@ -49,9 +41,8 @@
     }
 
 </style>
-</head>
 
-<body style="position: relative; height: 750px; width: 1265px; margin: 0; padding: 0;">
+<div style="position: relative; height: 750px; width: 1265px; margin: 0; padding: 0;">
 
 {#    <div id="wheel_navigation" style="background-color: transparent;#}
 {#         position: absolute; top: 0; left: 0; height: 300px; width: 300px; z-index: 130;">#}
@@ -72,7 +63,8 @@
                  border: 1px solid rgb(65,45,120); background-color: lightyellow;">
             </div>
 
-            <div class="jos_flex_container" style="flex-direction: row; align-items: flex-end;
+            <div id='central_control_buttons' class="jos_flex_container" style="
+                 flex-direction: row; align-items: flex-end;
                  position: absolute; top: 302px; left: 360px; width: 875px;">
 
                 <div id="central_editor_title" style="font-size: 28pt; font-weight: bold;
@@ -116,6 +108,7 @@
                     </button>
 
                     <span class="component_label">Climax</span>
+                    wheel.id: {{ wheel.id }}
                 </div>
 
                 <div id='original_content_climax' class='edit_box'>
@@ -199,11 +192,6 @@
         </div>
     </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.ckeditor.com/4.6.0/standard-all/ckeditor.js"></script>
-<script src="{% static "js/jos-editor-include.js" %}"></script>
-<script src="{% static "js/central-editor-include.js" %}"></script>
-
 <script></script>
 
-</body>
+</div>

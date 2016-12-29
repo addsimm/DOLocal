@@ -37,6 +37,7 @@
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
         <script src="{% static "js/jos-editor-include.js" %}"></script>
+        <script src="{% static "js/central-editor-include.js" %}"></script>
 
         {% block extra_js %}{% endblock %}
     {% endcompress %}
@@ -135,7 +136,7 @@
         </div>
 
     <!-- Staff -->
-    <!-- Staff:
+    <!--
     {% if request.user.is_staff %}
 
         <button class="j_button j_test_button"

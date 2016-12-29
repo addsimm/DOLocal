@@ -53,7 +53,7 @@ admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 
 class JOSStoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "author", "publish_permission", "auto_save", "updated", "title", "content_start")
+    list_display = ("id", "author", "wheel", "publish_permission", "auto_save", "updated", "title", "content_start")
 
     verbose_name = "JOSStory"
 
@@ -65,7 +65,7 @@ admin.site.register(JOSStory, JOSStoryAdmin)
 
 
 class JOSWheelAdmin(admin.ModelAdmin):
-    list_display = ("id", "author", "title", "updated")
+    list_display = ("id", "author", "title", "wheel_story_id", "updated")
 
     verbose_name = "wheel"
 
@@ -74,11 +74,12 @@ class JOSWheelAdmin(admin.ModelAdmin):
     def wheel_story_id(self, instance):
         return instance.josstory.id
 
+
 admin.site.register(JOSWheel, JOSWheelAdmin)
 
 
 class JOSPlotAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "incite", "rising", "climax", "falling", "resolve", "updated")
+    list_display = ("id",  "incite", "rising", "climax", "falling", "resolve", "updated")
 
     verbose_name = "Plot"
 
@@ -88,7 +89,7 @@ admin.site.register(JOSPlot, JOSPlotAdmin)
 
 
 class JOSCharacterAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "updated")
+    list_display = ("id",  "updated")
 
     verbose_name = "Characters"
 
@@ -99,7 +100,7 @@ admin.site.register(JOSCharacter, JOSCharacterAdmin)
 
 
 class JOSThemeAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "updated")
+    list_display = ("id",  "updated")
 
     verbose_name = "Characters"
 
@@ -110,7 +111,7 @@ admin.site.register(JOSTheme, JOSThemeAdmin)
 
 
 class JOSWorldAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "updated")
+    list_display = ("id",  "updated")
 
     verbose_name = "Characters"
 
@@ -121,7 +122,7 @@ admin.site.register(JOSWorld, JOSWorldAdmin)
 
 
 class JOSConflictAdmin(admin.ModelAdmin):
-    list_display = ("id", 'wheel', "updated")
+    list_display = ("id",  "updated")
 
     verbose_name = "Characters"
 

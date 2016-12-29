@@ -3,7 +3,7 @@
 {% block meta_title %}{{ story.title | striptags | safe | truncatechars:25 }}{% endblock %}
 {% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block breadcrumb_menu %}
-    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
+    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }} story.wheel.id: {{ story.wheel.id }}{% endblock %}
 
 {% block all_content %}
 
@@ -167,19 +167,18 @@
 {% endif %}
 
 <div id="wheel_box" style="display: none;
-     position: fixed; top: 67px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+     position: fixed; top: 68px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
 
     <div id="wheel_navigation" style="background-color: transparent;
         position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
         {% include 'joscourses/wheel.html' with wheel=story.wheel %}
     </div>
 
-    <div id="element_template" style="background-color: white;">
-        <iframe src="https://joinourstory.com/joscourses/plot_template/39"
-                style="position: absolute; top: 0; left: 0;
-                height: 750px; width: 1265px;  outline: 2px solid #EE3B38; z-index: 125;">
-        </iframe>
+    <div id="element_template" style="position: absolute; top: 0; left: 0; height: 750px; width: 1265px;
+         background-color: white; outline: 2px solid #EE3B38; z-index: 125;">
+        {% include 'joscourses/sw-plot.html' with plot_template=story.wheel.plot wheel=story.wheel %}
     </div>
+
 </div>
 
 <div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;

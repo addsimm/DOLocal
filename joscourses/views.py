@@ -98,12 +98,34 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         story = JOSStory.objects.create(author=request.user, title="- Untitled -", story_content="- Enter content here -")
 
     if not story.wheel:
-        story.wheel = JOSWheel.objects.create()
+        wheel = JOSWheel.objects.create()
+        wheel.save()
+        story.wheel = wheel
         story.save()
 
     if not story.message_thread:
         story.message_thread = JOSMessageThread.objects.create(subject=story.title)
         story.save()
+
+    if not story.wheel.plot:
+        story.wheel.plot = JOSPlot.objects.create()
+        story.wheel.save()
+
+    if not story.wheel.character:
+        story.wheel.character = JOSCharacter.objects.create()
+        story.wheel.save()
+
+    if not story.wheel.conflict:
+        story.wheel.conflict = JOSConflict.objects.create()
+        story.wheel.save()
+
+    if not story.wheel.world:
+        story.wheel.world = JOSWorld.objects.create()
+        story.wheel.save()
+
+    if not story.wheel.theme:
+        story.wheel.theme = JOSTheme.objects.create()
+        story.wheel.save()
 
     comments = Message.objects.filter(message_thread=story.message_thread).order_by('sent_at')
 
@@ -220,16 +242,8 @@ def sw_plot(request, wheel_id=0, edit=False, template="joscourses/sw-plot.html",
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    try:
-        plot_template = get_object_or_404(JOSPlot, wheel=wheel)
-    except:
-        plot_template = JOSPlot.objects.create(wheel=wheel)
-        plot_template.save()
-
-        return redirect('https://joinourstory.com/joscourses/plot_template/' + str(wheel.id))
-
     context = {
-        'plot_template': plot_template,
+        'plot': wheel.plot,
         'wheel': wheel,
         'edit': edit
     }
@@ -246,18 +260,10 @@ def sw_world(request, wheel_id=0, edit=False, template="joscourses/sw-world.html
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    try:
-        world_template = get_object_or_404(JOSWorld, wheel=wheel)
-    except:
-        world_template = JOSWorld.objects.create(wheel=wheel)
-        world_template.save()
-
-        return redirect('https://joinourstory.com/joscourses/world_template/' + str(wheel.id))
-
     context = {
-        'world_template': world_template,
-        'wheel':         wheel,
-        'edit':          edit
+        'world': wheel.world,
+        'wheel': wheel,
+        'edit':  edit
     }
 
     context.update(extra_context or {})
@@ -272,18 +278,10 @@ def sw_theme(request, wheel_id=0, edit=False, template="joscourses/sw-theme.html
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    try:
-        theme_template = get_object_or_404(JOSTheme, wheel=wheel)
-    except:
-        theme_template = JOSTheme.objects.create(wheel=wheel)
-        theme_template.save()
-
-        return redirect('https://joinourstory.com/joscourses/theme_template/' + str(wheel.id))
-
     context = {
-        'theme_template': theme_template,
-        'wheel':         wheel,
-        'edit':          edit
+        'theme': wheel.theme,
+        'wheel': wheel,
+        'edit':  edit
     }
 
     context.update(extra_context or {})
@@ -298,18 +296,10 @@ def sw_conflict(request, wheel_id=0, edit=False, template="joscourses/sw-conflic
     except:
         return HttpResponse('cant find wheel: ' + str(wheel_id))
 
-    try:
-        conflict_template = get_object_or_404(JOSConflict, wheel=wheel)
-    except:
-        conflict_template = JOSConflict.objects.create(wheel=wheel)
-        conflict_template.save()
-
-        return redirect('https://joinourstory.com/joscourses/conflict_template/' + str(wheel.id))
-
     context = {
-        'conflict_template': conflict_template,
-        'wheel':          wheel,
-        'edit':           edit
+        'conflict': wheel.conflict,
+        'wheel':    wheel,
+        'edit':     edit
     }
 
     context.update(extra_context or {})
@@ -323,12 +313,6 @@ def ajax_wheel_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ajax post')
 
-    central_new_content = request.POST.get('central_new_content', 'missing')
-    sw_template = request.POST.get('sw_template', 'missing')
-    template_section = request.POST.get('template_section', 'missing')
-    action = request.POST.get('action', 'missing')
-    character_id = request.POST.get('character_id', 'missing')
-
     wheel_id = int(request.get_full_path().split('=')[1])
 
     try:
@@ -336,10 +320,16 @@ def ajax_wheel_update(request):
     except:
         return HttpResponse("Error JOSWheel missing, please call us")
 
+    central_new_content = request.POST.get('central_new_content', 'missing')
+    sw_template = request.POST.get('sw_template', 'missing')
+    template_section = request.POST.get('template_section', 'missing')
+    action = request.POST.get('action', 'missing')
+    character_id = request.POST.get('character_id', 'missing')
+
     template = ' '
     if sw_template == 'plot':
         try:
-            template = get_object_or_404(JOSPlot, wheel=wheel)
+            template = wheel.plot
         except:
             return HttpResponse('Error JOSPlot missing, please call us')
 
@@ -357,22 +347,20 @@ def ajax_wheel_update(request):
             info(request, "Character deleted!")
             return HttpResponse('deleted character: ' + str(character_id))
 
-    return HttpResponse('nothing happened')
+    return HttpResponse('ok')
 
 
 def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="joscourses/sw-characters.html", extra_context=None):
-    try:
-        wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
-    except:
-        return HttpResponse('cant find wheel: ' + str(wheel_id))
+    wheel = get_object_or_404(JOSWheel, pk=int(wheel_id))
 
     if int(character_id) == 1:
-        character = JOSCharacter.objects.create(wheel=wheel)
+        character = JOSCharacter.objects.create()
+        character.joswheel_set.add(wheel)
 
-    all_characters = JOSCharacter.objects.filter(wheel=wheel).order_by('first_name')
+    all_characters = JOSCharacter.objects.filter(wheel=wheel)
 
     if not all_characters:
-        character = JOSCharacter.objects.create(wheel=wheel)
+        character = None
     else:
         try:
             character = get_object_or_404(JOSCharacter, pk=int(character_id))
