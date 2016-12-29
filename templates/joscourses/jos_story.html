@@ -101,35 +101,27 @@
         height: 46px;
     }
 
-    .right_triangle {
+
+    #tools_triangle {
         position: absolute;
-        top: 3px;
+        top: 8px;
         left: 143px;
         width: 0;
         height: 0;
         border-style: solid;
+    }
+
+    .right_triangle {
         border-width: 23px 0 23px 23px;
         border-color: transparent transparent transparent #5bc0de;
     }
 
     .left_triangle {
-        position: absolute;
-        top: 3px;
-        left: 143px;
-        width: 0;
-        height: 0;
-        border-style: solid;
         border-width: 23px 23px 23px 0;
         border-color: transparent #f0ad4e transparent transparent;
     }
 
     .up_triangle {
-        position: fixed;
-        top: 111px;
-        left: 1141px;
-        width: 0;
-        height: 0;
-        border-style: solid;
         border-width: 0 70px 23px 70px;
         border-color: transparent transparent #f0ad4e transparent;
     }
@@ -141,7 +133,7 @@
 
     #wheel_triangle {
         position: fixed;
-        top: 114px;
+        top: 119px;
         left: 1135px;
         width: 0;
         height: 0;
@@ -154,7 +146,7 @@
 <!-- Wheel tab -->
 {% if story.author == request.user %}
     <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
-            position: fixed; top: 68px; left: 1135px;
+            position: fixed; top: 73px; left: 1135px;
             border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
@@ -167,7 +159,7 @@
 {% endif %}
 
 <div id="wheel_box" style="display: none;
-     position: fixed; top: 68px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+     position: fixed; top: 73px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
 
     <div id="wheel_navigation" style="background-color: transparent;
         position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
@@ -233,7 +225,7 @@
     <div id="story_tools_section">
         {% if story.author == request.user %}
             <button id='story_tools_tab' class="j_button j_info_button story_control_button" style="
-                    position: absolute; top: 3px; left: 3px; width: 140px;
+                    position: absolute; top: 8px; left: 3px; width: 140px;
                     border-radius: 0;"
                     onclick="toolsTabHandler(this.id);"
                     data-toggle="tooltip" data-placement="bottom"
@@ -348,7 +340,7 @@
                 margin-left: 45px;"
                 onclick="showTitleUpdate();">
             <i class="fa fa-pencil fa-fw"></i>
-            TITLE
+            CHANGE TITLE
         </button>
 
         <!-- Discuss -->
