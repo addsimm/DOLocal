@@ -116,7 +116,7 @@
     .btn-send, .btn-send:visited {
         border: none;
         box-shadow: none;
-        font-size: 12pt;
+        font-size: 11pt;
         height: 41px;
         margin: 0;
         outline: 2px solid #28a4c9;
@@ -137,14 +137,16 @@
 <div>
 
 <!-- Top Nav -->
-<div class="row" onload="chatInstruct();" style="margin: -15px 310px 0 0;">
+<div class="row" onload="chatInstruct();" style="margin: -15px -15px 0 0;">
 
     <button class="j_button j_action_button pull-right" style="margin: 0 0 0 15px;"
             onclick="location.reload();">
+        <i class="fa fa-refresh fa-fw"></i>
         REFRESH
     </button>
 
     <button class="j_button j_relocate_button pull-right" style="margin: 0 0 0 15px;" onclick="newTab();">
+        <i class="fa fa-square fa-fw"></i>
         NEW TAB
     </button>
 
@@ -204,9 +206,10 @@
                                     outline: 2px dashed #28a4c9;"
                            placeholder="Chat ...">
                 </td>
-                <td style="border: none; padding: 0; width: 17%;">
+                <td style="border: none; padding: 0; width: 21%;">
                     <button class="btn-success btn-xs btn-send"
                             onclick="sendMessage();">
+                        <i class="fa fa-send fa-fw"></i>
                         SEND
                     </button>
                 </td>
@@ -470,7 +473,7 @@
             }
             chatMessage = [
                 "<tr class='chat-message'>",
-                "    <td class='usr tdclass' style='overflow-x: hidden; width: 12%; padding: 0 6px 0 3px;'>" + usr + "</td>",
+                "    <td class='usr tdclass' style='overflow-x: hidden; width: 26%; padding: 0 6px 0 3px;'>" + usr + "</td>",
                 "    <td class='" + cntntClass + " tdclass' style='overflow-x: hidden;'>" + cntnt + "</td>",
                 "</tr>"
             ].join('\n');
