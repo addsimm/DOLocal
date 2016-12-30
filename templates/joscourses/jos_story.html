@@ -133,7 +133,7 @@
 
     #wheel_triangle {
         position: fixed;
-        top: 119px;
+        top: {% if request.session.help_position == 'down' %}619{% else %}119{% endif %}px;
         left: 1135px;
         width: 0;
         height: 0;
@@ -146,7 +146,7 @@
 <!-- Wheel tab -->
 {% if story.author == request.user %}
     <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
-            position: fixed; top: 73px; left: 1135px;
+            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px;left: 1135px;
             border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
@@ -158,8 +158,9 @@
     <div id="wheel_triangle" class="down_triangle"></div>
 {% endif %}
 
-<div id="wheel_box" style="display: none;
-     position: absolute; top: 73px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+<div id="wheel_box" style="display: none; position: fixed;
+     top:{% if request.session.help_position == 'down' %}583{% else %}83{% endif %}px;
+     left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
 
     <div id="wheel_navigation" style="background-color: transparent;
         position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
@@ -173,8 +174,11 @@
 
 </div>
 
-<div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
+
+
+    <div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
      border-right: 2px solid rgb(65,45,120)">
+
     <div id="change_title_box" style="display: none;
          position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
          background-color: grey; opacity: .95; z-index: 500;">
@@ -477,11 +481,11 @@
     });
 
 
-    function wheelHandler(i) { 
+    function wheelHandler(i) {
         var wheel_tab = document.getElementById(i);
         var wheel_triangle = document.getElementById('wheel_triangle');
         var data = {};
-    
+
         if ($(wheel_tab).hasClass('j_info_button')) {
             $('#story_container').addClass('wheel_open');
             $(wheel_tab)
@@ -489,7 +493,7 @@
                     .addClass("isopen j_back_button")
                     .removeClass("isclosed j_info_button");
             $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
-            $('#wheel_box').show();
+            $('#wheel_box').slideDown();
             data = {"wheel_position": 'down'};
         } else {
             $('#story_container').removeClass('wheel_open');
@@ -497,11 +501,11 @@
                     .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
                     .addClass("isclosed j_info_button")
                     .removeClass("isopen j_back_button");
-            $('#wheel_box').hide();
+            $('#wheel_box').slideUp();
             $(wheel_triangle).removeClass('up_triangle').addClass('down_triangle');
             data = {"wheel_position": 'up'};
         }
-    
+
         console.log('updating wheel: ' + JSON.stringify(data));
          /* var active_template = document.getElementById('< template >');
             data = { < active_templage >}; */

@@ -54,7 +54,7 @@
 
 {% block login_button %}
 <button class="j_button j_action_button"
-        style="position: fixed; top: 10px; left: 1105px; width: 175px; z-index: 450;"
+        style="position: fixed; top: 10px; left: 1105px; width: 175px; z-index: 1001;"
         data-toggle="tooltip" data-placement="auto"
         {% if request.user.is_authenticated %}
         onclick="location.href='{% url "logout" %}?next={{ request.path }}';"
@@ -73,7 +73,7 @@
 {% block base-fixed-top-bar %}
 <div id='base-fixed-top-bar' style="
     position: fixed; top: 0; left: 0; width: 1280px; height: 70px;
-    background-color: white; border-bottom: 2px solid #412D78; z-index: 400;">
+    background-color: white; border-bottom: 2px solid #412D78; z-index: 900;">
 
     <!-- Messages -->
     {% nevercache %}
