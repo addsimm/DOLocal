@@ -151,7 +151,7 @@
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
             title="Storywheel / Templates">
-        <i class="fa fa-circle fa-fw"></i>
+        <i class="fa fa-pie-chart fa-fw"></i>
         WHEEL
     </button>
 
@@ -174,9 +174,7 @@
 
 </div>
 
-
-
-    <div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
+<div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
      border-right: 2px solid rgb(65,45,120)">
 
     <div id="change_title_box" style="display: none;
@@ -447,6 +445,7 @@
 
     $(document).ready(function () {
 
+        // reload to get new story id
         if (Number(window.location.href.split('/')[5]) === 0) {
             reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
             window.location.href = reload_url;
@@ -459,6 +458,8 @@
 
             function autoSave() {
                 josCKSave('story_content');
+                centralCKEditSave('plot', '/joscourses/wheel_update/?id='
+                        + '{{ wheel.id }}'); //// CHANGE TO ACTUAL TEMPLATE
             }
 
             setTimeout(autoSave, 130000); // Autosave interval
@@ -479,7 +480,6 @@
             wheelHandler('story_wheel_tab');
         }
     });
-
 
     function wheelHandler(i) {
         var wheel_tab = document.getElementById(i);
@@ -524,7 +524,7 @@
 
     {
         var labels = $('#sharing_box').children();
-    $(labels).click(function () {
+        $(labels).click(function () {
         window.location.href =
                 "{% url "joscourses:josstory" story.id %}/?pubperm=" + this.id.split("_")[1];
         $(this).addClass('perm_checked').removeClass('perm_uncheck');
