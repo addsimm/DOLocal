@@ -139,7 +139,7 @@ def ajax_help_search(request):
 
 @login_required
 @csrf_exempt
-def help_update(request):
+def ajax_session_update(request):
     if not request.is_ajax() or not request.method == 'POST':
         return HttpResponse('not ok')
 
@@ -159,6 +159,7 @@ def help_update(request):
     active_tab = request.POST.get("active_tab", 'missing')
     help_item_no = request.POST.get("help_item_no", 'missing')
     editor_status = request.POST.get("editor_status", 'missing')
+    wheel_position = request.POST.get("wheel_position", 'missing')
 
     if active_tab != 'missing':
         request.session["active_tab"] = active_tab
@@ -171,6 +172,9 @@ def help_update(request):
 
     if editor_status != 'missing':
         request.session["editor_status"] = editor_status
+
+    if wheel_position != 'missing':
+        request.session["wheel_position"] = wheel_position
 
     return HttpResponse('ok')
 

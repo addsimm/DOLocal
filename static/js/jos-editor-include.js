@@ -5,7 +5,7 @@
  */
 
 var editors = {};
-initJOSEditor('notes', 'small', 'help_update', "{{ user_created_note | escapejs }}");
+initJOSEditor('notes', 'small', 'ajax_session_update', "{{ user_created_note | escapejs }}");
 
 function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
     // console.log('sctn: ' + sctn + ', org_cntnt: ' + org_cntnt);

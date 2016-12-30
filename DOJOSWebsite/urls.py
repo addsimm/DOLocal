@@ -7,7 +7,7 @@ from mezzanine.conf import settings
 from mezzanine.pages.views import page
 
 from josmembers.views import jos_new_password, password_reset_verify
-from josprojects.views import help_update, ajax_help_search, workshop_connect, community_room
+from josprojects.views import ajax_session_update, ajax_help_search, workshop_connect, community_room
 from josplayground.views import playground_view, ui_demo_view
 
 _slash = "/" if settings.APPEND_SLASH else ""
@@ -46,7 +46,7 @@ urlpatterns += [
     # url(r'^tracking/', include('tracking.urls')),
 
     ### Help w/ search
-    url("help_update", help_update, name="help_update"),
+    url("ajax_session_update", ajax_session_update, name="ajax_session_update"),
     url(r"^search_help/$", ajax_help_search, name="search_help"),
 
     ### Video conference ###

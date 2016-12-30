@@ -64,27 +64,26 @@
 
 </style>
 
-<!-- DEBUG
-<div style="background-color: aliceblue; opacity: .7; padding: 15px; line-height: 1.5; color: blue; position: fixed; top: 50px; left: 450px; font-size: 14pt; width: 400px; z-index: 800;">
-    DEBUG<br>
-    <div class="row">
-        <div class="col-xs-6">
-            uc_note: <br>
-            editor_status:<br>
-            active tab: <br>
-            help pos: <br>
-            help item no: <br>
-        </div>
-        <div class="col-xs-6" style="color: red;">
-            {{ user_created_note }}<br>
-            {{ request.session.editor_status }}<br>
-
-            {{ request.session.active_tab }}<br>
-            {{ request.session.help_position }}<br>
-            {{ request.session.help_item_no }}<br>
-        </div>
+<!--div id='session_debug' class='row' style="position: fixed; top: 50px; left: 1280px; opacity: .9; padding: 15px;
+     color: blue; font-size: 18pt; line-height: 1.5; background-color: lightgrey;  z-index: 1001;">
+    <div class="col-xs-7">
+        wheel_position:<br>
+        uc_note: <br>
+        editor_status:<br>
+        active tab: <br>
+        help pos: <br>
+        help item no: <br>
     </div>
-</div> -->
+    <div class="col-xs-4" style="color: red;">
+        {{ request.session.wheel_position }}<br>
+        {{ user_created_note }}<br>
+        {{ request.session.editor_status }}<br>
+
+        {{ request.session.active_tab }}<br>
+        {{ request.session.help_position }}<br>
+        {{ request.session.help_item_no }}<br>
+    </div>
+</div -->
 
 <!-- help button -->
 <button id="folder_button" class="j_button_small j_info_button isopen" style="position: fixed;
@@ -257,37 +256,38 @@
                 });
             }
         });
-    });
 
-    // arrange things after load according to session status
-    hb = document.getElementById('folder_button');
-    folder_triangle = document.getElementById('folder_triangle');
-    if ('{{ request.session.help_position }}' === 'down') {
 
-        // folder down
-        $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>CLOSE").removeClass("isopen j_info_button").addClass("isclosed  j_back_button").attr("data-original-title", "Saves changes");
-        $(folder_triangle).removeClass('help_down_triangle').addClass('help_up_triangle');
+        // arrange things after load according to session status
+        hb = document.getElementById('folder_button');
+        folder_triangle = document.getElementById('folder_triangle');
+        if ('{{ request.session.help_position }}' === 'down') {
 
-        $("body").addClass('moveDown');
-        $("#folder_main_screen").slideDown("slow");
+            // folder down
+            $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>CLOSE").removeClass("isopen j_info_button").addClass("isclosed  j_back_button").attr("data-original-title", "Saves changes");
+            $(folder_triangle).removeClass('help_down_triangle').addClass('help_up_triangle');
 
-        active_tab = '#{{ request.session.active_tab }}';
-        $(active_tab).tab('show');
+            $("body").addClass('moveDown');
+            $("#folder_main_screen").slideDown("slow");
 
-        showHelpItem('{{ request.session.help_item_no }}');
+            active_tab = '#{{ request.session.active_tab }}';
+            $(active_tab).tab('show');
 
-        if ('{{ request.session.editor_status }}' === 'active') {
-            josCKEdit('notes');
+            showHelpItem('{{ request.session.help_item_no }}');
+
+            if ('{{ request.session.editor_status }}' === 'active') {
+                josCKEdit('notes');
+            }
+
+        } else {
+
+            // folder up
+            $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>FOLDER").removeClass("isclosed  j_back_button").addClass("isopen j_info_button").attr("data-original-title", "To do - How do I? - My notes");
+            $(folder_triangle).removeClass('help_up_triangle').addClass('help_down_triangle');
+            $("body").removeClass('moveDown');
+            $("#folder_main_screen").slideUp("slow");
         }
-
-    } else {
-
-        // folder up
-        $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>FOLDER").removeClass("isclosed  j_back_button").addClass("isopen j_info_button").attr("data-original-title", "To do - How do I? - My notes");
-        $(folder_triangle).removeClass('help_up_triangle').addClass('help_down_triangle');
-        $("body").removeClass('moveDown');
-        $("#folder_main_screen").slideUp("slow");
-    }
+    });
 
     function session_data_update(element) {
         console.log('updating: ' + element);
@@ -334,7 +334,7 @@
         if (data !== {}) {
             $.ajax({
                 type: "POST",
-                url: '/help_update/',
+                url: '/ajax_session_update/',
                 data: data,
                 success: function () {
                     if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {

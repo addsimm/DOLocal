@@ -159,7 +159,7 @@
 {% endif %}
 
 <div id="wheel_box" style="display: none;
-     position: fixed; top: 73px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+     position: absolute; top: 73px; left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
 
     <div id="wheel_navigation" style="background-color: transparent;
         position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
@@ -338,7 +338,7 @@
 
         <button id="change_title" class="j_button_small j_action_button" style="
                 margin-left: 45px;"
-                onclick="showTitleUpdate();">
+                onclick="titleChangeDialog();">
             <i class="fa fa-pencil fa-fw"></i>
             CHANGE TITLE
         </button>
@@ -457,7 +457,7 @@
                 josCKSave('story_content');
             }
 
-            setTimeout(autoSave, 160000); // Autosave interval
+            setTimeout(autoSave, 130000); // Autosave interval
         }
 
         var permission_control_id = 'perm_' + {{ story.publish_permission }};
@@ -476,72 +476,45 @@
         }
     });
 
-    function wheel_data_update(element) {
-        console.log('updating: ' + element);
-        var data = {};
 
-        switch (element) {
-
-            case 'wheel_position':
-
-                /* var hlpBtn = document.getElementById('folder_button');
-                var help_pos = 'up';
-                if ($(hlpBtn).hasClass("isopen")) {
-                    help_pos = 'down';
-                }
-                data = {"help_position": help_pos}; */
-                break;
-
-            case 'active_template':
-                console.log('active_template');
-
-                /* var active_tab = $('.jos_tab_active').attr('id');
-                data = {"active_tab": active_tab}; */
-                break;
-
-            default:
-                data = {};
-                break;
-        }
-
-        console.log('session_data_update; data: ' + JSON.stringify(data));
-
-        if (data !== {}) { //// change
-            $.ajax({
-                type: "POST",
-                url: '/help_update/',
-                data: data,
-                success: function () {
-                    if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {
-                        location.reload();
-                    }
-                }
-            });
-        }
-    }
-
-    function wheelHandler(i) { //// add status update
+    function wheelHandler(i) { 
         var wheel_tab = document.getElementById(i);
         var wheel_triangle = document.getElementById('wheel_triangle');
-
+        var data = {};
+    
         if ($(wheel_tab).hasClass('j_info_button')) {
             $('#story_container').addClass('wheel_open');
             $(wheel_tab)
                     .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE")
                     .addClass("isopen j_back_button")
                     .removeClass("isclosed j_info_button");
-                    // .tooltip('disable');
             $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
             $('#wheel_box').show();
+            data = {"wheel_position": 'down'};
         } else {
             $('#story_container').removeClass('wheel_open');
             $(wheel_tab)
                     .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
                     .addClass("isclosed j_info_button")
                     .removeClass("isopen j_back_button");
-                    // .tooltip('enable');
             $('#wheel_box').hide();
             $(wheel_triangle).removeClass('up_triangle').addClass('down_triangle');
+            data = {"wheel_position": 'up'};
+        }
+    
+        console.log('updating wheel: ' + JSON.stringify(data));
+         /* var active_template = document.getElementById('< template >');
+            data = { < active_templage >}; */
+
+        if (data !== {}) {
+            $.ajax({
+                type: "POST",
+                url: '/ajax_session_update/', //// CHANGE
+                data: data,
+                success: function (serverResponse_data) {
+                    console.log('ajax wheel update response: ' + serverResponse_data);
+                }
+            });
         }
     }
 
@@ -573,7 +546,7 @@
                 "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
     }
 
-    function showTitleUpdate() {
+    function titleChangeDialog() {
         $('#change_title_box')
                 .show()
                 .click(function () {
