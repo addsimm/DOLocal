@@ -1,54 +1,35 @@
 {% extends "base.html" %}
 
-{% block meta_title %}
-    {{ user.get_short_name }}'s Stories
-{% endblock %}
-{% block title %}
-    {{ user.get_short_name }}'s Stories
-{% endblock %}
-
-{% block breadcrumb_menu %}
-
-    {{ block.super }}
-    {{ user.get_short_name }}'s Stories
-
-{% endblock %}
-
+{% block meta_title %}{{ user.get_short_name }}'s Stories{% endblock %}
+{% block title %}{{ user.get_short_name }}'s Stories{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}{{ user.get_short_name }}'s Stories{% endblock %}
 
 {% block all_content %}
 
-<style> tbody tr {height: 70px;}</style>
 
-<div class="row">
-
-    <div class="col-xs-7 josinstructions">
-
-        <span style="margin-left: 30px;">Click a title to edit, or</span>
-
+<div id="my_story_list_instructions" class="row" style="margin: 45px;">
+    <div class="col-xs-8 josinstructions">
+        Click a title to edit, or start a
         <button class="j_button j_action_button" style="margin-left: 10px;"
-                onclick="window.location.href = '{% url 'joscourses:josstory' %}/0';">
+                onclick="window.location.href = '{% url 'joscourses:josstory' 0 %}';">
             <i class="fa fa-bolt fa-fw"></i>
             NEW STORY
         </button>
-
-
     </div>
 </div>
 
-<div class="row" style="margin-top: 30px;">
-    <div class="col-xs-12" style="padding: 0;">
+<div id="my_story_list_table" class="row" style="margin: 45px 30px;">
+    <div class="col-xs-12">
     {% if stories.count > 0 %}
 
         <table data-toggle="table" width="100%">
-            <col style="width:45%;">
-            <col style="width:20%;">
-            <col style="width:20%;">
+            <col style="width:60%;">
+            <col style="width:25%;">
             <col style="width:15%;">
             <thead>
                 <tr>
                     <th data-sortable="true">Title</th>
-                    <th data-sortable="true">Created</th>
-                    <th>Last change</th>
+                    <th>Updated</th>
                     <th data-sortable="true">Share</th>
                 </tr>
             </thead>
@@ -56,12 +37,13 @@
                 {% for story in stories %}
                     <tr>
                         <td>
-                            <a href="{% url 'joscourses:josstory' %}/{{ story.id }}">
+                            <button class="j_button j_relocate_button" style="margin-left: 15px;"
+                                    href="{% url 'joscourses:josstory' story.id %}">
                                 {{ story.title | striptags  | safe | truncatechars:45 }}
-                            </a>
+                            </button>
                         </td>
-                        <td style="text-align:center;">{{ story.created | date:"M d" }}; {{ story.created | time:"f A" }}</td>
-                        <td style="text-align:center;">{{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
+                        <td style="text-align:center;">
+                            {{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
                         <td style=" ">
 
                             {% if story.publish_permission == 1 %}

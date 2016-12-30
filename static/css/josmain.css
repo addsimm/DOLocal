@@ -194,6 +194,7 @@ table {
     width: 100%;
 }
 
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
@@ -219,11 +220,11 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: rgb(209,209,209);
+    background-color: aliceblue;
 }
 
 tr:hover {
-    background-color: #ddd;
+    background-color: inherit;
 }
 
 footer {

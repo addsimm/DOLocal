@@ -1,72 +1,62 @@
 {% extends "base.html" %}
 
-{% block meta_title %}
-    Story Gallery
-{% endblock %}
-{% block title %}
-    Story Gallery
-{% endblock %}
-
-{% block breadcrumb_menu %}
-
-    {{ block.super }}
-    {% if team_name != 'xxx' %}
-        Team {{ team_name | title }}'s stories
-    {% else %}
-        Published stories
-    {% endif %}
-
-{% endblock %}
+{% block meta_title %}Story Gallery{% endblock %}
+{% block title %}Story Gallery{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}{% if team_name != 'xxx' %}
+    Circle {{ team_name | title }}'s stories
+{% else %}
+    Published stories
+{% endif %}{% endblock %}
 
 {% block all_content %}
 
-<style> tbody tr {height: 70px;}</style>
+    <style>
+        td {
+            height: 60px;
+        }
+    </style>
 
-<div class="row">
-
-    <div class="col-xs-12">
-
-        <div class="row" style="margin-bottom: 30px;">
-            <span class="josinstructions">Click a title to view (headings sort):</span>
+    <div id="story_gallery_instructions" class="row" style="margin: 45px;">
+        <div class="col-xs-8 josinstructions">
+            Click a title to view:
         </div>
+    </div>
 
+    <div id="story_gallery_table" class="row" style="margin: 45px 30px;">
+        <div class="col-xs-12">
 
-        <table data-toggle="table" width="100%">
-            <col style="width:23%;">
-            <col style="width:54%;">
-            <col style="width:23%;">
-            <thead>
+            <table data-toggle="table" width="100%">
+                <col style="width:16%;">
+                <col style="width:60%;">
+                <col style="width:24%;">
+                <thead>
                 <tr>
-                    <th data-sortable="true">Author</th>
-                    <th data-sortable="true">Title</th>
-                    <th>Last change</th>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Updated</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {% for story in stories %}
                     <tr>
-                        <td>
-                            <a style="margin-left: 10px;" href="{% url "profile" story.author.id %}">
-                                {{ story.author.JOSProfile.friendly_jos_name }}
-                            </a>
+                        <td class="text-center" style=" ">
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=story.author height=50 %}
                         </td>
-
                         <td>
-                            <a style="margin-left: 10px;" href="{% url 'joscourses:josstory' %}/{{ story.id }}">
-                                {{ story.title | striptags | safe | truncatechars:45 }}
-                            </a>
+                            <button class="j_button j_relocate_button" style="font-size: 24pt; margin-left: 15px;"
+                                    href="{% url 'joscourses:josstory' story.id %}">
+                                {{ story.title | striptags  | safe | truncatechars:45 }}
+                            </button>
                         </td>
-
-                        <td>{{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
+                        <td style="text-align:center;">
+                            {{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
 
                     </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </div>
     </div>
-
-</div>
 
 {% endblock all_content %}
 
