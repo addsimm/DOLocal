@@ -38,7 +38,7 @@
                     <tr>
                         <td>
                             <button class="j_button j_relocate_button" style="margin-left: 15px;"
-                                    href="{% url 'joscourses:josstory' story.id %}">
+                                    onclick="window.location.href='{% url 'joscourses:josstory' story.id %}';">
                                 {{ story.title | striptags  | safe | truncatechars:45 }}
                             </button>
                         </td>

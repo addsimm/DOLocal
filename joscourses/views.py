@@ -88,7 +88,6 @@ def course_week(request, week_no="0", part_no="9", segment_no="9", handout_id="1
 
 
 @login_required
-@csrf_exempt
 def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.html", extra_context=None):
     activate('America/Los_Angeles')
 
