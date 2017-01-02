@@ -378,3 +378,18 @@ def sw_characters(request, wheel_id=0, character_id=0, edit=False, template="jos
     return TemplateResponse(request, template, context)
 
 
+@login_required
+def story_reader(request, story_id=0, template="joscourses/story_reader.html", extra_context=None):
+
+    try:
+        story = get_object_or_404(JOSStory, pk=story_id)
+    except:
+        return HttpResponse('Sorry, story not found.')
+
+    context = {
+        'story': story,
+    }
+
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)

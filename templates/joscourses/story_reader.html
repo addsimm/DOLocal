@@ -1,0 +1,47 @@
+{% extends "joscourses/joscourseweek.html" %}
+{% load i18n mezzanine_tags accounts_tags static %}
+
+{% block all_content %}
+
+<div class="row text-center" style="margin-top: 150px;">
+
+    <div class="col-xs-9">
+
+        {{ story.title }}<br>
+        {{ story.story_content | safe }}<br>
+        by<br>
+        {{ story.author }}
+
+    </div>
+    <div class="col-xs-2">
+
+        <button class="j_button j_action_button" onclick="printPDF();" style=" ">
+            PRINT STORY
+        </button>
+
+        <button class="j_button j_action_button" style="margin-top: 85px;"
+           onclick="window.location.href='https://joinourstory.com/static/media/{{ handout.pdf_handout }}';"
+           download="{{ download_filename }}">
+            DOWNLOAD STORY
+        </button>
+
+        <button class="j_button j_action_button" style="margin-top: 85px;">
+            SEND STORY TO
+        </button>
+
+     </div>
+
+</div>
+
+<script>
+
+    function printPDF() {
+        var getMyFrame = document.getElementById('pdf_frame');
+        getMyFrame.focus();
+        getMyFrame.contentWindow.print();
+        }
+
+</script>
+
+    {% endblock %}
+

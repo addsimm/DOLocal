@@ -72,7 +72,7 @@
         font-size: 16pt;
         text-align: center;
         height: 40px;
-        width: 65px;
+        width: 70px;
         color: #5bc0de;
         cursor: pointer;
     }
@@ -150,7 +150,7 @@
             border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
-            title="Storywheel / Templates">
+            title="Wheel with templates">
         <i class="fa fa-pie-chart fa-fw"></i>
         WHEEL
     </button>
@@ -230,7 +230,7 @@
                     border-radius: 0;"
                     onclick="toolsTabHandler(this.id);"
                     data-toggle="tooltip" data-placement="bottom"
-                    title="Versions / Discard / Read / Autosave / Sharing">
+                    title="Versions / Read / Autosave / Sharing">
                 <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
                 TOOLS
             </button>
@@ -246,36 +246,37 @@
                     onclick=" " style=" "
                     data-toggle="tooltip" data-placement="bottom"
                     title="View previous versions">
-                <i class="fa fa-square fa-fw"></i>
-                VERSIONS
+                <i class="fa fa-hourglass fa-fw"></i>
+                PRIOR VERSIONS
             </button>
 
-            <button id="story_content_discard_btn" class="j_button_small j_discard_button"
+            <!-- DISCARD -->
+            <!-- button id="story_content_discard_btn" class="j_button_small j_discard_button"
                     style="margin-left: 10px;"
                     onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
                     data-toggle="tooltip" data-placement="bottom"
                     title="Loads last save, discarding changes">
                 <i class="fa fa-trash fa-fw"></i>
                 DISCARD
-            </button>
+            </button -->
 
             <button class="j_button_small j_action_button"
                     onclick=" " style="margin-left: 10px;"
                     data-toggle="tooltip" data-placement="bottom"
                     title="Preview format / email to friends">
-                <i class="fa fa-exclamation fa-fw"></i>
+                <i class="fa fa-send fa-fw"></i>
                 READ / SEND
             </button>
         </div>
 
         <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
-         position: absolute; top: 0; left: 590px; height: 55px; width: 515px;
+         position: absolute; top: 0; left: 530px; height: 55px; width: 560px;
          display: flex; justify-content: flex-start; align-items: center;
          padding-top: 5px;">
 
         <!-- Autosave -->
         <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 30px;">
-            Autosave:
+            AUTOSAVE:
         </div>
         <label class="auto_save_checkbox">
             <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
@@ -285,21 +286,20 @@
         <!-- Permission -->
         <div style="font-size: 12pt; font-weight: bold;
              margin-left: 30px; text-align: right">
-            Share:
+            SHARING:
         </div>
-
         <div id="sharing_box" style="
              position: relative; top:0; margin-left: 10px;
              display: flex;  justify-content: space-between; align-items: flex-start;
 
-             height: 40px; width: 198px;
+             height: 40px; width: 210px;
              outline: 2px solid #412d78;">
 
             <label id="perm_1" class="perm_label" style="font-size: 14pt; padding-top: 7px;"
                    data-toggle="tooltip" data-placement="bottom"
                    title="Only me">
                 <input type="radio" name="toggle">
-                OFF
+                NONE
             </label>
 
             <label id="perm_2" class="perm_label" style="padding-top: 4px;"
@@ -460,7 +460,7 @@
                         + '{{ wheel.id }}'); //// CHANGE TO ACTUAL TEMPLATE
             }
 
-            setTimeout(autoSave, 130000); // Autosave interval
+            setTimeout(autoSave, 100000); // Autosave interval
         }
 
         var permission_control_id = 'perm_' + {{ story.publish_permission }};

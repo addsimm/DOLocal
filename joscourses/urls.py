@@ -1,6 +1,5 @@
 from django.conf.urls import url
-from .views import course_week, course_week_list, josstory, ajax_story_update, ajax_wheel_update, joswheel, sw_plot, \
-    sw_characters, sw_theme, sw_world, sw_conflict
+from .views import *
 
 urlpatterns = [
 
@@ -17,6 +16,8 @@ urlpatterns = [
     url("josstory/*$", josstory, {'story_id': 0}, name="josstory"),
 
     url("story_update/*$", ajax_story_update, name="story_update"),
+
+    url("story_reader/(?P<story_id>\d+)/*$", story_reader, name="story_reader"),
 
     url("wheel/(?P<wheel_id>\d+)/*$", joswheel, name="joswheel"),
     url("wheel/*$", joswheel, name="joswheel"),
