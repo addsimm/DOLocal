@@ -386,8 +386,11 @@ def story_reader(request, story_id=0, template="joscourses/story_reader.html", e
     except:
         return HttpResponse('Sorry, story not found.')
 
+    comments = Message.objects.filter(message_thread=story.message_thread).order_by('sent_at')
+
     context = {
         'story': story,
+        'comments': comments
     }
 
     context.update(extra_context or {})
