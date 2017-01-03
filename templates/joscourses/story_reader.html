@@ -3,7 +3,7 @@
 {% block meta_title %}{{ story.title | striptags | safe | truncatechars:25 }}{% endblock %}
 {% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
 {% block breadcrumb_menu %}
-    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
+    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:100 }}{% endblock %}
 
 {% block all_content %}
 
@@ -11,8 +11,8 @@
      flex-direction: row; justify-content: flex-end;">
 
     <div style="margin-left: 30px; margin-right: auto; align-self: flex-end;">
-        <span class="homehead" style="font-size: 48pt;">{{ story.title }}</span>
-        <div class="joscursive" style="display: inline; font-size: 48pt;  margin: 0 15px;">
+        <span class="homehead" style="font-size: 36pt;">{{ story.title }}</span>
+        <div class="joscursive" style="display: inline; font-size: 36pt;  margin: 0 15px;">
             by
             <a id="author" class="joslargelinkbutton " href="{% url "profile" story.author.id %}"
                style="display: inline; outline: none;">
@@ -35,13 +35,13 @@
         DOWNLOAD
     </button><br -->
 
-    <button class="j_button j_action_button" style="margin-left: 15px;">
+    <button class="j_button j_action_button" style="margin-left: 10px;">
         <i class="fa fa-send fa-fw"></i>
         SEND
     </button>
 
     <!-- Discuss -->
-    <button class="j_button j_relocate_button" style="margin-left: 15px;"
+    <button class="j_button j_relocate_button" style="margin-left: 10px;"
             onclick="window.location.href='#discuss';">
         <i class="fa fa-comments fa-fw"></i>
         DISCUSS

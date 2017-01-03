@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             <button class="j_button j_relocate_button" style="font-size: 24pt; margin-left: 15px;"
-                                    onclick="window.location.href='{% url 'joscourses:josstory' story.id %}';">
+                                    onclick="window.location.href='{% url 'joscourses:story_reader' story.id %}';">
                                 {{ story.title | striptags  | safe | truncatechars:45 }}
                             </button>
                         </td>
