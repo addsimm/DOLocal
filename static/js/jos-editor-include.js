@@ -30,19 +30,9 @@ var ck_config_small = {
 };
 
 var ck_config_large = {
-    toolbar: [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-        {'name': 'styles', 'items': ['Font', 'FontSize']},
-        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
-        {'name': 'paragraph', 'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'NumberedList', 'BulletedList']},
-        {'name': 'insert', 'items': ['Image', 'Smiley']},
-        {'name': 'editing', 'items': ['SelectAll', 'Find']}
-    ],
-    contentsCss: '/static/ckeditor/ckeditor/contents.css',
-    width: '100%',
-    height: 650,
-    tabSpaces: 4,
-    toolbarRows: 1,
+
+
+
     uiColor: '#ffff00',
     extraPlugins: 'colorbutton',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
@@ -75,9 +65,6 @@ function josCKEdit(sect2edit) {
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         segment_element = document.getElementById(sect2edit + '_original_content');
 
-    // console.log('ck_editor_container: ' + ck_editor_container.id + ', edit_btn.text: ' + $(edit_btn).text());
-
-
     if ($(edit_btn).hasClass('j_info_button') || sect2edit.search('story') !== -1) {
 
         if (sect2edit.search('story') === -1) {
@@ -92,12 +79,16 @@ function josCKEdit(sect2edit) {
             return;
         }
 
-        editors[sect2edit].section_editor = CKEDITOR.appendTo(
-            ck_editor_container,
-            ck_config,
+        editors[sect2edit].section_editor = CKEDITOR.appendTo(ck_editor_container, {
+            skin: 'bootstrapck, https://joinourstory.com/static/ckeditor/skins/bootstrapck/',
+            customConfig: '/static/ckeditor/config.js'
+        },
             editors[sect2edit].original_content);
 
-        // console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
+            //  skin: 'flat, https://static/ckeditor/skins/flat/'
+
+
+        console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
 
     } else { //Save
 

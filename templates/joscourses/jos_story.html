@@ -133,7 +133,7 @@
 
     #wheel_triangle {
         position: fixed;
-        top: {% if request.session.help_position == 'down' %}619{% else %}119{% endif %}px;
+        top: {% if request.session.help_position == 'down' %}623{% else %}123{% endif %}px;
         left: 1135px;
         width: 0;
         height: 0;
@@ -146,8 +146,8 @@
 <!-- Wheel tab -->
 {% if story.author == request.user %}
     <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
-            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px;left: 1135px;
-            border-radius: 0; z-index: 501;"
+            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;
+            width: 140px; height: 50px; border-radius: 0; z-index: 501;"
             onclick="wheelHandler(this.id);"
             data-toggle="tooltip" data-placement="bottom"
             title="Wheel with templates">
@@ -461,7 +461,7 @@
                         + '{{ wheel.id }}'); //// CHANGE TO ACTUAL TEMPLATE
             }
 
-            setTimeout(autoSave, 100000); // Autosave interval
+            setTimeout(autoSave, 140000); // Autosave interval ms.
         }
 
         var permission_control_id = 'perm_' + {{ story.publish_permission }};
@@ -472,6 +472,8 @@
         initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
         initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
 
+
+        var editor_div = document.getElementById('story_content_editor_container');
         josCKEdit('story_content');
 
         if ('{{ request.session.wheel_position }}' === 'down') {
@@ -488,7 +490,7 @@
         if ($(wheel_tab).hasClass('j_info_button')) {
             $('#story_container').addClass('wheel_open');
             $(wheel_tab)
-                    .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>CLOSE")
+                    .html("<i class='fa fa-pie-chart fa-fw'></i>CLOSE")
                     .addClass("isopen j_back_button")
                     .removeClass("isclosed j_info_button");
             $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
@@ -497,7 +499,7 @@
         } else {
             $('#story_container').removeClass('wheel_open');
             $(wheel_tab)
-                    .html("<i class='fa fa-circle fa-fw' style='margin-right: 5px;'></i>WHEEL")
+                    .html("<i class='fa fa-pie-chart fa-fw'></i>WHEEL")
                     .addClass("isclosed j_info_button")
                     .removeClass("isopen j_back_button");
             $('#wheel_box').slideUp();
