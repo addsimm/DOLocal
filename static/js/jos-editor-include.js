@@ -79,16 +79,13 @@ function josCKEdit(sect2edit) {
             return;
         }
 
-        editors[sect2edit].section_editor = CKEDITOR.appendTo(ck_editor_container, {
-            skin: 'bootstrapck, https://joinourstory.com/static/ckeditor/skins/bootstrapck/',
-            customConfig: '/static/ckeditor/config.js'
-        },
+        editors[sect2edit].section_editor = CKEDITOR.appendTo(
+            ck_editor_container, {
+                customConfig: '/static/ckeditor/config.js'
+            },
             editors[sect2edit].original_content);
 
-            //  skin: 'flat, https://static/ckeditor/skins/flat/'
-
-
-        console.log('started editor; .section_editor: ' + editors[sect2edit].section_editor);
+        // console.log('.section_editor: ' + editors[sect2edit].section_editor);
 
     } else { //Save
 
