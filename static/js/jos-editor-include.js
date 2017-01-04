@@ -31,12 +31,11 @@ var ck_config_small = {
 
 var ck_config_large = {
 
-
-
     uiColor: '#ffff00',
     extraPlugins: 'colorbutton',
     removePlugins: 'liststyle,tabletools,scayt,contextmenu'
 };
+
 
 window.onbeforeunload = function () {
     //// console.log('unload called');

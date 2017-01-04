@@ -9,15 +9,14 @@ CKEDITOR.editorConfig = function( config ) {
     config.skin = 'moonocolor, ' +
         'https://joinourstory.com/static/ckeditor/skins/moonocolor/';
     config.toolbar = [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'PasteFromWord']},
         {'name': 'styles', 'items': ['Font', 'FontSize']},
         {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
         {
             'name': 'paragraph',
-            'items': ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
+            'items': ['JustifyLeft', 'JustifyCenter', '-', 'Indent', 'Outdent', '-', 'Blockquote']
         },
-        {'name': 'insert', 'items': ['Image', 'Smiley']},
-        {'name': 'editing', 'items': ['SelectAll', 'Find']}
+        {'name': 'editing', 'items': ['HorizontalRule', 'SelectAll', 'Find']}
     ];
     config.width = '100%';
     config.height = 650;
