@@ -86,27 +86,32 @@
 
     // Handles hovering
     $(document).mousemove(function(e) {
-        var mousePos = getMousePos(C, e);
 
-        for (i = 0; i < 5; i++) {
-            if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
-                newWedge = i+1;
-                break
-            } else {
-                newWedge = 0;
-            }
-        }
+        var wheel = document.getElementById('wheel_box');
+        if($(wheel).css('display') !== 'none') {
 
-        if (newWedge !== oldWedge) {
-            redraw();
-            if (newWedge !== 0) {
-                ctx.save();
-                ctx.fillStyle = "white";
-                ctx.globalAlpha = 0.6;
-                ctx.fill(paths[newWedge - 1]);
-                ctx.restore();
+            var mousePos = getMousePos(C, e);
+
+            for (i = 0; i < 5; i++) {
+                if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
+                    newWedge = i + 1;
+                    break
+                } else {
+                    newWedge = 0;
+                }
             }
-            oldWedge = newWedge;
+
+            if (newWedge !== oldWedge) {
+                redraw();
+                if (newWedge !== 0) {
+                    ctx.save();
+                    ctx.fillStyle = "white";
+                    ctx.globalAlpha = 0.6;
+                    ctx.fill(paths[newWedge - 1]);
+                    ctx.restore();
+                }
+                oldWedge = newWedge;
+            }
         }
     });
 

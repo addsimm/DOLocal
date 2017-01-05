@@ -651,7 +651,8 @@ a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active, a.cke_b
 
 .cke_combo {
     display: inline-block;
-    float: left
+    float: left;
+    margin-right: 5px;
 }
 
 .cke_rtl .cke_combo {
@@ -849,10 +850,12 @@ a.cke_path_item:hover, a.cke_path_item:focus, a.cke_path_item:active {
 }
 
 .cke_combo__fontsize .cke_combo_text {
+    font-size: 16px !important;
     width: 30px
 }
 
 .cke_combopanel__fontsize {
+    font-size: 16px !important;
     width: 120px
 }
 
