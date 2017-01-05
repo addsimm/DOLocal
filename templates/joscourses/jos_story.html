@@ -144,6 +144,27 @@
 </style>
 
 <!-- Wheel tab -->
+
+<div id="version_modal_box" style="display: block;
+ position: absolute; top: 200px; left: 880px; height: 250px; width: 400px;
+ background-color: grey; opacity: .95; z-index: 500; padding: 10px;">
+    <div class="jos_flex_container" style="flex-direction: row; width: 300px;
+         justify-content: space-around; background-color: white; margin-top: 20px;">
+        <div>id</div>
+        <div>pv_date</div>
+        <div>pv_title</div>
+    </div>
+    {% for version in prior_versions %}
+        <div class="jos_flex_container" style="flex-direction: row; width: 380px;
+             justify-content: space-around; background-color: white; margin-top: 5px;">
+            <div> {{ version.id }}</div>
+            <div> {{ version.pv_date }}</div>
+            <div> {{ version.pv_title }}</div>
+        </div>
+    {% endfor %}
+
+</div>
+
 {% if story.author == request.user %}
     <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
             position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;

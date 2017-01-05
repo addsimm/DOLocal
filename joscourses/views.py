@@ -128,6 +128,7 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         story.wheel.save()
 
     comments = Message.objects.filter(message_thread=story.message_thread).order_by('sent_at')
+    prior_versions = JOSPriorVersion.objects.filter(pv_story=story).order_by('-pv_date')
 
     new_title = request.GET.get('newtitle', 'none')
     if new_title != 'none':
@@ -167,7 +168,7 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         info(request, auto_save_message)
         return redirect('joinourstory.com/josstory/' + str(story_id))
 
-    context = {'story': story, 'edit': edit, "comments": comments}
+    context = {'story': story, 'edit': edit, "prior_versions": prior_versions, "comments": comments}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
@@ -197,25 +198,24 @@ def ajax_story_update(request):
         if section == 'story_content':
 
             ## Prior versions logic
-            prior_versions = JOSPriorVersion.objects.filter(pv_story=story)
+            prior_versions = JOSPriorVersion.objects.filter(pv_story=story).order_by('pv_date')
             prior_versions_length = len(prior_versions)
 
-            # last = None
+            #### need to calculate interval since last
+            # since_last = datetime.datetime.now() - prior_versions[0].pv_date
+
+            new_version = JOSPriorVersion(
+                    pv_story=story,
+                    pv_date=datetime.datetime.now(),
+                    pv_title=story.title,
+                    pv_story_content=story.story_content
+            )
+
             if prior_versions_length < 5:
-                new_version = JOSPriorVersion(
-                    pv_story = story,
-                    pv_date = datetime.datetime.now(),
-                    pv_title = story.title,
-                    pv_story_content = story.story_content
-                )
                 new_version.save()
-
-                ######## Check times
-                # if prior_versions_length < 5:
-                #     new_version.save()
-                #
-                # last = datetime.datetime.now() - prior_versions[0].pv_date
-
+            # elif since_last > datetime.timedelta(minutes=90):
+            #     prior_versions[4].delete()
+            #     new_version.save()
 
             story.story_content = new_content
             story.save()
