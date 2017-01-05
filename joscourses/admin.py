@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlot, JOSCharacter, JOSConflict, JOSTheme, JOSWorld
+from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlot, JOSCharacter, JOSConflict, JOSTheme, JOSWorld, JOSPriorVersion
 
 
 # Register your models here.
@@ -35,7 +35,6 @@ class JOSCourseWeekAdmin(admin.ModelAdmin):
     verbose_name = 'Week'
     list_display = ("id", "week_no", "week_title", "course", "updated")
     readonly_fields = ('created', 'updated',)
-
 admin.site.register(JOSCourseWeek, JOSCourseWeekAdmin)
 
 
@@ -48,7 +47,6 @@ class JOSHandoutAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated',)
 
     list_filter = ("courseweek", "segment_no", "element_no",)
-
 admin.site.register(JOSHandout, JOSHandoutAdmin)
 
 
@@ -60,7 +58,6 @@ class JOSStoryAdmin(admin.ModelAdmin):
     readonly_fields = ("created", "updated",)
 
     list_editable = ("publish_permission", "auto_save")
-
 admin.site.register(JOSStory, JOSStoryAdmin)
 
 
@@ -73,8 +70,6 @@ class JOSWheelAdmin(admin.ModelAdmin):
 
     def wheel_story_id(self, instance):
         return instance.josstory.id
-
-
 admin.site.register(JOSWheel, JOSWheelAdmin)
 
 
@@ -84,7 +79,6 @@ class JOSPlotAdmin(admin.ModelAdmin):
     verbose_name = "Plot"
 
     readonly_fields = ("created", "updated",)
-
 admin.site.register(JOSPlot, JOSPlotAdmin)
 
 
@@ -94,8 +88,6 @@ class JOSCharacterAdmin(admin.ModelAdmin):
     verbose_name = "Characters"
 
     readonly_fields = ("created", "updated",)
-
-
 admin.site.register(JOSCharacter, JOSCharacterAdmin)
 
 
@@ -105,8 +97,6 @@ class JOSThemeAdmin(admin.ModelAdmin):
     verbose_name = "Characters"
 
     readonly_fields = ("created", "updated",)
-
-
 admin.site.register(JOSTheme, JOSThemeAdmin)
 
 
@@ -116,8 +106,6 @@ class JOSWorldAdmin(admin.ModelAdmin):
     verbose_name = "Characters"
 
     readonly_fields = ("created", "updated",)
-
-
 admin.site.register(JOSWorld, JOSWorldAdmin)
 
 
@@ -127,6 +115,10 @@ class JOSConflictAdmin(admin.ModelAdmin):
     verbose_name = "Characters"
 
     readonly_fields = ("created", "updated",)
-
-
 admin.site.register(JOSConflict, JOSConflictAdmin)
+
+
+class JOSPriorVersionAdmin(admin.ModelAdmin):
+    list_display = ("id", "updated", "pv_story", "pv_date", "pv_title", "pv_story_content_start")
+    readonly_fields = ("created", "updated",)
+admin.site.register(JOSPriorVersion, JOSPriorVersionAdmin)

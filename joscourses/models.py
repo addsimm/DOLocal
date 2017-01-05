@@ -230,6 +230,7 @@ class JOSWheel(TimeStamped, models.Model):
 
         return author
 
+
 class JOSStory(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Story'
@@ -246,13 +247,31 @@ class JOSStory(TimeStamped, models.Model):
 
     tags = TaggableManager(blank=True)
 
+    def __unicode__(self):
+        return str(self.id) + ": " + truncatechars(self.title, 8)
+
     @property
     def get_jos_name(author):
-        first_name = author.get_short_name()[:9]
+        first_name = author.get_short_name()[:8]
         last_initial = author.user.last_name[:1].upper()
         jos_name = first_name + " " + last_initial + "."
         return jos_name
 
     @property
     def content_start(self):
-        return truncatechars(self.story_content, 150)
+        return truncatechars(self.story_content, 100)
+
+
+class JOSPriorVersion(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Prior version'
+        verbose_name_plural = 'Prior versions'
+
+    pv_story = models.ForeignKey(JOSStory, null=True, blank=True)
+    pv_date = models.DateTimeField(null=True, blank=True)
+    pv_title = models.TextField(default="Untitled")
+    pv_story_content = models.TextField(default="Coming soon")
+
+    @property
+    def pv_story_content_start(self):
+            return truncatechars(self.pv_story_content, 50)

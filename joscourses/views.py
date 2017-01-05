@@ -1,4 +1,5 @@
 import os.path
+import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
@@ -11,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
-from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlot, JOSCharacter, JOSWorld, JOSTheme, JOSConflict
+from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlot, JOSCharacter, JOSWorld, JOSTheme, JOSConflict, JOSPriorVersion
 
 ### UNUSED
 @login_required
@@ -194,9 +195,31 @@ def ajax_story_update(request):
     if new_content != 'missing':
 
         if section == 'story_content':
+
+            ## Prior versions logic
+            prior_versions = JOSPriorVersion.objects.filter(pv_story=story)
+            prior_versions_length = len(prior_versions)
+
+            # last = None
+            if prior_versions_length < 5:
+                new_version = JOSPriorVersion(
+                    pv_story = story,
+                    pv_date = datetime.datetime.now(),
+                    pv_title = story.title,
+                    pv_story_content = story.story_content
+                )
+                new_version.save()
+
+                ######## Check times
+                # if prior_versions_length < 5:
+                #     new_version.save()
+                #
+                # last = datetime.datetime.now() - prior_versions[0].pv_date
+
+
             story.story_content = new_content
             story.save()
-            info(request, "Story saved!")
+            info(request, "Story saved! - prior_versions_length: " + str(prior_versions_length))
 
         elif section == 'title':
             story.title = new_content
