@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
-from .models import JOSCourseWeek, JOSHandout, JOSStory, JOSWheel, JOSPlot, JOSCharacter, JOSWorld, JOSTheme, JOSConflict, JOSPriorVersion
+from .models import *
 
 ### UNUSED
 @login_required
@@ -96,6 +96,11 @@ def josstory(request, story_id=0, edit=False, template="joscourses/jos_story.htm
         story = get_object_or_404(JOSStory, pk=story_id)
     except:
         story = JOSStory.objects.create(author=request.user, title="- Untitled -", story_content="- Enter content here -")
+        JOSPriorVersion.objects.create(
+                pv_story=story,
+                pv_title=story.title,
+                pv_story_content=story.story_content
+        )
 
     if not story.wheel:
         wheel = JOSWheel.objects.create()
@@ -197,28 +202,28 @@ def ajax_story_update(request):
 
         if section == 'story_content':
 
-            ## Prior versions logic
-            prior_versions = JOSPriorVersion.objects.filter(pv_story=story).order_by('pv_date')
-            prior_versions_length = len(prior_versions)
-
+            # Prior versions logic
             new_version = JOSPriorVersion(
                     pv_story=story,
                     pv_title=story.title,
                     pv_story_content=story.story_content
             )
             new_version.save()
-            new_datetime = new_version.pv_date
+            prior_versions = JOSPriorVersion.objects.filter(pv_story=story).order_by('-pv_date')
+            new_date = prior_versions[0].pv_date
 
-            if prior_versions_length > 0:
-                pv_datetime = prior_versions[0].pv_date
-                #### need to calculate interval since last
-                since_last = new_datetime - pv_datetime
-                info(request, "Story title changed! since_last: " + str(since_last))
-                # if since_last < timedelta(seconds=20):
-                ############## deleting from query not database
-                prior_versions[3].delete()
-                # else:
-                # new_version.delete()
+            try:
+                latest_date = prior_versions[1].pv_date
+                since_last = new_date - latest_date
+            except:
+                info(request, 'problem')
+                return
+
+            if len(prior_versions) > 4:
+                if since_last > timedelta(seconds=3660):
+                    JOSPriorVersion.objects.filter(pv_story=story).earliest('pv_date').delete()
+                else:
+                    new_version.delete()
 
             story.story_content = new_content
             story.save()
