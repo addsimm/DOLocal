@@ -141,50 +141,94 @@
         z-index: 501;
     }
 
+    th, td {
+        padding: 5px 0;
+    }
 </style>
 
 <!-- Wheel tab -->
 
-<div id="version_modal_box" style="display: block;
- position: absolute; top: 200px; left: 780px; height: 250px; width: 500px;
- background-color: grey; opacity: .95; z-index: 500; padding: 10px;">
-    <div class="jos_flex_container" style="flex-direction: row; width: 480px;
-         justify-content: space-around; background-color: white; margin-top: 20px;">
-        <div>id</div>
-        <div>pv_date</div>
-        <div>pv_title</div>
-    </div>
-    {% for version in prior_versions %}
-        <div class="jos_flex_container" style="flex-direction: row; width: 480px;
-             justify-content: space-around; background-color: white; margin-top: 5px;">
-            <div> {{ version.id }}</div>
-            <div> {{ version.pv_date }}</div>
-            <div> {{ version.pv_title }}</div>
-        </div>
-    {% endfor %}
+<div id="version_modal_box" style="
+ position: absolute; top: 0px; left: 0px; height: 1000px; width: 1275px;
+ background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
+    <div id="previous_versions_table" style="
+        position: absolute; top: 50px; left: 100px; height: 700px; width: 1115px;
+        background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+        font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+        <div id="messageSpace" style="
+             display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+             margin: 20px 0 0 90px; width: 610px">
+            <div id="modal_message_message">Click a title to see past content:</div>
+        </div>
+
+        <table data-toggle="table" style="font-size: 14pt; margin: 15px 0 0 15px; width: 97%; background-color: white;">
+            <col style="width:25%;">
+            <thead>
+                <tr>
+                    <th>Saved</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for version in prior_versions %}
+                    <tr>
+                        <td style="text-align:center;">
+                            {{ version.pv_date }}
+                        </td>
+                        <td>
+                            <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
+                                    onclick="window.location.href='{% url 'joscourses:josstory' story.id %}';">
+                                {{ version.pv_title | striptags  | safe | truncatechars:45 }}
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="past_version_content" style="height: 300px; width: 96%; overflow-x: hidden; overflow-y: scroll;
+             font-size: 14pt; margin: 30px 0 0 20px; padding: 15px; background-color: white; outline: 1px solid rgb(65,45,120);">
+
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        </div>
+
+        <button id="title_discard_btn" class="j_button_small j_discard_button"
+                style="margin-left: 10px; "
+                onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Reloads recent save and discards changes">
+            <i class="fa fa-trash fa-fw"></i>
+            CANCEL
+        </button>
+    </div>
 </div>
 
-{% if story.author == request.user %}
-    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
-            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;
-            width: 140px; height: 50px; border-radius: 0; z-index: 501;"
-            onclick="wheelHandler(this.id);"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Wheel with templates">
-        <i class="fa fa-pie-chart fa-fw"></i>
-        WHEEL
-    </button>
-
-    <div id="wheel_triangle" class="down_triangle"></div>
-{% endif %}
-
 <div id="story_modal_box" style="display: none;
-     position: absolute; top: 0px; left: 0px; height: 1000px; width: 1290px;
-     background-color: grey; opacity: .95; z-index: 500;">
+     position: absolute; top: 0px; left: 0px; height: 1000px; width: 1275px;
+     background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
     <div id="change_title" style="
-        position: absolute; top: 105px; left: 160px; height: 215px; width: 720px;
+        position: absolute; top: 50px; left: 100px; height: 215px; width: 720px;
         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
@@ -223,6 +267,21 @@
         </div>
     </div>
 </div>
+
+<!-- Wheel tab -->
+{% if story.author == request.user %}
+    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
+            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;
+            width: 140px; height: 50px; border-radius: 0; z-index: 501;"
+            onclick="wheelHandler(this.id);"
+            data-toggle="tooltip" data-placement="bottom"
+            title="Wheel with templates">
+        <i class="fa fa-pie-chart fa-fw"></i>
+        WHEEL
+    </button>
+
+    <div id="wheel_triangle" class="down_triangle"></div>
+{% endif %}
 
 <div id="wheel_box" style="display: none; position: fixed;
      top:{% if request.session.help_position == 'down' %}583{% else %}83{% endif %}px;
@@ -268,16 +327,6 @@
                 <i class="fa fa-hourglass fa-fw"></i>
                 PAST VERSIONS
             </button>
-
-            <!-- DISCARD -->
-            <!-- button id="story_content_discard_btn" class="j_button_small j_discard_button"
-                    style="margin-left: 10px;"
-                    onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="Loads last save, discarding changes">
-                <i class="fa fa-trash fa-fw"></i>
-                DISCARD
-            </button -->
 
             <button class="j_button_small j_action_button"
                     onclick="window.location.href = 'https://joinourstory.com/joscourses/story_reader/' + {{ story.id }};"
@@ -579,6 +628,15 @@
         window.location.href =
                 "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
     }
+
+    function versionModal() {
+        $('#version_modal_box')
+                .show()
+                .click(function () {
+                    $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
+                })
+    }
+
 
     function modalMessage(subject, message) {
         if (subject === 'change_title') {
