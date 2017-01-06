@@ -146,16 +146,16 @@
 <!-- Wheel tab -->
 
 <div id="version_modal_box" style="display: block;
- position: absolute; top: 200px; left: 880px; height: 250px; width: 400px;
+ position: absolute; top: 200px; left: 780px; height: 250px; width: 500px;
  background-color: grey; opacity: .95; z-index: 500; padding: 10px;">
-    <div class="jos_flex_container" style="flex-direction: row; width: 300px;
+    <div class="jos_flex_container" style="flex-direction: row; width: 480px;
          justify-content: space-around; background-color: white; margin-top: 20px;">
         <div>id</div>
         <div>pv_date</div>
         <div>pv_title</div>
     </div>
     {% for version in prior_versions %}
-        <div class="jos_flex_container" style="flex-direction: row; width: 380px;
+        <div class="jos_flex_container" style="flex-direction: row; width: 480px;
              justify-content: space-around; background-color: white; margin-top: 5px;">
             <div> {{ version.id }}</div>
             <div> {{ version.pv_date }}</div>

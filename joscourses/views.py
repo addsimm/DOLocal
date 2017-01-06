@@ -1,5 +1,5 @@
 import os.path
-import datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
@@ -201,30 +201,33 @@ def ajax_story_update(request):
             prior_versions = JOSPriorVersion.objects.filter(pv_story=story).order_by('pv_date')
             prior_versions_length = len(prior_versions)
 
-            #### need to calculate interval since last
-            # since_last = datetime.datetime.now() - prior_versions[0].pv_date
-
             new_version = JOSPriorVersion(
                     pv_story=story,
-                    pv_date=datetime.datetime.now(),
                     pv_title=story.title,
                     pv_story_content=story.story_content
             )
+            new_version.save()
+            new_datetime = new_version.pv_date
 
-            if prior_versions_length < 5:
-                new_version.save()
-            # elif since_last > datetime.timedelta(minutes=90):
-            #     prior_versions[4].delete()
-            #     new_version.save()
+            if prior_versions_length > 0:
+                pv_datetime = prior_versions[0].pv_date
+                #### need to calculate interval since last
+                since_last = new_datetime - pv_datetime
+                info(request, "Story title changed! since_last: " + str(since_last))
+                # if since_last < timedelta(seconds=20):
+                ############## deleting from query not database
+                prior_versions[3].delete()
+                # else:
+                # new_version.delete()
 
             story.story_content = new_content
             story.save()
-            info(request, "Story saved! - prior_versions_length: " + str(prior_versions_length))
+            info(request, "Story saved!")
 
         elif section == 'title':
             story.title = new_content
             story.save()
-            info(request, "Story title changed!")
+
 
         elif section == "comment":
             send_message = Message.objects.create(

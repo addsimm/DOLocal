@@ -268,7 +268,7 @@ class JOSPriorVersion(TimeStamped, models.Model):
         verbose_name_plural = 'Prior versions'
 
     pv_story = models.ForeignKey(JOSStory, null=True, blank=True)
-    pv_date = models.DateTimeField(null=True, blank=True)
+    pv_date = models.DateTimeField(auto_now_add=True)
     pv_title = models.TextField(default="Untitled")
     pv_story_content = models.TextField(default="Coming soon")
 
