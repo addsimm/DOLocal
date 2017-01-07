@@ -167,7 +167,7 @@
         <div id="messageSpace" style="
              display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
              margin: 20px 0 0 90px;">
-            <div id="modal_message_message">Click a title (saved every hour for 4 hours):</div>
+            <div id=" ">Click a title (saved every hour for 4 hours):</div>
         </div>
 
         <table data-toggle="table" style="font-size: 14pt; margin: 15px 0 0 15px; width: 97%; background-color: white;">
@@ -396,7 +396,7 @@
 
         <button id="change_title" class="j_button_small j_action_button" style="
                 margin-left: 45px;"
-                onclick="modalMessage('change_title', ' Enter new title:');">
+                onclick="modalMessage('change_title', 'Enter new title:');">
             <i class="fa fa-pencil fa-fw"></i>
             CHANGE TITLE
         </button>
@@ -631,7 +631,7 @@
 
     function modalMessage(subject, message) {
         if (subject === 'change_title') {
-            $('#modal_message_message').text(message);
+            $('#modal_message_message').html(message);
             $('#story_modal_box')
                     .show()
                     .click(function () {
