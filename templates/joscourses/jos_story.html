@@ -146,9 +146,7 @@
     }
 </style>
 
-<!-- Wheel tab -->
-
-<div id="version_modal_box" style="
+<div id="version_modal_box" style="display: none;
  position: absolute; top: 0px; left: 0px; height: 1000px; width: 1275px;
  background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
@@ -157,13 +155,19 @@
         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
+        <button id='help_done_btn' class='j_button_small j_back_button' style='
+            position: absolute; top: 25px; left: 755px; z-index: 501;'
+                onclick="$('#version_modal_box').hide(); $('#story_wheel_tab, #wheel_triangle').show();">
+            <i class="fa fa-arrow-left fa-fw"></i>DONE
+        </button>
+
         <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
              style="position: absolute; top: 10px; left: 10px; height: 65px;">
 
         <div id="messageSpace" style="
              display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
-             margin: 20px 0 0 90px; width: 610px">
-            <div id="modal_message_message">Click a title to see past content:</div>
+             margin: 20px 0 0 90px;">
+            <div id="modal_message_message">Click a title (saved every hour for 4 hours):</div>
         </div>
 
         <table data-toggle="table" style="font-size: 14pt; margin: 15px 0 0 15px; width: 97%; background-color: white;">
@@ -182,8 +186,10 @@
                         </td>
                         <td>
                             <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
-                                    onclick="window.location.href='{% url 'joscourses:josstory' story.id %}';">
-                                {{ version.pv_title | striptags  | safe | truncatechars:45 }}
+                                    onclick="priorVersionsHandler(
+                                            '{{ version.pv_date }}',
+                                            '{{ version.pv_story_content | escapejs}}');">
+                                {{ version.pv_title | striptags  | safe | truncatechars:150 }}
                             </button>
                         </td>
                     </tr>
@@ -191,35 +197,17 @@
             </tbody>
         </table>
 
-        <div id="past_version_content" style="height: 300px; width: 96%; overflow-x: hidden; overflow-y: scroll;
-             font-size: 14pt; margin: 30px 0 0 20px; padding: 15px; background-color: white; outline: 1px solid rgb(65,45,120);">
-
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        <div id="prior_version_date" style="margin: 20px 0 0 90px;">
+            Content for ________________________
 
         </div>
 
-        <button id="title_discard_btn" class="j_button_small j_discard_button"
-                style="margin-left: 10px; "
-                onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
-                data-toggle="tooltip" data-placement="bottom"
-                title="Reloads recent save and discards changes">
-            <i class="fa fa-trash fa-fw"></i>
-            CANCEL
-        </button>
+        <div id="prior_version_content" style="height: 300px; width: 96%; overflow-x: hidden; overflow-y: scroll;
+             font-size: 14pt; margin: 15px 0 0 20px; padding: 15px; background-color: white; outline: 1px solid rgb(65,45,120);">
+
+            Content displays here.
+
+        </div>
     </div>
 </div>
 
@@ -321,7 +309,7 @@
             display: flex; justify-content: flex-start; align-items: center;">
 
             <button class="j_button_small j_relocate_button"
-                    onclick=" " style=" "
+                    onclick="$('#version_modal_box').show(); $('#story_wheel_tab, #wheel_triangle').hide();"
                     data-toggle="tooltip" data-placement="bottom"
                     title="View previous versions">
                 <i class="fa fa-hourglass fa-fw"></i>
@@ -550,6 +538,11 @@
         }
     });
 
+    function priorVersionsHandler(date, content) {
+        $('#prior_version_date').html('Content for <u>' + date + '</u>:');
+        $('#prior_version_content').html(content);
+    }
+
     function checkTitleThenSave() {
         var current_title = '{{ story.title }}';
         if (current_title.indexOf("ntitled") > 0) {
@@ -558,7 +551,6 @@
             josCKSave('story_content');
         }
     }
-
 
     function wheelHandler(i) {
         var wheel_tab = document.getElementById(i);
@@ -636,7 +628,6 @@
                     $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
                 })
     }
-
 
     function modalMessage(subject, message) {
         if (subject === 'change_title') {
