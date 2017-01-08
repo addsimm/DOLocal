@@ -1,500 +1,499 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags  static %}
-{% block meta_title %}{{ story.title | striptags | safe | truncatechars:25 }}{% endblock %}
-{% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
+{% block meta_title %}}Slots of Fun{% endblock %}
+{% block title %}}Slots of Fun{% endblock %}
 {% block breadcrumb_menu %}
-    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
+    {{ block.super }}Slots of Fun{% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block all_content %}
 
-    <style>
+<style>
 
-        input {
-            display: none;
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .jSlots-wrapper {
+        overflow: hidden;
+        height: 20px;
+        display: inline-block; /* to size correctly, can use float too, or width*/
+        border: 1px solid #999;
+    }
+
+    .slot {
+        float: left;
+    }
+
+    /* FANCY EXAMPLE */
+    .fancy .jSlots-wrapper {
+        overflow: hidden;
+        height: 100px;
+        display: inline-block; /* to size correctly, can use float too, or width*/
+        border: 1px solid #999;
+    }
+
+    .fancy .slot li {
+        width: 100px;
+        line-height: 100px;
+        text-align: center;
+        font-size: 70px;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+        font-family: 'Gravitas One', serif;
+        border-left: 1px solid #999;
+    }
+
+    .fancy .slot:first-child li {
+        border-left: none;
+    }
+
+    .fancy .slot li:nth-child(7) {
+        background-color: #FFCE29;
+    }
+
+    .fancy .slot li:nth-child(6) {
+        background-color: #FFA22B;
+    }
+
+    .fancy .slot li:nth-child(5) {
+        background-color: #FF8645;
+    }
+
+    .fancy .slot li:nth-child(4) {
+        background-color: #FF6D3F;
+    }
+
+    .fancy .slot li:nth-child(3) {
+        background-color: #FF494C;
+    }
+
+    .fancy .slot li:nth-child(2) {
+        background-color: #FF3333;
+    }
+
+    .fancy .slot li:nth-child(1),
+    .fancy .slot li:nth-child(8) {
+        background-color: #FF0000;
+    }
+
+    .fancy .slot li span {
+        display: block;
+    }
+
+    /* ANIMATIONS */
+
+    @-webkit-keyframes winner {
+        0%, 50%, 100% {
+            -webkit-transform: rotate(0deg);
+            font-size: 70px;
+            color: #fff;
         }
-
-        /* The switch - the box around the slider */
-        .switch {
-            position: relative; top:3px; margin-left: 10px;
-            height: 40px; width: 100px;
-            outline: 2px solid #412d78;
+        25% {
+            -webkit-transform: rotate(20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
-
-        /* Slider */
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: white;
+        75% {
+            -webkit-transform: rotate(-20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
+    }
 
-        .slider:before {
-            position: absolute;
-            color: white; font-size: 14pt; text-align: center;
-            content: "OFF";
-            top: 0; left: 0; height: 40px; width: 50px;
-            padding-top: 7px;
-            background-color: #5bc0de;
+    @-moz-keyframes winner {
+        0%, 50%, 100% {
+            -moz-transform: rotate(0deg);
+            font-size: 70px;
+            color: #fff;
         }
-
-        input:checked + .slider {
-            background-color: #5cb85c;
+        25% {
+            -moz-transform: rotate(20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
-
-        input:checked + .slider:before {
-            transform: translateX(50px);
-            content: "ON";
+        75% {
+            -moz-transform: rotate(-20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
+    }
 
-        /* three way */
-
-        .three_label {
-            background-color: white;
-            font-size: 14pt;
-            text-align: center;
-            height: 40px;
-            width: 100px;
-            padding-top: 7px;
-            color: #5bc0de;
-            cursor: pointer;
+    @-ms-keyframes winner {
+        0%, 50%, 100% {
+            -ms-transform: rotate(0deg);
+            font-size: 70px;
+            color: #fff;
         }
-
-        .not-checked {
-            color: #5bc0de;
-            background-color: white;
+        25% {
+            -ms-transform: rotate(20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
-
-        .input-checked {
-            background-color: #5bc0de !important;
-            color: white !important;
+        75% {
+            -ms-transform: rotate(-20deg);
+            font-size: 90px;
+            color: #FF16D8;
         }
+    }
 
-        /* Sho tools checkbox */
-        .check_container label:before {
-            position: absolute;
-            top: 6px;
-            left: 750px;
-            content: " ";
-            width: 44px;
-            height: 44px;
-            background-color: transparent;
-            border: 5px solid #412d78;
-            transition: border-color .2s;
+    @-webkit-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0 0px yellow;
+            background-color: #FF0000;
         }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+    }
 
-        .check_container label:hover::before {
-            border: 5px dotted #f0ad4e;
+    @-moz-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0 0px yellow;
+            background-color: #FF0000;
         }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+    }
 
-        .check_container label:hover {
-            color: #f0ad4e;
+    @-ms-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0 0px yellow;
+            background-color: #FF0000;
         }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+    }
 
-        #left_tools button {
-            margin-left: 10px;
-        }
+    .winner li {
+        -webkit-animation: winnerBox 2s infinite linear;
+        -moz-animation: winnerBox 2s infinite linear;
+        -ms-animation: winnerBox 2s infinite linear;
+    }
+
+    .winner li span {
+        -webkit-animation: winner 2s infinite linear;
+        -moz-animation: winner 2s infinite linear;
+        -ms-animation: winner 2s infinite linear;
+    }
 
 </style>
 
-    <div id="left_tools" style="background-color: aliceblue; visibility: hidden;
-        position: absolute; top: 0; left: 5px; height: 55px; width: 547px;
-        display: flex; justify-content: flex-start; align-items: flex-end;">
+<div style="margin: 50px 0 0 50px;">
+    <ul class="slot">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+    </ul>
+    <input type="button" id="playNormal" value="play">
+</div>
 
-        <button class="j_button_small j_info_button"
-                onclick=" ">
-            <i class="fa fa-circle fa-fw"></i>
-            WHEEL
-        </button>
+<div class="fancy" style="margin-top: 100px;">
+    <ul class="slot">
+        <!-- In reverse order so the 7s show on load -->
+        <li><span>7</span></li>
+        <li><span>6</span></li>
+        <li><span>5</span></li>
+        <li><span>4</span></li>
+        <li><span>3</span></li>
+        <li><span>2</span></li>
+        <li><span>1</span></li>
+    </ul>
+    <input type="button" id="playFancy" value="Play">
+</div>
 
-        <button class="j_button_small j_relocate_button"
-                onclick=" ">
-            <i class="fa fa-square fa-fw"></i>
-            VERSIONS
-        </button>
+<script src="{% static '/js/jquery.easing.1.3.js' %}"></script>
+<script>
 
-        <button class="j_button_small j_action_button"
-                onclick=" ">
-            <i class="fa fa-scissors fa-fw"></i>
-            RE-TITLE
-        </button>
+    (function ($) {
 
-        <button class="j_button_small j_action_button"
-                onclick=" ">
-            <i class="fa fa-exclamation fa-fw"></i>
-            READ / SEND
-        </button>
-    </div>
+        $.jSlots = function (el, options) {
 
-    <div id="right_tools" style="background-color: aliceblue; visibility: visible;
-         position: absolute; top: 0; left: 550px; height: 55px; width: 600px;
-         display: flex; justify-content: flex-start; align-items: center;
-         padding-top: 5px;">
+            var base = this;
 
-        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 15px;">
-            Auto<br>save:</div>
+            base.$el = $(el);
+            base.el = el;
 
-        <label class="switch">
-            <input type="checkbox">
-            <div class="slider"></div>
-        </label>
+            base.$el.data("jSlots", base);
 
-        <div style="font-size: 12pt; font-weight: bold;
-             margin-left: 25px; text-align: right">
-            Shared<br>with:
-        </div>
+            base.init = function () {
 
-        <div id="sharing_box" style="
-             position: relative; top:0; margin-left: 10px;
-             height: 40px; width: 310px;
-             outline: 2px solid #412d78;">
+                base.options = $.extend({}, $.jSlots.defaultOptions, options);
 
-            <label class="three_label">
-                <input type="radio" name="toggle">ONLY ME
-            </label>
+                base.setup();
+                base.bindEvents();
 
-            <label class="three_label">
-                <input type="radio" name="toggle">CIRCLES
-            </label>
+            };
 
-            <label class="three_label">
-                <input type="radio" name="toggle">PUBLISH
-            </label>
+            // DEFAULT OPTIONS
+            $.jSlots.defaultOptions = {
+                number: 3,          // Number: # of slots
+                winnerNumber: 1,    // Number / Array: number(s) trigger a win - NOT 0 BASED
+                spinner: '',        // CSS Selector: element binding start
+                spinEvent: 'click', // String: event to start slots
+                onStart: $.noop,    // Function: runs on spin start,
+                onEnd: $.noop,
+                // Function: run on spin end, passed (finalNumbers:Array).
+                // finalNumbers gives index of li each slot stopped in order.
+                onWin: $.noop,
+                // Function: run on winning number.
+                // It is passed (winCount:Number, winners:Array)
+                easing: 'swing',    // String: easing type for final spin
+                time: 7000,         // Number: total time of spin animation
+                loops: 6            // Number: times spun during animation
+            };
 
-        </div>
+            // HELPERS
+            base.randomRange = function (low, high) {
+                return Math.floor(Math.random() * (1 + high - low)) + low;
+            };
 
-    </div>
+            // VARS
+            base.isSpinning = false;
+            base.spinSpeed = 0;
+            base.winCount = 0;
+            base.doneCount = 0;
 
-    <button id='tools_tab' class="j_button j_info_button" style="
-            position: absolute; top: 18px; left: 1155px; width: 125px;
-            font-size: 14pt; border-radius: 0;"
-            onclick="toolsTabHandler(this.id);"
-            data-toggle="tooltip" data-placement="bottom"
-            title="Shows toolbar">
-        <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
-        TOOLS
-    </button>
+            base.$liHeight = 0;
+            base.$liWidth = 0;
 
-    <script>
+            base.winners = [];
+            base.allSlots = [];
 
-    var tool_tab_html = "";
-    var labels = $('#sharing_box').children();
+            // FUNCTIONS
+            base.setup = function () {
 
-    $(labels).click(function () {
-        console.log('sharing_box clicked: ' + JSON.stringify(this));
-        $(this).addClass('input-checked')
-               .removeClass('not-checked');
+                // set sizes
 
-        $(this).siblings()
-                .removeClass('input-checked')
-                .addClass('not-checked');
+                var $list = base.$el;
+                var $li = $list.find('li').first();
+
+                base.$liHeight = $li.outerHeight();
+                base.$liWidth = $li.outerWidth();
+
+                base.liCount = base.$el.children().length;
+
+                base.listHeight = base.$liHeight * base.liCount;
+
+                base.increment = (base.options.time / base.options.loops) / base.options.loops;
+
+                $list.css('position', 'relative');
+
+                $li.clone().appendTo($list);
+
+                base.$wrapper = $list.wrap('<div class="jSlots-wrapper"></div>').parent();
+
+                // remove original, so it can be recreated as a Slot
+                base.$el.remove();
+
+                // clone lists
+                for (var i = base.options.number - 1; i >= 0; i--) {
+                    base.allSlots.push(new base.Slot());
+                }
+
+            };
+
+            base.bindEvents = function () {
+                $(base.options.spinner).bind(base.options.spinEvent, function (event) {
+                    if (!base.isSpinning) {
+                        base.playSlots();
+                    }
+                });
+            };
+
+            // Slot constructor
+            base.Slot = function () {
+
+                this.spinSpeed = 0;
+                this.el = base.$el.clone().appendTo(base.$wrapper)[0];
+                this.$el = $(this.el);
+                this.loopCount = 0;
+                this.number = 0;
+
+            };
+
+
+            base.Slot.prototype = {
+
+                // do one rotation
+                spinEm: function () {
+
+                    var that = this;
+
+                    that.$el
+                            .css('top', -base.listHeight)
+                            .animate({'top': '0px'}, that.spinSpeed, 'linear', function () {
+                                that.lowerSpeed();
+                            });
+
+                },
+
+                lowerSpeed: function () {
+
+                    this.spinSpeed += base.increment;
+                    this.loopCount++;
+
+                    if (this.loopCount < base.options.loops) {
+
+                        this.spinEm();
+
+                    } else {
+
+                        this.finish();
+
+                    }
+                },
+
+                // final rotation
+                finish: function () {
+
+                    var that = this;
+
+                    var endNum = base.randomRange(1, base.liCount);
+
+                    var finalPos = -( (base.$liHeight * endNum) - base.$liHeight );
+                    var finalSpeed = ( (this.spinSpeed * 0.5) * (base.liCount) ) / endNum;
+
+                    that.$el
+                            .css('top', -base.listHeight)
+                            .animate({'top': finalPos}, finalSpeed, base.options.easing, function () {
+                                base.checkWinner(endNum, that);
+                            });
+
+                }
+
+            };
+
+            base.checkWinner = function (endNum, slot) {
+
+                base.doneCount++;
+                // set the slot number to whatever it ended on
+                slot.number = endNum;
+
+                // if its in the winners array
+                if (
+                        ( $.isArray(base.options.winnerNumber) && base.options.winnerNumber.indexOf(endNum) > -1 ) ||
+                        endNum === base.options.winnerNumber
+                ) {
+
+                    // its a winner!
+                    base.winCount++;
+                    base.winners.push(slot.$el);
+
+                }
+
+                if (base.doneCount === base.options.number) {
+
+                    var finalNumbers = [];
+
+                    $.each(base.allSlots, function (index, val) {
+                        finalNumbers[index] = val.number;
+                    });
+
+                    if ($.isFunction(base.options.onEnd)) {
+                        base.options.onEnd(finalNumbers);
+                    }
+
+                    if (base.winCount && $.isFunction(base.options.onWin)) {
+                        base.options.onWin(base.winCount, base.winners, finalNumbers);
+                    }
+                    base.isSpinning = false;
+                }
+            };
+
+
+            base.playSlots = function () {
+
+                base.isSpinning = true;
+                base.winCount = 0;
+                base.doneCount = 0;
+                base.winners = [];
+
+                if ($.isFunction(base.options.onStart)) {
+                    base.options.onStart();
+                }
+
+                $.each(base.allSlots, function (index, val) {
+                    this.spinSpeed = 0;
+                    this.loopCount = 0;
+                    this.spinEm();
+                });
+
+            };
+
+
+            base.onWin = function () {
+                if ($.isFunction(base.options.onWin)) {
+                    base.options.onWin();
+                }
+            };
+
+
+            // Run initializer
+            base.init();
+        };
+
+        // JQUERY FN
+        $.fn.jSlots = function (options) {
+            if (this.length) {
+                return this.each(function () {
+                    (new $.jSlots(this, options));
+                });
+            }
+        };
+
+    })(jQuery);
+
+    // normal example
+    $('.slot').jSlots({
+        spinner: '#playNormal',
+        winnerNumber: 7
     });
 
-    $(document).ready(function () {
+    // fancy example
+    $('.fancy .slot').jSlots({
+        number: 7,
+        winnerNumber: 1,
+        spinner: '#playFancy',
+        easing: 'easeOutSine',
+        time: 7000,
+        loops: 6,
+        onStart: function () {
+            $('.slot').removeClass('winner');
+        },
+        onWin: function (winCount, winners) {
+            // only fires if you win
 
-        if (Number(window.location.href.split('/')[5]) === 0) {
-            reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
-            window.location.href = reload_url;
+            $.each(winners, function () {
+                this.addClass('winner');
+            });
+
+            // react to the # of winning slots
+            if (winCount === 1) {
+                //alert('You got ' + winCount + ' 7!!!');
+            } else if (winCount > 1) {
+                //alert('You got ' + winCount + ' 7’s!!!');
+            }
+
         }
-
-        initJOSEditor('title', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.title | escapejs }}");
-        initJOSEditor('content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.content | escapejs }}");
-        initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
-
     });
-
-{#    $("#sharing_slider").slider({#}
-{#                id: "slider13",#}
-{#                handle: 'triangle',#}
-{#                max: 3,#}
-{#                min: 1,#}
-{#                orientation: "vertical",#}
-{#                snap_bounds: 20,#}
-{#                step: 1,#}
-{#                ticks: [1, 2, 3],#}
-{#                ticks_labels: ["Only me", "My team", "Publish"],#}
-{#                tooltip: "hide",#}
-{#                value: {{ story.publish_permission }}#}
-{#            });#}
-{#            .on('slideStop', function (slideStopEvt) {#}
-{#                // window.location.href = "{% url "joscourses:josstory" story.id %}/?pubperm=" + slideStopEvt.value;#}
-{#            });#}
-
-    function toolsTabHandler(i) {
-        var tools_tab = document.getElementById(i);
-        console.log('tools_tab clicked: ' + $(tools_tab).attr('class').split(" "));
-
-        if ($(tools_tab).hasClass('j_info_button')) {
-            $(tools_tab)
-                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>CLOSE")
-                    .addClass("isopen j_back_button")
-                    .removeClass("isclosed j_info_button")
-                    .attr("data-original-title", "Hides toolbar");
-            $("#right_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
-            $("#left_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
-        } else {
-            $(tools_tab)
-                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
-                    .addClass("isclosed j_info_button")
-                    .removeClass("isopen j_back_button")
-                    .attr("data-original-title", "Shows toolbar");
-            $("#right_tools").css({visibility: "hidden"});
-            $("#left_tools").css({visibility: "hidden"});
-        }
-    }
 
 </script>
 
 {% endblock all_content %}
-
-
-<div class="row" style="margin-top: 0; width: 1280px;">
-
-        <!-- Main Panel -->
-        <div class="col-xs-9" style="height: 1050px; overflow-x: hidden; overflow-y: scroll;">
-
-            <div style="height: 20px; margin: 15px 0 10px 15px;">
-
-        <span class="joshint"
-              style="{% if not edit %}display: none;{% endif %} font-size: 14pt;"
-              data-toggle="tooltip"
-              title="Dragging bottom right triangle changes the editor's height"
-              data-placement="bottom">
-        Hint: Dragging changes editor size
-        </span>
-            </div>
-
-            <!-- Title -->
-            <div class="row" style=" ">
-                <div class="col-xs-12">
-
-                    {% if edit %}
-
-                        <button id="j_button j_action_button"
-                                class="btn btn-info btn-xs pull-right edit_section_button"
-                                style="font-size: 14pt; width: 125px; margin-top: -31px;"
-                                onclick="josCKEdit('title');"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="Activates editor"
-                        >
-                            EDIT TITLE
-                        </button>
-
-                        <a id="title_cancel_btn"
-                           class="btn btn-danger btn-xs pull-right edit_section_button"
-                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
-                           onclick="josCKDestroy('title');"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="Warning: discards recent changes!"
-                        >
-                            DISCARD
-                        </a>
-
-
-                        <!-- This div holds editor. -->
-                        <div id="title_editor_container" style=" "></div>
-
-                    {% endif %}
-
-                    <!-- This div displays contents. -->
-                    <div id="title_original_content"
-                         class="homehead text-center {% if edit %}edit_border{% endif %} edit_border_class">
-                        {{ story.title | striptags | safe }}<br>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Author -->
-            <div class="row text-center" style="margin-top: 25px;">
-
-                <a id="author" class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
-                   style="padding: 0;">
-            <span style="font-size: 48pt; margin: 0 15px;">
-                {{ story.author.JOSProfile.friendly_jos_name }}
-            </span>
-                </a>
-
-            </div>
-
-            <!-- Content -->
-            <div class="row" style="margin-top: 20px; min-height: 500px;">
-                <div class="col-xs-12">
-
-                    {% if edit %}
-
-                        <a id="content_edit_btn"
-                           class="btn btn-info btn-xs pull-right edit_section_button"
-                           style="font-size: 14pt; width: 125px; margin-top: -31px;"
-                           onclick="josCKEdit('content');"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="Activates editor"
-                        >
-                            EDIT CONTENT
-                        </a>
-
-                        <a id="content_cancel_btn"
-                           class="btn btn-danger btn-xs pull-right edit_section_button"
-                           style="font-size: 14pt; width: 125px; margin-top: -31px; margin-right: 135px; display: none;"
-                           onclick="josCKDestroy('content');"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           title="Warning: discards recent changes!"
-                        >
-                            DISCARD
-                        </a>
-
-
-                        <!-- This div holds editor. -->
-                        <div id="content_editor_container" style=" "></div>
-
-                    {% endif %}
-
-                    <!-- This div displays contents. -->
-                    <div id="content_original_content" class="{% if edit %}edit_border{% endif %} edit_border_class"
-                         style="min-height: 450px; padding: 10px;">
-                        {{ story.content | safe }}<br>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Discussion -->
-            <div class="row">
-
-                <div class="homehead" style="font-size: 28pt; margin-left: 30px; margin-top: 0;">
-                    Community discussion:
-                </div>
-
-                <div class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
-
-                    {% for comment in comments %}
-
-                        <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
-                            <div class="col-xs-3">
-                                {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
-                            </div>
-                        </div>
-
-                        <div class="row" style="font-size: 20pt; margin-top: 20px;">
-
-                            {% if comment.sender != request.user %}
-
-                                <div class="col-xs-2" style="padding: 0;">
-                                    {% include "josmembers/jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
-                                </div>
-
-                                <div class="col-xs-9"
-                                     style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
-                                    "{{ comment.body | striptags | safe }}"
-                                </div>
-
-                            {% else %}
-
-                                <div class="col-xs-9"
-                                     style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
-                                    "{{ comment.body | striptags | safe }}"
-                                </div>
-
-                                <div class="col-xs-2">
-                                    {% include "josmembers/jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
-                                </div>
-
-                            {% endif %}
-
-                        </div>
-
-                    {% endfor %}
-                </div>
-
-            </div>
-
-            <div id="discuss" class="row" style="">
-                <div class="col-xs-10 col-xs-offset-1" style="margin-top: 50px;">
-
-
-                    <a id="comment_cancel_btn"
-                       class="j_button j_discard_button"
-                       style="font-size: 16pt; margin-top: -31px; display: none;"
-                       onclick="josCKDestroy('comment');"
-                       data-toggle="tooltip"
-                       data-placement="bottom"
-                       title="Warning: discards recent changes!"
-                    >
-                        DISCARD
-                    </a>
-
-                    <a id="comment_edit_btn"
-                       class="j_button j_action_button"
-                       style="font-size: 16pt; margin: -31px 0 0 30px;"
-                       onclick="josCKEdit('comment');"
-                       data-toggle="tooltip"
-                       data-placement="bottom"
-                       title="Activates editor"
-                    >
-                        CLICK TO ADD YOUR THOUGHT BELOW ...
-                    </a>
-
-                    <!-- This div holds editor. -->
-                    <div id="comment_editor_container" style=" "></div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Side Panel Controls -->
-
-        <div id="editing_side_panel"
-             style="position: fixed; width: 500px; left: 995px; top: 150px; min-height: 300px;
-        border-left: 1px solid rgb(65,45,120); background-color: white;">
-
-            {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}<br>
-
-            {% if story.author == request.user %}
-
-                <div class='row'>
-                    <button id="edit_mode_button" class="j_button j_info_button"
-                            style="margin: 0 0 0 50px;"
-                            {% if edit %}
-                            onclick="window.location.href='{% url "joscourses:josstory" story.id %}';"
-                            HIDE
-                            {% else %}
-                            onclick="window.location.href='{% url "joscourses:josstory_edit" story.id %}';">
-                                EDIT
-                            {% endif %}
-                    </button>
-                    <br>
-
-                    <!-- Share slider -->
-                    <div class="row pull-left" style="margin: 40px 0 0 0;">
-                        <span class="homehead" style="margin-left: 40px; font-size: 20pt;">Sharing</span>
-
-                        <div class='' style="margin: 30px 0 0 40px;">
-
-                            <input name="permission_slider" title='permission_slider' id="sharing_slider">
-
-                        </div>
-                    </div>
-                    <br>
-                </div>
-
-            {% endif %}
-
-            <!-- Go To Discuss -->
-            <div class="row" style="margin: 20px 0 0 0;">
-                <button class="j_button j_action_button pull-left"
-                        style="margin: 40px;" onclick="window.location.href='#discuss';">
-                    DISCUSS
-                </button>
-            </div>
-        </div>
-    </div>
-
 
 
 
