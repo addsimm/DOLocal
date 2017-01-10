@@ -11,36 +11,30 @@
 
 <style>
 
-    #box {
-        height: 100%;
-        transition: all 0.2s ease;
-    }
 
-    .day {
+    .wheel {
         opacity: 1;
-        cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
         display: inline-block;
         position: relative;
     }
 
     .spin {
-        top: 12px;
-        animation: mov 0.12s infinite;
+        animation: spin .1s infinite;
     }
 
 
-    @keyframes mov {
+    @keyframes spin {
         0% {
-            transform: translatey(-30px);
+            transform: translatey(-15px);
             opacity: 0;
         }
         50% {
-            transform: translatey(-15px);
+            transform: translatey(0);
             opacity: 1;
         }
         100% {
-            transform: translatey(25px);
+            transform: translatey(15px);
             opacity: 0;
         }
     }
@@ -48,33 +42,38 @@
 </style>
 
 <div id="box" style="font-size: 36pt; background-color: aliceblue;">
-    --- <span class="day" style="background-color: pink;">?</span> ---
+
+    <div class="wheel text-center" style="background-color: pink; width: 300px;">
+        x?
+    </div>
+
 </div>
 
 <button class="j_button j_discard_button" style="
         position: absolute; top: 40px; left: 230px;"
-        onclick="$('.day').addClass('spin'); changeLetter(); ">
+        onclick="startWheel();">
     Spin!
-</button>
-
-<button class="j_button j_discard_button" style="
-    position: absolute; top: 40px; left: 330px;"
-        onclick="$('.day').removeClass('spin');">
-    Stop!
 </button>
 
 <script>
 
-    var day = ["x", "y", "z"],
-        allDays = day.length,
-        firstDay = 0,
-        changeDay = function () {
-            $('.day').html(day[firstDay]);
-            firstDay = (firstDay + 1) % allDays; // modulus causes repeat
+    var change;
+
+    var wheel = ["x", "y", "z"],
+        allwheels = wheel.length,
+        firstwheel = 0,
+        changewheel = function () {
+            $('.wheel').html(wheel[firstwheel]);
+            firstwheel = (firstwheel + 1) % allwheels; // modulus causes repeat
         };
 
-    function changeLetter() {
-        change = setInterval(changeDay, 120);// match css animation
+    function startWheel() {
+        $('.wheel').addClass('spin');
+        change = setInterval(changewheel, 50); // match css animation
+        setTimeout(function() {
+            clearInterval(change);
+            $('.wheel').removeClass('spin');
+        }, 1000);
     }
 
 </script>
