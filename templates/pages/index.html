@@ -127,7 +127,7 @@
 
                 <div class=" " style="padding: 30px 15px; background: pink;">
                     Spin to win!<br><br>
-                    Click "spin" for a prompt, then use the prompt to create a short story to enter our contest.
+                    Click "spin" to generate a random character, world, and confict. Then use all three to write a story for our contest!
                 </div>
             </div>
 
@@ -151,15 +151,15 @@
                           background: pink;">
 
                         <div id='character' class="wheel" style=" ">
-                            -- ? --
+                            -- Character --
                         </div>
 
                         <div id='world' class="wheel" style=" ">
-                            -- ? --
+                            -- World --
                         </div>
 
                         <div id='conflict' class="wheel" style=" ">
-                            -- ? --
+                            -- Conflict --
                         </div>
 
                     </div>
@@ -175,8 +175,7 @@
             </div>
         </div>
 
-        <div id="winning_prompt" style="
-             margin: 15px 0 0 90px; height: 160px; background: pink;">
+        <div style="margin: 15px 0 0 90px; height: 160px;">
             Your <span id="spin_number" style="color: #d9534f"></span> prompt:
 
             <div id='winning_prompt' class="jos_flex_container" style="display: none;
@@ -184,11 +183,11 @@
 
                 <div style="font-size: 32pt; font-weight: bold;" id='winners'></div>
                 <div>
-                    Now, spin again? Or
+                    Now, spin again or
                     <button id=" " class="j_button j_save_button" style="margin-left: 10px;"
                             onclick=" "
                             data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-                        <i class="fa fa-arrow-right fa-fw"></i>GET GOING
+                        <i class="fa fa-arrow-right fa-fw"></i>GO
                     </button>
                 </div>
             </div>
@@ -203,16 +202,16 @@
                         "Spymaster", "Billionaire", "Janitor", "Farmer", "Alien",
                         "Astronaut", "Bank teller", "Househusband", "Pharmacist",
                         "Dancer", "Manicurist", "Paparazzi", "Aunt", "Grandfather", "Thief",
-                        "Cashier", "Politician", "Actor", "Dentist", '*WILD*'],
+                        "Cashier", "Politician", "Actor", "Dentist", '*WILDCARD*'],
                     worlds = [
                         "Main street", "Movie set", "School bus", "Taj Mahal",
                         "Closet", "1880s London", "Feudal Japan", "Garden of Eden",
                         "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
-                        "Tahiti", "Pirate ship", "Ancient Rome", "Vatican", "Mars"],
+                        "Tahiti", "Pirate ship", "Ancient Rome", "Vatican", "*WILDCARD*", "Mars"],
                     conflicts = [
                         "Earthquake", "Misfortune", "Revolt", "Kidnapping", "Puzzle",
                         "Rivalry", "Adultery", "Insanity", "Passion", "Desire", "Heresy",
-                        "Conformity", "Mistaken belief", "Lover betrays", '*WILD*'],
+                        "Conformity", "Mistaken belief", "Lover's betrayal", '*WILDCARD*'],
                     first_character = 0, first_world = 0, first_conflict = 0;
 
             function changeCharacter() {
@@ -255,8 +254,8 @@
                 setTimeout(function () {
                     $('#spin_number').html(ordinal_suffix_of(spin_number));
                     $('#winners').html(
-                            $('#character').html() + ' in '
-                            + $('#world').html() + ' facing '
+                            $('#character').html() + ' in/on '
+                            + $('#world').html() + ' faces '
                             + $('#conflict').html());
                     $('#winning_prompt').show();
                 }, timer + 1500)
