@@ -17,6 +17,8 @@
         transition: all 0.15s ease;
         display: inline-block;
         position: relative;
+        font-family: 'Abril Fatface';
+        font-size: 38pt;
     }
 
     .spin {
@@ -26,7 +28,7 @@
 
     @keyframes spin {
         0% {
-            transform: translatey(-15px);
+            transform: translatey(-25px);
             opacity: 0;
         }
         50% {
@@ -34,46 +36,110 @@
             opacity: 1;
         }
         100% {
-            transform: translatey(15px);
+            transform: translatey(20px);
             opacity: 0;
         }
+    }
+    #prompt_icons img {
+        height: 55px;
+        width: 55px;
     }
 
 </style>
 
-<div id="box" style="font-size: 36pt; background-color: aliceblue;">
+<div id="random_prompt_slots" style="
+     display: flex; justify-content: flex-start; align-items: center;
+     position: absolute; width: 640px;
+     outline: 1px dashed rgb(65,45,120);">
 
-    <div class="wheel text-center" style="background-color: pink; width: 300px;">
-        x?
+    <div id="prompt_icons" class="jos_flex_container" style="margin-left: 20px; height: 280px; width: 13%;
+         justify-content: space-around; align-items: flex-start; background-color: white;">
+        <img src="/static/img/icon-character.png" style=" ">
+        <img src="/static/img/icon-world.png" style=" ">
+        <img src="/static/img/icon-conflict.png" style=" ">
     </div>
 
-</div>
+    <div id="prompt_wheels" class="jos_flex_container" style="height: 285px; width: 61%;
+         justify-content: space-around; align-items: flex-start; background-color: white;">
 
-<button class="j_button j_discard_button" style="
-        position: absolute; top: 40px; left: 230px;"
+        <div id='character' class="wheel" style=" ">
+            ???
+        </div>
+
+        <div id='world' class="wheel" style=" ">
+            ???
+        </div>
+
+        <div id='conflict' class="wheel" style=" ">
+            ???
+        </div>
+
+    </div>
+
+    <button class="j_button j_discard_button" style="
+            font-size: 30pt; font-weight: bold;
+            height: 140px; width: 140px; border-radius: 70px;"
         onclick="startWheel();">
-    Spin!
-</button>
+        Spin!
+    </button>
 
+</div>
 <script>
 
-    var change;
+    var change_char, change_world, change_conflict,
+        characters = [
+            "Spymaster", "Billionaire", "Janitor", "Farmer", "Alien",
+            "Astronaut", "Bank teller", "Househusband", "Pharmacist",
+            "Dancer", "Manicurist", "Paparazzi", "Aunt", "Grandfather", "Thief",
+            "Cashier", "Politician", "Actor", "Dentist"],
+        worlds = [
+            "Main street", "Movie set", "School bus", "Taj Mahal",
+            "Closet", "1880s London", "Feudal Japan", "Garden of Eden",
+            "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
+            "Tahiti", "Pirate ship", "Ancient Rome", "Vatican", "Mars"],
+        conflicts = [
+            "Earthquake", "Misfortune", "Revolt", "Kidnapping", "Puzzle",
+            "Rivalry", "Adultery", "Insanity", "Passion", "Desire", "Heresy",
+            "Conformity", "Mistaken belief", "Lover betrays"],
+        first_character = 0, first_world = 0, first_conflict = 0;
 
-    var wheel = ["x", "y", "z"],
-        allwheels = wheel.length,
-        firstwheel = 0,
-        changewheel = function () {
-            $('.wheel').html(wheel[firstwheel]);
-            firstwheel = (firstwheel + 1) % allwheels; // modulus causes repeat
-        };
+    function changeCharacter() {
+        $('#character').html(characters[first_character]).css('color', getColor());
+        first_character = (first_character + 1) % characters.length; // modulus repeats
+    }
+    function changeWorld() {
+        $('#world').html(worlds[first_world]).css('color', getColor());
+        first_world = (first_world + 1) % worlds.length;
+    }
+    function changeConflict() {
+        $('#conflict').html(conflicts[first_conflict]).css('color', getColor());
+        first_conflict = (first_conflict + 1) % conflicts.length;
+    }
 
     function startWheel() {
+        var timer = 1000 + Math.floor(Math.random() * 150);
         $('.wheel').addClass('spin');
-        change = setInterval(changewheel, 50); // match css animation
-        setTimeout(function() {
-            clearInterval(change);
-            $('.wheel').removeClass('spin');
-        }, 1000);
+
+        change_char = setInterval(changeCharacter, 50); // match css animation
+        setTimeout(function () {
+            clearInterval(change_char);
+            $('#character').removeClass('spin');
+        }, timer);
+        change_world = setInterval(changeWorld, 50);
+        setTimeout(function () {
+            clearInterval(change_world);
+            $('#world').removeClass('spin');
+        }, timer + 600);
+        change_conflict = setInterval(changeConflict, 50);
+        setTimeout(function () {
+            clearInterval(change_conflict);
+            $('#conflict').removeClass('spin');
+        }, timer + 1200);
+    }
+
+    function getColor() {
+        var hue = 'hsl(' + (Math.floor(Math.random() * 18)) * 20 + ', 85%, 55%)';
+        return hue;
     }
 
 </script>
