@@ -106,24 +106,40 @@
     </button>
 </div -->
 
-    <div class="home_text" style="margin: 80px 0 0 0; width: 100%; border-top: 25px solid lavender;">
+    <div class="row home_text" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
+
+        Tell a tale to warm up<br>
+
+        <button id=" " class="j_button j_save_button" style="margin: 30px 0 0 15px;;"
+                onclick=" "
+                data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
+            <i class="fa fa-arrow-right fa-fw"></i>TELL A TALE BUTTON
+        </button>
+
+        <div class="text-center" style="background-color: aliceblue; margin: 45px 0 0 0; font-size: 48pt;">OR</div>
+
+    </div>
+
+    <div class="home_text" style="margin: 15px 0 0 0; width: 100%; ">
 
        <div class="row" style="margin-top: 15px;">
             <div class="col-xs-4" >
-                Have some fun now:
-                <div class="text-center" style="padding: 60px 25px;">
-                    Challenge yourself<br>with a random prompt
+
+                <div class=" " style="padding: 30px 15px; background: pink;">
+                    Spin to win!<br><br>
+                    Click "spin" for a prompt, then use the prompt to create a short story to enter our contest.
                 </div>
             </div>
 
             <div class="col-xs-8">
                 <div id="random_prompt_slots" style="
                      display: flex; justify-content: flex-start; align-items: center;
-                     height: 300px; width: 760px; margin-top: 50px; outline: 2px dashed rgb(65,45,120);">
+                     height: 300px; width: 760px; margin-top: 50px; outline: 2px dashed
+                     rgb(65,45,120);">
 
                     <div id="prompt_icons" class="jos_flex_container" style="
                          justify-content: space-around; align-items: flex-start;
-                         margin-left: 20px; height: 300px; width: 12%;">
+                         margin-left: 25px; height: 300px; width: 13%;">
                         <img src="/static/img/icon-character.png" style=" ">
                         <img src="/static/img/icon-world.png" style=" ">
                         <img src="/static/img/icon-conflict.png" style=" ">
@@ -131,34 +147,36 @@
 
                     <div id="prompt_wheels" class="jos_flex_container homehead" style="
                          justify-content: space-around; align-items: flex-start;
-                         height: 300px; width: 68%;">
+                         font-size: 42pt; height: 300px; width: 64%;
+                          background: pink;">
 
                         <div id='character' class="wheel" style=" ">
-                            ???
+                            -- ? --
                         </div>
 
                         <div id='world' class="wheel" style=" ">
-                            ???
+                            -- ? --
                         </div>
 
                         <div id='conflict' class="wheel" style=" ">
-                            ???
+                            -- ? --
                         </div>
 
                     </div>
 
                     <button class="j_button j_discard_button" style="
-                    font-size: 30pt; font-weight: bold; margin:0 15px 0 auto;
-                    height: 120px; width: 120px; border-radius: 60px;"
+                    font-size: 30pt; font-weight: bold; margin:0 10px 0 auto;
+                    height: 130px; width: 130px; border-radius: 65px;"
                             onclick="startWheel();">
-                        Spin!
+                        Spin
                     </button>
 
                 </div>
             </div>
         </div>
 
-        <div style="margin: 15px 0 0 90px; height: 160px;">
+        <div id="winning_prompt" style="
+             margin: 15px 0 0 90px; height: 160px; background: pink;">
             Your <span id="spin_number" style="color: #d9534f"></span> prompt:
 
             <div id='winning_prompt' class="jos_flex_container" style="display: none;
@@ -166,11 +184,11 @@
 
                 <div style="font-size: 32pt; font-weight: bold;" id='winners'></div>
                 <div>
-                    Now, spin again or
+                    Now, spin again? Or
                     <button id=" " class="j_button j_save_button" style="margin-left: 10px;"
                             onclick=" "
                             data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-                        <i class="fa fa-arrow-right fa-fw"></i>GO
+                        <i class="fa fa-arrow-right fa-fw"></i>GET GOING
                     </button>
                 </div>
             </div>
@@ -248,7 +266,6 @@
                 return 'hsl(' + (Math.floor(Math.random() * 18)) * 20 + ', 85%, 55%)';
             }
 
-
             function ordinal_suffix_of(i) {
                 var j = i % 10,
                         k = i % 100;
@@ -266,7 +283,7 @@
         </script>
 
     <!-- 3 Pictures -->
-    <div class="row" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid lavender;">
+    <div class="row" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
 
         <div class="col-xs-4 text-center">
             <img class="img" style="height: 250px;" src="{% static 'img/3create_4.5.png' %}">
@@ -305,7 +322,6 @@
 
     </div>
 </div>
-
 
     <!-- TRAILBLAZER VIDEO
     <div class="row" style="margin-top: 30px; padding-top: 30px; width: 100%; border-top: 20px solid rgb(231, 209, 222);">
