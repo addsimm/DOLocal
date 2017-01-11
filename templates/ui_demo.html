@@ -46,7 +46,7 @@
 
 <div id="random_prompt_slots" style="
      display: flex; justify-content: flex-start; align-items: center;
-     width: 640px; outline: 1px dashed rgb(65,45,120);">
+     width: 620px; outline: 1px dashed rgb(65,45,120);">
 
     <div id="prompt_icons" class="jos_flex_container" style="margin-left: 20px; height: 280px; width: 13%;
          justify-content: space-around; align-items: flex-start; background-color: white;">
@@ -74,7 +74,7 @@
 
     <button class="j_button j_discard_button" style="
             font-size: 30pt; font-weight: bold;
-            height: 140px; width: 140px; border-radius: 70px;"
+            height: 120px; width: 120px; border-radius: 60px;"
         onclick="startWheel();">
         Spin!
     </button>
@@ -86,15 +86,13 @@
      justify-content: space-between; height: 140px; width: 640px;
      margin: 15px 0 0 15px; font-size: 18pt; display: none">
     <div>Your <span id="spin_number" style="color: #d9534f"></span> prompt:</div>
-    <div style="font-size: 24pt; font-weight: bold;" id = 'winners'></div>
+    <div style="font-size: 22pt; font-weight: bold;" id = 'winners'></div>
     <div>
         Now, spin again or
         <button id=" " class="j_button j_save_button" style=" "
                 onclick=" "
-                data-toggle="tooltip" data-placement="bottom" title="Opens an editor">
-            <i class="fa fa-arrow-right fa-fw"></i>
-            GO
-
+                data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
+            <i class="fa fa-arrow-right fa-fw"></i>GO
         </button>
     </div>
 </div>
@@ -136,6 +134,7 @@
 
     function startWheel() {
         spin_number ++;
+        $('#winning_prompt').hide();
         var timer = 1000 + Math.floor(Math.random() * 150);
         $('.wheel').addClass('spin');
 
