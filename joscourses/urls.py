@@ -3,15 +3,17 @@ from .views import *
 
 urlpatterns = [
 
+
+
+    url("seven_day", seven_day, name="seven_day"),
+
+    url("one_day/(?P<day_num>\d{1,3})", one_day, name="one_day"),
+
     url("courseweek$", course_week, name="course_week"),
-
-    url("courseweeklist", course_week_list, name="course_week_list"),
-
     url("courseweek/(?P<week_no>\d{1,3})/(?P<part_no>\d{1,3})/(?P<segment_no>\d{1,3})/(?P<handout_id>\d{1,4})/$",
         course_week,
         name="course_week"),
 
-    # url("josstory/(?P<story_id>\d+)/edit/*$", josstory, {'edit': True}, name="josstory_edit"),
     url("josstory/(?P<story_id>\d+)/*$", josstory, name="josstory"),
     url("josstory/*$", josstory, {'story_id': 0}, name="josstory"),
 

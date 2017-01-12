@@ -121,6 +121,7 @@ body, .body {
 a, a:visited {
     background-color: white;
     color: rgb(112, 154, 109);
+    cursor: pointer;
     font-weight: bold;
     outline: 2px dotted rgb(112, 154, 109);
     padding: 3px 6px;

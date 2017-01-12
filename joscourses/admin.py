@@ -1,35 +1,15 @@
 from django.contrib import admin
 
-# Register your models here.
-
-from .models import JOSStory, JOSCourseWeek, JOSHandout, JOSWheel, JOSPlot, JOSCharacter, JOSConflict, JOSTheme, JOSWorld, JOSPriorVersion
-
+from .models import *
 
 # Register your models here.
 
-"""
-class JOSStoryActivityAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "created", "course", "week")
-    verbose_name = 'JOS Story Activity'
+class JOSCourseDayAdmin(admin.ModelAdmin):
+    verbose_name = 'Week'
+    list_display = ("id", "day_num", "title", "updated")
     readonly_fields = ('created', 'updated',)
+admin.site.register(JOSCourseDay, JOSCourseDayAdmin)
 
-
-admin.site.register(JOSStoryActivity, JOSStoryActivityAdmin)
-
-class JOSCourseStudentAdmin(admin.ModelAdmin):
-    list_display = ("id", "username", "created", "course")
-    verbose_name = 'JOS Course Student'
-    readonly_fields = ('created', 'updated',)
-
-admin.site.register(JOSCourseStudent, JOSCourseStudentAdmin)
-
-class JOSCourseAdmin(admin.ModelAdmin):
-    list_display = ("id", "course_title", "instructor", "updated")
-    verbose_name = 'Course'
-    readonly_fields = ('created', 'updated',)
-
-admin.site.register(JOSCourse, JOSCourseAdmin)
-"""
 
 class JOSCourseWeekAdmin(admin.ModelAdmin):
     verbose_name = 'Week'
@@ -122,3 +102,27 @@ class JOSPriorVersionAdmin(admin.ModelAdmin):
     list_display = ("id", "updated", "pv_story", "pv_date", "pv_title", "pv_story_content_start")
     readonly_fields = ("created", "updated",)
 admin.site.register(JOSPriorVersion, JOSPriorVersionAdmin)
+
+"""
+class JOSStoryActivityAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "created", "course", "week")
+    verbose_name = 'JOS Story Activity'
+    readonly_fields = ('created', 'updated',)
+
+
+admin.site.register(JOSStoryActivity, JOSStoryActivityAdmin)
+
+class JOSCourseStudentAdmin(admin.ModelAdmin):
+    list_display = ("id", "username", "created", "course")
+    verbose_name = 'JOS Course Student'
+    readonly_fields = ('created', 'updated',)
+
+admin.site.register(JOSCourseStudent, JOSCourseStudentAdmin)
+
+class JOSCourseAdmin(admin.ModelAdmin):
+    list_display = ("id", "course_title", "instructor", "updated")
+    verbose_name = 'Course'
+    readonly_fields = ('created', 'updated',)
+
+admin.site.register(JOSCourse, JOSCourseAdmin)
+"""

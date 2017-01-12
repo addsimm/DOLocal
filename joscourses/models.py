@@ -13,6 +13,21 @@ from josmessages.models import JOSMessageThread
 
 # Create your models here.
 
+class JOSCourseDay(TimeStamped, models.Model):
+    class Meta:
+        verbose_name = 'Course day'
+        ordering = ("day_num",)
+
+    # quote
+    # quote author
+    # video
+
+    day_num = models.IntegerField(default=0)
+    title = models.CharField(max_length=150, default="untitled")
+
+    def __unicode__(self):
+        return 'Day: ' + self.title
+
 class JOSCourse(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Course'

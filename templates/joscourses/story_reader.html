@@ -7,34 +7,28 @@
 
 {% block all_content %}
 
-<div id='side_buttons' class="jos_flex_container" style="position: absolute; width: 99%;
+<div id='top_controls' class="jos_flex_container" style="position: fixed; width: 1265px;
      flex-direction: row; justify-content: flex-end;">
+    <a class="joslargelinkbutton joscursive" href="{% url "profile" story.author.id %}"
+       style="font-size: 42pt; margin-right: auto; outline: none;">
+        <img style="width: 80px; height: 80px; position: relative; top: -15px; right: 5px;"
+                {% if story.author.JOSProfile.profile_image_id_str != "noimage1" %}
+             src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
+                {% else %}
+             src="//www.joinourstory.com/static/img/peeky-102216.png"
+                {% endif %}>
+        <span style="">
+            {{ story.author.JOSProfile.friendly_jos_name }}
+        </span>
+    </a>
 
-    <div style="margin-left: 30px; margin-right: auto; align-self: flex-end;">
-        <span class="homehead" style="font-size: 36pt;">{{ story.title }}</span>
-        <div class="joscursive" style="display: inline; font-size: 36pt;  margin: 0 15px;">
-            by
-            <a id="author" class="joslargelinkbutton " href="{% url "profile" story.author.id %}"
-               style="display: inline; outline: none;">
-                <span style="">
-                    {{ story.author.JOSProfile.friendly_jos_name }}
-                </span>
-            </a>
-        </div>
-    </div>
-
+    <!-- PRINT -->
     <button class="j_button j_action_button" onclick="printPDF();" style=" ">
         <i class="fa fa-print fa-fw"></i>
         PRINT
     </button>
 
-    <!-- button class="j_button j_action_button"
-       onclick="window.location.href='https://joinourstory.com/static/media/{{ handout.pdf_handout }}';"
-       download="{{ download_filename }}">
-        <i class="fa fa-arrow-down fa-fw"></i>
-        DOWNLOAD
-    </button><br -->
-
+    <!-- SEND -->
     <button class="j_button j_action_button" style="margin-left: 10px;">
         <i class="fa fa-send fa-fw"></i>
         SEND
@@ -46,10 +40,13 @@
         <i class="fa fa-comments fa-fw"></i>
         DISCUSS
     </button>
-
 </div>
 
-<div class="row" style="margin: 120px 0 0 30px; padding: 30px; min-height: 550px; background-color: lightyellow;">
+<div class="row" style="margin: 75px 0 0 30px; padding: 30px; min-height: 550px;
+     background-color: lightyellow;">
+    <div class='homehead text-center' style="font-size: 42pt;">
+        {{ story.title }}
+    </div><br><br>
     {{ story.story_content | safe }}
 </div>
 

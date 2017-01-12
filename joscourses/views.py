@@ -14,12 +14,26 @@ from wand.image import Image
 from josmessages.models import Message, JOSMessageThread
 from .models import *
 
-### UNUSED
-@login_required
-def course_week_list(request, template="###", extra_context=None):
-    weeks = JOSCourseWeek.objects.order_by('week_no')
 
-    context = {'weeks': weeks}
+@login_required
+def one_day(request, day_num=0, template="joscourses/one_day.html", extra_context=None):
+
+    if day_num != 0:
+        day = get_object_or_404(JOSCourseDay, pk = day_num)
+    else:
+        return HttpResponse('Course day not found')
+
+    context = {'day': day}
+    context.update(extra_context or {})
+
+    return TemplateResponse(request, template, context)
+
+
+@login_required
+def seven_day(request, template="joscourses/seven_day.html", extra_context=None):
+    days = JOSCourseDay.objects.order_by('day_no')
+
+    context = {'days': days}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
