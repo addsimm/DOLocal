@@ -19,12 +19,15 @@
 
 <div id="one_day_page" style="width: 1265px; z-index: 5;">
 
+
+
     <!-- Quote -->
     <div id="day_quote" class="day_quote" style="margin: 20px 0 0 45px;">
-        Now is the time for all good MEN to come to the aid of their country<br>
-        <span class="joscursive" style="margin-left: 30px;">
-            Felicity Farkle
-        </span>
+
+        top_quote: {{ day.top_quote }}<br>
+            <span class="joscursive" style="margin-left: 30px;">
+            quote_author:{{ day.quote_author }}
+            </span>
     </div>
 
     <!-- Video -->
@@ -41,30 +44,27 @@
             <i class="fa fa-file-text fa-fw"></i>
             TRANSCRIPT
         </button>
+        <br><br>video_url: {{ day.video_url }}<br>
+        video_transcript: {{ day.video_transcript }}
     </div>
 
     <div style="margin-top: 50px; background-color: pink;">Key Points</div>
 
     <div style="margin-top: 20px; background-color: pink;">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-        est laborum.
+        <ul>
+        {% for point in day.key_points %}
+
+
+            <li>point: {{ point }}</li>
+
+        {% endfor %}
+        </ul>
     </div>
 
     <div style="margin-top: 20px; background-color: red;">Brainstorm</div>
 
     <div style="margin-top: 20px; background-color: red;">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed
-        do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-        est
-        laborum.
+        brainstorm: {{ day.brainstorm }}
     </div>
     <div style="margin-top: 20px; background-color: lightseagreen;">Storywheel</div>
 
@@ -80,29 +80,13 @@
     </div>
 
     <div style="margin-top: 20px; background-color: lightseagreen;">
-        Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-        est
-        laborum.
+        story_wheel_section: {{ day.story_wheel_section }}
     </div>
     <div style="margin-top: 20px; background-color: lightskyblue;">day_quote</div>
 
     <div style="margin-top: 20px; background-color: lightskyblue;">
-        Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-        est
-        laborum.
+        day_quote: {{ day.day_quote }}
     </div>
-
-
 </div>
 
 <script>

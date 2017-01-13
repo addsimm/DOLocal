@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import truncatechars
 
 from mezzanine.core.models import TimeStamped
@@ -18,12 +19,18 @@ class JOSCourseDay(TimeStamped, models.Model):
         verbose_name = 'Course day'
         ordering = ("day_num",)
 
-    # quote
-    # quote author
-    # video
-
     day_num = models.IntegerField(default=0)
-    title = models.CharField(max_length=150, default="untitled")
+    title = models.CharField(max_length=250, default="untitled")
+
+    top_quote = models.TextField(default="missing", blank = True, null = True)
+    quote_author = models.CharField(max_length=250, default="missing", blank=True, null=True)
+    video_url = models.CharField(max_length=250, default="missing", blank=True, null=True)
+    video_transcript = models.TextField(default="missing", blank=True, null=True)
+    brainstorm = models.TextField(default="missing", blank=True, null=True)
+    story_wheel_section = models.TextField(default="missing", blank=True, null=True)
+    day_quote = models.TextField(default="missing", blank=True, null=True)
+
+    key_points = ArrayField(models.TextField(blank=True, null=True), blank=True, null=True)
 
     def __unicode__(self):
         return 'Day: ' + self.title
