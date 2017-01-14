@@ -63,11 +63,11 @@
     <div style="margin-top: 20px; background-color: red;">
         {{ day.brainstorm | safe }}
     </div>
-    <div class="section_title" style="margin-top: 20px; background-color: lightseagreen;">Storywheel</div>
+    <div class="section_title" style="margin-top: 20px; background-color: lightseagreen;">Wheel</div>
 
     <div class="jos_flex_container" style="align-items: center;
-         margin: 20px 0 0 0; background-color: lightseagreen;">
-        <div id="fixed_background" style="width: 330px; height: 330px;">
+         margin: 20px 0 0 0; background-color: lightseagreen; ">
+        <div id="fixed_background" style="width: 330px; height: 330px; transform: rotate(180deg);">
             <canvas id="pie_canvas" width="330" height="330" style="
                     background-image: url('{% static 'img/wheel-112016.png' %}');
                     background-size: 330px;">

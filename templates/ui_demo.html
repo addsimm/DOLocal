@@ -1,193 +1,28 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags  static %}
-{% block meta_title %}Slots of Fun{% endblock %}
-{% block title %}}Slots of Fun{% endblock %}
+{% block meta_title %}Spinning wheels{% endblock %}
+{% block title %}}Spinning wheels{% endblock %}
 {% block breadcrumb_menu %}
-    {{ block.super }}Slots of Fun{% endblock %}
+    {{ block.super }}Spinning wheels{% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block all_content %}
-
 <style>
 
-
-    .wheel {
-        opacity: 1;
-        transition: all 0.15s ease;
-        display: inline-block;
-        position: relative;
-    }
-
-    .spin {
-        animation: spin .1s infinite;
+    #wheel_background {
+        animation: spin 15s linear infinite;
     }
 
     @keyframes spin {
-        0% {
-            transform: translatey(-25px);
-            opacity: 0;
-        }
-        50% {
-            transform: translatey(0);
-            opacity: 1;
-        }
         100% {
-            transform: translatey(20px);
-            opacity: 0;
+            transform: rotate(360deg);
         }
-    }
-    #prompt_icons img {
-        height: 55px;
-        width: 55px;
     }
 
 </style>
 
-<div id="random_prompt_slots" style="
-     display: flex; justify-content: flex-start; align-items: center;
-     width: 620px; outline: 1px dashed rgb(65,45,120);">
-
-    <div id="prompt_icons" class="jos_flex_container" style="margin-left: 20px; height: 280px; width: 13%;
-         justify-content: space-around; align-items: flex-start; background-color: white;">
-        <img src="/static/img/icon-character.png" style=" ">
-        <img src="/static/img/icon-world.png" style=" ">
-        <img src="/static/img/icon-conflict.png" style=" ">
-    </div>
-
-
-
-
-
-    <div id="prompt_wheels" class="jos_flex_container homehead" style="
-         height: 285px; width: 61%; justify-content: space-around; align-items: flex-start;">
-
-        <div id='character' class="wheel" style=" ">
-            ???
-        </div>
-
-        <div id='world' class="wheel" style=" ">
-            ???
-        </div>
-
-        <div id='conflict' class="wheel" style=" ">
-            ???
-        </div>
-
-    </div>
-
-    <button class="j_button j_discard_button" style="
-            font-size: 30pt; font-weight: bold;
-            height: 120px; width: 120px; border-radius: 60px;"
-        onclick="startWheel();">
-        Spin!
-    </button>
-
-</div>
-
-
-<div id='winning_prompt' class="jos_flex_container" style="
-     justify-content: space-between; height: 140px; width: 640px;
-     margin: 15px 0 0 15px; font-size: 18pt; display: none">
-    <div>Your <span id="spin_number" style="color: #d9534f"></span> prompt:</div>
-    <div style="font-size: 22pt; font-weight: bold;" id = 'winners'></div>
-    <div>
-        Now, spin again or
-        <button id=" " class="j_button j_save_button" style=" "
-                onclick=" "
-                data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-            <i class="fa fa-arrow-right fa-fw"></i>GO
-        </button>
-    </div>
-</div>
-
-<script>
-
-    var spin_number = 0,
-        change_char, change_world, change_conflict,
-        characters = [
-            "Spymaster", "Billionaire", "Janitor", "Farmer", "Alien",
-            "Astronaut", "Bank teller", "Househusband", "Pharmacist",
-            "Dancer", "Manicurist", "Paparazzi", "Aunt", "Grandfather", "Thief",
-            "Cashier", "Politician", "Actor", "Dentist", '*WILD*'],
-        worlds = [
-            "Main street", "Movie set", "School bus", "Taj Mahal",
-            "Closet", "1880s London", "Feudal Japan", "Garden of Eden",
-            "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
-            "Tahiti", "Pirate ship", "Ancient Rome", "Vatican", "Mars"],
-        conflicts = [
-            "Earthquake", "Misfortune", "Revolt", "Kidnapping", "Puzzle",
-            "Rivalry", "Adultery", "Insanity", "Passion", "Desire", "Heresy",
-            "Conformity", "Mistaken belief", "Lover betrays", '*WILD*'],
-        first_character = 0, first_world = 0, first_conflict = 0;
-
-    function changeCharacter() {
-        $('#character').html(characters[first_character]).css('color', getColor());
-        first_character = (first_character + 1) % characters.length; // modulus repeats
-    }
-
-    function changeWorld() {
-        $('#world').html(worlds[first_world]).css('color', getColor());
-        first_world = (first_world + 1) % worlds.length;
-    }
-
-    function changeConflict() {
-        $('#conflict').html(conflicts[first_conflict]).css('color', getColor());
-        first_conflict = (first_conflict + 1) % conflicts.length;
-    }
-
-    function startWheel() {
-        spin_number ++;
-        $('#winning_prompt').hide();
-        var timer = 1000 + Math.floor(Math.random() * 150);
-        $('.wheel').addClass('spin');
-
-        change_char = setInterval(changeCharacter, 50); // match css animation
-        setTimeout(function () {
-            clearInterval(change_char);
-            $('#character').removeClass('spin');
-        }, timer);
-        change_world = setInterval(changeWorld, 50);
-        setTimeout(function () {
-            clearInterval(change_world);
-            $('#world').removeClass('spin');
-        }, timer + 600);
-        change_conflict = setInterval(changeConflict, 50);
-        setTimeout(function () {
-            clearInterval(change_conflict);
-            $('#conflict').removeClass('spin');
-        }, timer + 1200);
-
-        setTimeout(function () {
-            $('#spin_number').html(ordinal_suffix_of(spin_number));
-            $('#winners').html(
-                    $('#character').html() + ' in '
-                    + $('#world').html() + ' facing '
-                    + $('#conflict').html());
-            $('#winning_prompt').show();
-        }, timer + 1500)
-    }
-
-    function getColor() {
-       return 'hsl(' + (Math.floor(Math.random() * 18)) * 20 + ', 85%, 55%)';
-    }
-
-
-    function ordinal_suffix_of(i) {
-        var j = i % 10,
-                k = i % 100;
-        if (j == 1 && k != 11) {
-            return i + "st";
-        }
-        if (j == 2 && k != 12) {
-            return i + "nd";
-        }
-        if (j == 3 && k != 13) {
-            return i + "rd";
-        }
-        return i + "th";
-    }
-</script>
+<img id='wheel_background' src="/static/img/wheel-small-background.png">
 
 {% endblock all_content %}
 
