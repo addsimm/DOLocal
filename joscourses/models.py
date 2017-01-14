@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import truncatechars
 
 from mezzanine.core.models import TimeStamped
+from mezzanine.core.fields import RichTextField
 from mezzanine.utils.models import upload_to
 
 from embed_video.fields import EmbedVideoField
@@ -22,16 +23,16 @@ class JOSCourseDay(TimeStamped, models.Model):
     day_num = models.IntegerField(default=0)
     title = models.CharField(max_length=250, default="untitled")
 
-    top_quote = models.TextField(default="missing", blank = True, null = True)
+    top_quote = RichTextField(default="missing", blank = True, null = True)
     top_quote_author = models.CharField(max_length=250, default="missing", blank=True, null=True)
     video_url = models.CharField(max_length=250, default="missing", blank=True, null=True)
-    video_transcript = models.TextField(default="missing", blank=True, null=True)
-    brainstorm = models.TextField(default="missing", blank=True, null=True)
-    story_wheel_section = models.TextField(default="missing", blank=True, null=True)
-    day_quote = models.TextField(default="missing", blank=True, null=True)
+    video_transcript = RichTextField(default="missing", blank=True, null=True)
+    brainstorm = RichTextField(default="missing", blank=True, null=True)
+    story_wheel_section = RichTextField(default="missing", blank=True, null=True)
+    day_quote = RichTextField(default="missing", blank=True, null=True)
     day_quote_author = models.CharField(max_length=250, default="missing", blank=True, null=True)
 
-    key_points = ArrayField(models.TextField(blank=True, null=True), blank=True, null=True)
+    key_points = RichTextField(default="missing", blank=True, null=True)
 
     def __unicode__(self):
         return 'Day: ' + self.title

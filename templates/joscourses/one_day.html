@@ -29,7 +29,7 @@
 
         {{ day.top_quote }}<br>
         <span class="joscursive" style="margin-left: 30px;">
-            quote_author: {{ day.top_quote_author }}
+            {{ day.top_quote_author }}
         </span>
 
     </div>
@@ -37,37 +37,31 @@
     <!-- Video -->
     <div class="text-center" style="position: relative; margin-top: 20px;
          background-color: pink;">
+        video_url: {{ day.video_url }}<br>
         <video width="640" height="360" style="outline: 5px solid rgb(65, 45, 120);" controls>
             <source src="/static/media/PROMO-911-480p.mov" type="video/mp4">
             Sorry, your device has a video problem. Please call.
         </video>
 
         <button class="j_button j_relocate_button"
-                style="position: absolute; top: 320px; left: 890px;"
+                style="position: absolute; top: 335px; left: 885px;"
                 onclick="location.href=' ';">
             <i class="fa fa-file-text fa-fw"></i>
             TRANSCRIPT
         </button>
-        <br><br>video_url: {{ day.video_url }}<br>
-        video_transcript: {{ day.video_transcript }}
+        {# day.video_transcript #}
     </div>
 
     <div class="section_title" style="margin-top: 20px; background-color: pink;">Key Points</div>
 
     <div style="margin-top: 20px; background-color: pink;">
-        <ul>
-        {% for point in day.key_points %}
-
-            <li>{{ point }}</li>
-
-        {% endfor %}
-        </ul>
+        {{ day.key_points  | safe }}
     </div>
 
     <div class="section_title" style="margin-top: 20px; background-color: red;">Brainstorm</div>
 
     <div style="margin-top: 20px; background-color: red;">
-        {{ day.brainstorm }}
+        {{ day.brainstorm | safe }}
     </div>
     <div class="section_title" style="margin-top: 20px; background-color: lightseagreen;">Storywheel</div>
 
@@ -83,7 +77,7 @@
     </div>
 
     <div style="margin-top: 20px; background-color: lightseagreen;">
-        story_wheel_section: {{ day.story_wheel_section }}
+        {{ day.story_wheel_section  | safe }}
     </div>
     <div class="section_title" style="margin-top: 20px; background-color: lightskyblue;">day_quote</div>
 

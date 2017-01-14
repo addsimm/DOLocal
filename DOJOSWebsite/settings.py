@@ -264,6 +264,8 @@ REQUEST_PLUGINS = (
 # OTHER SETTINGS #
 TAGGIT_CASE_INSENSITIVE = True
 
+RICHTEXT_WIDGET_CLASS = "mezzanine.core.forms.TinyMceWidget"
+
 JQUERY_FILENAME = 'jquery-1.8.3.min.js'
 
 #########
