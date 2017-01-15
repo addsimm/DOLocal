@@ -110,11 +110,11 @@ INSTALLED_APPS = (
     # 'mailer',
     # 'schedule',
     # 'djconfig',
+    # 'haystack',
 
     ### 3rd party apps
     'request',
     'floppyforms',
-    # 'haystack',
     'tracking',
     'friendship',
     'josmessages',
@@ -123,10 +123,7 @@ INSTALLED_APPS = (
     'notification',
     'taggit',
 
-    ### NOT IMPLEMENTED
-
-
-    ### Custom apps
+    ### My apps
     'josstaff',
     'josmembers',
     'josprojects',
@@ -167,7 +164,8 @@ TEMPLATES = [
 
 # Middleware. Order is important; request classes in order, response in reverse order.
 MIDDLEWARE = [
-    'request.middleware.RequestMiddleware',
+    "mezzanine.core.middleware.UpdateCacheMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -178,15 +176,14 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     # If localisation: 'django.middleware.locale.LocaleMiddleware',
 
-    'mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware',
-    'mezzanine.core.middleware.FetchFromCacheMiddleware',
-    'mezzanine.core.middleware.RedirectFallbackMiddleware',
-    'mezzanine.core.middleware.SitePermissionMiddleware',
-    'mezzanine.core.middleware.TemplateForDeviceMiddleware',
-    'mezzanine.core.middleware.TemplateForHostMiddleware',
-    'mezzanine.core.middleware.UpdateCacheMiddleware',
-    'mezzanine.core.request.CurrentRequestMiddleware',
-    'mezzanine.pages.middleware.PageMiddleware',
+    "mezzanine.core.request.CurrentRequestMiddleware",
+    "mezzanine.core.middleware.RedirectFallbackMiddleware",
+    "mezzanine.core.middleware.TemplateForDeviceMiddleware",
+    "mezzanine.core.middleware.TemplateForHostMiddleware",
+    "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
+    "mezzanine.core.middleware.SitePermissionMiddleware",
+    "mezzanine.pages.middleware.PageMiddleware",
+    "mezzanine.core.middleware.FetchFromCacheMiddleware",
     # If using SSL settings: 'mezzanine.core.middleware.SSLRedirectMiddleware',
 
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -260,11 +257,9 @@ REQUEST_PLUGINS = (
     'request.plugins.TopErrorPaths',
 )
 
-##################
-# OTHER SETTINGS #
+###############################
+# MEZZANINNE & OTHER SETTINGS #
 TAGGIT_CASE_INSENSITIVE = True
-
-RICHTEXT_WIDGET_CLASS = "mezzanine.core.forms.TinyMceWidget"
 
 JQUERY_FILENAME = 'jquery-1.8.3.min.js'
 
@@ -303,11 +298,11 @@ else:
 DEBUG = False
 
 # COMMENT IN TO GET DJANGO DEBUG TOOLBAR ###
-def show_toolbar(request):
-    return True
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-}
-
-DEBUG = True
+# def show_toolbar(request):
+#     return True
+#
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+# }
+#
+# DEBUG = True

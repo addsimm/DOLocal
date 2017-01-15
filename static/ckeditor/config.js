@@ -9,7 +9,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.skin = 'moonocolor, ' +
         'https://joinourstory.com/static/ckeditor/skins/moonocolor/';
     config.toolbar = [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'PasteFromWord']},
+        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
         {'name': 'styles', 'items': ['Font', 'FontSize']},
         {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor']},
         {
