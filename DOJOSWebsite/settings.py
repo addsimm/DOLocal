@@ -261,7 +261,7 @@ REQUEST_PLUGINS = (
 # MEZZANINNE & OTHER SETTINGS #
 TAGGIT_CASE_INSENSITIVE = True
 
-JQUERY_FILENAME = 'jquery-1.8.3.min.js'
+JQUERY_FILENAME = 'jquery.min.js'
 
 #########
 # EMAIL #
