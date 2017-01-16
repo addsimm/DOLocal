@@ -40,7 +40,7 @@
         }
     }
 
-   .cabins {
+   #wheel {
         animation: cwise 30s linear infinite;
     }
 
@@ -52,61 +52,131 @@
 
 
 <div id="wheel" style="
-        height: 400px;
-        width: 400px;
-        border: 10px solid red;
-        border-radius: 100%;
-        position: fixed;
-        top: 100px;
-        left: 100px;">
+        height: 330px;
+        width: 330px;
+        background-image: url('/static/img/wheel-small-background.png');
+        background-size: 330px 330px;
+        position: relative;">
 
-    <!-- div id="center" style="
-            height: 20%;
-            width: 20%;
-            position: absolute;
-            border-radius: 100%;
-            top: 40%;
-            left: 40%;
-            background: blue;"></div -->
 
     <div class="cabins" style="
                     position: absolute;
                     height: 100%;
                     width: 100%;
                     z-index: -10;
-                    border: 6px dashed green;">
+                    outline: 1px dashed white;">
 
         <div class="cabinContainer" style="
-                height: 20%;
-                width: 61%;
-                border: 4px dotted lightgreen;
+                height: 62px;
+                width: 62px;
+                outline: 1px dotted transparent;
+
                 position: absolute;
-                left: -11%;
-                top: 40%;
-                z-index: -20;">
+                left: 82px;
+                top: 63px;">
 
-            <div class="hingeOffset" style="
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-conflict.png');
+                    background-size: 62px 62px;
                     height: 100%;
-                    border: 4px solid purple;
-                    width: calc(20 / 61 * 100%);
-                    position: relative;
-                    border-radius: 100%;">
+                    width: 100%;
+                    position: relative;">
 
-                <div class="hinge" style="background-color: pink;
-                        height: 100%;
-                        width: 100%;
-                        position: absolute;">
-
-                </div>
             </div>
+        </div>
+
+        <div class="cabinContainer" style="
+            height: 61px;
+            width: 80px;
+            outline: 1px dotted transparent;
+            position: absolute;
+            left: 180px;
+            top: 68px;">
+
+            <div class="hinge" style="
+                background-image: url('/static/img/icon-plot.png');
+                background-size: 80px 61px;
+                height: 100%;
+                width: 100%;
+                position: relative;">
+
+            </div>
+
+        </div>
+
+        <div class="cabinContainer" style="
+            height: 58px;
+            width: 74px;
+            outline: 1px dotted transparent;
+            position: absolute;
+            left: 210px;
+            top: 161px;">
+
+            <div class="hinge" style="
+                background-image: url('/static/img/icon-character.png');
+                background-size: 74px 58px;
+                height: 100%;
+                width: 100%;
+                position: relative;">
+
+            </div>
+
+        </div>
+
+        <div class="cabinContainer" style="
+            height: 65px;
+            width: 50px;
+            outline: 1px dotted transparent;
+            position: absolute;
+            left: 140px;
+            top: 217px;">
+
+            <div class="hinge" style="
+                background-image: url('/static/img/icon-theme.png');
+                background-size: 50px 65px;
+                height: 100%;
+                width: 100%;
+                position: relative;">
+
+            </div>
+
+        </div>
+
+        <div class="cabinContainer" style="
+            height: 65px;
+            width: 60px;
+            outline: 1px dotted transparent;
+            position: absolute;
+            left: 54px;
+            top: 157px;">
+
+            <div class="hinge" style="
+                background-image: url('/static/img/icon-world.png');
+                background-size: 60px 65px;
+                height: 100%;
+                width: 100%;
+                position: relative;">
+
+            </div>
+
         </div>
 
     </div>
 
-</div>
+</div><br>
+
+    <!--img src="/static/img/wheel-112016.png"
+         height=330px width=330px style="
+         position: absolute; top: 30px; left: 15px; z-index: -50;"-->
 
 
+    <!--  style="margin-top: 600px;">
 
+    <img src="/static/img/icon-character.png" style=" ">
+    <img src="/static/img/icon-world.png" style=" ">
+    <img src="/static/img/icon-conflict.png" style=" ">
+
+    </div -->
 <!-- <img id='wheel_background' src="/static/img/wheel-small-background.png" -->
 
 {% endblock all_content %}
