@@ -18,7 +18,7 @@ PASSWORD_RESET_URL = getattr(settings, "PASSWORD_RESET_URL", "/%s/password/reset
 
 urlpatterns = [
 
-    url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash), josprofile, {'edit': True}, name="josprofile_edit"),
+    # url("^%s/(?P<userid>.*)/edit%s$" % (PROFILE_URL.strip("/"), _slash), josprofile, {'edit': True}, name="josprofile_edit"),
 
     url("^%s/(?P<userid>.*)%s$" % (PROFILE_URL.strip("/"), _slash),
         josprofile, {'edit': False}, name="josprofile"),
@@ -34,8 +34,7 @@ urlpatterns = [
     url("^%s%s$" % (PASSWORD_RESET_URL.strip("/"), _slash),
         password_reset, name="jos_password_reset"),
 
-    # url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
-    #   "josmembers.views.signup", name="jossignup"),
+
     url("signup", signup, name="jossignup"),
     url("reserve_space", reserve_space, name="josreservespace"),
 

@@ -43,8 +43,6 @@ class JOSProfileAdmin(admin.ModelAdmin):
         return obj.user.last_login
 
     # fieldsets = josprofile_fieldsets
-
-
 admin.site.register(JOSProfile, JOSProfileAdmin)
 
 
@@ -57,8 +55,6 @@ class JOSTeamAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "member_id_list")
 
     readonly_fields = ("member_id_list", 'created', 'updated',)
-
-
 admin.site.register(JOSTeam, JOSTeamAdmin)
 
 
@@ -72,7 +68,6 @@ class JOSReservationAdmin(admin.ModelAdmin):
     list_editable = ("status",)
 
     readonly_fields = ('updated',)
-
 admin.site.register(JOSReservation, JOSReservationAdmin)
 
 
@@ -81,10 +76,9 @@ class JOSUserCreatedNoteAdmin(admin.ModelAdmin):
     Admin class for JOSUserCreatedNote.
     """
     verbose_name = 'Note'
+    verbose_name_plural = 'Notes'
 
     list_display = ("id", "updated", "profile", "note_text")
 
     readonly_fields = ('updated',)
-
-
 admin.site.register(JOSUserCreatedNote, JOSUserCreatedNoteAdmin)

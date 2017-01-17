@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 from mezzanine.core.models import TimeStamped
 from mezzanine.utils.models import AdminThumbMixin
@@ -33,7 +34,7 @@ EMAIL_FREQ_CHOICES = (
     (4, 'Never'),
 )
 
-STATUS_CHOICES = (
+REFER_STATUS_CHOICES = (
     (0, 'None'),
     (1, 'Emailed'),
     (2, 'Called'),
@@ -42,6 +43,25 @@ STATUS_CHOICES = (
     (5, 'Enrolled'),
 )
 
+NONE = 0
+PLOT = 1
+CHARACTER = 2
+THEME = 3
+WORLD = 4
+CONFLICT = 5
+
+SEVEN_DAY_PROGRESS_CHOICES = (
+    (NONE, 'None'),
+)
+
+STORY_EL_CHOICES = (
+    (NONE, 'None'),
+    (PLOT, 'Plot'),
+    (CHARACTER, 'Character'),
+    (THEME, 'Theme'),
+    (WORLD, 'World'),
+    (CONFLICT, 'Conflict'),
+)
 
 class JOSTeam(TimeStamped, models.Model):
     """
@@ -90,6 +110,11 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     teams = models.ManyToManyField(JOSTeam)
 
+    seven_day_progress = models.IntegerField(default=NONE, choices=STORY_EL_CHOICES)
+
+    seven_day_els_complete = ArrayField(models.IntegerField(
+            default=NONE, choices=STORY_EL_CHOICES), default=[0,0,0,0,0], size=5)
+
     def __str__(self):
         return self.user.username
 
@@ -119,9 +144,8 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
 
 class JOSUserCreatedNote(TimeStamped, models.Model):
-    class meta:
-        verbose_name = 'UC Note'
-        verbose_name_plural = 'UC Notes'
+    class Meta:
+        verbose_name = 'User Created Note'
 
     note_text = models.TextField(default="Enter notes here", null=True)
     profile = models.ForeignKey(JOSProfile, null=True)
@@ -155,4 +179,4 @@ class JOSReservation(TimeStamped, models.Model):
     refer = models.TextField(blank=True, null=True, default=None)
 
     staff_notes = models.TextField(blank=True, null=True, default=None)
-    status = models.IntegerField(default=0, choices=STATUS_CHOICES)
+    status = models.IntegerField(default=0, choices=REFER_STATUS_CHOICES)

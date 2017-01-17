@@ -1,6 +1,7 @@
 import os.path
 from datetime import datetime, timedelta
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.http import HttpResponse
@@ -11,29 +12,37 @@ from django.utils.timezone import activate
 from django.views.decorators.csrf import csrf_exempt
 
 from wand.image import Image
+from josmembers.models import JOSProfile
 from josmessages.models import Message, JOSMessageThread
 from .models import *
 
+User = get_user_model()
 
 @login_required
-def one_day(request, day_num=0, template="joscourses/one_day.html", extra_context=None):
+def seven_day(request, template="joscourses/seven_day.html", extra_context=None):
 
-    if day_num != 0:
-        day = get_object_or_404(JOSCourseDay, pk = day_num)
-    else:
-        return HttpResponse('Course day not found')
+    try:
+        profile = get_object_or_404(JOSProfile, user=request.user)
+    except:
+        HttpResponse('Cannot find user')
 
-    context = {'day': day}
+    days = JOSCourseDay.objects.order_by('day_no')
+
+    context = {'days': days,
+               'profile': profile}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
 
 
 @login_required
-def seven_day(request, template="joscourses/seven_day.html", extra_context=None):
-    days = JOSCourseDay.objects.order_by('day_no')
+def one_day(request, day_num=0, template="joscourses/one_day.html", extra_context=None):
+    if day_num != 0:
+        day = get_object_or_404(JOSCourseDay, pk=day_num)
+    else:
+        return HttpResponse('Course day not found')
 
-    context = {'days': days}
+    context = {'day': day}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
