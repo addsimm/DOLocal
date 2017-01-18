@@ -39,37 +39,11 @@
         position: relative;
     }
 
-    @keyframes cwise {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes countwise {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(-360deg);
-        }
-    }
-
-{#    #wheel, canvas {#}
-{#        animation: cwise 30s linear infinite;#}
-{#    }#}
-{##}
-{#    .segment_icon {#}
-{#        animation: countwise 30s linear infinite;#}
-{#    }#}
-
     .right_arrow {
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 60px 0 60px 60px;
+        border-width: 40px 0 40px 60px;
         border-color: transparent transparent transparent rgb(65, 45, 120);
     }
 
@@ -89,23 +63,55 @@
         background-color: transparent;
     }
 
+    @keyframes cwise {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes countwise {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(-360deg);
+        }
+    }
+
+    #wheel, canvas {
+        animation: cwise 45s linear infinite;
+    }
+
+    .segment_icon {
+        animation: countwise 45s linear infinite;
+    }
+
 </style>
 
 <div id="seven_day_page" style="position: relative; width: 1280px;">
 
-    <div id="start_arrow" class="right_arrow" style="position: absolute; top: 103px; left: 15px;"></div>
+    <!-- Start -->
+    <div>
+    <div id="start_arrow" class="right_arrow" style="position: absolute; top: 123px; left: 45px;"></div>
 
-    <div id="stripe" style="position: absolute; top: 149px; left: 15px;
-         width: 1080px; height: 30px; background-color: rgb(65,45,120); z-index: -20;">
+    <div id="stripe" style="position: absolute; top: 154px; left: 45px;
+         width: 975px; height: 20px; background-color: rgb(65,45,120); z-index: -20;">
     </div>
 
-    <div id="end_arrow" class="right_arrow" style="position: absolute; top: 103px; left: 1080px;"></div>
+    <div id="welcome_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 1705px;">
+        <i class="fa fa-check fa-fw" style="position: relative;
+        top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;">
 
-    <div id="welcome_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 150px;"></div>
+        </i>
+    </div>
 
-    <div id="welcome_text" class="arrow_text" style="top: 245px; left: 35px;">Welcome</div>
+    <div id="welcome_text" class="arrow_text" style="top: 245px; left: 60px;">Welcome</div>
+</div>
 
-    <div id="wheel" class="jos_flex_container" style="position: absolute; top: 0; left: 300px; width: 100%; height: 330px;">
+    <div id="wheel" class="jos_flex_container" style="position: absolute; top: 0; left: 315px; width: 330px; height: 330px;">
 
         <div class="segments" style="position: absolute; height: 330px; width: 330px;
             background-image: url('/static/img/wheel-small-background.png');
@@ -139,14 +145,37 @@
         </div>
     </div>
 
-    <div id="canvas" class="jos_flex_container" style="width: 100%; margin-left: 300px; height: 330px;">
+    <div id="canvas" class="jos_flex_container" style="width: 100%; margin-left: 315px; height: 330px;">
 
         <img src="/static/img/icon-pnp-center.png" style="position: absolute;
-             top: 142px; left: 442px; height: 46px; width: 46px; z-index: 10;">
+             top: 135px; left: 445px; height: 60px; width: 60px; z-index: 10;">
 
         <canvas id="pie_canvas" width="330" height="330">
             Your browser does not support HTML5 Canvas; please call us.
         </canvas>
+    </div>
+
+    <!-- End -->
+    <div>
+    
+        <div id="draft_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 730px;"></div>
+
+        <div id="draft_text" class="arrow_text" style="top: 245px; left: 620px;">
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDraft</div>
+
+        <div id="revision_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 875px;"></div>
+
+        <div id="revision_text" class="arrow_text" style="top: 245px; left: 765px;">&nbsp&nbspRevision</div>
+
+        <div id="end_arrow" class="right_arrow" style="position: absolute; top: 123px; left: 1010px;"></div>
+
+        <button class="j_button j_save_button" style="
+                position: absolute; top: 99px; left: 1090px;
+                font-size: 24pt; font-weight: bold;
+                height: 120px; width: 120px; border-radius: 60px;"
+            onclick=" ">
+            Share!
+        </button>
     </div>
 </div>
 
@@ -172,7 +201,7 @@
         var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
         var path4 = new Path2D(), path5 = new Path2D();
 
-        ctx.lineWidth = .01;
+        ctx.lineWidth = 2.01; // increase to see canvas
 
         // pie/conflict
         path1.moveTo(7.3, 114.2);
