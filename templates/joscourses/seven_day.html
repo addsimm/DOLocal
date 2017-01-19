@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags static %}
 
-{% block meta_title %}{{ day.title }}{% endblock %}
-{% block title %}{{ day.title }}{% endblock %}
-{% block breadcrumb_menu %}{{ block.super }} Seven Day Progress{% endblock %}
+{% block meta_title %}Seven Days{% endblock %}
+{% block title %}Seven Days{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}
+    Seven Days to Better Storytelling
+{% endblock %}
 
 {% block all_content %}
 
@@ -40,6 +42,8 @@
     }
 
     .right_arrow {
+        position: absolute;
+        top: 123px;
         width: 0;
         height: 0;
         border-style: solid;
@@ -48,6 +52,8 @@
     }
 
     .arrow_circle {
+        position: absolute;
+        top: 134px;
         width: 60px;
         height: 60px;
         border-radius: 30px;
@@ -56,10 +62,11 @@
     }
 
     .arrow_text {
-        transform: rotate(-60deg);
+        position: absolute;
+        top: 260px;
+        transform: rotate(-65deg);
         font-size: 28pt;
         font-weight: bold;
-        position: absolute;
         background-color: transparent;
     }
 
@@ -81,37 +88,40 @@
         }
     }
 
-    #wheel, canvas {
-        animation: cwise 45s linear infinite;
+    /* active_step */
+
+    .active_step {
+        border-bottom: 4px solid white;
     }
 
-    .segment_icon {
-        animation: countwise 45s linear infinite;
+    @keyframes animateBorder {
+        to {
+            border-bottom: 5px solid #d9534f;
+        }
     }
+
+    .active_step {
+        animation: 2s animateBorder infinite;
+    }
+
+{#    #wheel, canvas {#}
+{#        animation: cwise 60s linear 3;#}
+{#    }#}
+{##}
+{#    .segment_icon {#}
+{#        animation: countwise 60s linear 3;#}
+{#    }#}
+
+
 
 </style>
 
 <div id="seven_day_page" style="position: relative; width: 1280px;">
 
-    <!-- Start -->
-    <div>
-    <div id="start_arrow" class="right_arrow" style="position: absolute; top: 123px; left: 45px;"></div>
+    <span id="top_instruction" class="josinstructions" style="margin-left: 45px;">XXX</span>:
 
-    <div id="stripe" style="position: absolute; top: 154px; left: 45px;
-         width: 975px; height: 20px; background-color: rgb(65,45,120); z-index: -20;">
-    </div>
-
-    <div id="welcome_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 175px;">
-        <i class="fa fa-check fa-fw" style="position: relative;
-        top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;">
-
-        </i>
-    </div>
-
-    <div id="welcome_text" class="arrow_text" style="top: 245px; left: 60px;">Welcome</div>
-</div>
-
-    <div id="wheel" class="jos_flex_container" style="position: absolute; top: 0; left: 315px; width: 330px; height: 330px;">
+    <div id="wheel" class="jos_flex_container" style="position: absolute; top: 40px; left: 315px;
+         width: 330px; height: 330px;">
 
         <div class="segments" style="position: absolute; height: 330px; width: 330px;
             background-image: url('/static/img/wheel-small-background.png');
@@ -145,41 +155,73 @@
         </div>
     </div>
 
-    <div id="canvas" class="jos_flex_container" style="width: 100%; margin-left: 315px; height: 330px;">
+    <div id="canvas" class="jos_flex_container" style="position: absolute; top: 40px; left: 315px;
+         width: 100%; height: 330px;">
 
         <img src="/static/img/icon-pnp-center.png" style="position: absolute;
-             top: 135px; left: 445px; height: 60px; width: 60px; z-index: 10;">
+             top: 135px; left: 135px; height: 60px; width: 60px; z-index: 10;">
 
         <canvas id="pie_canvas" width="330" height="330">
             Your browser does not support HTML5 Canvas; please call us.
         </canvas>
     </div>
 
-    <!-- End -->
-    <div>
-    
-        <div id="draft_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 730px;"></div>
+    <div class="jos_flex_container active_step" style="position: absolute; top: 370px; left: 315px;
+         width: 330px; height: 20px;">
+    </div>
 
-        <div id="draft_text" class="arrow_text" style="top: 245px; left: 620px;">
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDraft</div>
+    <div style="position: relative;">
 
-        <div id="revision_circle" class="arrow_circle" style="position: absolute; top: 134px; left: 875px;"></div>
+        <div id="start_arrow" class="right_arrow" style="left: 45px;"></div>
 
-        <div id="revision_text" class="arrow_text" style="top: 245px; left: 765px;">&nbsp&nbspRevision</div>
+        <div id="stripe" style="position: absolute; top: 154px; left: 45px;
+             width: 975px; height: 20px; background-color: rgb(65,45,120); z-index: -20;">
+        </div>
 
-        <div id="end_arrow" class="right_arrow" style="position: absolute; top: 123px; left: 1010px;"></div>
+        <div id="welcome_circle" class="arrow_circle" style="left: 175px;">
+            <i class="fa fa-check fa-fw" style="position: relative;
+            top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;"></i>
+        </div>
+
+        <div id="welcome_text" class="arrow_text active_step" style="left: 60px;">WELCOME</div>
+
+        <div id="draft_circle" class="arrow_circle" style="left: 730px;"></div>
+
+        <div id="draft_text" class="arrow_text text-right active_step" style="left: 610px;">
+            1ST DRAFT</div>
+
+        <div id="revision_circle" class="arrow_circle" style="left: 875px;"></div>
+
+        <div id="revision_text" class="arrow_text text-right active_step" style="left: 765px;">&nbspREVISION</div>
+
+        <div id="end_arrow" class="right_arrow" style="left: 1010px;"></div>
 
         <button class="j_button j_save_button" style="
-                position: absolute; top: 99px; left: 1090px;
+                position: absolute; top: 84px; left: 1085px;
                 font-size: 24pt; font-weight: bold;
-                height: 120px; width: 120px; border-radius: 60px;"
+                height: 150px; width: 150px; border-radius: 75px;"
             onclick=" ">
-            Share!
+            SHARE!
         </button>
+    </div>
+
+    <div id='DEBUG' style="margin-top: 400px;">
+        DEBUG:<br>
+        seven_day_progress: {{ request.user.JOSProfile.seven_day_progress }}<br>
+        seven_day_els_complete: {{ request.user.JOSProfile.seven_day_els_complete }}
     </div>
 </div>
 
 <script>
+
+    var seven_day_instructions = [
+        "Click WELCOME to begin",
+        "Click on a storywheel WEDGE to continue",
+        "Click DRAFT to continue",
+        "Click REVISION to continue",
+        "Click SHARE! to publish your story"
+    ];
+
 
     var C = document.getElementById('pie_canvas');
     var ctx = C.getContext('2d');
@@ -193,6 +235,14 @@
     var url_world = url_start + "world_template/" + "{{ wheel.id }}";
     var url_theme = url_start + "theme_template/" + "{{ wheel.id }}";
     var url_conflict = url_start + "conflict_template/" + "{{ wheel.id }}";
+
+    $(document).ready(function () {
+        redraw();
+        var seven_day_progress = Number('{{ request.user.JOSProfile.seven_day_progress }}');
+        console.log('7d: ' + seven_day_progress + 3);
+        $('#top_instruction').text(seven_day_instructions[seven_day_progress]);
+    });
+
 
     function redraw() {
         console.log('drawing');
@@ -321,10 +371,6 @@
             y: evt.clientY - rect.top
         };
     }
-
-    $(document).ready(function () {
-        redraw()
-    });
 
 </script>
 

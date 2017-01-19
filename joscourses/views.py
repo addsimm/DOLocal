@@ -18,6 +18,7 @@ from .models import *
 
 User = get_user_model()
 
+
 @login_required
 def seven_day(request, template="joscourses/seven_day.html", extra_context=None):
 

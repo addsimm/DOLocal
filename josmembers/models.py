@@ -7,61 +7,19 @@ from mezzanine.utils.models import AdminThumbMixin
 
 # Create your models here.
 
-PRIMARY_DEVICE_CHOICES = (
-    (1, 'Laptop'),
-    (2, 'Desktop'),
-    (3, 'Tablet'),
-)
+PRIMARY_DEVICE_CHOICES=((1,'Laptop'),(2,'Desktop'),(3,'Tablet'),)
+PRIMARY_OS_CHOICES=((1,'Windows'),(2,'Mac'),(3,'Other'),(4,'Uncertain'),)
+BROWSER_CHOICES=((1,'Firefox'),(2,'Internet Explorer'),(3,'Chrome'),(4,'Apple Safari'),)
+EMAIL_FREQ_CHOICES=((1,'Everyday'),(2,'Rarely'),(3,'Never'),)
+REFER_STATUS_CHOICES=((0,'None'),(1,'Emailed'),(2,'Called'),(3,'Talked'),(4,'Webcam'),(5,'Enrolled'))
 
-PRIMARY_OS_CHOICES = (
-    (1, 'Windows'),
-    (2, 'Mac'),
-    (3, 'Other'),
-    (4, 'Uncertain'),
-)
+NONE,PLOT,CHARACTER,THEME,WORLD,CONFLICT=0,1,2,3,4,5
+WELCOME,WHEEL,DRAFT,REVISION,SHARE=1,2,3,4,5
 
-BROWSER_CHOICES = (
-    (1, 'Firefox'),
-    (2, 'Internet Explorer'),
-    (3, 'Chrome'),
-    (4, 'Apple Safari'),
-)
-
-EMAIL_FREQ_CHOICES = (
-    (1, 'More than once a day'),
-    (2, 'Everyday'),
-    (3, 'Rarely'),
-    (4, 'Never'),
-)
-
-REFER_STATUS_CHOICES = (
-    (0, 'None'),
-    (1, 'Emailed'),
-    (2, 'Called'),
-    (3, 'Talked'),
-    (4, 'Webcam'),
-    (5, 'Enrolled'),
-)
-
-NONE = 0
-PLOT = 1
-CHARACTER = 2
-THEME = 3
-WORLD = 4
-CONFLICT = 5
-
-SEVEN_DAY_PROGRESS_CHOICES = (
-    (NONE, 'None'),
-)
-
-STORY_EL_CHOICES = (
-    (NONE, 'None'),
-    (PLOT, 'Plot'),
-    (CHARACTER, 'Character'),
-    (THEME, 'Theme'),
-    (WORLD, 'World'),
-    (CONFLICT, 'Conflict'),
-)
+STORY_EL_CHOICES=((NONE,'None'),(PLOT,'Plot'),(CHARACTER,'Character'),
+                 (THEME,'Theme'),(WORLD,'World'),(CONFLICT,'Conflict'))
+SEVEN_DAY_PROGRESS_CHOICES=((NONE,'None'),(WELCOME,'Welcome'),(WHEEL,'Wheel'),
+                            (DRAFT,'Draft'),(REVISION,'Revision'),(SHARE,'Share'))
 
 class JOSTeam(TimeStamped, models.Model):
     """
@@ -136,7 +94,6 @@ class JOSProfile(AdminThumbMixin, TimeStamped, models.Model):
 
     def get_teams(self):
         return ", ".join(team.name for team in self.teams.all())
-
 
     def has_teams(self):
         if len(self.get_teams()) > 0:

@@ -62,13 +62,13 @@
 
 {% block login_button %}
 <button class="j_button j_action_button"
-        style="position: fixed; top: 10px; left: 1105px; width: 175px; z-index: 1001;"
+        style="position: fixed; top: 10px; left: 1125px; width: 155px; z-index: 1001;"
         data-toggle="tooltip" data-placement="auto"
         {% if request.user.is_authenticated %}
         onclick="location.href='{% url "logout" %}?next={{ request.path }}';"
         title="Exit Join Our Story">
             <i class="fa fa-sign-out fa-fw"></i>
-            LOG OUT
+            LOGOUT
         {% else %}
             onclick="location.href='{% url "login" %}';"
             title="Sign in to Join Our Story">
@@ -105,8 +105,19 @@
         </div>
     {% endnevercache %}
 
-    <!-- Help system -->
+    <!-- Folder include -->
     {% if request.user.is_authenticated %}
+        <button id="folder_button" class="j_button_small j_info_button isopen" style="
+                position: fixed; top: -3px; left: 995px; height: 39px; width: 108px;
+                border-radius: 0; z-index: 1001; padding-top: 10px;"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Reminders / How do I? / My notes" onclick="session_data_update('help_position');">
+            <i class="fa fa-folder fa-fw"></i>
+            FOLDER
+        </button>
+
+        <div id="folder_triangle" class="help_down_triangle" style="
+     position: fixed; top: 36px; left: 995px; z-index: 1001;"></div>
         {% include "jos_includes/my_folder.html" %}
     {% endif %}
 
@@ -128,16 +139,14 @@
         </button>
     {% endif %}
 
-    {% block breadcrumb_menu %}<div style="position: absolute; top: 0; left: 230px;
-        padding-top: 4px; height: auto; width: auto;">
-            <div class=" " style="font-size: 32pt; font-weight: bold; padding-left: 50px;">
-                <i class="fa fa-arrow-right" style="font-size: 14pt; margin: 0 0 0 4px;"></i>
-    {% endblock %}
-            </div>
-        </div>
+    <!-- Breadcrumb -->
+    {% block breadcrumb_menu %}
+        <div style="position: absolute; top: 0; left: 275px;
+             padding-top: 8px; height: auto; width: 705px;">
+         <div class="text-center" style="font-size: 32pt; font-weight: bold; overflow: hidden;">
+    {% endblock %}</div></div>
 
-    <!-- Staff -->
-    <!--
+    <!-- Staff
     {% if request.user.is_staff %}
 
         <button class="j_button j_test_button"
@@ -147,7 +156,6 @@
         </button>
 
     {% endif %}
-
     {% if request.user.is_superuser %}
 
         <button class="j_button j_test_button"
