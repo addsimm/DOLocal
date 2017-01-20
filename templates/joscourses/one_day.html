@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags accounts_tags static %}
 
-{% block meta_title %}{{ day.title }}{% endblock %}
-{% block title %}{{ day.title }}{% endblock %}
+{% block meta_title %}{{ day.day_num }} {{ day.title }}{% endblock %}
+{% block title %}{{ day.day_num }} {{ day.title }}{% endblock %}
 {% block breadcrumb_menu %}{{ block.super }}Day {{ day.day_num }}:&nbsp&nbsp{{ day.title | upper }}{% endblock %}
 
 {% block all_content %}
 
 <style>
 
+    * {
+        font-size: 18pt;
+    }
     .day_quote {
         font-family: 'Architects Daughter';
         font-size: 28pt;
@@ -16,35 +19,36 @@
     }
 
     .section_title {
+        margin-top: 50px;
+        padding: 8px 80px;
         font-size: 24pt;
         font-weight: bold;
     }
 
 </style>
 
-<div id="one_day_page" style="width: 1090px; margin-left: 80px; font-size: 16pt; z-index: 5;">
+<div id="one_day_page" style="width: 1090px; margin: 0 0 0 80px; font-size: 16pt; z-index: 5;">
 
     <!-- Quote -->
-    <div id="top_quote" class="day_quote" style="margin: 20px 0 0 45px; background-color: lightgreen;">
+    <div id="top_quote" class="day_quote =" style="margin: 20px 0 0 0; padding: 30px; background-color: #e6e6ff;">
 
         {{ day.top_quote }}<br>
-        <span class="joscursive" style="margin-left: 30px;">
+        <div class="joscursive" style="margin: 30px 0 0 60px;">
             {{ day.top_quote_author }}
-        </span>
-
+        </div>
     </div>
 
     <!-- Video -->
-    <div class="text-center" style="position: relative; margin-top: 20px;
-         background-color: pink;">
+    <div class="jos-flex_container text-center" style="justify-content: center;
+         margin-top: 40px; padding: 30px; background-color: #e6e6ff;">
         video_url: {{ day.video_url }}<br>
-        <video width="640" height="360" style="outline: 5px solid rgb(65, 45, 120);" controls>
+        <video width="960" height="540" style="outline: 5px solid rgb(65, 45, 120);" controls>
             <source src="/static/media/PROMO-911-480p.mov" type="video/mp4">
             Sorry, your device has a video problem. Please call.
         </video>
 
         <button class="j_button j_relocate_button"
-                style="position: absolute; top: 335px; left: 885px;"
+                style="margin: 5px 0 0 785px;"
                 onclick="location.href=' ';">
             <i class="fa fa-file-text fa-fw"></i>
             TRANSCRIPT
@@ -52,21 +56,21 @@
         {# day.video_transcript #}
     </div>
 
-    <div class="section_title" style="margin-top: 20px; background-color: pink;">Key Points</div>
+    <div class="section_title" style="background-color: #e6e6ff;">Key Points</div>
 
-    <div style="margin-top: 20px; background-color: pink;">
+    <div style="margin-top: 20px; background-color: #e6e6ff; padding: 40px 80px;">
         {{ day.key_points  | safe }}
     </div>
 
-    <div class="section_title" style="margin-top: 20px; background-color: red;">Brainstorm</div>
+    <div class="section_title" style="margin-top: 20px; background-color: #e6e6ff;">Brainstorm</div>
 
-    <div style="margin-top: 20px; background-color: red;">
+    <div style="margin-top: 20px; background-color: #e6e6ff;  padding: 40px 80px;">
         {{ day.brainstorm | safe }}
     </div>
-    <div class="section_title" style="margin-top: 20px; background-color: lightseagreen;">Wheel</div>
+    <div class="section_title" style="margin-top: 20px; background-color: #e6e6ff;">Wheel</div>
 
     <div class="jos_flex_container" style="align-items: center;
-         margin: 20px 0 0 0; background-color: lightseagreen; ">
+         margin: 20px 0 0 0;  padding: 40px 80px; background-color: #e6e6ff; ">
         <div id="fixed_background" style="width: 330px; height: 330px; transform: rotate(180deg);">
             <canvas id="pie_canvas" width="330" height="330" style="
                     background-image: url('{% static 'img/wheel-011617.png' %}');
@@ -76,16 +80,19 @@
         </div>
     </div>
 
-    <div style="margin-top: 20px; background-color: lightseagreen;">
+    <div style="margin-top: 20px;  padding: 40px 80px; background-color: #e6e6ff;">
         {{ day.story_wheel_section  | safe }}
     </div>
-    <div class="section_title" style="margin-top: 20px; background-color: lightskyblue;">day_quote</div>
+    <div class="section_title" style="margin-top: 20px; background-color: #e6e6ff;">End Quote</div>
 
-    <div id="day_quote" class="day_quote" style="margin: 20px 0 0 45px; background-color: lightskyblue;">
+    <!-- Quote -->
+    <div id="day_quote" class="day_quote"
+         style="margin: 20px 0 0 0; padding: 30px; background-color: #e6e6ff;">
+
         {{ day.day_quote }}<br>
-        <span class="joscursive" style="margin-left: 30px;">
+        <div class="joscursive" style="margin: 30px 0 0 60px;">
             {{ day.day_quote_author }}
-        </span>
+        </div>
     </div>
 </div>
 
