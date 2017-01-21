@@ -122,7 +122,7 @@ class JOSReservation(TimeStamped, models.Model):
     email_frequency = models.IntegerField(default=0, choices=EMAIL_FREQ_CHOICES)
     phone = models.CharField(max_length=40, default=None)
     zip = models.CharField(max_length=10, default=None)
-    phone_text = models.NullBooleanField(blank=True, default=False)
+    phone_text = models.NullBooleanField(blank=True, null=True, default=False)
 
     best_time_to_call = models.TextField(default=None)
 

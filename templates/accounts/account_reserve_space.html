@@ -1,6 +1,6 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
-
+{% block login_button %}{% endblock login_button %}
 {% block accounts_content %}
 
     {% if request.user.is_authenticated  %}
@@ -9,13 +9,14 @@
 
     {% else %}
         <div class="josinstructions" style="margin-bottom: 30px;">
-            <b>Thanks for your interest in Join Our Story!<br></b>
-            - Completing this form reserves your place.<br>
-            - You do not need any special equipment or skills to participate.<br>
-            - This info will only be used to help you start smoothly.
-            We will contact you ASAP<br><br>
-            Remember, we are always here for you:&nbsp&nbsp<span style="color: #d9534f; font-weight: bold;">(213) 465-0885</span><br><br>
-            <i class="fa fa-thumbs-up"></i>
+            <br>Thank you!<br></br>
+            - Communication is required to organize action!<br>
+            - Complete this form to ensure reliable communication.<br>
+            - We will never share this information without your permission<br><br>
+            <div style="margin-left: 60px;">
+                We will contact you ASAP<br>
+                Stay strong, stay loud <i class="fa fa-thumbs-up"></i>
+            </div>
         </div>
 
         {{ block.super }}

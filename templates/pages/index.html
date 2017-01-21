@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load pages_tags mezzanine_tags i18n staticfiles static %}
 
 {% block meta_title %}Home{% endblock %}
 {% block title %}Home{% endblock %}
@@ -9,6 +9,8 @@
 {% block phone_number %}{% endblock phone_number %}
 
 {% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+
+{% block footer %}{% endblock footer %}
 
 {% block all_content %}
 
@@ -61,281 +63,76 @@
 
 </style>
 
-<div style="">
-    <a class="phone_and_secret_button" style="z-index: 155;
-       position: fixed; top: 15px; left: 15px; width: 50%;
-       color: #d9534f; font-size: 18pt; font-weight: normal;
-       outline: none; border: none;"
-       href="
-        {% if request.user.id > 0 %}
-            {% url 'personaldesk' request.user.id %}
-        {% else %}
-            {% url 'josmembers:jossignup' %}
-        {% endif %}">
-        <span style="color: black;">We're always here:&nbsp</span>
-        <b>(213) 465-0885</b>
-    </a>
-</div>
+    <!-- Messages -->
+    {% nevercache %}
+        <div id="messageBox" class='hidden' style="
+            position: fixed; top: 75px; left: 15px; height: 95px; width: 1265px;
+            background-color: #b5fcb5; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+            font-size: 24pt; font-weight: bold; z-index: 600;">
+
+            <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+                 style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+            <div id="messageSpace" style="
+                position: absolute; top: 20px; left: 90px; height: 85px; width: 87%;
+                display: inline-block; overflow-y: scroll; word-wrap: break-word;">
+                Test message
+                {% for message in messages %}
+                    <input type="hidden" id="isMessage" name="isMessage"
+                           value="{{ message | striptags }}">
+                {% endfor %}
+            </div>
+        </div>
+    {% endnevercache %}
+
 
 <div id="landing_page text-center" style="margin: 0 15px; width: 1250px; z-index: 5;">
 
-    <!-- VIDEO -->
-    <div class="row">
-        <div class="col-xs-12 text-center">
-            <p class="home_text" style="padding-bottom: 10px;">
-                To learn about Join Our Story, click play:<br>
-            </p>
-            <video width="640" height="360" style="outline: 5px solid rgb(65, 45, 120);" controls>
-                <source src="/static/media/PROMO-911-480p.mov" type="video/mp4">
-                Sorry, your device has a video problem. Please call.
-            </video>
-        </div>
-    </div>
+    <div id='reserve_button' class=" " style="font-size: 28pt; font-weight: bold; margin-top: 30px;">
 
-    <!-- TELL A TALE -->
-    <div class="row home_text" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
+        SILVER TIGERS:<br><br>
 
-        Tell a tale to warm up<br>
+        - Communication is required to organize action<br>
+        - Organized action is required for change<br>
+        - Change is necessary and change is good<br>
+        - Make change for ourselves, for the world and for the future<br><br>
 
-        <button id=" " class="j_button j_save_button" style="margin: 30px 0 0 15px;;"
-                onclick=" "
-                data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-            <i class="fa fa-arrow-right fa-fw"></i>TELL A TALE BUTTON
+        We are organizing progressive, smart and motivated older women.<br><br>
+
+        We created this website in 15 minutes -<br>
+        With your help, what we can accomplish this week or this year?<br><br>
+
+
+        <button class="j_button j_save_button"
+                onclick="window.location.href = 'https://joinourstory.com/reserve_space';"
+                style="font-size: 22pt; font-weight: bold; padding: 13px 25px;">
+            CLICK HERE TO JOIN US!
         </button>
-
-        <div class="text-center" style="background-color: aliceblue; margin: 45px 0 0 0; font-size: 48pt;">OR</div>
-
-    </div>
-
-    <!-- SPIN TO WIN -->
-    <div class="home_text" style="margin: 15px 0 0 0; width: 100%; ">
-
-       <div class="row" style="margin: 15px;">
-            <div class="col-xs-4" >
-
-                <div class=" " style="padding: 30px 15px;">
-                    Spin to win!<br><br>
-                    Click "spin" to generate a random character, world, and confict. Then use all three to write a story for our contest!
-                </div>
-            </div>
-
-            <div class="col-xs-8" style="padding: 0 0 0 45px;">
-                <div id="random_prompt_slots" style="
-                     display: flex; justify-content: flex-start; align-items: center;
-                     height: 300px; width: 760px; margin-top: 50px; outline: 2px dashed
-                     rgb(65,45,120);">
-
-                    <div id="prompt_icons" class="jos_flex_container" style="
-                         justify-content: space-around; align-items: flex-start;
-                         margin-left: 25px; height: 300px; width: 13%;">
-                        <img src="/static/img/icon-character.png" style=" ">
-                        <img src="/static/img/icon-world.png" style=" ">
-                        <img src="/static/img/icon-conflict.png" style=" ">
-                    </div>
-
-                    <div id="prompt_wheels" class="jos_flex_container homehead" style="
-                         justify-content: space-around; align-items: flex-start;
-                         font-size: 42pt; height: 300px; width: 64%;">
-
-                        <div id='character' class="wheel" style=" ">
-                            -- Character --
-                        </div>
-
-                        <div id='world' class="wheel" style=" ">
-                            -- World --
-                        </div>
-
-                        <div id='conflict' class="wheel" style=" ">
-                            -- Conflict --
-                        </div>
-
-                    </div>
-
-                    <button class="j_button j_discard_button" style="
-                    font-size: 30pt; font-weight: bold; margin:0 10px 0 auto;
-                    height: 130px; width: 130px; border-radius: 65px;"
-                            onclick="startWheel();">
-                        Spin
-                    </button>
-
-                </div>
-            </div>
-        </div>
-
-        <div style="margin: 15px 0 0 90px; height: 160px;">
-            Your <span id="spin_number" style="color: #d9534f"></span> prompt:
-
-            <div id='winning_prompt' class="jos_flex_container" style="display: none;
-                 justify-content: space-between; height: 120px; margin: 10px 0 0 0;">
-
-                <div style="font-size: 32pt; font-weight: bold;" id='winners'></div>
-                <div>
-                    Now, spin again or
-                    <button id=" " class="j_button j_save_button" style="margin-left: 10px;"
-                            onclick=" "
-                            data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-                        <i class="fa fa-arrow-right fa-fw"></i>GO
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
 
-    <!-- 3 PICTURES -->
-    <div class="row" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
-
-        <div class="col-xs-4 text-center">
-            <img class="img" style="height: 250px;" src="{% static 'img/3create_4.5.png' %}">
-        </div>
-
-        <div class="col-xs-4 text-center" style="background-color: transparent;">
-            <img class="img" style="height: 250px;" src="{% static 'img/3share-4.5.png' %}">
-        </div>
-
-        <div class="col-xs-4 text-center">
-            <img class="img" style="height: 250px;" src="{% static 'img/3enjoy_4.5.png' %}">
-        </div>
-
-    </div>
-
-    <div class="row" style="width: 100%;">
-
-        <div class="col-xs-4 text-center" style=" ">
-            <span class="homehead">Create</span><br><br>
-            <span class="home_text">express your experiences and individuality.</span>
-        </div>
-
-        <div class="col-xs-4 text-center">
-            <span class="homehead">Share</span><br><br>
-            <span class="home_text">
-                your stories as you make friends &amp lasting memories.
-            </span>
-        </div>
-
-        <div class="col-xs-4 text-center">
-            <span class="homehead">Enjoy</span><br><br>
-            <span class="home_text">
-                a growing collection<br>of original stories.
-            </span>
-        </div>
-
-    </div>
 </div>
 
-<script>
+    <script>
 
-        var spin_number = 0,
-                change_char, change_world, change_conflict,
-                characters = [
-                    "spymaster", "billionaire", "janitor", "farmer", "alien",
-                    "astronaut", "bank teller", "househusband", "pharmacist",
-                    "dancer", "manicurist", "paparazzi", "aunt", "grandfather", "thief",
-                    "cashier", "politician", "actor", "dentist", '*WILDCARD*'],
-                worlds = [
-                    "main street", "movie set", "school bus", "Taj Mahal",
-                    "closet", "1880s London", "feudal Japan", "Garden of Eden",
-                    "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
-                    "Tahiti", "pirate ship", "ancient Rome", "Vatican", "*WILDCARD*", "Mars"],
-                conflicts = [
-                    "earthquake", "misfortune", "revolt", "kidnapping", "puzzle",
-                    "rivalry", "adultery", "insanity", "passion", "desire", "heresy",
-                    "conformity", "mistaken belief", "lover's betrayal", '*WILDCARD*'],
-                first_character = 0, first_world = 0, first_conflict = 0;
+    $(document).ready(function () {
 
-        function changeCharacter() {
-            $('#character').html(characters[first_character]).css('color', getColor());
-            first_character = (first_character + 1) % characters.length; // modulus repeats
+        // Messages
+        messageBox = document.getElementById('messageBox');
+        messageSpace = document.getElementById('messageSpace');
+        isMessage = document.getElementById("isMessage");
+        if (isMessage !== null) {
+            var message = isMessage.value;
         }
-
-        function changeWorld() {
-            $('#world').html(worlds[first_world]).css('color', getColor());
-            first_world = (first_world + 1) % worlds.length;
+        if (message) {
+            $(messageBox).removeClass('hidden');
+            $(messageBox).delay(3250).fadeOut(1000);
+            $(messageSpace).text(message);
         }
+    });
 
-        function changeConflict() {
-            $('#conflict').html(conflicts[first_conflict]).css('color', getColor());
-            first_conflict = (first_conflict + 1) % conflicts.length;
-        }
-
-        function startWheel() {
-            spin_number++;
-            $('#winning_prompt').hide();
-            var timer = 1000 + Math.floor(Math.random() * 150);
-            $('.wheel').addClass('spin');
-
-            change_char = setInterval(changeCharacter, 50); // match css animation
-            setTimeout(function () {
-                clearInterval(change_char);
-                $('#character').removeClass('spin');
-            }, timer);
-            change_world = setInterval(changeWorld, 50);
-            setTimeout(function () {
-                clearInterval(change_world);
-                $('#world').removeClass('spin');
-            }, timer + 600);
-            change_conflict = setInterval(changeConflict, 50);
-            setTimeout(function () {
-                clearInterval(change_conflict);
-                $('#conflict').removeClass('spin');
-            }, timer + 1200);
-
-            setTimeout(function () {
-                $('#spin_number').html(ordinal_suffix_of(spin_number));
-                $('#winners').html(
-                        $('#character').html() + ' in/on '
-                        + $('#world').html() + ' faces '
-                        + $('#conflict').html());
-                $('#winning_prompt').show();
-            }, timer + 1500)
-        }
-
-        function getColor() {
-            return 'hsl(' + (Math.floor(Math.random() * 18)) * 20 + ', 85%, 55%)';
-        }
-
-        function ordinal_suffix_of(i) {
-            var j = i % 10,
-                    k = i % 100;
-            if (j == 1 && k != 11) {
-                return i + "st";
-            }
-            if (j == 2 && k != 12) {
-                return i + "nd";
-            }
-            if (j == 3 && k != 13) {
-                return i + "rd";
-            }
-            return i + "th";
-        }
     </script>
 
 {% endblock all_content %}
 
-<!-- Forever free --><!-- div id='disclaimer' class="text-center" style="font-size: 24pt; margin-top: 50px;">
-    Forever free for those who join now. Don’t wait!
-</div>
 
-<div id='reserve_button' class="text-center" style="margin-top: 30px;">
-
-    <button class="j_button j_save_button"
-       href="{% url "josmembers:josreservespace" %}"
-       style="font-size: 22pt; font-weight: bold; padding: 13px 25px;">
-        CLICK HERE TO JOIN FOR FREE
-    </button>
-</div -->
-
-<!-- Trailblazers --><!-- TRAILBLAZER VIDEO
-<div class="row" style="margin-top: 30px; padding-top: 30px; width: 100%; border-top: 20px solid rgb(231, 209, 222);">
-    <div class="col-xs-12 text-center">
-
-        <p style="font-size: 22pt;">
-            Trailblazers, please watch this:<br>
-        </p>
-
-        <video width="480" height="270" style="margin-top: 10px; outline: 3px solid rgb(65, 45, 120);" controls>
-            <source src="static/media/trailblazer-orientation.mov" type="video/mp4">
-        </video>
-    </div>
-</div>
-</div> -->

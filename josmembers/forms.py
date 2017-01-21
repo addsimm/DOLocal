@@ -289,7 +289,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
     class Meta:
         model = JOSReservation
         fields = '__all__'
-        exclude = ('staff_notes', 'ready', 'confirmed')
+        exclude = ('staff_notes', 'status', 'ready', 'confirmed')
 
     email_frequency = forms.ChoiceField(
         label='How often do you check your email?',
@@ -319,7 +319,7 @@ class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
                                     widget=forms.CheckboxInput,
                                     initial=False,
                                     required=False)
-    phone      = forms.CharField(label='Phone number - with area code')
+    phone      = forms.CharField(label='Phone number (only if you are serious)')
     email      = forms.EmailField(label='What is your email address?')
     zip        = forms.CharField(label='What is your 5 digit zip code?')
 
