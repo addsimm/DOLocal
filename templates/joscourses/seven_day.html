@@ -3,28 +3,11 @@
 
 {% block meta_title %}Seven Days{% endblock %}
 {% block title %}Seven Days{% endblock %}
-{% block breadcrumb_menu %}{{ block.super }}
-    Seven Days to Better Storytelling
-{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}{% endblock %}
 
 {% block all_content %}
 
-{#    <div class="section_title" style="margin-top: 20px;">#}
-{#        Congratulations {{ request.user.get_short_name }}#}
-{#    </div>#}
-
 <style>
-
-    .day_quote {
-        font-family: 'Architects Daughter';
-        font-size: 28pt;
-        font-weight: bold;
-    }
-
-    .section_title {
-        font-size: 24pt;
-        font-weight: bold;
-    }
 
     /* ferris wheel */
 
@@ -43,7 +26,7 @@
 
     .right_arrow {
         position: absolute;
-        top: 123px;
+        top: 198px;
         width: 0;
         height: 0;
         border-style: solid;
@@ -53,7 +36,7 @@
 
     .arrow_circle {
         position: absolute;
-        top: 134px;
+        top: 209px;
         width: 60px;
         height: 60px;
         border-radius: 30px;
@@ -63,11 +46,12 @@
 
     .arrow_text {
         position: absolute;
-        top: 260px;
-        transform: rotate(-65deg);
-        font-size: 28pt;
+        top: 320px;
+        transform: rotate(-50deg);
+        font-size: 24pt;
         font-weight: bold;
         background-color: transparent;
+        padding: 0 10px;
     }
 
     @keyframes cwise {
@@ -91,19 +75,33 @@
     /* active_step */
 
     .active_step {
-        border-bottom: 4px solid white;
+        background-color: #ccffb3;
     }
 
-    @keyframes animateBorder {
-        to {
-            border-bottom: 5px solid #d9534f;
+    @keyframes top {
+        0%, 60%, 100% {
+            opacity: 1;
+        }
+        80% {
+            opacity: 0;
         }
     }
 
-    .active_step {
-        animation: 2s animateBorder infinite;
+    #top_instruction {
+        animation: top 3s linear infinite;
     }
 
+
+{#    @keyframes animateBorder {#}
+{#        to {#}
+{#            background-color: aliceblue;#}
+{#        }#}
+{#    }#}
+{##}
+{#    .active_step {#}
+{#        animation: 2s animateBorder infinite;#}
+{#    }#}
+    
 {#    #wheel, canvas {#}
 {#        animation: cwise 60s linear 3;#}
 {#    }#}
@@ -112,50 +110,61 @@
 {#        animation: countwise 60s linear 3;#}
 {#    }#}
 
-
-
 </style>
 
 <div id="seven_day_page" style="position: relative; width: 1280px;">
-
-    <span id="top_instruction" class="josinstructions" style="margin-left: 45px;">XXX</span>:
-
-    <div id="wheel" class="jos_flex_container" style="position: absolute; top: 40px; left: 315px;
-         width: 330px; height: 330px;">
-
-        <div class="segments" style="position: absolute; height: 330px; width: 330px;
-            background-image: url('/static/img/wheel-small-background.png');
-            background-size: 330px 330px;
-            z-index: -10;">
-
-            <div id="conflict" class="icon_contain" style="left: 89px; top: 64px;">
-                <div class="segment_icon"  style="
-                     background-image: url('/static/img/icon-conflict.png');"></div>
-            </div>
-
-            <div id="plot" class="icon_contain" style="left: 192px; top: 64px;">
-                <div class="segment_icon" style="
-                     background-image: url('/static/img/icon-plot.png');"></div>
-            </div>
-
-            <div id="theme" class="icon_contain" style="left: 141px; top: 230px;">
-                <div class="segment_icon" style="
-                     background-image: url('/static/img/icon-theme.png');"></div>
-            </div>
-
-            <div id="world" class="icon_contain" style="left: 58px; top: 166px;">
-                <div class="segment_icon" style="
-                    background-image: url('/static/img/icon-world.png');"></div>
-            </div>
-
-            <div id="character" class="icon_contain" style="left: 223px; top: 166px;">
-                <div class="segment_icon" style="
-                     background-image: url('/static/img/icon-character.png');"></div>
-            </div>
-        </div>
+    <div id='explain' class="text-center" style="font-family: 'Architects Daughter'; font-size: 24pt;
+         background-color: aliceblue;">
+        Enhance your storytelling skills as<br>
+        you complete a short, polished story.
     </div>
 
-    <div id="canvas" class="jos_flex_container" style="position: absolute; top: 40px; left: 315px;
+    <div id=" " class="text-center" style="
+         font-size: 32pt; font-weight: bold; margin-top: 50px;">
+        SEVEN DAYS TO BETTER STORYTELLING
+    </div>
+
+    <div id="top_instruction" class="josinstructions text-center" style="font-size: 26pt; margin-top: 35px;">--
+        <span id="top_instruction_text">XXX</span>
+    --</div>
+    <div style="position: relative;">
+        <div id="wheel" class="jos_flex_container" style="
+             position: absolute; top: 70px; left: 315px;
+             width: 330px; height: 330px;">
+
+            <div class="segments " style="position: absolute; height: 330px; width: 330px;
+                background-image: url('/static/img/wheel-small-background.png');
+                background-size: 330px 330px;
+                z-index: -10;">
+
+                <div id="conflict" class="icon_contain" style="left: 89px; top: 64px;">
+                    <div class="segment_icon"  style="
+                         background-image: url('/static/img/icon-conflict.png');"></div>
+                </div>
+
+                <div id="plot" class="icon_contain" style="left: 192px; top: 64px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-plot.png');"></div>
+                </div>
+
+                <div id="theme" class="icon_contain" style="left: 141px; top: 230px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-theme.png');"></div>
+                </div>
+
+                <div id="world" class="icon_contain" style="left: 58px; top: 166px;">
+                    <div class="segment_icon" style="
+                        background-image: url('/static/img/icon-world.png');"></div>
+                </div>
+
+                <div id="character" class="icon_contain" style="left: 223px; top: 166px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-character.png');"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="canvas" class="jos_flex_container" style="position: absolute; top: 70px; left: 315px;
          width: 100%; height: 330px;">
 
         <img src="/static/img/icon-pnp-center.png" style="position: absolute;
@@ -165,16 +174,13 @@
             Your browser does not support HTML5 Canvas; please call us.
         </canvas>
     </div>
-
-    <div class="jos_flex_container active_step" style="position: absolute; top: 370px; left: 315px;
-         width: 330px; height: 20px;">
     </div>
 
     <div style="position: relative;">
 
         <div id="start_arrow" class="right_arrow" style="left: 45px;"></div>
 
-        <div id="stripe" style="position: absolute; top: 154px; left: 45px;
+        <div id="stripe" style="position: absolute; top: 229px; left: 45px;
              width: 975px; height: 20px; background-color: rgb(65,45,120); z-index: -20;">
         </div>
 
@@ -183,21 +189,21 @@
             top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;"></i>
         </div>
 
-        <div id="welcome_text" class="arrow_text active_step" style="left: 60px;">WELCOME</div>
+        <div id="welcome_text" class="arrow_text active_step" style="left: 40px;">WELCOME</div>
 
         <div id="draft_circle" class="arrow_circle" style="left: 730px;"></div>
 
-        <div id="draft_text" class="arrow_text text-right active_step" style="left: 610px;">
+        <div id="draft_text" class="arrow_text text-right" style="left: 595px;">
             1ST DRAFT</div>
 
         <div id="revision_circle" class="arrow_circle" style="left: 875px;"></div>
 
-        <div id="revision_text" class="arrow_text text-right active_step" style="left: 765px;">&nbspREVISION</div>
+        <div id="revision_text" class="arrow_text text-right" style="left: 745px;">&nbspREVISION</div>
 
         <div id="end_arrow" class="right_arrow" style="left: 1010px;"></div>
 
         <button class="j_button j_save_button" style="
-                position: absolute; top: 84px; left: 1085px;
+                position: absolute; top: 159px; left: 1085px;
                 font-size: 24pt; font-weight: bold;
                 height: 150px; width: 150px; border-radius: 75px;"
             onclick=" ">
@@ -205,7 +211,9 @@
         </button>
     </div>
 
-    <div id='DEBUG' style="margin-top: 400px;">
+
+
+    <div id='DEBUG' style="margin-top: 550px;">
         DEBUG:<br>
         seven_day_progress: {{ request.user.JOSProfile.seven_day_progress }}<br>
         seven_day_els_complete: {{ request.user.JOSProfile.seven_day_els_complete }}
@@ -240,7 +248,7 @@
         redraw();
         var seven_day_progress = Number('{{ request.user.JOSProfile.seven_day_progress }}');
         console.log('7d: ' + seven_day_progress + 3);
-        $('#top_instruction').text(seven_day_instructions[seven_day_progress]);
+        $('#top_instruction_text').text(seven_day_instructions[seven_day_progress]);
     });
 
 
