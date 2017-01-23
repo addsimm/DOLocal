@@ -296,18 +296,14 @@ def signup(request, template="accounts/account_signup.html", extra_context=None)
                                 "a link for activating your account."))
             return redirect(next_url(request) or "/")
         else:
+            info(request, "Congratulations and welcome! This is your personal desk:")
             auth_login(request, new_user)
-            info(request, _("Successfully signed up; now, find another!!!"))
             return redirect("http://www.joinourstory.com/personaldesk/" + str(new_user.id))
 
     context = {"form": form, "title": _("Sign up")}
     context.update ({"remote_address": remote_address})
     context.update(extra_context or {})
-    info(request, _("Successfully signed up"))
-    return redirect('https://www.joinourstory.com/completed_signup')
 
-def completed_signup(request, template="accounts/completed_signup.html", extra_context=None):
-    context = {}
     return TemplateResponse(request, template, context)
 
 

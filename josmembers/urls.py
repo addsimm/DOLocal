@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from views import members_list, ajax_submit_member_search, ajax_member_profile_update, reserve_space, josprofile,\
-    josprofile_redirect, login, logout, signup_verify, signup, password_reset, completed_signup
+    josprofile_redirect, login, logout, signup_verify, signup, password_reset
 
 from mezzanine.conf import settings
 
@@ -36,7 +36,7 @@ urlpatterns = [
 
 
     url("signup", signup, name="jossignup"),
-    url("completed_signup", completed_signup, name="completed_signup"),
+    #url("completed_signup", completed_signup, name="completed_signup"),
     url("reserve_space", reserve_space, name="josreservespace"),
 
     # friends AJAX search

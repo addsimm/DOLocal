@@ -9,30 +9,30 @@
 
     {% else %}
         <div class="josinstructions" style=" ">
-            <b>Please complete this form to join Join Our Story!</b><br><br>
+            <b>Join Our Story by completing this short form:</b><br><br>
 
-            &nbsp&nbsp&nbsp&nbspNote: by signing up, you agree to our:&nbsp&nbsp&nbsp
+            <i>&nbsp&nbsp&nbsp&nbspNote: by signing up, you agree to our&nbsp&nbsp</i>
             <button class="j_button j_relocate_button"
                onclick="windows.location.href='/community-rules'">
                 COMMUNITY RULES
             </button>
-            &nbsp&nbsp&&nbsp&nbsp
+            <i>&nbsp&nbsp&&nbsp&nbsp</i>
             <button class="j_button j_relocate_button" style=" "
                     href="/legals">
                 TERMS & CONDITIONS
             </button><br><br>
             <div style="line-height: 1.8; margin: 10px 0 15px 0;">
             TO CREATE A PASSWORD,&nbsp&nbspYOU SHOULD:<br>
-                1.&nbsp&nbspChoose two words and a punctuation mark.<br>
-                2.&nbsp&nbspPut them all together (no spaces and no capitals).<br>
-                <span style="margin-left: 90px;">-- for example: "Happy", "Camper" and "!' becomes "happycamper!"</span><br>
+                1.&nbsp&nbspChoose three simple words and a punctuation mark.<br>
+                2.&nbsp&nbspPut the three together (no spaces and no capitals).<br>
+                <span style="margin-left: 90px;">-- for example: "I", "am", "Smiling and "!' becomes "iamsmiling!"</span><br>
                 3.&nbsp&nbspThen, enter it twice below.<br>
-                <span style="margin-left: 85px;">-- don't worry;&nbsp&nbspyou can reset your password anytime.</span><br>
+                <span style="margin-left: 85px;">-- don't worry. You can reset your password anytime.</span><br>
 
                 {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
                     Once submitted, your account must be approved. You'll receive an email when it's activated; if you do not receive an email soon, please call."<br>
                 {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-                    Once submitted, your account must be verfied. You'll receive an email with instructions. if you do not
+                    Once submitted, your account must be verified. You'll receive an email with instructions. if you do not
                     receive an email soon, please call."<br>
                 {% endif %}
             </div>

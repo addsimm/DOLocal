@@ -62,14 +62,15 @@
 
 {% block login_button %}
 <button class="j_button j_action_button"
-        style="position: fixed; top: 10px; left: 1125px; width: 155px; z-index: 1001;"
         data-toggle="tooltip" data-placement="auto"
         {% if request.user.is_authenticated %}
+        style="position: fixed; top: 10px; left: 1125px; width: 155px; z-index: 1001;"
         onclick="location.href='{% url "logout" %}?next={{ request.path }}';"
         title="Exit Join Our Story">
             <i class="fa fa-sign-out fa-fw"></i>
             LOGOUT
         {% else %}
+            style="position: fixed; top: 10px; left: 1095px; width: 185px; z-index: 1001;"
             onclick="location.href='{% url "login" %}';"
             title="Sign in to Join Our Story">
             <i class="fa fa-sign-in fa-fw"></i>

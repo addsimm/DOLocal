@@ -18,7 +18,8 @@
 
                 <b>Please enter your email and password, then click "{{ title }}"</b> or you can:
                 <button class="j_button_small j_action_button" style="margin-left: 5px;"
-                        onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}';">RESET PASSWORD
+                        onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}';"><i
+                        class="fa fa-key fa-fw"></i>RESET PASSWORD
                 </button>
 
                 {{ block.super }}

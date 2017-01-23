@@ -5,7 +5,7 @@
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
 {% block help %}{% endblock help %}
-
+{% block login_button %}{% endblock login_button %}
 {% block breadcrumb_menu %}
 
     {{ block.super }}
@@ -16,7 +16,7 @@
 {% block all_content %}
 
 <div class="row">
-<div class="col-xs-11" style="margin-top: 0; padding-left: 50px;">
+<div class="col-xs-11" style="margin-top: 30px; padding-left: 50px;">
 {% block accounts_content %}
 
     {% errors_for form %}
@@ -71,13 +71,14 @@
             {% block account_form_actions %}
                 {% if title == "Sign up" %}
                     <div class="josinstructions" style="margin-bottom: 20px;">
-                        <b>I agree to the Community rules & Terms and conditions</b><br>
+                        <b>I agree to the community rules & terms and conditions</b><br>
                     </div>
                 {% endif %}
-                <input class="j_button j_action_button pull-left"
-                       style=" "
-                       type="submit"
-                       value="{{ title | upper }}">
+
+                <button class="j_button j_action_button pull-left"
+                        type="submit">
+                    <i class="fa fa-sign-in fa-fw"></i>{{ title | upper }}
+                </button>
             {% endblock account_form_actions %}
         </div>
     </form>
