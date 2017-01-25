@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load url from future %}
 
 {% block meta_title %}
     {{ user.JOSProfile.friendly_jos_name }} Mail
@@ -21,40 +20,115 @@
 
 <style>
 
-#mail_base .btn-link {
-    width: 115px;
-}
 
 </style>
 
-<div id='mail_base' class="row" style="margin: 0 0 40px 0;">
+<div id='mail_base' class="row josinstructions" style="margin: 50px 0 0 30px;;">
 
-    <div class="col-xs-12" style="padding: 0;">
-        <button class="j_button j_relocate_button"
-                style="height: 47px; margin-left: 15px; padding: 6px 8px;"
-                onclick="location.href= '{% url 'josmessages:messages_inbox' %}';">
-            <i class="fa fa-inbox fa-fw" style=" "></i>
-            INBOX
-        </button>
+        To send messages, use:
 
         <button class="j_button j_relocate_button"
-                style="height: 47px; margin-left: 15px; padding: 6px 8px;"
-                onclick="location.href= '{% url 'josmessages:messages_outbox' %}';">
-            <i class="fa fa-paper-plane fa-fw"></i>
-            SENT
-        </button>
-
-        <span class="josinstructions" style="margin: 0 30px;">To send messages, use:</span>
-
-        <button class="j_button j_relocate_button"
-                style="height: 47px; padding: 6px 8px;"
+                style="height: 47px; margin-left: 15px;"
                 onclick="location.href='{% url "josmembers:josmembers_list" %}';">
             <i class="fa fa-users fa-fw"></i>
             COMMUNITY
         </button>
 
-    </div>
 </div>
+
+<div class="josinstructions" style="margin: 50px 0 0 30px;">Inbox messages:</div>
+
+{% if inbox_list %}
+    <table data-toggle="table">
+        <thead>
+        <tr>
+            <th data-sortable="true">Status</th>
+            <th data-sortable="true">Received:</th>
+            <th data-sortable="true">From:</th>
+            <th data-sortable="true">Subject:</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for message in inbox_list %}
+            <tr>
+                <td>
+                    {% if message.new %}
+                        &nbsp&nbsp&nbsp
+                        <span class=" " style="color: rgb(112, 154, 109) ;">New</span>
+                    {% elif message.replied %}
+                        &nbsp&nbsp&nbsp
+                        <span class=" " style="color: black;">Replied</span>
+                    {% endif %}
+                </td>
+                <td>{{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}</td>
+                <td>{{ message.sender.JOSProfile.friendly_jos_name }}</td>
+                <td>
+                    {{ message.subject | striptags | truncatechars:25 }}
+                </td>
+                <td>
+                    <button class="j_button j_action_button"
+                       style="margin-left: 30px;"
+                       onclick="window.location.href=
+                               '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
+                        Read
+                    </button>
+
+                    <button class="j_button j_discard_button"
+                       style="margin-left: 10px;"
+                            onclick="window.location.href=
+                               '{% url 'josmessages:messages_delete' message.message_thread.id %}';">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p style="margin: 30px 0 0 30px;">No messages</p>
+{% endif %}
+
+    <div class="josinstructions" style="margin: 50px 0 0 30px;">Messages you have sent (removed regularly):</div>
+
+    {% if sent_list %}
+        <table data-toggle="table">
+            <thead>
+            <tr>
+                <th data-sortable="true">Sent on:</th>
+                <th data-sortable="true">To:</th>
+                <th data-sortable="true">Subject:</th>
+                <th>Action:</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for message in sent_list %}
+
+                <tr>
+                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp
+                        {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
+                    </td>
+                    <td>&nbsp&nbsp&nbsp
+                        {{ message.recipient.JOSProfile.friendly_jos_name }}</td>
+                    <td>&nbsp&nbsp&nbsp
+                        {{ message.subject | truncatechars:20 }}</td>
+                    <td>&nbsp&nbsp&nbsp
+                        <button class="j_button j_action_button"
+                                style="margin-left: 30px;"
+                                onclick="window.location.href=
+                                        '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
+                            Read
+                        </button>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="margin: 30px 0 0 30px;">No messages</p>
+    {% endif %}
+
 
 {% endblock %}
 

@@ -1,7 +1,5 @@
-{% extends "josmessages/mailbase.html" %}
+{% extends "base.html" %}
 {% load i18n %}
-{% load url from future %}
-
 
 {% block inner_breadcrumb_menu %}
     Re: {{ subject | striptags }}
@@ -9,16 +7,24 @@
 
 {% block all_content %}
 
-<div class="row">
+{#    DEBUG:<br>#}
+{#    "form": {{ form }}<br>#}
+{#    "message_thread": {{ message_thread }}<br>#}
+{#    "msgs_user_ids": {{ msgs_user_ids }}<br>#}
+{#    "emails": {{ emails }}<br>#}
+
+<div class="row" style="margin-top: 50px;">
 
 <div class="col-xs-10 col-xs-offset-1" style="margin-top: 20px;">
 
     <span class="josinstructions">Subject:</span>
-    <span class="homehead" style="margin-left: 15px;">{{ subject | striptags }}</span>
+    <span class="homehead" style="margin-left: 15px;">
+        {{ message_thread.subject | striptags }}
+    </span>
 
 <!-- Messages -->
 <div>
-{# msgs_user_ids: {{ msgs_user_ids }}<br>#}
+
 {% for msg in emails %}
 
     <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
@@ -66,7 +72,7 @@
             {% for field in form %}
                 {% if field.name == "message_thread_id" %}
                     {{ field.as_hidden }}
-                    <input id="id_message_thread_id" type="hidden" value="{{ message_thread_id }}" name="message_thread_id">
+                    <input id="id_message_thread_id" type="hidden" value="{{ message_thread.id }}" name="message_thread_id">
                 {% else %}
                     <div class="form-group input_{{ field.id_for_label }}
                                                  {{ field.field.type }}
@@ -139,7 +145,7 @@
             <a id="button_delete"
                class="btn btn-danger"
                style="margin-left: 10px;"
-               href="{% url 'josmessages:messages_delete' message_thread_id %}">
+               href="{% url 'josmessages:messages_delete' message_thread.id %}">
                 Delete
             </a>
 

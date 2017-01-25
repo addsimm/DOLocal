@@ -1,6 +1,5 @@
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages as response_messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -19,45 +18,20 @@ if "notification" in settings.INSTALLED_APPS and getattr(settings, "JOSMESSAGES_
 else:
     notification = None
 
-
 @login_required
-def inbox(request, template_name="josmessages/inbox.html"):
+def inbox(request, template_name="josmessages/mailbase.html"):
     """
     Displays a list of received messages for the current user.
     """
     activate('America/Los_Angeles')
 
-    message_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
+    inbox_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
         'message_thread__subject').order_by('message_thread__subject', '-sent_at')
 
-    return render_to_response(template_name,
-                              {"message_list": message_list},
-                              context_instance=RequestContext(request))
 
-
-@login_required
-def outbox(request, template_name="josmessages/outbox.html"):
-    """
-    Displays a list of sent messages by the current user.
-    """
-    activate('America/Los_Angeles')
-    message_list = Message.objects.outbox_for(request.user)
-    return render_to_response(template_name, {
-        "message_list": message_list,
-    }, context_instance=RequestContext(request))
-
-
-@login_required
-def trash(request, template_name="josmessages/trash.html"):
-    """
-    Displays a list of deleted messages.
-    Hint: A Cron-Job could periodically clean up aaold messages
-    """
-    activate('America/Los_Angeles')
-    message_list = JOSMessageThread.objects.trash_for(request.user)
-    return render_to_response(template_name, {
-        "message_list": message_list,
-    }, context_instance=RequestContext(request))
+    sent_list = Message.objects.outbox_for(request.user)
+    return render(request, template_name, {"inbox_list": inbox_list,
+                                           "sent_list": sent_list})
 
 
 @login_required
@@ -152,11 +126,11 @@ def jos_message_compose(request, id=None, template_name="josmessages/compose.htm
 
                 return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
-    return render_to_response(template_name, {
+    return render(request, template_name, {
         "form": form,
         "recipients": recipients,
         "recip_ids": recip_ids
-    }, context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -175,6 +149,9 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
             msg.save()
     msgs_user_ids = msg_thread.messages_distinct_user_ids
     msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
+
+    # return HttpResponse('msgs: ' + str(msgs))
+
     form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
     if request.method == "POST":
@@ -212,12 +189,12 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
             return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
     context = {"form": form,
-               "subject": msg_thread.subject,
+               "message_thread": msg_thread,
+               "msgs_user_ids": msgs_user_ids,
                "emails": msgs,
-               "message_thread_id": msg_thread.id,
-               "msgs_user_ids": msgs_user_ids}
+               }
 
-    return render_to_response(template_name, context, context_instance=RequestContext(request))
+    return render(request, template_name, context)
 
 
     # @login_required
@@ -247,3 +224,13 @@ def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
     #         return HttpResponseRedirect(success_url)
     #     raise Http404
 
+
+    # @login_required
+    # def trash(request, template_name="josmessages/trash.html"):
+    #     """
+    #     Displays a list of deleted messages.
+    #     Hint: A Cron-Job could periodically clean up aaold messages
+    #     """
+    #     activate('America/Los_Angeles')
+    #     message_list = JOSMessageThread.objects.trash_for(request.user)
+    #     return render(request, template_name, {"message_list": message_list})

@@ -31,6 +31,7 @@ body, .body {
 }
 
 /* Base button */
+
 .j_button, .j_button:visited, .j_button:focus {
     color: white;
     font-family: "Open Sans";
