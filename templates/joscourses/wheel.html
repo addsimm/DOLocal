@@ -3,7 +3,7 @@
 <div id="fixed_background" style="width: 330px; height: 330px;">
     <canvas id="pie_canvas" width="330" height="330" style="
             background-image: url('{% static 'img/wheel-011617.png' %}');
-            background-size: 330px;">
+            background-size: 330px 330px;">
         Your browser does not support HTML5 Canvas; please call us.
     </canvas>
 </div>
@@ -24,64 +24,65 @@
     var url_conflict = "https://joinourstory.com/joscourses/conflict_template/" + "{{ wheel.id }}";
 
     function redraw() {
-        console.log('drawing');
-        ctx.clearRect(0, 0, C.width, C.height);
-        paths = [];
-        var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
-        var path4 = new Path2D(), path5 = new Path2D();
+            console.log('drawing');
+            ctx.clearRect(0, 0, C.width, C.height);
+            paths = [];
+            var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
+            var path4 = new Path2D(), path5 = new Path2D();
 
-        ctx.lineWidth = .01;
+            ctx.lineWidth = .01;
 
-        // pie/conflict
-        path1.moveTo(7.3, 114.2);
-        path1.bezierCurveTo(31.5, 46.0, 95.0, 2.3, 163.9, 0.3);
-        path1.lineTo(163.9, 165.0);
-        path1.lineTo(163.8, 165.0);
-        path1.lineTo(7.3, 114.1);
-        path1.closePath();
-        ctx.stroke(path1);
-        paths.push(path1);
+            // pie/conflict
+            path1.moveTo(7.3, 114.2);
+            path1.bezierCurveTo(31.5, 46.0, 95.0, 2.3, 163.9, 0.3);
+            path1.lineTo(163.9, 165.0);
+            path1.lineTo(163.8, 165.0);
+            path1.lineTo(7.3, 114.1);
+            path1.closePath();
+            ctx.stroke(path1);
+            paths.push(path1);
 
-        // pie/character
-        path2.moveTo(322.4, 115.5);
-        path2.bezierCurveTo(342.9, 185.0, 317.2, 257.6, 262.7, 299.7);
-        path2.lineTo(165.9, 166.5);
-        path2.lineTo(165.9, 166.4);
-        path2.lineTo(322.5, 115.6);
-        path2.closePath();
-        ctx.stroke(path2);
-        paths.push(path2);
+            // pie/character
+            path2.moveTo(322.4, 115.5);
+            path2.bezierCurveTo(342.9, 185.0, 317.2, 257.6, 262.7, 299.7);
+            path2.lineTo(165.9, 166.5);
+            path2.lineTo(165.9, 166.4);
+            path2.lineTo(322.5, 115.6);
+            path2.closePath();
+            ctx.stroke(path2);
+            paths.push(path2);
 
-        // pie/theme
-        path3.moveTo(262.0, 300.4);
-        path3.bezierCurveTo(202.3, 341.3, 125.3, 339.3, 68.4, 300.5);
-        path3.lineTo(165.2, 167.2);
-        path3.lineTo(165.2, 167.3);
-        path3.lineTo(262.0, 300.4);
-        path3.closePath();
-        ctx.stroke(path3);
-        paths.push(path3);
+            // pie/theme
+            path3.moveTo(262.0, 300.4);
+            path3.bezierCurveTo(202.3, 341.3, 125.3, 339.3, 68.4, 300.5);
+            path3.lineTo(165.2, 167.2);
+            path3.lineTo(165.2, 167.3);
+            path3.lineTo(262.0, 300.4);
+            path3.closePath();
+            ctx.stroke(path3);
+            paths.push(path3);
 
-        // pie/world
-        path4.moveTo(67.1, 299.8);
-        path4.bezierCurveTo(9.8, 255.6, -12.2, 181.8, 7.3, 115.7);
-        path4.lineTo(163.9, 166.5);
-        path4.lineTo(163.8, 166.6);
-        path4.lineTo(67.1, 299.7);
-        path4.closePath();
-        ctx.stroke(path4);
-        paths.push(path4);
+            // pie/world
+            path4.moveTo(67.1, 299.8);
+            path4.bezierCurveTo(9.8, 255.6, -12.2, 181.8, 7.3, 115.7);
+            path4.lineTo(163.9, 166.5);
+            path4.lineTo(163.8, 166.6);
+            path4.lineTo(67.1, 299.7);
+            path4.closePath();
+            ctx.stroke(path4);
+            paths.push(path4);
 
-        // pie/plot
-        path5.moveTo(165.2, 0.7);
-        path5.bezierCurveTo(237.6, 2.7, 298.7, 49.5, 321.9, 114.4);
-        path5.lineTo(165.3, 165.3);
-        path5.lineTo(165.3, 165.2);
-        path5.lineTo(165.3, 0.7);
-        path5.lineTo(165.2, 0.7);
-        path5.closePath();
-        ctx.stroke(path5);
-        paths.push(path5);
+            // pie/plot
+            path5.moveTo(165.2, 0.7);
+            path5.bezierCurveTo(237.6, 2.7, 298.7, 49.5, 321.9, 114.4);
+            path5.lineTo(165.3, 165.3);
+            path5.lineTo(165.3, 165.2);
+            path5.lineTo(165.3, 0.7);
+            path5.lineTo(165.2, 0.7);
+            path5.closePath();
+            ctx.stroke(path5);
+            paths.push(path5);
+
     }
 
     // Handles hovering
@@ -93,6 +94,7 @@
             var mousePos = getMousePos(C, e);
 
             for (i = 0; i < 5; i++) {
+
                 if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
                     newWedge = i + 1;
                     break
@@ -152,7 +154,7 @@
     }
 
     $(document).ready(function() {
-        redraw()
+        redraw();
     });
 
 </script>

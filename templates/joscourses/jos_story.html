@@ -261,7 +261,7 @@
     <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
             position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;
             width: 140px; height: 50px; border-radius: 0; z-index: 501;"
-            onclick="wheelHandler(this.id);"
+            onclick="wheelHandler();"
             data-toggle="tooltip" data-placement="bottom"
             title="Wheel with templates">
         <i class="fa fa-pie-chart fa-fw"></i>
@@ -504,6 +504,11 @@
         if (Number(window.location.href.split('/')[5]) === 0) {
             reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
             window.location.href = reload_url;
+        } else {
+            var current_title = '{{ story.title }}';
+            if (current_title.indexOf("ntitled") > 0) {
+                modalMessage('change_title', 'Please title your story:')
+            }
         }
 
         var auto_save = '{{ story.auto_save }}';
@@ -512,12 +517,12 @@
             $(auto_save_control).prop('checked', true);
 
             function autoSave() {
-                checkTitleThenSave();
+                josCKSave('story_content');
                 centralCKEditSave('plot', '/joscourses/wheel_update/?id='
                         + '{{ wheel.id }}'); //// CHANGE TO ACTUAL TEMPLATE
             }
 
-            setTimeout(autoSave, 140000); // Autosave interval ms.
+            setTimeout(autoSave, 150000); // Autosave interval ms.
         }
 
         var permission_control_id = 'perm_' + {{ story.publish_permission }};
@@ -534,7 +539,7 @@
 
         if ('{{ request.session.wheel_position }}' === 'down') {
             // folder down
-            wheelHandler('story_wheel_tab');
+            wheelHandler();
         }
     });
 
@@ -543,17 +548,8 @@
         $('#prior_version_content').html(content);
     }
 
-    function checkTitleThenSave() {
-        var current_title = '{{ story.title }}';
-        if (current_title.indexOf("ntitled") > 0) {
-            modalMessage('change_title', 'Please title your story before it saves:')
-        } else {
-            josCKSave('story_content');
-        }
-    }
-
-    function wheelHandler(i) {
-        var wheel_tab = document.getElementById(i);
+    function wheelHandler() {
+        var wheel_tab = document.getElementById('story_wheel_tab');
         var wheel_triangle = document.getElementById('wheel_triangle');
         var data = {};
 
