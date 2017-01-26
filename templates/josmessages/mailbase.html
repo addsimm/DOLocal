@@ -2,16 +2,16 @@
 {% load i18n %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.friendly_jos_name }} Mail
+    {{ user.JOSProfile.friendly_jos_name }} Friends
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.friendly_jos_name }} Mail
+    {{ user.JOSProfile.friendly_jos_name }} Friends
 {% endblock %}
 {% block breadcrumb_menu %}
 
     {{ block.super }}
     {% block inner_breadcrumb_menu %}
-        {{ user.get_short_name }}'s Mail
+        {{ user.get_short_name }}'s Friends
     {% endblock inner_breadcrumb_menu %}
 
 {% endblock %}
@@ -23,61 +23,50 @@
 
 </style>
 
-<div id='mail_base' class="row josinstructions" style="margin: 50px 0 0 30px;;">
 
-        To send messages, use:
 
-        <button class="j_button j_relocate_button"
-                style="height: 47px; margin-left: 15px;"
-                onclick="location.href='{% url "josmembers:josmembers_list" %}';">
-            <i class="fa fa-users fa-fw"></i>
-            COMMUNITY
-        </button>
-
-</div>
-
-<div class="josinstructions" style="margin: 50px 0 0 30px;">Inbox messages:</div>
-
+<div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
 {% if inbox_list %}
-    <table data-toggle="table">
+    <table data-toggle="table" style="margin-left: 60px; width: 95%;">
         <thead>
         <tr>
-            <th data-sortable="true">Status</th>
-            <th data-sortable="true">Received:</th>
-            <th data-sortable="true">From:</th>
-            <th data-sortable="true">Subject:</th>
-            <th></th>
+            <th style="width: 120px;">Status:</th>
+            <th style="width: 210px;">Received:</th>
+            <th style="width: 210px;">From:</th>
+            <th>Subject:</th>
+            <th style="width: 120px;"></th>
         </tr>
         </thead>
         <tbody>
         {% for message in inbox_list %}
             <tr>
-                <td>
+                <td style="padding-left: 10px; width: 120px;">
                     {% if message.new %}
-                        &nbsp&nbsp&nbsp
                         <span class=" " style="color: rgb(112, 154, 109) ;">New</span>
                     {% elif message.replied %}
-                        &nbsp&nbsp&nbsp
                         <span class=" " style="color: black;">Replied</span>
                     {% endif %}
                 </td>
-                <td>{{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}</td>
-                <td>{{ message.sender.JOSProfile.friendly_jos_name }}</td>
-                <td>
-                    {{ message.subject | striptags | truncatechars:25 }}
+                <td style="padding-left: 20px; width: 210px;">
+                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
+                </td>
+                <td style="padding-left: 20px; width: 210px;">
+                    {{ message.sender.JOSProfile.friendly_jos_name }}
                 </td>
                 <td>
                     <button class="j_button j_action_button"
-                       style="margin-left: 30px;"
-                       onclick="window.location.href=
-                               '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
-                        Read
+                            style="margin-left: 10px;"
+                            onclick="window.location.href=
+                                    '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
+                        {{ message.subject | striptags | truncatechars:45 }}
                     </button>
-
-                    <button class="j_button j_discard_button"
+                </td>
+                <td style="width: 120px;">
+                    <button class="j_button_small j_discard_button"
                        style="margin-left: 10px;"
                             onclick="window.location.href=
                                '{% url 'josmessages:messages_delete' message.message_thread.id %}';">
+                        <i class="fa fa-trash fa-fw"></i>
                         Delete
                     </button>
                 </td>
@@ -86,49 +75,62 @@
         </tbody>
     </table>
 {% else %}
+    <p style="margin: 50px 0 0 30px;">No messages</p>
+{% endif %}
+
+
+{% if sent_list %}
+    <div class="jos_flex_container" style="font-size: 16pt; margin: 50px 0 0 60px;">
+        <div style="display: flex; width: 80%; align-items: flex-end;">
+            <div style="width: 250px;">Last 3 messages sent:</div>
+            <div style="width: 210px;">Date</div>
+            <div style="width: 210px;">To</div>
+            <div style=" ">Subject</div>
+        </div>
+        {% for message in sent_list %}
+            <div style="display: flex; width: 80%; margin: 5px 0 0 0">
+                <div class="josinstructions" style="width: 250px;"></div>
+                <div style="width: 210px;">
+                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
+                </div>
+                <div style="width: 210px;">{{ message.recipient.JOSProfile.friendly_jos_name }}</div>
+                <div>{{ message.subject | truncatechars:45 }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
     <p style="margin: 30px 0 0 30px;">No messages</p>
 {% endif %}
 
-    <div class="josinstructions" style="margin: 50px 0 0 30px;">Messages you have sent (removed regularly):</div>
+<div id='mail_base' class="josinstructions" style="margin: 50px 0 0 60px;">
 
-    {% if sent_list %}
-        <table data-toggle="table">
-            <thead>
-            <tr>
-                <th data-sortable="true">Sent on:</th>
-                <th data-sortable="true">To:</th>
-                <th data-sortable="true">Subject:</th>
-                <th>Action:</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for message in sent_list %}
+    Messages, use:
 
-                <tr>
-                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp
-                        {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
-                    </td>
-                    <td>&nbsp&nbsp&nbsp
-                        {{ message.recipient.JOSProfile.friendly_jos_name }}</td>
-                    <td>&nbsp&nbsp&nbsp
-                        {{ message.subject | truncatechars:20 }}</td>
-                    <td>&nbsp&nbsp&nbsp
-                        <button class="j_button j_action_button"
-                                style="margin-left: 30px;"
-                                onclick="window.location.href=
-                                        '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
-                            Read
-                        </button>
-                    </td>
-                </tr>
+    <button class="j_button j_relocate_button"
+            style="height: 47px; margin-left: 15px;"
+            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
+        <i class="fa fa-users fa-fw"></i>
+        COMMUNITY
+    </button>
 
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p style="margin: 30px 0 0 30px;">No messages</p>
-    {% endif %}
+</div>
 
+<script>
+
+
+    function modalMessage(subject, message) {
+        if (subject === 'change_title') {
+            $('#modal_message_message').html(message);
+            $('#story_modal_box')
+                    .show()
+                    .click(function () {
+                        $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
+                    })
+        }
+    }
+
+
+</script>
 
 {% endblock %}
 

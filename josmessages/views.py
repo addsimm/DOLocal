@@ -29,7 +29,7 @@ def inbox(request, template_name="josmessages/mailbase.html"):
         'message_thread__subject').order_by('message_thread__subject', '-sent_at')
 
 
-    sent_list = Message.objects.outbox_for(request.user)
+    sent_list = Message.objects.outbox_for(request.user)[0:3]
     return render(request, template_name, {"inbox_list": inbox_list,
                                            "sent_list": sent_list})
 
