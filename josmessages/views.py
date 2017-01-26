@@ -19,7 +19,7 @@ else:
     notification = None
 
 @login_required
-def inbox(request, template_name="josmessages/mailbase.html"):
+def message_box(request, template_name="josmessages/mailbase.html"):
     """
     Displays a list of received messages for the current user.
     """

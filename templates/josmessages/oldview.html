@@ -1,98 +1,71 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block inner_breadcrumb_menu %}
+    Re: {{ subject | striptags }}
+{% endblock %}
+
+{% block all_content %}
+
+{#    DEBUG:<br>#}
+{#    "form": {{ form }}<br>#}
+{#    "message_thread": {{ message_thread }}<br>#}
+{#    "msgs_user_ids": {{ msgs_user_ids }}<br>#}
+{#    "emails": {{ emails }}<br>#}
 
 
-
-
-<div id="message_viewer" style="
-     position: absolute; top: 50px; left: 100px; height: 800px; width: 1080px;
+<div id="view_message" style="
+     position: absolute; top: 50px; left: 100px; height: 800px; width: 800px;
      background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
      font-size: 24pt; font-weight: bold;"
      onclick="event.stopPropagation();">
 
-        DEBUG:<br>
-        "form": {{ form }}<br>
-        "message_thread": {{ message_thread }}<br>
-        "msgs_user_ids": {{ msgs_user_ids }}<br>
-        "emails": {{ emails }}<br>
+    <span class="josinstructions">Subject:</span>
+    <span class="homehead" style="margin-left: 15px;">
+        {{ message_thread.subject | striptags }}
+    </span>
 
-    <div class="jos_flex_container" style="background-color: pink;
-         justify-content: space-around;
-         margin: 50px 0 0 50px;">
+<!-- Messages -->
 
-        <div class="josinstructions">Subject:
-            <span class="homehead" style="margin-left: 15px;">
-                {{ message_thread.subject | striptags }}
-            </span>
+    {% for msg in emails %}
+
+        <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+            <div class="col-xs-3">
+                {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
+
+            </div>
         </div>
 
-        <div id='bottom_buttons' style= " ">
+        <div class="row" style="font-size: 20pt; margin-top: 20px;">
 
-            <button id="button_inbox" class="j_button_small j_back_button"
-                    onclick=" window.history.back();">
-                <i class="fa fa-check fa-fw"></i>
-                DONE
-            </button>
+            {% if msg.sender != request.user %}
 
-            <button id="button_reply" class="j_button_small j_action_button"
-                    onclick="activateCKEdit();"
-                    data-toggle="tooltip"
-                    title="Activates the word processor to reply"
-                    data-placement="right">
-                <i class="fa fa-reply fa-fw"></i>
-                REPLY
-            </button>
-
-            <button id="button_reply" class="j_button_small j_discard_button"
-                    {# onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';"#}>
-                <i class="fa fa-trash fa-fw"></i>
-                DELETE
-            </button>
-
-        </div>
-    </div>
-
-    <!-- Messages -->
-    <div>
-
-        {% for msg in emails %}
-
-            <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
-                <div class="col-xs-3">
-                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
-
+                <div class="col-xs-2" style="padding: 0;">
+                    {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
                 </div>
-            </div>
 
-            <div class="row" style="font-size: 20pt; margin-top: 20px;">
+                <div class="col-xs-10" style="margin-left: -25px; border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                    "{{ msg.body | striptags | safe }}"
+                </div>
 
-                {% if msg.sender != request.user %}
+            {% else %}
 
-                    <div class="col-xs-2" style="padding: 0;">
-                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                    </div>
+                <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                    "{{ msg.body | striptags | safe }}"
+                </div>
 
-                    <div class="col-xs-10" style="margin-left: -25px; border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
-                        "{{ msg.body | striptags | safe }}"
-                    </div>
+                <div class="col-xs-2">
+                    {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
+                </div>
 
-                {% else %}
+            {% endif %}
 
-                    <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
-                        "{{ msg.body | striptags | safe }}"
-                    </div>
+        </div>
 
-                    <div class="col-xs-2">
-                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                    </div>
+    {% endfor %}
+</div>
 
-                {% endif %}
-
-            </div>
-
-        {% endfor %}
-
-    </div>
-
-    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
+<div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
 
     <form action="" method="post">
         {% csrf_token %}
@@ -149,7 +122,40 @@
     </form>
 </div>
 
+    <!-- Bottom buttons -->
+    <div class="row" style="margin-top: 50px;">
+
+        <div class="col-xs-12">
+
+            <a id="button_inbox"
+               class="btn btn-warning"
+               style="margin-left: 40px;"
+               href="{% url 'josmessages:messages_inbox' %}">
+                Back
+            </a>
+
+            <a id="button_reply"
+               class="btn btn-default"
+               style="margin-left: 10px; width: 100px;"
+               onclick="activateCKEdit()"
+               data-toggle="tooltip"
+               title="Activates the word processor to reply"
+               data-placement="right">
+                {% trans "Reply" %}
+            </a>
+
+{#            <a id="button_delete"#}
+{#               class="btn btn-danger"#}
+{#               style="margin-left: 10px;"#}
+{#               href="{% url 'josmessages:messages_delete' message_thread.id %}">#}
+{#                Delete#}
+{#            </a>#}
+
+        </div>
+    </div>
 </div>
+
+
 
 <script>
 
@@ -186,6 +192,6 @@
 
 </script>
 
-
+{% endblock all_content %}
 
 

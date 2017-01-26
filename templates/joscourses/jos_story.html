@@ -212,7 +212,7 @@
 </div>
 
 <div id="story_modal_box" style="display: none;
-     position: absolute; top: 0px; left: 0px; height: 1000px; width: 1275px;
+     position: absolute; top: 0; left: 0; height: 1000px; width: 1275px;
      background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
     <div id="change_title" style="
@@ -610,19 +610,19 @@
                 "{% url "joscourses:josstory" story.id %}/?autosave=" + auto_save_value;
     }
 
-    function titleUpdate() {
-        var new_title_input = document.getElementById('new_title_input');
-        var new_title = new_title_input.value;
-        window.location.href =
-                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
-    }
-
     function versionModal() {
         $('#version_modal_box')
                 .show()
                 .click(function () {
                     $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
                 })
+    }
+
+    function titleUpdate() {
+        var new_title_input = document.getElementById('new_title_input');
+        var new_title = new_title_input.value;
+        window.location.href =
+                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
     }
 
     function modalMessage(subject, message) {

@@ -23,6 +23,20 @@
 
 </style>
 
+<div id="message_modal_box" style="
+ position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
+ background-color: #C0C0C0; opacity: .97; z-index: 500;">
+
+    {# Compose Button #}
+    {#    <button class="j_button j_action_button"#}
+    {#            style="margin: 15px 0 0 0;"#}
+    {#            onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">#}
+    {#        MESSAGE#}
+    {#    </button>#}
+
+    {% include 'josmessages/view.html' with message_thread=inbox_list.1.message_thread %}
+
+</div>
 
 
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
@@ -78,7 +92,6 @@
     <p style="margin: 50px 0 0 30px;">No messages</p>
 {% endif %}
 
-
 {% if sent_list %}
     <div class="jos_flex_container" style="font-size: 16pt; margin: 50px 0 0 60px;">
         <div style="display: flex; width: 80%; align-items: flex-end;">
@@ -117,6 +130,13 @@
 
 <script>
 
+
+    function titleUpdate() {
+        var new_title_input = document.getElementById('new_title_input');
+        var new_title = new_title_input.value;
+{#        window.location.href =#}
+{#                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;#}
+    }
 
     function modalMessage(subject, message) {
         if (subject === 'change_title') {
