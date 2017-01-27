@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function( config ) {
         {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']}
     ];
     config.width = '100%';
-    config.height = 350;
+    config.height = 175;
     config.tabSpaces = 4;
     config.toolbarRows = 1;
     config.toolbarCanCollapse = false;

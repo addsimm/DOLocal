@@ -124,6 +124,12 @@
 
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
 
+    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+
+{#    CKEDITOR.on('instanceReady', function (e) {#}
+{#        console.log('z')#}
+{#    });#}
+
     function viewMessageThread() {
         // console.log("called viewMessageThread");
         $.ajax({
@@ -136,6 +142,8 @@
             success: function(serverResponse_data) {
                 // console.log("success");
                 $('#ajax_text').html(serverResponse_data);
+                josCKEdit('reply');
+
             },
             fail: function () {
                 console.log("viewMessageThread fail");
@@ -145,23 +153,45 @@
 
     viewMessageThread();
 
-    function titleUpdate() {
-        var new_title_input = document.getElementById('new_title_input');
-        var new_title = new_title_input.value;
-{#        window.location.href =#}
-{#                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;#}
+    function  replyMessage(sect2save) {
+        console.log('editors[sect2save].section_editor: ' + editors[sect2save].section_editor);
+
+        var reply_content = editors[sect2save].section_editor.getData();
+
+{#        $.ajax({#}
+{#            type: "POST",#}
+{#            url: editors[sect2save].editor_ajax_post_url,#}
+{#            data: {#}
+{#                'new_content': new_content,#}
+{#                'section': sect2save#}
+{#            },#}
+{#            success: function (serverResponse_data) {#}
+{#                console.log('successfully posted:  ' + new_content + ' to: ' + sect2save + ' -- ' + serverResponse_data);#}
+{#                if (editors[sect2save].editor_ajax_post_url.search('help') === -1 || sect2edit.search('story') != -1) {#}
+{#                    location.reload();#}
+{#                }#}
+{#            }#}
+{#        });#}
+
     }
 
-    function modalMessage(subject, message) {
-        if (subject === 'change_title') {
-            $('#modal_message_message').html(message);
-            $('#story_modal_box')
-                    .show()
-                    .click(function () {
-                        $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
-                    })
-        }
-    }
+{#    function titleUpdate() {#}
+{#        var new_title_input = document.getElementById('new_title_input');#}
+{#        var new_title = new_title_input.value;#}
+{#        window.location.href =#}
+{#                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;#}
+{#    }#}
+{##}
+{#    function modalMessage(subject, message) {#}
+{#        if (subject === 'change_title') {#}
+{#            $('#modal_message_message').html(message);#}
+{#            $('#story_modal_box')#}
+{#                    .show()#}
+{#                    .click(function () {#}
+{#                        $('#change_title').effect("shake", {times: 1, distance: 20}, 500);#}
+{#                    })#}
+{#        }#}
+{#    }#}
 
 
 </script>

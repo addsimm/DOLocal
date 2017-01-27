@@ -75,40 +75,21 @@
             <!-- Editor buttons -->
             <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
 
-                <button id="and send_edit_btn" class="j_button_small j_info_button"
-                        style=" " onclick="josCKEdit('and send');"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="Activates editor">
+                <button id="reply_edit_btn" class="j_button_small j_save_button"
+                        style=" " onclick="replyMessage('reply');">
                     <i class="fa fa-reply fa-fw"></i>
-                    REPLY TO MESSAGE
-                </button>
-
-                <button id="and send_cancel_btn" class="j_button_small j_discard_button"
-                        style="margin-left: 5px;"
-                        onclick="josCKDestroy('and send');">
-                    <i class="fa fa-trash fa-fw"></i>
-                    DISCARD REPLY
+                    SEND REPLY
                 </button>
 
             </div>
 
             <!-- This div holds editor -->
-            <div id="and send_editor_container" class="reply_editor" style="width: 1015px;"></div>
+            <div id="reply_editor_container" class="reply_editor" style="width: 1015px;"></div>
 
         </div>
 
     </div>
 </div>
-
-<script>
-
-    initJOSEditor('and send', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
-
-    CKEDITOR.on('instanceReady', function(e) {
-        console.log('z')
-    });
-
-</script>
 
 
 

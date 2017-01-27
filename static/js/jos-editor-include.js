@@ -42,9 +42,11 @@ function josCKEdit(sect2edit) {
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         segment_element = document.getElementById(sect2edit + '_original_content');
 
-    if ($(edit_btn).hasClass('j_info_button') || sect2edit.search('story') !== -1) {
+    if ($(edit_btn).hasClass('j_info_button') || sect2edit.search('story') !== -1 ||
+    sect2edit.search('reply') !== -1
+) {
 
-        if (sect2edit.search('story') === -1) {
+        if (sect2edit.search('story') === -1 && sect2edit.search('reply') === -1 ) {
             var data_original_title_string = 'Updates ' + sect2edit;
             var edit_button_html = "<i class = 'fa fa-arrow-circle-up fa-fw'></i>SAVE " + sect2edit.toUpperCase();
             $(edit_btn).removeClass('j_info_button').addClass('j_save_button').html(edit_button_html).attr("data-original-title", data_original_title_string);
