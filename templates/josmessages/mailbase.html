@@ -125,7 +125,7 @@
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
 
     function viewMessageThread() {
-        console.log("called viewMessageThread");
+        // console.log("called viewMessageThread");
         $.ajax({
             type: "GET",
             url: AJAX_MESSAGE_URL,
@@ -134,7 +134,7 @@
                 'message_thread_id': "2619"
             },
             success: function(serverResponse_data) {
-                console.log("success");
+                // console.log("success");
                 $('#ajax_text').html(serverResponse_data);
             },
             fail: function () {

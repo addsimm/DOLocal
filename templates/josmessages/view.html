@@ -1,5 +1,12 @@
 
 
+<button id="button_reply" class="j_button j_discard_button" style="z-index: 1000;
+            position: absolute; top: 80px; left: 870px;"
+         onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';">
+    <i class="fa fa-trash fa-fw"></i>
+    DELETE
+</button>
+
 <button id="button_inbox" class="j_button j_back_button" style="z-index: 1000;
             position: absolute; top: 80px; left: 1020px;"
         onclick=" window.history.back();">
@@ -19,8 +26,6 @@
 {#        "emails": {{ emails }}<br>#}
 
 
-
-
     <div class="jos_flex_container" style="justify-content: space-between; margin: 30px 0 0 30px;">
 
         <div class="josinstructions" style="margin-bottom: 15px;">Subject:
@@ -31,156 +36,77 @@
 
         <!-- Messages -->
         {% for msg in emails %}
-            <div style="font-size: 20pt; margin-top: 15px;">
-
-                <div style="color: rgb(217,83,79); margin-left: 30px;">
-                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
-                </div>
-
-                <div style="display: flex; margin-top: 10px;">
-                    {% if msg.sender != request.user %}
-                        <div>
-                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                        </div>
-                        <div style="width: 850px; background-color: white;
-                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
-                            "{{ msg.body | striptags | safe }}"
-                        </div>
-
-                    {% else %}
-
-                        <div style="width: 850px; background-color: white;
-                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
-                            "{{ msg.body | striptags | safe }}"
-                        </div>
-
-                        <div style="margin-left: 10px;">
-                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                        </div>
-
-                    {% endif %}
-                </div>
-            </div>
-
+{#            <div style="font-size: 20pt; margin-top: 15px;">#}
+{##}
+{#                <div style="color: rgb(217,83,79); margin-left: 30px;">#}
+{#                    {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}#}
+{#                </div>#}
+{##}
+{#                <div style="display: flex; margin-top: 10px;">#}
+{#                    {% if msg.sender != request.user %}#}
+{#                        <div>#}
+{#                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}#}
+{#                        </div>#}
+{#                        <div style="width: 850px; background-color: white;#}
+{#                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">#}
+{#                            "{{ msg.body | striptags | safe }}"#}
+{#                        </div>#}
+{##}
+{#                    {% else %}#}
+{##}
+{#                        <div style="width: 850px; background-color: white;#}
+{#                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">#}
+{#                            "{{ msg.body | striptags | safe }}"#}
+{#                        </div>#}
+{##}
+{#                        <div style="margin-left: 10px;">#}
+{#                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}#}
+{#                        </div>#}
+{##}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+{##}
         {% endfor %}
 
-        <div id='bottom_buttons' style= "margin-top: 30px;">
+        <!-- Message editor -->
+        <div id="message_editor" style="margin: 30px 0 0 0;">
 
-            <button id="button_inbox" class="j_button_small j_back_button"
-                    onclick=" window.history.back();">
-                <i class="fa fa-check fa-fw"></i>
-                DONE
-            </button>
+            <!-- Editor buttons -->
+            <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
 
-            <button id="button_reply" class="j_button_small j_action_button"
-                    onclick="activateCKEdit();"
-                    data-toggle="tooltip"
-                    title="Activates the word processor to reply"
-                    data-placement="right">
-                <i class="fa fa-reply fa-fw"></i>
-                REPLY
-            </button>
+                <button id="and send_edit_btn" class="j_button_small j_info_button"
+                        style=" " onclick="josCKEdit('and send');"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Activates editor">
+                    <i class="fa fa-reply fa-fw"></i>
+                    REPLY TO MESSAGE
+                </button>
 
-            <button id="button_reply" class="j_button_small j_discard_button"
-                    {# onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';"#}>
-                <i class="fa fa-trash fa-fw"></i>
-                DELETE
-            </button>
+                <button id="and send_cancel_btn" class="j_button_small j_discard_button"
+                        style="margin-left: 5px;"
+                        onclick="josCKDestroy('and send');">
+                    <i class="fa fa-trash fa-fw"></i>
+                    DISCARD REPLY
+                </button>
+
+            </div>
+
+            <!-- This div holds editor -->
+            <div id="and send_editor_container" class="reply_editor" style="width: 1015px;"></div>
 
         </div>
+
     </div>
-
-    <div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
-
-    <form action="" method="post">
-        {% csrf_token %}
-        <div style="margin-left: 60px;">
-
-            {% for field in form %}
-                {% if field.name == "message_thread.id" %}
-                    {{ field.as_hidden }}
-                    <input id="id_message_thread_id" type="hidden" value="{{ message_thread.id }}" name="message_thread_id">
-                {% else %}
-                    <div class="form-group input_{{ field.id_for_label }}
-                                                 {{ field.field.type }}
-                                                 {% if field.errors %}
-                                                    has-error
-                                                 {% endif %}">
-                        {# field.name #}
-                        {% if field.label %}
-                            <label class="control-label"
-                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                        {% endif %}
-
-                        {{ field }}
-
-                        {% if field.errors %}
-                            <p class="help-block">
-                                {% for e in field.errors %}
-                                    {% if not forloop.first %} / {% endif %}{{ e }}
-                                {% endfor %}
-                            </p>
-
-                        {% elif field.help_text %}
-                            <p class="help-block">
-                                {{ field.help_text }}
-                            </p>
-                        {% endif %}
-
-                    </div>
-                {% endif %}
-            {% endfor %}
-
-            <button id="#button_cancel"
-                    type="button"
-                    class="j_button j_back_button"
-                    style=" "
-                    onclick="cancel_reply();">CANCEL
-            </button>
-
-            <input id="#button_send"
-                   class="j_button j_action_button"
-                   style="margin-left: 10px; width: 100px;"
-                   type="submit" value="SEND">
-
-        </div>
-    </form>
-</div>
-
 </div>
 
 <script>
 
-    function cancel_reply() {
-        $('#button_cancel').addClass('hidden');
-        $('#button_send').addClass('hidden');
-        $('#reply_thread_form').addClass('hidden');
-        $('#button_reply').removeClass('hidden');
-        $('#button_inbox').removeClass('hidden');
-        $('#button_delete').removeClass('hidden');
-    }
+    initJOSEditor('and send', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
 
-    function activateCKEdit() {
-        $('#reply_thread_form').removeClass('hidden');
-        $('#button_cancel').removeClass('hidden');
-        $('#button_send').removeClass('hidden');
-        $('#button_reply').addClass('hidden');
-        $('#button_inbox').addClass('hidden');
-        $('#button_delete').addClass('hidden');
-        CKEDITOR.replace(id_body, {
-            toolbar: [
-                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-                {'name': 'editing', 'items': ['SelectAll', 'Find']}
-            ],
-            contentsCss: '/static/ckeditor/ckeditor/contents.css',
-            disableNativeSpellChecker: false,
-            width: '95%',
-            tabSpaces: 4,
-            uiColor: '#28a4c9',
-            extraPlugins: 'colorbutton',
-            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-        });
-    }
+    CKEDITOR.on('instanceReady', function(e) {
+        console.log('z')
+    });
 
 </script>
 

@@ -15,28 +15,6 @@ function initJOSEditor(sctn, tlbr, eapurl, org_cntnt) {
     };
 }
 
-var ck_config_small = {
-    toolbar: [
-        {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
-        {'name': 'editing', 'items': ['SelectAll', 'Find']}
-    ],
-    contentsCss: '/static/ckeditor/ckeditor/contents.css',
-    disableNativeSpellChecker: false,
-    width: '100%',
-    height: 309,
-    tabSpaces: 4,
-    uiColor: '#ffff00',
-    removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-};
-
-var ck_config_large = {
-
-    uiColor: '#ffff00',
-    extraPlugins: 'colorbutton',
-    removePlugins: 'liststyle,tabletools,scayt,contextmenu'
-};
-
-
 window.onbeforeunload = function () {
     //// console.log('unload called');
     var lngth = Object.keys(editors).length;
@@ -55,9 +33,9 @@ window.onbeforeunload = function () {
 function josCKEdit(sect2edit) {
     console.log('editor called; section: ' + sect2edit);
 
-    var ck_config = ck_config_small;
-    if (editors[sect2edit].toolbar === 'large') {
-        ck_config = ck_config_large;
+    var ck_config = '/static/ckeditor/config.js';
+    if (editors[sect2edit].toolbar === 'small') {
+        ck_config = '/static/ckeditor/configsmall.js';
     }
 
     var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
@@ -80,7 +58,7 @@ function josCKEdit(sect2edit) {
 
         editors[sect2edit].section_editor = CKEDITOR.appendTo(
             ck_editor_container, {
-                customConfig: '/static/ckeditor/config.js'
+                customConfig: ck_config
             },
             editors[sect2edit].original_content);
 
@@ -124,7 +102,6 @@ function josCKSave(sect2save) {
         }
     });
 }
-
 
 function josCKDestroy(sect2destroy) {
     console.log('editor destroy; section: ' + sect2destroy);
