@@ -1,12 +1,15 @@
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+import json
+
+from django.conf import settings
 from django.contrib import messages as response_messages
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.core.urlresolvers import reverse
-from django.conf import settings
-from django.utils.timezone import activate
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.core import serializers
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+from django.utils.timezone import activate
 
 from josmessages.models import Message, JOSMessageThread
 from josmessages.forms import JOSComposeForm, JOSReplyForm
@@ -133,68 +136,88 @@ def jos_message_compose(request, id=None, template_name="josmessages/compose.htm
     })
 
 
-@login_required
-def view(request, message_thread_id = 0, template_name="josmessages/view.html"):
-    """
-    Shows a single message thread with reply option.
-    """
-    activate('America/Los_Angeles')
+def ajax_message_info(request):
 
-    msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-    all_thread_msgs = msg_thread.messages
+    message_thread_id = ""  # Assume no search
+
+    if (request.method == "GET"):
+        # The form has been submitted. Get the MTI
+
+        message_thread_id = int(request.GET.get("message_thread_id", ""))
+
+    if message_thread_id > 0:
+        msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
+        all_thread_msgs = msg_thread.messages
+    else:
+        return HttpResponse('not found; message_thread_id: ' + str(message_thread_id))
 
     for msg in all_thread_msgs.filter(recipient=request.user):
         if not msg.read_at:
             msg.read_at = timezone.now()
             msg.save()
+
     msgs_user_ids = msg_thread.messages_distinct_user_ids
     msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
 
-    # return HttpResponse('msgs: ' + str(msgs))
-
     form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
-    if request.method == "POST":
-        form = JOSReplyForm(request.POST)
-        if form.is_valid():
-            for msg in msgs:
-                if not msg.replied_at:
-                    msg.replied_at = timezone.now()
-                    msg.save()
+    context = {
+        "form": form,
+        "message_thread": msg_thread,
+        "msgs_user_ids":  msgs_user_ids,
+        "emails": msgs,
+    }
 
-            mt_id = request.POST["message_thread_id"]
-            body = request.POST["body"]
-            mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-            msgs_user_ids = mt.messages_distinct_user_ids
+    # msg_thread_json = serializers.serialize("json", msg_thread)
+    # msgs_user_ids_json = serializers.serialize("json", msgs_user_ids)
+    # msgs_json = serializers.serialize("json", msgs)
 
-            for xid in msgs_user_ids:
+    # return_data = msg_thread_json + msgs_user_ids_json + msgs_json
+    # return_data_json = serializers.serialize("json", return_data)
 
-                if xid != request.user.id:
-                    usr = " "
-                    try:
-                        usr = get_object_or_404(User, id=xid)
-                    except:
-                        pass
-                    if usr != " ":
-                        send_msg = Message.objects.create(
-                            message_thread=mt,
-                            body=body,
-                            sender=request.user,
-                            recipient = usr,
-                            sent_at=timezone.now()
-                        )
-                        send_msg.save()
+    return render(request, "josmessages/view.html", context)
 
-            response_messages.info(request, "Message successfully sent.")
-            return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
 
-    context = {"form": form,
-               "message_thread": msg_thread,
-               "msgs_user_ids": msgs_user_ids,
-               "emails": msgs,
-               }
 
-    return render(request, template_name, context)
+
+
+    #
+    #
+    # if request.method == "POST":
+    #     form = JOSReplyForm(request.POST)
+    #     if form.is_valid():
+    #         for msg in msgs:
+    #             if not msg.replied_at:
+    #                 msg.replied_at = timezone.now()
+    #                 msg.save()
+    #
+    #         mt_id = request.POST["message_thread_id"]
+    #         body = request.POST["body"]
+    #         mt = get_object_or_404(JOSMessageThread, pk=mt_id)
+    #         msgs_user_ids = mt.messages_distinct_user_ids
+    #
+    #         for xid in msgs_user_ids:
+    #
+    #             if xid != request.user.id:
+    #                 usr = " "
+    #                 try:
+    #                     usr = get_object_or_404(User, id=xid)
+    #                 except:
+    #                     pass
+    #                 if usr != " ":
+    #                     send_msg = Message.objects.create(
+    #                         message_thread=mt,
+    #                         body=body,
+    #                         sender=request.user,
+    #                         recipient = usr,
+    #                         sent_at=timezone.now()
+    #                     )
+    #                     send_msg.save()
+    #
+    #         response_messages.info(request, "Message successfully sent.")
+    #         return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
+
+
 
 
     # @login_required

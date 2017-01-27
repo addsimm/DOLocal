@@ -25,21 +25,15 @@
 
 <div id="message_modal_box" style="
  position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
- background-color: #C0C0C0; opacity: .97; z-index: 500;">
+ background-color: #C0C0C0; z-index: 500;">
 
-    {# Compose Button #}
-    {#    <button class="j_button j_action_button"#}
-    {#            style="margin: 15px 0 0 0;"#}
-    {#            onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">#}
-    {#        MESSAGE#}
-    {#    </button>#}
-
-    {% include 'josmessages/view.html' with message_thread=inbox_list.1.message_thread %}
+    <div id="ajax_text"></div>
 
 </div>
 
 
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
+
 {% if inbox_list %}
     <table data-toggle="table" style="margin-left: 60px; width: 95%;">
         <thead>
@@ -69,9 +63,9 @@
                 </td>
                 <td>
                     <button class="j_button j_action_button"
-                            style="margin-left: 10px;"
-                            onclick="window.location.href=
-                                    '{% url 'josmessages:messages_detail' message.message_thread.id %}';">
+                            style="margin-left: 10px;">
+{#                            onclick="window.location.href=#}
+{#                                    '{% url 'josmessages:messages_detail' message.message_thread.id %}';">#}
                         {{ message.subject | striptags | truncatechars:45 }}
                     </button>
                 </td>
@@ -115,9 +109,7 @@
     <p style="margin: 30px 0 0 30px;">No messages</p>
 {% endif %}
 
-<div id='mail_base' class="josinstructions" style="margin: 50px 0 0 60px;">
-
-    Messages, use:
+<div id='friends_and_circles' class="josinstructions" style="margin: 50px 0 0 60px;">
 
     <button class="j_button j_relocate_button"
             style="height: 47px; margin-left: 15px;"
@@ -130,6 +122,28 @@
 
 <script>
 
+    var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
+
+    function viewMessageThread() {
+        console.log("called viewMessageThread");
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            dataType: 'html',
+            data: {
+                'message_thread_id': "2619"
+            },
+            success: function(serverResponse_data) {
+                console.log("success");
+                $('#ajax_text').html(serverResponse_data);
+            },
+            fail: function () {
+                console.log("viewMessageThread fail");
+            }
+        });
+    }
+
+    viewMessageThread();
 
     function titleUpdate() {
         var new_title_input = document.getElementById('new_title_input');

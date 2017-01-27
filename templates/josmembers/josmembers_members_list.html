@@ -122,7 +122,7 @@
     /* Before our JavaScript, the urls need to be set. */
     var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
 
-        /** Executes a search  */
+        /* Executes a search  */
     var processSearchPal = function () {
         //Get and trim the search text.
         var searchText = $('#member_search_text').val().trim().toLowerCase();
@@ -154,7 +154,7 @@
         }
     };
 
-    /** The Ajax "main" function. */
+    /* The Ajax "main" function. */
 
     var MILLS_TO_IGNORE_SEARCH = 100;
     $(document).ready(function () {
