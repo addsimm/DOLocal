@@ -23,11 +23,11 @@
 
 </style>
 
-<div id="message_modal_box" style="
+<div id="message_modal_box" style="display: none;
  position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
  background-color: #C0C0C0; z-index: 500;">
 
-    <div id="ajax_text"></div>
+    <div id="ajax_response_messages"></div>
 
 </div>
 
@@ -63,9 +63,8 @@
                 </td>
                 <td>
                     <button class="j_button j_action_button"
-                            style="margin-left: 10px;">
-{#                            onclick="window.location.href=#}
-{#                                    '{% url 'josmessages:messages_detail' message.message_thread.id %}';">#}
+                        style="margin-left: 10px;"
+                        onclick="viewMessageThread('{{ message.message_thread.id }}');">
                         {{ message.subject | striptags | truncatechars:45 }}
                     </button>
                 </td>
@@ -126,24 +125,20 @@
 
     initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
 
-{#    CKEDITOR.on('instanceReady', function (e) {#}
-{#        console.log('z')#}
-{#    });#}
-
-    function viewMessageThread() {
-        // console.log("called viewMessageThread");
+    function viewMessageThread(mtid) {
+        // console.log("called viewMessageThread; mtid: " + mtid);
         $.ajax({
             type: "GET",
             url: AJAX_MESSAGE_URL,
             dataType: 'html',
             data: {
-                'message_thread_id': "2619"
+                'message_thread_id': mtid
             },
             success: function(serverResponse_data) {
-                // console.log("success");
-                $('#ajax_text').html(serverResponse_data);
+                // console.log("serverResponse_data: " + serverResponse_data);
+                $('#ajax_response_messages').html(serverResponse_data);
                 josCKEdit('reply');
-
+                $('#message_modal_box').show();
             },
             fail: function () {
                 console.log("viewMessageThread fail");
@@ -151,48 +146,27 @@
         });
     }
 
-    viewMessageThread();
-
-    function  replyMessage(sect2save) {
-        console.log('editors[sect2save].section_editor: ' + editors[sect2save].section_editor);
-
+    function  replyMessage(sect2save, mtid) {
         var reply_content = editors[sect2save].section_editor.getData();
 
-{#        $.ajax({#}
-{#            type: "POST",#}
-{#            url: editors[sect2save].editor_ajax_post_url,#}
-{#            data: {#}
-{#                'new_content': new_content,#}
-{#                'section': sect2save#}
-{#            },#}
-{#            success: function (serverResponse_data) {#}
-{#                console.log('successfully posted:  ' + new_content + ' to: ' + sect2save + ' -- ' + serverResponse_data);#}
-{#                if (editors[sect2save].editor_ajax_post_url.search('help') === -1 || sect2edit.search('story') != -1) {#}
-{#                    location.reload();#}
-{#                }#}
-{#            }#}
-{#        });#}
-
+        console.log('reply_content: ' + reply_content);
+        $.ajax({
+            type: "POST",
+            url: AJAX_MESSAGE_URL,
+            data: {
+                'message_thread_id': mtid,
+                'reply_content': reply_content
+            },
+            success: function (serverResponse_data) {
+                console.log("Reply post success: " + serverResponse_data);
+                $('#message_modal_box').hide();
+                josCKDestroy(sect2save);
+            },
+            fail: function () {
+                console.log("Reply post fail");
+            }
+        });
     }
-
-{#    function titleUpdate() {#}
-{#        var new_title_input = document.getElementById('new_title_input');#}
-{#        var new_title = new_title_input.value;#}
-{#        window.location.href =#}
-{#                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;#}
-{#    }#}
-{##}
-{#    function modalMessage(subject, message) {#}
-{#        if (subject === 'change_title') {#}
-{#            $('#modal_message_message').html(message);#}
-{#            $('#story_modal_box')#}
-{#                    .show()#}
-{#                    .click(function () {#}
-{#                        $('#change_title').effect("shake", {times: 1, distance: 20}, 500);#}
-{#                    })#}
-{#        }#}
-{#    }#}
-
 
 </script>
 

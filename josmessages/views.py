@@ -4,8 +4,8 @@ from django.conf import settings
 from django.contrib import messages as response_messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.messages import info
 from django.core.urlresolvers import reverse
-from django.core import serializers
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -137,52 +137,55 @@ def jos_message_compose(request, id=None, template_name="josmessages/compose.htm
 
 
 def ajax_message_info(request):
+    if not request.is_ajax():
+        return HttpResponse('Not ajax')
 
     message_thread_id = ""  # Assume no search
 
     if (request.method == "GET"):
-        # The form has been submitted. Get the MTI
-
         message_thread_id = int(request.GET.get("message_thread_id", ""))
+    elif (request.method == "POST"):
+        message_thread_id = int(request.POST.get("message_thread_id", ""))
 
     if message_thread_id > 0:
         msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
         all_thread_msgs = msg_thread.messages
     else:
-        return HttpResponse('not found; message_thread_id: ' + str(message_thread_id))
+        return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
 
-    for msg in all_thread_msgs.filter(recipient=request.user):
-        if not msg.read_at:
-            msg.read_at = timezone.now()
-            msg.save()
+    if (request.method == "GET"):
+        for msg in all_thread_msgs.filter(recipient=request.user):
+            if not msg.read_at:
+                msg.read_at = timezone.now()
+                msg.save()
 
-    msgs_user_ids = msg_thread.messages_distinct_user_ids
-    msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
+        msgs_user_ids = msg_thread.messages_distinct_user_ids
+        msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
 
-    form = JOSReplyForm({"message_thread_id": msg_thread.id})
+        form = JOSReplyForm({"message_thread_id": msg_thread.id})
 
-    context = {
-        "form": form,
-        "message_thread": msg_thread,
-        "msgs_user_ids":  msgs_user_ids,
-        "emails": msgs,
-    }
+        context = {
+            "form": form,
+            "message_thread": msg_thread,
+            "msgs_user_ids":  msgs_user_ids,
+            "emails": msgs,
+        }
 
-    # msg_thread_json = serializers.serialize("json", msg_thread)
-    # msgs_user_ids_json = serializers.serialize("json", msgs_user_ids)
-    # msgs_json = serializers.serialize("json", msgs)
+        return render(request, "josmessages/view.html", context)
 
-    # return_data = msg_thread_json + msgs_user_ids_json + msgs_json
-    # return_data_json = serializers.serialize("json", return_data)
+    if (request.method == 'POST'):
 
-    return render(request, "josmessages/view.html", context)
+        reply_content = request.POST.get('reply_content', 'missing')
+
+        return HttpResponse('http response reply_content: ' + reply_content)
+
+    # if reply_content != 'missing':
+    #     user_profile = get_object_or_404(JOSProfile, user=request.user)
+    #     user_profile.about_me = new_content
+    #     user_profile.save()
+    #     info(request, "Profile updated!")
 
 
-
-
-
-    #
-    #
     # if request.method == "POST":
     #     form = JOSReplyForm(request.POST)
     #     if form.is_valid():
