@@ -263,8 +263,7 @@ def ajax_story_update(request):
                     body=new_content,
                     message_thread=comment_thread,
                     recipient=story.author,
-                    sender=request.user,
-                    sent_at=timezone.now()
+                    sender=request.user
             )
             send_message.save()
             info(request, "Great thought, thanks!")

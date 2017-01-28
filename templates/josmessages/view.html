@@ -1,92 +1,89 @@
 
 
-<button id="button_delete" class="j_button j_discard_button" style="z-index: 1000;
-            position: absolute; top: 80px; left: 870px;"
-         onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';">
-    <i class="fa fa-trash fa-fw"></i>
-    DELETE
-</button>
 
-<button id="button_done" class="j_button j_back_button" style="z-index: 1000;
-            position: absolute; top: 80px; left: 1020px;"
-        onclick="window.location.href='{% url "josmessages:messages_redirect" %}';">
-    <i class="fa fa-check fa-fw"></i>
-    DONE
-</button>
 
-<div id="message_viewer" style="overflow-y: scroll;
-     position: absolute; top: 50px; left: 100px; height: 800px; width: 1080px;
+
+<div id="message_viewer" style="
+     position: absolute; top: 50px; left: 60px; height: 900px; width: 1160px;
      background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
      font-size: 24pt; font-weight: bold;"
      onclick="event.stopPropagation();">
 
-{#        DEBUG:<br>#}
-{#        "message_thread": {{ message_thread }}<br>#}
-{#        "msgs_user_ids": {{ msgs_user_ids }}<br>#}
-{#        "emails": {{ emails }}<br>#}
-
-
-<div class="jos_flex_container" style="justify-content: space-between; margin: 30px 0 0 30px;">
-
-    <div class="josinstructions" style="margin-bottom: 15px;">Subject:
+    <div class="josinstructions" style=" position: absolute; top: 20px; left: 25px;">Subject:
         <span class="homehead" style="margin-left: 15px;">
             {{ message_thread.subject | striptags }}
         </span>
     </div>
 
-    <!-- Messages -->
-    {% for msg in emails %}
-        <div style="font-size: 20pt; margin-top: 15px;">
+    <button id="button_delete" class="j_button j_discard_button" style="
+        position: absolute; top: 20px;; left: 765px;"
+            onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';">
+        <i class="fa fa-trash fa-fw"></i>
+        DELETE MESSAGE
+    </button>
 
-            <div style="color: rgb(217,83,79); margin-left: 30px;">
-                {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
-            </div>
+    <button id="button_done" class="j_button j_back_button" style="
+        position: absolute; top: 20px;; left: 1010px;"
+            onclick="window.location.href='{% url "josmessages:messages_redirect" %}';">
+        <i class="fa fa-arrow-left fa-fw"></i>
+        BACK
+    </button>
 
-            <div style="display: flex; margin-top: 10px;">
-                {% if msg.sender != request.user %}
-                    <div>
-                        {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                    </div>
-                    <div style="width: 850px; background-color: white;
-                         border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
-                        "{{ msg.body | striptags | safe }}"
-                    </div>
 
-                {% else %}
-
-                    <div style="width: 850px; background-color: white;
-                         border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
-                        "{{ msg.body | striptags | safe }}"
-                    </div>
-
-                    <div style="margin-left: 10px;">
-                        {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
-                    </div>
-
-                {% endif %}
-            </div>
-        </div>
-
-    {% endfor %}
 
     <!-- Message editor -->
-    <div id="message_editor" style="margin: 30px 0 0 0;">
+    <div id="message_editor" style="position: absolute; top: 95px; left: 25px;">
 
-        <!-- Editor buttons -->
-        <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
-
-            <button id="reply_edit_btn" class="j_button_small j_save_button"
-                    style=" " onclick="replyMessage('reply', '{{ message_thread.id }}');">
-                <i class="fa fa-reply fa-fw"></i>
-                SEND REPLY
-            </button>
-
-        </div>
+        <button id="send_reply_btn" class="j_button_small j_save_button"
+                style=" " onclick="replyMessage('reply', '{{ message_thread.id }}');">
+            <i class="fa fa-reply fa-fw"></i>
+            SEND REPLY
+        </button>
 
         <!-- This div holds editor -->
-        <div id="reply_editor_container" class="reply_editor" style="width: 1015px;"></div>
+        <div id="reply_editor_container" class="reply_editor" style="width: 1105px;"></div>
 
     </div>
+
+    <div class="jos_flex_container" style="position: absolute; top: 405px; left: 25px;
+         overflow-y: scroll; height: 455px;">
+
+        <!-- Messages -->
+        {% for msg in emails %}
+            <div style="font-size: 20pt; margin-top: 15px;">
+
+                <div style="color: rgb(217,83,79); margin-left: 30px;">
+                    {{ msg.sent_at }}
+                </div>
+
+                <div style="display: flex; margin-top: 10px;">
+                    {% if msg.sender != request.user %}
+                        <div style="margin-left: 2px;">
+                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
+                        </div>
+                        <div style="width: 955px; background-color: white;
+                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
+                            "{{ msg.body | striptags | safe }}"
+                        </div>
+
+                    {% else %}
+
+                        <div style="width: 953px; background-color: white;
+                             border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 70px;">
+                            "{{ msg.body | striptags | safe }}"
+                        </div>
+
+                        <div style="margin-left: 10px;">
+                            {% include "jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
+                        </div>
+
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+
 </div>
 </div>
 

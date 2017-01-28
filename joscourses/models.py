@@ -28,6 +28,7 @@ class JOSCourseDay(TimeStamped, models.Model):
     video_url = models.CharField(max_length=250, default="missing", blank=True, null=True)
     video_transcript = RichTextField(default="missing", blank=True, null=True)
     brainstorm = RichTextField(default="missing", blank=True, null=True)
+    activity = RichTextField(default="missing", blank=True, null=True)
     story_wheel_section = RichTextField(default="missing", blank=True, null=True)
     day_quote = RichTextField(default="missing", blank=True, null=True)
     day_quote_author = models.CharField(max_length=250, default="missing", blank=True, null=True)

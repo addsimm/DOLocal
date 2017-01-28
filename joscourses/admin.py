@@ -5,7 +5,7 @@ from .models import *
 # Register your models here.
 
 class JOSCourseDayAdmin(admin.ModelAdmin):
-    verbose_name = 'Week'
+    verbose_name = 'Day'
     list_display = ("id", "day_num", "title", "updated")
     readonly_fields = ('created', 'updated',)
 admin.site.register(JOSCourseDay, JOSCourseDayAdmin)

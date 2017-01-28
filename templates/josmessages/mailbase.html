@@ -123,7 +123,7 @@
 
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
 
-    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "<i>Enter reply here</i>");
 
     function viewMessageThread(mtid) {
         // console.log("called viewMessageThread; mtid: " + mtid);
@@ -148,24 +148,27 @@
 
     function  replyMessage(sect2save, mtid) {
         var reply_content = editors[sect2save].section_editor.getData();
-
         console.log('reply_content: ' + reply_content);
-        $.ajax({
-            type: "POST",
-            url: AJAX_MESSAGE_URL,
-            data: {
-                'message_thread_id': mtid,
-                'reply_content': reply_content
-            },
-            success: function (serverResponse_data) {
-                console.log("Reply post success: " + serverResponse_data);
-                $('#message_modal_box').hide();
-                josCKDestroy(sect2save);
-            },
-            fail: function () {
-                console.log("Reply post fail");
-            }
-        });
+
+        if (reply_content.indexOf("nter reply here") > 0) {
+            alert('Please change your replies content');
+        } else {
+            $.ajax({
+                type: "POST",
+                url: AJAX_MESSAGE_URL,
+                data: {
+                    'message_thread_id': mtid,
+                    'reply_content': reply_content
+                },
+                success: function (serverResponse_data) {
+                    console.log("Reply post success: " + serverResponse_data);
+                    window.location.href = "{% url 'josmessages:messages_inbox' %}"
+                },
+                fail: function () {
+                    console.log("Reply post fail");
+                }
+            });
+        }
     }
 
 </script>

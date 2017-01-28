@@ -5,6 +5,7 @@ from django.contrib import messages as response_messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages import info
+from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -113,8 +114,7 @@ def jos_message_compose(request, id=None, template_name="josmessages/compose.htm
                             body=body,
                             message_thread=mt,
                             sender=request.user,
-                            recipient=recipient,
-                            sent_at=timezone.now()
+                            recipient=recipient
                     )
 
                     msg.save()
@@ -153,19 +153,17 @@ def ajax_message_info(request):
     else:
         return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
 
+    msgs = all_thread_msgs.filter(recipient=request.user)
+    msgs_user_ids = msg_thread.messages_distinct_user_ids
+    # sorted_msgs = msgs.order_by('body').distinct('body')
+
     if (request.method == "GET"):
-        for msg in all_thread_msgs.filter(recipient=request.user):
+        for msg in msgs:
             if not msg.read_at:
                 msg.read_at = timezone.now()
                 msg.save()
 
-        msgs_user_ids = msg_thread.messages_distinct_user_ids
-        msgs = all_thread_msgs.distinct('body').order_by('body', '-sent_at')
-
-        form = JOSReplyForm({"message_thread_id": msg_thread.id})
-
         context = {
-            "form": form,
             "message_thread": msg_thread,
             "msgs_user_ids":  msgs_user_ids,
             "emails": msgs,
@@ -177,50 +175,28 @@ def ajax_message_info(request):
 
         reply_content = request.POST.get('reply_content', 'missing')
 
-        return HttpResponse('http response reply_content: ' + reply_content)
 
-    # if reply_content != 'missing':
-    #     user_profile = get_object_or_404(JOSProfile, user=request.user)
-    #     user_profile.about_me = new_content
-    #     user_profile.save()
-    #     info(request, "Profile updated!")
+        for msg in msgs:
+            if not msg.replied_at:
+                msg.replied_at = timezone.now()
+                msg.save()
 
+        for xid in msgs_user_ids:
 
-    # if request.method == "POST":
-    #     form = JOSReplyForm(request.POST)
-    #     if form.is_valid():
-    #         for msg in msgs:
-    #             if not msg.replied_at:
-    #                 msg.replied_at = timezone.now()
-    #                 msg.save()
-    #
-    #         mt_id = request.POST["message_thread_id"]
-    #         body = request.POST["body"]
-    #         mt = get_object_or_404(JOSMessageThread, pk=mt_id)
-    #         msgs_user_ids = mt.messages_distinct_user_ids
-    #
-    #         for xid in msgs_user_ids:
-    #
-    #             if xid != request.user.id:
-    #                 usr = " "
-    #                 try:
-    #                     usr = get_object_or_404(User, id=xid)
-    #                 except:
-    #                     pass
-    #                 if usr != " ":
-    #                     send_msg = Message.objects.create(
-    #                         message_thread=mt,
-    #                         body=body,
-    #                         sender=request.user,
-    #                         recipient = usr,
-    #                         sent_at=timezone.now()
-    #                     )
-    #                     send_msg.save()
-    #
-    #         response_messages.info(request, "Message successfully sent.")
-    #         return HttpResponseRedirect(reverse("josmessages:messages_inbox"))
+            recip = get_object_or_404(User, pk=xid)
 
+            send_message = Message.objects.create(
+                    body=reply_content,
+                    message_thread=msg_thread,
+                    recipient=request.user,
+                    sender=recip
+            )
+            send_message.save()
+            info(request, "Message successfully sent!")
 
+        return HttpResponse("Reply sent; smid: " + str(message_thread_id))
+
+    return HttpResponse('ajax_message_info failed to do anything')
 
 
     # @login_required
