@@ -188,16 +188,17 @@ def ajax_message_info(request):
 
         for xid in msgs_user_ids:
 
-            recip = get_object_or_404(User, pk=xid)
+            if xid != request.user.id:
+                recip = get_object_or_404(User, pk=xid)
 
-            send_message = Message.objects.create(
-                    body=reply_content,
-                    message_thread=msg_thread,
-                    recipient=recip,
-                    sender=request.user
-            )
-            send_message.save()
-            info(request, "Message successfully sent!")
+                send_message = Message.objects.create(
+                        body=reply_content,
+                        message_thread=msg_thread,
+                        recipient=recip,
+                        sender=request.user
+                )
+                send_message.save()
+                info(request, "Message successfully sent!")
 
         return HttpResponse("Reply sent; message_thread_id: " + str(message_thread_id))
 
