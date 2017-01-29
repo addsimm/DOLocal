@@ -32,11 +32,11 @@ def message_box(request, template_name="josmessages/mailbase.html"):
     inbox_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
         'message_thread__subject').order_by('message_thread__subject', '-sent_at')
 
-
     sent_list = Message.objects.outbox_for(request.user)[0:3]
-    return render(request, template_name, {"inbox_list": inbox_list,
-                                           "sent_list": sent_list})
-
+    return render(request, template_name, {
+        "inbox_list": inbox_list,
+        "sent_list": sent_list
+    })
 
 @login_required
 def delete(request, message_thread_id=0):
@@ -153,9 +153,14 @@ def ajax_message_info(request):
     else:
         return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
 
-    msgs = all_thread_msgs.filter(recipient=request.user)
+
     msgs_user_ids = msg_thread.messages_distinct_user_ids
-    # sorted_msgs = msgs.order_by('body').distinct('body')
+
+    all_thread_msgs = msg_thread.messages
+    msgs = all_thread_msgs.filter(recipient=request.user)
+    unique_msgs = list(msgs.distinct('body').order_by('body'))
+
+    sort_msgs = sorted(unique_msgs, key=lambda message: -message.id)
 
     if (request.method == "GET"):
         for msg in msgs:
@@ -166,7 +171,7 @@ def ajax_message_info(request):
         context = {
             "message_thread": msg_thread,
             "msgs_user_ids":  msgs_user_ids,
-            "emails": msgs,
+            "emails": sort_msgs
         }
 
         return render(request, "josmessages/view.html", context)
@@ -174,7 +179,6 @@ def ajax_message_info(request):
     if (request.method == 'POST'):
 
         reply_content = request.POST.get('reply_content', 'missing')
-
 
         for msg in msgs:
             if not msg.replied_at:

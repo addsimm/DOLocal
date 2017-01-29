@@ -34,6 +34,10 @@
 
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
 
+    {% for msg in sort_list %}
+        {{ msg.body }}<br>
+    {% endfor %}
+
 {% if inbox_list %}
     <table data-toggle="table" style="margin-left: 60px; width: 95%;">
         <thead>
