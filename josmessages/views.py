@@ -140,8 +140,24 @@ def ajax_message_info(request):
     if not request.is_ajax():
         return HttpResponse('Not ajax')
 
-    ################################
-    ## COMPOSE HAS TO SEND TO ITSELF
+
+    recip_ids = []
+    recipients = []
+
+    team_name = request.GET.get('team', None)
+
+    if team_name != None:
+        team = get_object_or_404(JOSTeam, name=team_name)
+        team_member_ids = team.member_id_list()
+        recip_ids = team_member_ids
+        if len(team_member_ids) > 0:
+            for member_id in team_member_ids:
+                recipient = User.objects.get(id=member_id)
+                recipients.append(recipient)
+    else:
+        recipient = User.objects.get(id=id)
+        recipients.append(recipient)
+        recip_ids.append(id)
 
     message_thread_id = ""  # Assume no search
 
@@ -156,8 +172,12 @@ def ajax_message_info(request):
     else:
         return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
 
+    unique_recip_ids = msg_thread.messages_distinct_user_ids
+    recipients = []
+    for usr_id in unique_recip_ids:
+        recip = get_object_or_404(User, pk=usr_id)
+        recipients.append(recip)
 
-    msgs_user_ids = msg_thread.messages_distinct_user_ids
     msgs = all_thread_msgs.filter(recipient=request.user)
     unique_msgs = list(msgs.distinct('body').order_by('body'))
 
@@ -171,7 +191,7 @@ def ajax_message_info(request):
 
         context = {
             "message_thread": msg_thread,
-            "msgs_user_ids":  msgs_user_ids,
+            "recipients": recipients,
             "emails": sort_msgs
         }
 

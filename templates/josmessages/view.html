@@ -9,21 +9,35 @@
      font-size: 24pt; font-weight: bold;"
      onclick="event.stopPropagation();">
 
-    <div class="josinstructions" style=" position: absolute; top: 20px; left: 25px;">Subject:
-        <span class="homehead" style="margin-left: 15px;">
-            {{ message_thread.subject | striptags }}
-        </span>
+    <div style="display: flex; align-self: center; position: absolute; top: 20px; left: 25px; font-size: 18pt; ">
+        <div>Subject:
+            <span class="homehead" style="margin: 0 6px;">
+                {{ message_thread.subject | striptags }}
+            </span>
+            to:
+        </div>
+
+        {% for recip in recipients %}
+            <div style="margin-left: 6px; padding-top: 25px;">
+                {% if recip != request.user %}
+                    {% if forloop.last %}{{ recip.JOSProfile.friendly_jos_name }}{% else %}
+                        {{ recip.JOSProfile.friendly_jos_name }},
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+
     </div>
 
-    <button id="button_delete" class="j_button j_discard_button" style="
-        position: absolute; top: 20px;; left: 765px;"
+    <button id="button_delete" class="j_button_small j_discard_button" style="
+        position: absolute; top: 20px;; left: 860px;"
             onclick="window.location.href='{% url 'josmessages:messages_delete' message_thread.id %}';">
         <i class="fa fa-trash fa-fw"></i>
         DELETE MESSAGE
     </button>
 
-    <button id="button_done" class="j_button j_back_button" style="
-        position: absolute; top: 20px;; left: 1010px;"
+    <button id="button_done" class="j_button_small j_back_button" style="
+        position: absolute; top: 20px;; left: 1045px;"
             onclick="window.location.href='{% url "josmessages:messages_redirect" %}';">
         <i class="fa fa-arrow-left fa-fw"></i>
         BACK
@@ -37,7 +51,7 @@
         <button id="send_reply_btn" class="j_button_small j_save_button"
                 style=" " onclick="replyMessage('reply', '{{ message_thread.id }}');">
             <i class="fa fa-reply fa-fw"></i>
-            SEND REPLY
+            SEND
         </button>
 
         <!-- This div holds editor -->

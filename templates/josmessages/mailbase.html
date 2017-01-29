@@ -24,13 +24,55 @@
 </style>
 
 <div id="message_modal_box" style="display: none;
- position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
- background-color: #C0C0C0; z-index: 500;">
+     position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
+     background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
     <div id="ajax_response_messages"></div>
 
 </div>
 
+<div id="compose_subject_modal_box" style="
+     position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
+     background-color: #C0C0C0; opacity: .97; z-index: 500;">
+
+    <div id="change_title" style="
+    position: absolute; top: 50px; left: 100px; height: 415px; width: 720px;
+    background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+    font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+        <div id="messageSpace" style="
+         display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+         position: absolute; top: 20px; left: 90px; height: 385px; width: 610px">
+            Composing message to:<br><br>
+
+            What is the subject?
+
+            <input id="subject_input" type="text" style="
+               margin-top: 15px; padding: 8px 12px; width: 545px;
+               color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
+                   value="Re:">
+
+            <div style="display: flex; align-self: flex-end; justify-content: flex-end;
+             align-items: flex-end; margin-top: 30px;">
+                <button id="title_save_btn" class="j_button_small j_save_button"
+                        style=" " onclick="event.stopPropagation(); enterNewThreadSubject();">
+                    <i class="fa fa-arrow-circle-right fa-fw"></i>
+                    COMPOSE
+                </button>
+
+                <button id="title_discard_btn" class="j_button_small j_discard_button"
+                        style="margin-left: 10px; "
+                        onclick="event.stopPropagation(); window.location.href = '{% url 'josmessages:messages_redirect' %}';">
+                    <i class="fa fa-trash fa-fw"></i>
+                    CANCEL
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
 
@@ -127,7 +169,41 @@
 
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
 
-    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "<i>Enter reply here</i>");
+    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "Enter message here ... ");
+
+    function composeMessageTo() {
+        /////////////////////////// NEXT STEP
+    }
+
+    function enterNewThreadSubject(mtid) {
+        // console.log("called viewMessageThread; mtid: " + mtid);
+
+        var subject_input = document.getElementById('subject_input');
+        var new_subject = subject_input.value;
+
+        if (new_subject === 'Re:') {
+            alert('Please enter a subject or cancel');
+        } else {
+
+            $.ajax({
+                type: "GET",
+                url: AJAX_MESSAGE_URL,
+                dataType: 'html',
+                data: {
+                    'subject': new_subject
+                },
+                success: function (serverResponse_data) {
+                    // console.log("serverResponse_data: " + serverResponse_data);
+                    $('#ajax_response_messages').html(serverResponse_data);
+                    josCKEdit('reply');
+                    $('#message_modal_box').show();
+                },
+                fail: function () {
+                    console.log("viewMessageThread fail");
+                }
+            });
+        }    
+    }
 
     function viewMessageThread(mtid) {
         // console.log("called viewMessageThread; mtid: " + mtid);
@@ -154,8 +230,8 @@
         var reply_content = editors[sect2save].section_editor.getData();
         console.log('reply_content: ' + reply_content);
 
-        if (reply_content.indexOf("nter reply here") > 0) {
-            alert('Please change your replies content');
+        if (reply_content.indexOf("nter message here") > 0) {
+            alert("Please delete 'Enter message here'");
         } else {
             $.ajax({
                 type: "POST",
