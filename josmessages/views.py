@@ -22,21 +22,6 @@ if "notification" in settings.INSTALLED_APPS and getattr(settings, "JOSMESSAGES_
 else:
     notification = None
 
-@login_required
-def message_box(request, template_name="josmessages/mailbase.html"):
-    """
-    Displays a list of received messages for the current user.
-    """
-    activate('America/Los_Angeles')
-
-    inbox_list = Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
-        'message_thread__subject').order_by('message_thread__subject', '-sent_at')
-
-    sent_list = Message.objects.outbox_for(request.user)[0:3]
-    return render(request, template_name, {
-        "inbox_list": inbox_list,
-        "sent_list": sent_list
-    })
 
 @login_required
 def delete(request, message_thread_id=0):
@@ -67,13 +52,28 @@ def delete(request, message_thread_id=0):
     response_messages.info(request, "Message successfully deleted.")
     return redirect('http://www.joinourstory.com/messages/inbox/')
 
+@login_required
+def message_box(request, template_name="josmessages/mailbase.html"):
+    """
+    Displays a list of received messages for the current user.
+    """
+    activate('America/Los_Angeles')
+
+    distinct_inbox_list = list(Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
+        'message_thread__subject').order_by('message_thread__subject'))
+
+    inbox_list = sorted(distinct_inbox_list, key=lambda message: -message.id)
+
+
+    sent_list = Message.objects.outbox_for(request.user)[0:4]
+    return render(request, template_name, {
+        "inbox_list": inbox_list,
+        "sent_list": sent_list
+    })
 
 ### JOS Messaging
 @login_required
 def jos_message_compose(request, id=None, template_name="josmessages/compose.html", recipient_filter=None):
-    """
-    Handles messages
-    """
 
     recip_ids =[]
     recipients = []
@@ -140,6 +140,9 @@ def ajax_message_info(request):
     if not request.is_ajax():
         return HttpResponse('Not ajax')
 
+    ################################
+    ## COMPOSE HAS TO SEND TO ITSELF
+
     message_thread_id = ""  # Assume no search
 
     if (request.method == "GET"):
@@ -155,8 +158,6 @@ def ajax_message_info(request):
 
 
     msgs_user_ids = msg_thread.messages_distinct_user_ids
-
-    all_thread_msgs = msg_thread.messages
     msgs = all_thread_msgs.filter(recipient=request.user)
     unique_msgs = list(msgs.distinct('body').order_by('body'))
 
@@ -192,13 +193,13 @@ def ajax_message_info(request):
             send_message = Message.objects.create(
                     body=reply_content,
                     message_thread=msg_thread,
-                    recipient=request.user,
-                    sender=recip
+                    recipient=recip,
+                    sender=request.user
             )
             send_message.save()
             info(request, "Message successfully sent!")
 
-        return HttpResponse("Reply sent; smid: " + str(message_thread_id))
+        return HttpResponse("Reply sent; message_thread_id: " + str(message_thread_id))
 
     return HttpResponse('ajax_message_info failed to do anything')
 

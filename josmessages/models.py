@@ -58,7 +58,6 @@ class Message(models.Model):
     sender = models.ForeignKey(User, related_name='sent_messages', verbose_name="Sender")
 
     dt = timezone.now()
-    dt = dt.replace(second=0, microsecond=0)  # Returns a copy
     sent_at = models.DateTimeField(verbose_name="sent at", default=dt, null=True, blank=True)
 
     recipient = models.ForeignKey(User, related_name='received_messages', null=True, blank=True, verbose_name= "Recipient")
