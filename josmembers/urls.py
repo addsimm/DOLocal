@@ -1,6 +1,5 @@
 from django.conf.urls import url
-from views import members_list, ajax_submit_member_search, ajax_member_profile_update, reserve_space, josprofile,\
-    josprofile_redirect, login, logout, signup_verify, signup, password_reset
+from views import *
 
 from mezzanine.conf import settings
 

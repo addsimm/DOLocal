@@ -102,13 +102,13 @@
 {#        animation: 2s animateBorder infinite;#}
 {#    }#}
     
-{#    #wheel, canvas {#}
-{#        animation: cwise 60s linear 3;#}
-{#    }#}
-{##}
-{#    .segment_icon {#}
-{#        animation: countwise 60s linear 3;#}
-{#    }#}
+    #wheel, canvas {
+        animation: cwise 60s linear 30;
+    }
+
+    .segment_icon {
+        animation: countwise 60s linear 30;
+    }
 
 </style>
 
@@ -189,16 +189,16 @@
             top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;"></i>
         </div>
 
-        <div id="welcome_text" class="arrow_text active_step" style="left: 40px;">WELCOME</div>
+        <div id="welcome_text" class="arrow_text active_step" style="left: 37px;">WELCOME</div>
 
         <div id="draft_circle" class="arrow_circle" style="left: 730px;"></div>
 
-        <div id="draft_text" class="arrow_text text-right" style="left: 595px;">
+        <div id="draft_text" class="arrow_text text-right" style="left: 589px;">
             1ST DRAFT</div>
 
         <div id="revision_circle" class="arrow_circle" style="left: 875px;"></div>
 
-        <div id="revision_text" class="arrow_text text-right" style="left: 745px;">&nbspREVISION</div>
+        <div id="revision_text" class="arrow_text text-right" style="left: 739px;">&nbsp&nbspREVISION</div>
 
         <div id="end_arrow" class="right_arrow" style="left: 1010px;"></div>
 
@@ -209,9 +209,8 @@
             onclick=" ">
             SHARE!
         </button>
+
     </div>
-
-
 
     <div id='DEBUG' style="margin-top: 550px;">
         DEBUG:<br>

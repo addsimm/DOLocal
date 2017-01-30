@@ -29,9 +29,11 @@
 
     <div id="ajax_response_messages"></div>
 
+{# FIXXXXXX #}
+
 </div>
 
-<div id="compose_subject_modal_box" style="
+<div id="compose_subject_modal_box" style="display: none;
      position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
      background-color: #C0C0C0; opacity: .97; z-index: 500;">
 
@@ -74,12 +76,8 @@
     </div>
 </div>
 
+<!-- Inbox -->
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
-
-    {% for msg in sort_list %}
-        {{ msg.body }}<br>
-    {% endfor %}
-
 {% if inbox_list %}
     <table data-toggle="table" style="margin-left: 60px; width: 95%;">
         <thead>
@@ -131,39 +129,99 @@
     <p style="margin: 50px 0 0 30px;">No messages</p>
 {% endif %}
 
-{% if sent_list %}
-    <div class="jos_flex_container" style="font-size: 16pt; margin: 50px 0 0 60px;">
-        <div style="display: flex; width: 80%; align-items: flex-end;">
-            <div style="width: 250px;">Last 4 messages sent:</div>
-            <div style="width: 210px;">Date</div>
-            <div style="width: 210px;">To</div>
-            <div style=" ">Subject</div>
-        </div>
-        {% for message in sent_list %}
-            <div style="display: flex; width: 80%; margin: 5px 0 0 0">
-                <div class="josinstructions" style="width: 250px;"></div>
-                <div style="width: 210px;">
-                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
-                </div>
-                <div style="width: 210px;">{{ message.recipient.JOSProfile.friendly_jos_name }}</div>
-                <div>{{ message.subject | truncatechars:45 }}</div>
-            </div>
-        {% endfor %}
+<!-- Search -->
+<div class="josinstructions" style="margin: 40px 0 0 60px;">
+    To compose to or favor a new friend, begin typing a name (results start after two letters):
+
+    <div style="display: flex; margin-top: 10px;">
+
+        <input id="member_search_text" style="padding: 3px 12px; width: 350px; height: auto;"
+               type="text" placeholder="Type here">
+
+        <button class="j_button_small j_back_button"
+                style="margin-left: 5px; height: 36px; align-self: center;"
+                onclick="$('#member_search_text').val('');">
+            <i class="fa fa-eraser fa-fw"></i>
+            CLEAR
+        </button>
+
     </div>
-{% else %}
-    <p style="margin: 30px 0 0 30px;">No messages</p>
-{% endif %}
-
-<div id='friends_and_circles' class="josinstructions" style="margin: 50px 0 0 60px;">
-
-    <button class="j_button j_relocate_button"
-            style="height: 47px; margin-left: 15px;"
-            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
-        <i class="fa fa-users fa-fw"></i>
-        COMMUNITY
-    </button>
+    <div id="member_search_results"></div>
 
 </div>
+
+<div id='friends_and_circles' class="josinstructions" style="margin: 40px 0 0 60px;">
+
+    <!-- Favorites -->
+    <div class="josinstructions" style="margin-top: 20px;">My favorites:</div>
+
+    {% if  following.count > 0 %}
+
+        {% for favorite in following %}
+
+            <div class="col-xs-3 text-center"
+                 style="padding: 10px; margin: 0 15px 15px 0; width: 256px; border: 1px solid rgb(65,45,120);">
+                {% include "josmembers/../jos_includes/user_picture_include.html" with user=favorite height=128 %}<br>
+
+                <button class="j_button j_action_button"
+                        style="font-size: 14px; margin: 10px 0 0 0;"
+                        onclick="window.location.href='{% url 'josmessages:messages_compose' favorite.id %}';">
+                    MESSAGE
+                </button>
+
+                <button class="j_button j_action_button"
+                        style="font-size: 14px; margin: 10px 0 0 10px;"
+                        onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }}';">
+                    UNFAVOR
+                </button>
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        -- Favor your first new friend by typing a name above.
+    {% endif %}
+
+    <!-- Teams -->
+   {% if teams_list %}
+       <div class="josinstructions" style="margin-top: 15px;">My teams:</div>
+
+       {% for team_dict in teams_list %}
+
+            <div class="row" style="margin-top: 20px;
+                    padding: 10px 0;
+                    border: solid 1px rgb(209,209,209);
+                    {% if forloop.counter|divisibleby:2 %}
+                        background-color: rgb(209,209,209);
+                    {% endif %}">
+                <div class="col-xs-3 text-center"
+                     style="font-size: 24pt; font-weight: bold; margin-left: -50px; padding: 0;">
+                    {{ team_dict.name }}<br>
+
+                    <button class="j_button j_action_button"
+                            style="margin: 15px 0 0 0;"
+                            onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">
+                        MESSAGE
+                    </button>
+
+                </div>
+
+                <div class="col-xs-9" style="margin-left: -30px; padding: 0;">
+
+                    {% for usr in team_dict.users %}
+
+                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=usr height=64 %}
+
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+
+</div>
+
 
 <script>
 
@@ -251,7 +309,74 @@
         }
     }
 
+    /* Before our JavaScript, the urls need to be set. */
+    var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
+
+    /* Executes a search  */
+    var processSearchPal = function () {
+        //Get and trim the search text.
+        var searchText = $('#member_search_text').val().trim().toLowerCase();
+
+        if (searchText.length < 2) {
+            //Too short. Ignore the submission, and erase any current results.
+            $('#member_search_results').html("<i>Keep typing ...</i>");
+
+        } else {
+            // Execute the search.
+            var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
+            {
+                $('#member_search_results').html(serverResponse_data);
+            };
+
+            var config = {
+                type: "GET",
+                url: SUBMIT_URL_PAL,
+                data: {
+                    'member_search_text': searchText
+                },
+                dataType: 'html',
+                success: processServerResponsePal,
+                fail: function () {
+                    alert("Fail")
+                }
+            };
+            $.ajax(config);
+        }
+    };
+
+    /* The Ajax "main" function. */
+
+    var MILLS_TO_IGNORE_SEARCH = 100;
+    $(document).ready(function () {
+        /* This attaches a listener. Calling this again would attach a *second* */
+        $('#member_search_text').keyup(_.debounce(processSearchPal,
+                MILLS_TO_IGNORE_SEARCH, true));
+    });
+
 </script>
 
 {% endblock %}
 
+
+{# OFF #}{% if sent_list %}
+    {#    <div class="jos_flex_container" style="font-size: 16pt; margin: 50px 0 0 60px;">#}
+    {#        <div style="display: flex; width: 80%; align-items: flex-end;">#}
+    {#            <div style="width: 250px;">Last 4 messages sent:</div>#}
+    {#            <div style="width: 210px;">Date</div>#}
+    {#            <div style="width: 210px;">To</div>#}
+    {#            <div style=" ">Subject</div>#}
+    {#        </div>#}
+    {#        {% for message in sent_list %}#}
+    {#            <div style="display: flex; width: 80%; margin: 5px 0 0 0">#}
+    {#                <div class="josinstructions" style="width: 250px;"></div>#}
+    {#                <div style="width: 210px;">#}
+    {#                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}#}
+    {#                </div>#}
+    {#                <div style="width: 210px;">{{ message.recipient.JOSProfile.friendly_jos_name }}</div>#}
+    {#                <div>{{ message.subject | truncatechars:45 }}</div>#}
+    {#            </div>#}
+    {#        {% endfor %}#}
+    {#    </div>#}
+    {#{% else %}#}
+    {#    <p style="margin: 30px 0 0 30px;">No messages</p>#}
+{% endif %}
