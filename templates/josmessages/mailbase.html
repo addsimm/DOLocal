@@ -130,17 +130,17 @@
 {% endif %}
 
 <!-- Search -->
-<div class="josinstructions" style="margin: 40px 0 0 60px;">
-    To compose to or favor a new friend, begin typing a name (results start after two letters):
+<div class="josinstructions" style="margin: 40px 0 0 60px; padding: 15px; background-color: aliceblue;">
+    To send a new message or favor a member, type their name:
 
-    <div style="display: flex; margin-top: 10px;">
+    <div style="display: flex; margin: 10px 0 0 15px;">
 
         <input id="member_search_text" style="padding: 3px 12px; width: 350px; height: auto;"
                type="text" placeholder="Type here">
 
         <button class="j_button_small j_back_button"
                 style="margin-left: 5px; height: 36px; align-self: center;"
-                onclick="$('#member_search_text').val('');">
+                onclick="$('#member_search_text').val(''); $('#member_search_results').html(' ');">
             <i class="fa fa-eraser fa-fw"></i>
             CLEAR
         </button>
@@ -157,67 +157,78 @@
 
     {% if  following.count > 0 %}
 
-        {% for favorite in following %}
+        <div style="display: flex; width: 100%; margin-top: 10px;">
+            {% for favorite in following %}
 
-            <div class="col-xs-3 text-center"
-                 style="padding: 10px; margin: 0 15px 15px 0; width: 256px; border: 1px solid rgb(65,45,120);">
-                {% include "josmembers/../jos_includes/user_picture_include.html" with user=favorite height=128 %}<br>
+                <div style="display: flex; justify-content: center;
+                     padding: 10px; width: 280px; margin-left: 15px; height: 115px; border: 1px solid rgb(65,45,120);">
 
-                <button class="j_button j_action_button"
-                        style="font-size: 14px; margin: 10px 0 0 0;"
-                        onclick="window.location.href='{% url 'josmessages:messages_compose' favorite.id %}';">
-                    MESSAGE
-                </button>
+                    <div>
+                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=favorite height=60 %}<br>
+                    </div>
 
-                <button class="j_button j_action_button"
-                        style="font-size: 14px; margin: 10px 0 0 10px;"
-                        onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }}';">
-                    UNFAVOR
-                </button>
+                    <div class="jos_flex_container" style="justify-content: space-around;">
+                        <button class="j_button_small j_action_button"
+                            onclick="window.location.href='{% url 'josmessages:messages_compose' favorite.id %}';">
+                            <i class="fa fa-send fa-fw"></i>
+                            MESSAGE
+                        </button>
 
-            </div>
-        {% endfor %}
+                        <button class="j_button_small j_info_button"
+                            onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }}';">
+                            <i class="fa fa-arrow-down fa-fw"></i>
+                            UNFAVOR
+                        </button>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
 
     {% else %}
-        -- Favor your first new friend by typing a name above.
+        -- Favor a friend by typing a name above.
     {% endif %}
 
     <!-- Teams -->
    {% if teams_list %}
-       <div class="josinstructions" style="margin-top: 15px;">My teams:</div>
+       <div class="josinstructions" style="margin-top: 50px;">My circles:</div>
 
-       {% for team_dict in teams_list %}
+       <div class="jos_flex_container" style="width: 100%; margin-bottom: 50px;">
+           {% for team_dict in teams_list %}
 
-            <div class="row" style="margin-top: 20px;
-                    padding: 10px 0;
-                    border: solid 1px rgb(209,209,209);
-                    {% if forloop.counter|divisibleby:2 %}
-                        background-color: rgb(209,209,209);
-                    {% endif %}">
-                <div class="col-xs-3 text-center"
-                     style="font-size: 24pt; font-weight: bold; margin-left: -50px; padding: 0;">
-                    {{ team_dict.name }}<br>
+                <div style="display: flex;
+                     height: 115px; margin: 15px 0 0 15px; padding: 10px; border: solid 1px rgb(65,45,120);
+                        {% if forloop.counter|divisibleby:2 %}
+                            background-color: aliceblue;
+                        {% endif %}">
 
-                    <button class="j_button j_action_button"
-                            style="margin: 15px 0 0 0;"
+                    <div class="jos_flex_container" style="padding: 5px; width: 185px;">
+                        <div>
+                            {{ team_dict.name }}
+                        </div>
+
+                        <button class="j_button_small j_action_button" style="margin-top: 10px;"
                             onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">
-                        MESSAGE
-                    </button>
+                            <i class="fa fa-send fa-fw"></i>
+                            MESSAGE
+                        </button>
 
+                    </div>
+
+                    <div>
+
+                        {% for usr in team_dict.users %}
+
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=usr height=60 %}
+
+                        {% endfor %}
+
+                    </div>
                 </div>
 
-                <div class="col-xs-9" style="margin-left: -30px; padding: 0;">
-
-                    {% for usr in team_dict.users %}
-
-                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=usr height=64 %}
-
-                    {% endfor %}
-
-                </div>
-            </div>
-
-        {% endfor %}
+            {% endfor %}
+       </div>
     {% endif %}
 
 </div>

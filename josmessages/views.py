@@ -1,19 +1,33 @@
-import json
+
 
 from django.conf import settings
 from django.contrib import messages as response_messages
+from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages import info
-from django.core import serializers
+from django.contrib.messages import info, error
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.timezone import activate
-
-from josmessages.models import Message, JOSMessageThread
+from django.utils.timezone import activate
+from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
+from friendship.exceptions import AlreadyExistsError
+from friendship.models import Follow
 from josmessages.forms import JOSComposeForm, JOSReplyForm
+from josmessages.models import Message, JOSMessageThread
+from mezzanine.accounts.forms import PasswordResetForm, LoginForm
+from mezzanine.conf import settings
+from mezzanine.utils.email import send_verification_mail, send_approve_mail
+from mezzanine.utils.urls import next_url
 
 from josmembers.models import JOSTeam
 
@@ -52,124 +66,86 @@ def delete(request, message_thread_id=0):
     response_messages.info(request, "Message successfully deleted.")
     return redirect('http://www.joinourstory.com/messages/inbox/')
 
+
 @login_required
 def message_box(request, template_name="josmessages/mailbase.html"):
-    """
-    Displays a list of received messages for the current user.
-    """
     activate('America/Los_Angeles')
 
-    distinct_inbox_list = list(Message.objects.filter(recipient=request.user, recipient_deleted_at__isnull=True).distinct(
-        'message_thread__subject').order_by('message_thread__subject'))
+    # Messages
+    distinct_inbox_list = list(Message.objects
+                .filter(recipient=request.user, recipient_deleted_at__isnull=True) ######### add sender
+                .distinct('message_thread__subject')
+                .order_by('message_thread__subject'))
 
     inbox_list = sorted(distinct_inbox_list, key=lambda message: -message.id)
 
+    # check request for favoring
+    follow_unfollow(request)
 
-    sent_list = Message.objects.outbox_for(request.user)[0:4]
+    # List of who this user is following
+    following = Follow.objects.following(request.user)
 
-    return render(request, template_name, {
+    # List of user's teams
+    teams = request.user.JOSProfile.teams.all()
+    teams_list = []
+    for team in teams:
+        team_dict = {}
+        team_dict.update({'name': team.name})
+        team_users = []
+        for team_member in team.member_id_list():
+            team_users.append(User.objects.get(pk=team_member))
+
+        team_dict.update({'users': team_users})
+        teams_list.append(team_dict)
+
+    # sent_list = Message.objects.outbox_for(request.user)[0:4]
+
+    context = {
         "inbox_list": inbox_list,
-        "sent_list": sent_list
-    })
+        "teams_list": teams_list,
+        "following":  following
+        # "sent_list":  sent_list
+    }
 
-
-
+    return render(request, template_name, context)
 
 ### Members
 # @login_required
 # def members_list(request, template="josmembers/josmembers_members_list.html", extra_context=None):
-#     # check request for favoring
-#     follow_unfollow(request)
-#
-#     # List of who this user is following
-#     following = Follow.objects.following(request.user)
-#
-#     # List of user's teams
-#     teams = request.user.JOSProfile.teams.all()
-#     teams_list = []
-#     for team in teams:
-#         team_dict = {}
-#         team_dict.update({'name': team.name})
-#         team_users = []
-#         for team_member in team.member_id_list():
-#             team_users.append(User.objects.get(pk=team_member))
-#
-#         team_dict.update({'users': team_users})
-#         teams_list.append(team_dict)
-#
-#     # team_user_list = []
-#     # for team_members_id_list in teams_member_id_lists:
-#
-#     context = {
-#         "teams_list": teams_list,
-#         "following":  following
-#     }
-#     context.update(extra_context or {})
+
 #
 #     return TemplateResponse(request, template, context)
 
 
-# def ajax_submit_member_search(request):
-#     """
-#     Processes a search request
-#     """
-#
-#     member_search_text = ""  # Assume no search
-#
-#     if (request.method == "GET"):
-#         """
-#         The search form has been submitted. Get the search text - must be GET.
-#         """
-#         member_search_text = request.GET.get("member_search_text", "").strip().lower()
-#
-#     member_search_results = []
-#
-#     if (member_search_text != ""):
-#         member_search_results = JOSProfile.objects.filter(user__username__contains=member_search_text).order_by(
-#                 'user__username')
-#
-#     # print('search_text="' + search_text + '", results=' + str(color_results))
-#     # Add items to the context:
-#
-#     # The search text for display and result set
-#     context = {
-#         "member_search_text":    member_search_text,
-#         "member_search_results": member_search_results
-#     }
-#
-#     return render_to_response("josmembers/member_search_results__html_snippet.txt", context)
+def follow_unfollow(request):
+    other_user_id = request.GET.get('add_favorite', " ")
+    other_user = " "
+    remove_user_id = request.GET.get('remove_favorite', " ")
+    remove_user = " "
 
+    if other_user_id != " ":
+        try:
+            other_user = User.objects.get(id=other_user_id)
+            # Create request.user follows other_user relationship
+            Follow.objects.add_follower(request.user, other_user)
+            info(request, other_user.JOSProfile.friendly_jos_name() + " is now a favorite!")
+        except ValidationError:
+            info(request, "You cannot favorite yourself ...")
+        except AlreadyExistsError:
+            info(request, other_user.JOSProfile.friendly_jos_name() + " is already a favorite!")
 
-# def follow_unfollow(request):
-#     other_user_id = request.GET.get('add_favorite', " ")
-#     other_user = " "
-#     remove_user_id = request.GET.get('remove_favorite', " ")
-#     remove_user = " "
-#
-#     if other_user_id != " ":
-#         try:
-#             other_user = User.objects.get(id=other_user_id)
-#             # Create request.user follows other_user relationship
-#             Follow.objects.add_follower(request.user, other_user)
-#             info(request, other_user.JOSProfile.friendly_jos_name() + " is now a favorite!")
-#         except ValidationError:
-#             info(request, "You cannot favorite yourself ...")
-#         except AlreadyExistsError:
-#             info(request, other_user.JOSProfile.friendly_jos_name() + " is already a favorite!")
-#
-#     if remove_user_id != " ":
-#         try:
-#             remove_user = User.objects.get(id=remove_user_id)
-#             return_variable = Follow.objects.remove_follower(request.user, remove_user)
-#             if return_variable:
-#                 info(request, remove_user.JOSProfile.friendly_jos_name() + " is no longer a favorite.")
-#             else:
-#                 info(request, "Sorry, problem removing favorite - please contact us.")
-#         except:
-#             pass
-#
-#         return
+    if remove_user_id != " ":
+        try:
+            remove_user = User.objects.get(id=remove_user_id)
+            return_variable = Follow.objects.remove_follower(request.user, remove_user)
+            if return_variable:
+                info(request, remove_user.JOSProfile.friendly_jos_name() + " is no longer a favorite.")
+            else:
+                info(request, "Sorry, problem removing favorite - please contact us.")
+        except:
+            pass
 
+    return
 
 ### JOS Messaging
 @login_required
@@ -240,24 +216,23 @@ def ajax_message_info(request):
     if not request.is_ajax():
         return HttpResponse('Not ajax')
 
-
     recip_ids = []
     recipients = []
 
     team_name = request.GET.get('team', None)
 
-    if team_name != None:
-        team = get_object_or_404(JOSTeam, name=team_name)
-        team_member_ids = team.member_id_list()
-        recip_ids = team_member_ids
-        if len(team_member_ids) > 0:
-            for member_id in team_member_ids:
-                recipient = User.objects.get(id=member_id)
-                recipients.append(recipient)
-    else:
-        recipient = User.objects.get(id=id)
-        recipients.append(recipient)
-        recip_ids.append(id)
+    # if team_name != None:
+    #     team = get_object_or_404(JOSTeam, name=team_name)
+    #     team_member_ids = team.member_id_list()
+    #     recip_ids = team_member_ids
+    #     if len(team_member_ids) > 0:
+    #         for member_id in team_member_ids:
+    #             recipient = User.objects.get(id=member_id)
+    #             recipients.append(recipient)
+    # else:
+    #     recipient = User.objects.get(id=id)
+    #     recipients.append(recipient)
+    #     recip_ids.append(id)
 
     message_thread_id = ""  # Assume no search
 
