@@ -61,36 +61,65 @@
 
 </style>
 
+<div style="">
+    <a class="phone_and_secret_button" style="z-index: 155;
+       position: fixed; top: 15px; left: 15px; width: 80%;
+       color: #d9534f; font-size: 18pt; font-weight: normal;
+       outline: none; border: none;"
+       href="
+        {% if request.user.id > 0 %}
+            {% url 'personaldesk' request.user.id %}
+        {% else %}
+            {% url 'josmembers:jossignup' %}
+        {% endif %}">
+        <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
+        <b>(213) 465-0885</b>
+    </a>
+</div>
 
+<div id="landing_page text-center" style="margin: 0 15px; width: 1250px; z-index: 5;">
 
-<div id="landing_page text-center" class="josinstructions" style="margin: 0 15px; width: 1250px; z-index: 5;">
+    <!-- VIDEO -->
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <p class="home_text" style="padding-bottom: 10px;">
+                To learn about Join Our Story, click play:<br>
+            </p>
+            <video width="640" height="360" style="outline: 5px solid rgb(65, 45, 120);" controls>
+                <source src="/static/media/PROMO-911-480p.mov" type="video/mp4">
+                Sorry, your device has a video problem. Please call.
+            </video>
+        </div>
+    </div>
 
-    FB AD HEADLINE<br>
-    FB AD COPY<br><br>
-    Enjoy storytelling and interested in improving your writing skills?<br><br>
+    <!-- TELL A TALE -->
+    <div class="row home_text" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
 
-    Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
-    JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
+        Tell a tale to warm up<br>
 
-    ENTER OUR WRITING CONTEST!<br>
-    <ul>
-        <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
-        <li>2ND PLACE: 21-Week Comprehensive Master Class on Better Storytelling</li>
-        <li>First 25 entrants get feedback from award-winning author and educator</li>
-        <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
-    </ul>
-    <br><br>
-    TO ENTER:<br>
-    SPIN, WRITE AND WIN!<br><br>
-    Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a
-    story for our contest! Not crazy about what you spun? Just spin again!<br>
+        <button id=" " class="j_button j_save_button" style="margin: 30px 0 0 15px;;"
+                onclick=" "
+                data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
+            <i class="fa fa-arrow-right fa-fw"></i>TELL A TALE BUTTON
+        </button>
 
+        <div class="text-center" style="background-color: aliceblue; margin: 45px 0 0 0; font-size: 48pt;">OR</div>
+
+    </div>
 
     <!-- SPIN TO WIN -->
     <div class="home_text" style="margin: 15px 0 0 0; width: 100%; ">
 
        <div class="row" style="margin: 15px;">
-            <div class="col-xs-8 col-xs-offset-2" style="padding: 0 0 0 45px;">
+            <div class="col-xs-4" >
+
+                <div class=" " style="padding: 30px 15px;">
+                    Spin to win!<br><br>
+                    Click "spin" to generate a random character, world, and confict. Then use all three to write a story for our contest!
+                </div>
+            </div>
+
+            <div class="col-xs-8" style="padding: 0 0 0 45px;">
                 <div id="random_prompt_slots" style="
                      display: flex; justify-content: flex-start; align-items: center;
                      height: 300px; width: 760px; margin-top: 50px; outline: 2px dashed
@@ -133,13 +162,13 @@
             </div>
         </div>
 
-        <div id='winning_prompt' style="display: none; margin: 15px 0 0 90px; height: 160px;">
+        <div style="margin: 15px 0 0 90px; height: 160px;">
             Your <span id="spin_number" style="color: #d9534f"></span> prompt:
 
-            <div class="jos_flex_container" style="
+            <div id='winning_prompt' class="jos_flex_container" style="display: none;
                  justify-content: space-between; height: 120px; margin: 10px 0 0 0;">
 
-                <div style=" " id='winners'></div>
+                <div style="font-size: 32pt; font-weight: bold;" id='winners'></div>
                 <div>
                     Now, spin again or
                     <button id=" " class="j_button j_save_button" style="margin-left: 10px;"
@@ -149,30 +178,49 @@
                     </button>
                 </div>
             </div>
-        </div><br><br>
-
-        <div class="josinstructions">
-            Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your
-            story.
-
-            Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.
         </div>
     </div>
-</div><br><br><br>
 
-<div style="">
-    <a class="phone_and_secret_button" style="z-index: 155;
-   color: #d9534f; font-size: 18pt; font-weight: normal;
-   outline: none; border: none;"
-       href="
-    {% if request.user.id > 0 %}
-        {% url 'personaldesk' request.user.id %}
-    {% else %}
-        {% url 'josmembers:jossignup' %}
-    {% endif %}">
-        <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
-        <b>(213) 465-0885</b>
-    </a>
+
+    <!-- 3 PICTURES -->
+    <div class="row" style="margin: 50px 0 0 0; padding-top: 30px; width: 100%; border-top: 25px solid aliceblue;">
+
+        <div class="col-xs-4 text-center">
+            <img class="img" style="height: 250px;" src="{% static 'img/3create_4.5.png' %}">
+        </div>
+
+        <div class="col-xs-4 text-center" style="background-color: transparent;">
+            <img class="img" style="height: 250px;" src="{% static 'img/3share-4.5.png' %}">
+        </div>
+
+        <div class="col-xs-4 text-center">
+            <img class="img" style="height: 250px;" src="{% static 'img/3enjoy_4.5.png' %}">
+        </div>
+
+    </div>
+
+    <div class="row" style="width: 100%;">
+
+        <div class="col-xs-4 text-center" style=" ">
+            <span class="homehead">Create</span><br><br>
+            <span class="home_text">express your experiences and individuality.</span>
+        </div>
+
+        <div class="col-xs-4 text-center">
+            <span class="homehead">Share</span><br><br>
+            <span class="home_text">
+                your stories as you make friends &amp lasting memories.
+            </span>
+        </div>
+
+        <div class="col-xs-4 text-center">
+            <span class="homehead">Enjoy</span><br><br>
+            <span class="home_text">
+                a growing collection<br>of original stories.
+            </span>
+        </div>
+
+    </div>
 </div>
 
 <script>
@@ -264,3 +312,30 @@
 
 {% endblock all_content %}
 
+<!-- Forever free --><!-- div id='disclaimer' class="text-center" style="font-size: 24pt; margin-top: 50px;">
+    Forever free for those who join now. Don’t wait!
+</div>
+
+<div id='reserve_button' class="text-center" style="margin-top: 30px;">
+
+    <button class="j_button j_save_button"
+       href="{% url "josmembers:josreservespace" %}"
+       style="font-size: 22pt; font-weight: bold; padding: 13px 25px;">
+        CLICK HERE TO JOIN FOR FREE
+    </button>
+</div -->
+
+<!-- Trailblazers --><!-- TRAILBLAZER VIDEO
+<div class="row" style="margin-top: 30px; padding-top: 30px; width: 100%; border-top: 20px solid rgb(231, 209, 222);">
+    <div class="col-xs-12 text-center">
+
+        <p style="font-size: 22pt;">
+            Trailblazers, please watch this:<br>
+        </p>
+
+        <video width="480" height="270" style="margin-top: 10px; outline: 3px solid rgb(65, 45, 120);" controls>
+            <source src="static/media/trailblazer-orientation.mov" type="video/mp4">
+        </video>
+    </div>
+</div>
+</div> -->
