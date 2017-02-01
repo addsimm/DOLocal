@@ -59,111 +59,119 @@
         width: 60px;
     }
 
+    .wheel {
+        margin-left: 30px;
+    }
+
+    #random_prompt_slots img {
+        margin-left: 40px;
+    }
+
 </style>
 
-
-
-<div id="landing_page text-center" class="josinstructions" style="margin: 0 15px; width: 1250px; z-index: 5;">
-
-    FB AD HEADLINE<br>
-    FB AD COPY<br><br>
-    Enjoy storytelling and interested in improving your writing skills?<br><br>
-
-    Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
-    JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
-
-    ENTER OUR WRITING CONTEST!<br>
-    <ul>
-        <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
-        <li>2ND PLACE: 21-Week Comprehensive Master Class on Better Storytelling</li>
-        <li>First 25 entrants get feedback from award-winning author and educator</li>
-        <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
-    </ul>
-    <br><br>
-    TO ENTER:<br>
-    SPIN, WRITE AND WIN!<br><br>
-    Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a
-    story for our contest! Not crazy about what you spun? Just spin again!<br>
-
-
-    <!-- SPIN TO WIN -->
-    <div class="home_text" style="margin: 15px 0 0 0; width: 100%; ">
-
-       <div class="row" style="margin: 15px;">
-            <div class="col-xs-8 col-xs-offset-2" style="padding: 0 0 0 45px;">
-                <div id="random_prompt_slots" style="
-                     display: flex; justify-content: flex-start; align-items: center;
-                     height: 300px; width: 760px; margin-top: 50px; outline: 2px dashed
-                     rgb(65,45,120);">
-
-                    <div id="prompt_icons" class="jos_flex_container" style="
-                         justify-content: space-around; align-items: flex-start;
-                         margin-left: 25px; height: 300px; width: 13%;">
-                        <img src="/static/img/icon-character.png" style=" ">
-                        <img src="/static/img/icon-world.png" style=" ">
-                        <img src="/static/img/icon-conflict.png" style=" ">
-                    </div>
-
-                    <div id="prompt_wheels" class="jos_flex_container homehead" style="
-                         justify-content: space-around; align-items: flex-start;
-                         font-size: 42pt; height: 300px; width: 64%;">
-
-                        <div id='character' class="wheel" style=" ">
-                            -- Character --
-                        </div>
-
-                        <div id='world' class="wheel" style=" ">
-                            -- World --
-                        </div>
-
-                        <div id='conflict' class="wheel" style=" ">
-                            -- Conflict --
-                        </div>
-
-                    </div>
-
-                    <button class="j_button j_discard_button" style="
-                    font-size: 30pt; font-weight: bold; margin:0 10px 0 auto;
-                    height: 130px; width: 130px; border-radius: 65px;"
-                            onclick="startWheel();">
-                        Spin
-                    </button>
-
-                </div>
-            </div>
-        </div>
-
-        <div id='winning_prompt' style="display: none; margin: 15px 0 0 90px; height: 160px;">
-            Your <span id="spin_number" style="color: #d9534f"></span> prompt:
-
-            <div class="jos_flex_container" style="
-                 justify-content: space-between; height: 120px; margin: 10px 0 0 0;">
-
-                <div style=" " id='winners'></div>
-                <div>
-                    Now, spin again or
-                    <button id=" " class="j_button j_save_button" style="margin-left: 10px;"
-                            onclick=" "
-                            data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-                        <i class="fa fa-arrow-right fa-fw"></i>GO
-                    </button>
-                </div>
-            </div>
-        </div><br><br>
-
-        <div class="josinstructions">
-            Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your
-            story.
-
-            Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.
-        </div>
+<div class="row" style="margin-top: -60px;">
+    <div class="col-xs-4 text-center" >
+        <img class="img" style="height: 200px;" src="{% static 'img/3create_4.5.png' %}">
     </div>
-</div><br><br><br>
+    <div class="col-xs-8"></div>
+</div>
 
-<div style="">
+<div id="landing_page text-center" class="josinstructions" style="margin: 30px; width: 1250px; z-index: 5;">
+   <div>
+
+        FB AD HEADLINE<br>
+        FB AD COPY<br><br>
+        Enjoy storytelling and interested in improving your writing skills?<br><br>
+
+        Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
+        JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
+
+        ENTER OUR WRITING CONTEST!<br>
+        <ul>
+            <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
+            <li>2ND PLACE: 21-Week Comprehensive Master Class on Better Storytelling</li>
+            <li>First 25 entrants get feedback from award-winning author and educator</li>
+            <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
+        </ul>
+        <br><br>
+        TO ENTER:<br>
+        SPIN, WRITE AND WIN!<br><br>
+        Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a
+        story for our contest! Not crazy about what you spun? Just spin again!<br>
+
+    </div>
+
+   <!-- SPIN TO WIN -->
+   <div class="home_text" style="margin: 0 0 0 300px;">
+
+        <div id="random_prompt_slots" class="jos_flex_container homehead" style="
+             position: relative; justify-content: space-around;
+             height: 360px; width: 630px; margin-top: 50px; padding: 15px 0;
+             font-size: 32pt; outline: 2px dashed rgb(65,45,120);">
+
+            <div style=" ">
+                <img src="/static/img/icon-character.png" style=" ">
+                <div id='character' class="wheel" style=" ">
+                    -- Character --
+                </div>
+            </div>
+            <div>
+                <img src="/static/img/icon-world.png" style=" ">
+                <div id='world' class="wheel" style=" ">
+                    -- World --
+                </div>
+
+            </div>
+            <div>
+                <img src="/static/img/icon-conflict.png" style=" ">
+                <div id='conflict' class="wheel" style=" ">
+                    -- Conflict --
+                </div>
+            </div>
+
+            <button id="spin_button" class="j_button j_discard_button" style="
+                        position: absolute; top: 115px; left: 470px;
+                        font-size: 30pt; font-weight: bold; margin:0 10px 0 auto;
+                        height: 130px; width: 130px; border-radius: 65px;"
+                    onclick="startWheel();">
+                Spin
+            </button>
+        </div>
+   </div>
+
+    <div id='winning_prompt' class="jos_flex_container" style="display: none;
+         justify-content: space-between; margin: 60px 0 0 90px; height: 200px;">
+
+        <div>
+            Your <span id="spin_number" style="color: #d9534f"></span> prompt:
+        </div>
+
+        <div id='winners' class="homehead" style="font-size: 32pt; margin-left: 60px;"></div>
+
+        <div style="">
+            Now, spin again or
+            <button class="j_button j_save_button" style="margin-left: 10px;"
+                    onclick=" "
+                    data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
+                <i class="fa fa-arrow-right fa-fw"></i>GO
+            </button>
+        </div>
+
+    </div>
+
+    <div style="margin-top: 60px;">
+        Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your
+        story.
+
+        Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.
+    </div>
+
+</div>
+
+<div>
     <a class="phone_and_secret_button" style="z-index: 155;
-   color: #d9534f; font-size: 18pt; font-weight: normal;
-   outline: none; border: none;"
+       color: #d9534f; font-size: 20pt; font-weight: normal; margin-left: 20px;
+       outline: none; border: none;"
        href="
     {% if request.user.id > 0 %}
         {% url 'personaldesk' request.user.id %}
@@ -212,9 +220,11 @@
 
         function startWheel() {
             spin_number++;
+            $('#spin_button').hide();
             $('#winning_prompt').hide();
             var timer = 1000 + Math.floor(Math.random() * 150);
             $('.wheel').addClass('spin');
+
 
             change_char = setInterval(changeCharacter, 50); // match css animation
             setTimeout(function () {
@@ -239,6 +249,7 @@
                         + $('#world').html() + ' faces '
                         + $('#conflict').html());
                 $('#winning_prompt').show();
+                $('#spin_button').show();
             }, timer + 1500)
         }
 
