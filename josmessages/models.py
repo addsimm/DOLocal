@@ -25,7 +25,8 @@ class JOSMessageThread(TimeStamped, models.Model):
     class Meta:
         verbose_name = "Thread"
 
-    subject = models.CharField(verbose_name="subject", max_length=255, null=True, blank=True)
+    subject = models.CharField(default='missing', max_length=255, null=True, blank=True)
+    first_recipient_id = models.CharField(default='missing', max_length=255, null=True, blank=True)
 
     @property
     def messages(self):
@@ -34,6 +35,7 @@ class JOSMessageThread(TimeStamped, models.Model):
     @property
     def messages_distinct_user_ids(self):
         user_ids = []
+        user_ids.append(int(self.first_recipient_id))
         recipient_id_dicts = Message.objects.filter(message_thread=self).values('recipient')
         sender_id_dicts = Message.objects.filter(message_thread=self).values('sender')
         for dict in recipient_id_dicts:
@@ -57,8 +59,7 @@ class Message(models.Model):
 
     sender = models.ForeignKey(User, related_name='sent_messages', verbose_name="Sender")
 
-    dt = timezone.now()
-    sent_at = models.DateTimeField(verbose_name="sent at", default=dt, null=True, blank=True)
+    sent_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     recipient = models.ForeignKey(User, related_name='received_messages', null=True, blank=True, verbose_name= "Recipient")
 

@@ -173,7 +173,7 @@
 
                     <div class="jos_flex_container" style="justify-content: space-around;">
                         <button class="j_button_small j_action_button"
-                            onclick="window.location.href='{% url 'josmessages:messages_compose' favorite.id %}';">
+                            onclick="composeMessageTo('member', '{{ favorite.id }}');">
                             <i class="fa fa-send fa-fw"></i>
                             MESSAGE
                         </button>
@@ -244,8 +244,27 @@
 
     initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "Enter message here ... ");
 
-    function composeMessageTo() {
+    function composeMessageTo(who, toid) {
         /////////////////////////// NEXT STEP
+        console.log('compose called; who, toid: ' + who + ", " + toid);
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            dataType: 'html',
+            data: {
+                'compose_message_to': who,
+                'message_to_id': toid
+            },
+            success: function (serverResponse_data) {
+                // console.log("serverResponse_data: " + serverResponse_data);
+                $('#ajax_response_messages').html(serverResponse_data);
+                josCKEdit('reply');
+                $('#message_modal_box').show();
+            },
+            fail: function () {
+                console.log("viewMessageThread fail");
+            }
+        });
     }
 
     function enterNewThreadSubject(mtid) {

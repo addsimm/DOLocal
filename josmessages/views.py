@@ -1,34 +1,24 @@
 
 
-from django.conf import settings
 from django.contrib import messages as response_messages
-from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate, get_user_model)
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages import info
-from django.contrib.messages import info, error
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.timezone import activate
-from django.utils.timezone import activate
-from django.utils.translation import ugettext_lazy as _
-from django.views.decorators.csrf import csrf_exempt
+
+from mezzanine.conf import settings
+
 from friendship.exceptions import AlreadyExistsError
 from friendship.models import Follow
-from josmessages.forms import JOSComposeForm, JOSReplyForm
+
+from josmessages.forms import JOSComposeForm
 from josmessages.models import Message, JOSMessageThread
-from mezzanine.accounts.forms import PasswordResetForm, LoginForm
-from mezzanine.conf import settings
-from mezzanine.utils.email import send_verification_mail, send_approve_mail
-from mezzanine.utils.urls import next_url
 
 from josmembers.models import JOSTeam
 
@@ -177,40 +167,60 @@ def ajax_message_info(request):
     if not request.is_ajax():
         return HttpResponse('Not ajax')
 
+    # favorites
     if request.method == "GET":
-        favorite_user_id = int(request.GET.get('favorite_user_id', '0'))
-        if favorite_user_id > 0:
-            try:
-                other_user = get_object_or_404(User, pk=favorite_user_id)
-                # Create request.user follows other_user relationship
-                Follow.objects.add_follower(request.user, other_user)
-                info(request, other_user.JOSProfile.friendly_jos_name() + " is now a favorite!")
-            except ValidationError:
-                info(request, "You cannot favorite yourself ...")
-            except AlreadyExistsError:
-                info(request, other_user.JOSProfile.friendly_jos_name() + " is already a favorite!")
 
-            return HttpResponse('ok')
+        ### favorite_user
+        # favorite_user_id = int(request.GET.get('favorite_user_id', '0'))
+        # if favorite_user_id > 0:
+        #     try:
+        #         other_user = get_object_or_404(User, pk=favorite_user_id)
+        #         Follow.objects.add_follower(request.user, other_user)
+        #         info(request, other_user.JOSProfile.friendly_jos_name() + " is now a favorite!")
+        #     except ValidationError:
+        #         info(request, "You cannot favorite yourself ...")
+        #     except AlreadyExistsError:
+        #         info(request, other_user.JOSProfile.friendly_jos_name() + " is already a favorite!")
+        #
+        #     return HttpResponse('ok')
 
-        remove_user_id = int(request.GET.get('remove_user_id', '0'))
-        if remove_user_id > 0:
-            try:
-                remove_user = User.objects.get(id=remove_user_id)
-                return_variable = Follow.objects.remove_follower(request.user, remove_user)
-                if return_variable:
-                    info(request, remove_user.JOSProfile.friendly_jos_name() + " is no longer a favorite.")
-                else:
-                    info(request, "Sorry, can't remove favorite - please contact us.")
-            except:
-                return HttpResponse('remove favorite fail: ' + str(remove_user_id))
-
-            return HttpResponse('ok')
+        ### un favor_user
+        # remove_user_id = int(request.GET.get('remove_user_id', '0'))
+        # if remove_user_id > 0:
+        #     try:
+        #         remove_user = User.objects.get(id=remove_user_id)
+        #         return_variable = Follow.objects.remove_follower(request.user, remove_user)
+        #         if return_variable:
+        #             info(request, remove_user.JOSProfile.friendly_jos_name() + " is no longer a favorite.")
+        #         else:
+        #             info(request, "Sorry, can't remove favorite - please contact us.")
+        #     except:
+        #         return HttpResponse('remove favorite fail: ' + str(remove_user_id))
+        #
+        #     return HttpResponse('ok')
 
         recip_ids = []
         recipients = []
 
-        # team_name = request.GET.get('team', None)
+        # compose_message_to = request.GET.get('compose_message_to', '0')
+        # message_to_id = request.GET.get('message_to_id', '0')
+        # if compose_message_to != '0':
+        #     new_message_thread = JOSMessageThread.objects.create(
+        #             subject = 'missing',
+        #             first_recipient_id = message_to_id)
+        #
+        #     if compose_message_to == 'member':
+        #         recip = get_object_or_404(User, pk=int(message_to_id))
+        #         recipients.append(recip)
+        #
+        #     context = {
+        #         "message_thread": new_message_thread,
+        #         "recipients":     recipients,
+        #     }
+        #
+        #     return render(request, "josmessages/view.html", context)
 
+        # team_name = request.GET.get('team', None)
         # if team_name != None:
         #     team = get_object_or_404(JOSTeam, name=team_name)
         #     team_member_ids = team.member_id_list()
@@ -224,12 +234,12 @@ def ajax_message_info(request):
         #     recipients.append(recipient)
         #     recip_ids.append(id)
 
-    message_thread_id = ""  # Assume no search
+    message_thread_id = "0"
 
     if request.method == "GET":
-        message_thread_id = int(request.GET.get("message_thread_id", ""))
+        message_thread_id = int(request.GET.get("message_thread_id", "0"))
     elif request.method == "POST":
-        message_thread_id = int(request.POST.get("message_thread_id", ""))
+        message_thread_id = int(request.POST.get("message_thread_id", "0"))
 
     if message_thread_id > 0:
         msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
@@ -262,34 +272,66 @@ def ajax_message_info(request):
 
         return render(request, "josmessages/view.html", context)
 
-    if request.method == 'POST':
-
-        reply_content = request.POST.get('reply_content', 'missing')
-
-        msgs_user_ids = msg_thread.messages_distinct_user_ids
-
-        for msg in msgs:
-            if not msg.replied_at:
-                msg.replied_at = timezone.now()
-                msg.save()
-
-        for xid in msgs_user_ids:
-
-            if xid != request.user.id:
-                recip = get_object_or_404(User, pk=xid)
-
-                send_message = Message.objects.create(
-                        body=reply_content,
-                        message_thread=msg_thread,
-                        recipient=recip,
-                        sender=request.user
-                )
-                send_message.save()
-                info(request, "Message successfully sent!")
-
-        return HttpResponse("Reply sent; message_thread_id: " + str(message_thread_id))
+    # if request.method == 'POST':
+    #     reply_content = request.POST.get('reply_content', 'missing')
+    #     msgs_user_ids = msg_thread.messages_distinct_user_ids
+    #
+    #     if len(msgs) > 0:
+    #         for msg in msgs:
+    #             if not msg.replied_at:
+    #                 msg.replied_at = timezone.now()
+    #                 msg.save()
+    #
+    #     for xid in msgs_user_ids:
+    #         if xid != request.user.id:
+    #             recip = get_object_or_404(User, pk=xid)
+    #
+    #             send_message = Message.objects.create(
+    #                     body=reply_content,
+    #                     message_thread=msg_thread,
+    #                     recipient=recip,
+    #                     sender=request.user
+    #             )
+    #             send_message.save()
+    #             info(request, "Message successfully sent!")
+    #
+    #     return HttpResponse("Reply sent; message_thread_id: " + str(message_thread_id))
 
     return HttpResponse('ajax_message_info fell through')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     # @login_required
