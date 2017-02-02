@@ -192,6 +192,7 @@ a:hover {
 table {
     font-family: "Open Sans", sans-serif;
     font-size: 16pt;
+    outline: 1px solid rgb(65, 45, 120);
     border-collapse: collapse;
     width: 100%;
 }

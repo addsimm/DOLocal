@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n mezzanine_tags %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.friendly_jos_name }} Friends
+    {{ user.JOSProfile.friendly_jos_name }} Community
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.friendly_jos_name }} Friends
+    {{ user.JOSProfile.friendly_jos_name }} Community
 {% endblock %}
 {% block breadcrumb_menu %}
 
     {{ block.super }}
     {% block inner_breadcrumb_menu %}
-        {{ user.get_short_name }}'s Friends
+        {{ user.get_short_name }}'s Community
     {% endblock inner_breadcrumb_menu %}
 
 {% endblock %}
@@ -24,18 +24,18 @@
 </style>
 
 <div id="message_modal_box" style="display: none;
-     position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
-     background-color: #C0C0C0; opacity: .97; z-index: 500;">
+     position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
+     background-color: #C0C0C0; opacity: .98; z-index: 500;">
 
     <div id="ajax_response_messages"></div>
 
-{# FIXXXXXX #}
-
 </div>
 
+
+    {# FIXXXXXX #}
 <div id="compose_subject_modal_box" style="display: none;
-     position: absolute; top: 0; left: 0; height: 1000px; width: 1280px;
-     background-color: #C0C0C0; opacity: .97; z-index: 500;">
+     position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
+     background-color: #C0C0C0; opacity: .98; z-index: 500;">
 
     <div id="change_title" style="
     position: absolute; top: 50px; left: 100px; height: 415px; width: 720px;
@@ -79,7 +79,7 @@
 <!-- Inbox -->
 <div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
 {% if inbox_list %}
-    <table data-toggle="table" style="margin-left: 60px; width: 95%;">
+    <table data-toggle="table" style="margin-left: 60px; width: 95%; outline: 1px solid rgb(65, 45, 120);">
         <thead>
         <tr>
             <th style="width: 120px;">Status:</th>
@@ -130,7 +130,9 @@
 {% endif %}
 
 <!-- Search -->
-<div class="josinstructions" style="margin: 40px 0 0 60px; padding: 15px; background-color: aliceblue;">
+<div class="josinstructions" style="
+     margin: 50px 0 0 60px; padding: 15px; width: 795px;
+     outline: 1px solid rgb(65,45,120); background-color: aliceblue;">
     To send a new message or favor a member, type their name:
 
     <div style="display: flex; margin: 10px 0 0 15px;">
@@ -146,7 +148,8 @@
         </button>
 
     </div>
-    <div id="member_search_results"></div>
+    <div id="member_search_results" class="josinstructions" style="color: #d9534f;
+         margin: 10px 0 0 5px; width: 745px; padding: 10px; background-color: aliceblue;"></div>
 
 </div>
 
@@ -155,16 +158,17 @@
     <!-- Favorites -->
     <div class="josinstructions" style="margin-top: 20px;">My favorites:</div>
 
-    {% if  following.count > 0 %}
+    {% nevercache %}{% if following.count > 0 %}
 
-        <div style="display: flex; width: 100%; margin-top: 10px;">
+        <div style="display: flex; flex-wrap: wrap; width: 100%; margin-top: 10px;">
             {% for favorite in following %}
 
                 <div style="display: flex; justify-content: center;
-                     padding: 10px; width: 280px; margin-left: 15px; height: 115px; border: 1px solid rgb(65,45,120);">
+                     padding: 10px; width: 280px; margin-left: 15px; height: 115px;
+                     border: 1px solid rgb(65,45,120);">
 
                     <div>
-                        {% include "josmembers/../jos_includes/user_picture_include.html" with user=favorite height=60 %}<br>
+                        {% include "jos_includes/user_picture_include.html" with user=favorite height=60 %}
                     </div>
 
                     <div class="jos_flex_container" style="justify-content: space-around;">
@@ -175,7 +179,7 @@
                         </button>
 
                         <button class="j_button_small j_info_button"
-                            onclick="window.location.href='{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }}';">
+                            onclick="unfavor('{{ favorite.id }}');">
                             <i class="fa fa-arrow-down fa-fw"></i>
                             UNFAVOR
                         </button>
@@ -188,11 +192,11 @@
 
     {% else %}
         -- Favor a friend by typing a name above.
-    {% endif %}
+    {% endif %}{% endnevercache %}
 
     <!-- Teams -->
    {% if teams_list %}
-       <div class="josinstructions" style="margin-top: 50px;">My circles:</div>
+       <div class="josinstructions" style="margin-top: 40px;">My circles:</div>
 
        <div class="jos_flex_container" style="width: 100%; margin-bottom: 50px;">
            {% for team_dict in teams_list %}
@@ -363,6 +367,42 @@
         $('#member_search_text').keyup(_.debounce(processSearchPal,
                 MILLS_TO_IGNORE_SEARCH, true));
     });
+
+    function unfavor(otherid) {
+        // console.log("called unfavor; unfavor: " + otherid);
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            data: {
+                'remove_user_id': otherid
+            },
+            success: function (serverResponse_data) {
+                console.log("unfavor serverResponse_data: " + serverResponse_data);
+                location.reload(true);
+            },
+            fail: function () {
+                console.log("viewMessageThread fail");
+            }
+        });
+    }
+
+    function favor(favorid) {
+        // console.log("called favor: " + favorid);
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            data: {
+                'favorite_user_id': favorid
+            },
+            success: function (serverResponse_data) {
+                console.log("favorite serverResponse_data: " + serverResponse_data);
+                location.reload(true);
+            },
+            fail: function () {
+                console.log("viewMessageThread fail");
+            }
+        });
+    }
 
 </script>
 
