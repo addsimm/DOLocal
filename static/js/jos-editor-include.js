@@ -33,11 +33,14 @@ window.onbeforeunload = function () {
 function josCKEdit(sect2edit) {
     console.log('editor called; section: ' + sect2edit);
 
+
     var ck_config = '/static/ckeditor/config.js';
     if (editors[sect2edit].toolbar === 'small') {
         ck_config = '/static/ckeditor/configsmall.js';
     }
 
+
+    // console.log('sect2edit: ' + sect2edit);
     var ck_editor_container = document.getElementById(sect2edit + '_editor_container'),
         edit_btn = document.getElementById(sect2edit + '_edit_btn'),
         segment_element = document.getElementById(sect2edit + '_original_content');

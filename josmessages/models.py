@@ -35,7 +35,7 @@ class JOSMessageThread(TimeStamped, models.Model):
     @property
     def messages_distinct_user_ids(self):
         user_ids = []
-        user_ids.append(int(self.first_recipient_id))
+        # user_ids.append(int(self.first_recipient_id))
         recipient_id_dicts = Message.objects.filter(message_thread=self).values('recipient')
         sender_id_dicts = Message.objects.filter(message_thread=self).values('sender')
         for dict in recipient_id_dicts:

@@ -93,7 +93,7 @@
         {% for message in inbox_list %}
             <tr>
                 <td style="padding-left: 10px; width: 120px;">
-                    {% if message.new %}
+                    {% if not message.read_at %}
                         <span class=" " style="color: rgb(112, 154, 109) ;">New</span>
                     {% elif message.replied %}
                         <span class=" " style="color: black;">Replied</span>
@@ -212,8 +212,8 @@
                             {{ team_dict.name }}
                         </div>
 
-                        <button class="j_button_small j_action_button" style="margin-top: 10px;"
-                            onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">
+                        <button class="j_button_small j_action_button" style="margin-top: 10px;">
+{# onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">#}
                             <i class="fa fa-send fa-fw"></i>
                             MESSAGE
                         </button>
@@ -241,61 +241,9 @@
 <script>
 
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
+    var AJAX_FOLLOW_URL = "{% url 'josmembers:ajax_follow_unfollow' %}";
 
-    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "Enter message here ... ");
-
-    function composeMessageTo(who, toid) {
-        /////////////////////////// NEXT STEP
-        console.log('compose called; who, toid: ' + who + ", " + toid);
-        $.ajax({
-            type: "GET",
-            url: AJAX_MESSAGE_URL,
-            dataType: 'html',
-            data: {
-                'compose_message_to': who,
-                'message_to_id': toid
-            },
-            success: function (serverResponse_data) {
-                // console.log("serverResponse_data: " + serverResponse_data);
-                $('#ajax_response_messages').html(serverResponse_data);
-                josCKEdit('reply');
-                $('#message_modal_box').show();
-            },
-            fail: function () {
-                console.log("viewMessageThread fail");
-            }
-        });
-    }
-
-    function enterNewThreadSubject(mtid) {
-        // console.log("called viewMessageThread; mtid: " + mtid);
-
-        var subject_input = document.getElementById('subject_input');
-        var new_subject = subject_input.value;
-
-        if (new_subject === 'Re:') {
-            alert('Please enter a subject or cancel');
-        } else {
-
-            $.ajax({
-                type: "GET",
-                url: AJAX_MESSAGE_URL,
-                dataType: 'html',
-                data: {
-                    'subject': new_subject
-                },
-                success: function (serverResponse_data) {
-                    // console.log("serverResponse_data: " + serverResponse_data);
-                    $('#ajax_response_messages').html(serverResponse_data);
-                    josCKEdit('reply');
-                    $('#message_modal_box').show();
-                },
-                fail: function () {
-                    console.log("viewMessageThread fail");
-                }
-            });
-        }    
-    }
+    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "<i>Enter message here</i>");
 
     function viewMessageThread(mtid) {
         // console.log("called viewMessageThread; mtid: " + mtid);
@@ -343,73 +291,71 @@
         }
     }
 
-    /* Before our JavaScript, the urls need to be set. */
-    var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
+    /* Member search */ {
+        var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
 
-    /* Executes a search  */
-    var processSearchPal = function () {
-        //Get and trim the search text.
-        var searchText = $('#member_search_text').val().trim().toLowerCase();
+        var processSearchPal = function () {
+            //Get and trim the search text.
+            var searchText = $('#member_search_text').val().trim().toLowerCase();
 
-        if (searchText.length < 2) {
-            //Too short. Ignore the submission, and erase any current results.
-            $('#member_search_results').html("<i>Keep typing ...</i>");
+            if (searchText.length < 2) {
+                //Too short. Ignore the submission, and erase any current results.
+                $('#member_search_results').html("<i>Keep typing ...</i>");
 
-        } else {
-            // Execute the search.
-            var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
-            {
-                $('#member_search_results').html(serverResponse_data);
-            };
+            } else {
+                // Execute the search.
+                var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
+                {
+                    $('#member_search_results').html(serverResponse_data);
+                };
 
-            var config = {
-                type: "GET",
-                url: SUBMIT_URL_PAL,
-                data: {
-                    'member_search_text': searchText
-                },
-                dataType: 'html',
-                success: processServerResponsePal,
-                fail: function () {
-                    alert("Fail")
-                }
-            };
-            $.ajax(config);
-        }
-    };
-
-    /* The Ajax "main" function. */
-
-    var MILLS_TO_IGNORE_SEARCH = 100;
-    $(document).ready(function () {
-        /* This attaches a listener. Calling this again would attach a *second* */
-        $('#member_search_text').keyup(_.debounce(processSearchPal,
-                MILLS_TO_IGNORE_SEARCH, true));
-    });
-
-    function unfavor(otherid) {
-        // console.log("called unfavor; unfavor: " + otherid);
-        $.ajax({
-            type: "GET",
-            url: AJAX_MESSAGE_URL,
-            data: {
-                'remove_user_id': otherid
-            },
-            success: function (serverResponse_data) {
-                console.log("unfavor serverResponse_data: " + serverResponse_data);
-                location.reload(true);
-            },
-            fail: function () {
-                console.log("viewMessageThread fail");
+                var config = {
+                    type: "GET",
+                    url: SUBMIT_URL_PAL,
+                    data: {
+                        'member_search_text': searchText
+                    },
+                    dataType: 'html',
+                    success: processServerResponsePal,
+                    fail: function () {
+                        alert("Fail")
+                    }
+                };
+                $.ajax(config);
             }
+        };
+
+        var MILLS_TO_IGNORE_SEARCH = 100;
+        $(document).ready(function () {
+            /* This attaches a listener. Calling this again would attach a *second* */
+            $('#member_search_text').keyup(_.debounce(processSearchPal,
+                    MILLS_TO_IGNORE_SEARCH, true));
         });
     }
+
+    function unfavor(otherid) {
+            // console.log("called unfavor; unfavor: " + otherid);
+            $.ajax({
+                type: "GET",
+                url: AJAX_FOLLOW_URL,
+                data: {
+                    'remove_user_id': otherid
+                },
+                success: function (serverResponse_data) {
+                    console.log("unfavor serverResponse_data: " + serverResponse_data);
+                    location.reload(true);
+                },
+                fail: function () {
+                    console.log("viewMessageThread fail");
+                }
+            });
+        }
 
     function favor(favorid) {
         // console.log("called favor: " + favorid);
         $.ajax({
             type: "GET",
-            url: AJAX_MESSAGE_URL,
+            url: AJAX_FOLLOW_URL,
             data: {
                 'favorite_user_id': favorid
             },

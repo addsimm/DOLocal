@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from views import *
+from josmessages.views import ajax_follow_unfollow
 
 from mezzanine.conf import settings
 
@@ -42,6 +43,7 @@ urlpatterns = [
 
     url("josmembers_list", members_list, name="josmembers_list"),
     url(r"^search_friends/$", ajax_submit_member_search, name="search_member_list"),
+    url("follow_unfollow", ajax_follow_unfollow, name="ajax_follow_unfollow"),
 
     url("member_profile_update", ajax_member_profile_update, name="member_profile_update")
 
