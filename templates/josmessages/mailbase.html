@@ -32,7 +32,7 @@
 </div>
 
 
-    {# FIXXXXXX #}
+{# FIXXXXXX #}
 <div id="compose_subject_modal_box" style="display: none;
      position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
      background-color: #C0C0C0; opacity: .98; z-index: 500;">
@@ -48,7 +48,7 @@
         <div id="messageSpace" style="
          display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
          position: absolute; top: 20px; left: 90px; height: 385px; width: 610px">
-            Composing message to:<br><br>
+            Composing message to:<div id="temp">xxx</div><br><br>
 
             What is the subject?
 
@@ -265,6 +265,37 @@
             }
         });
     }
+
+    function composeMessageTo(cmpstyp, rcvr) {
+        // console.log("called composeMessageTo; cmpstyp, rcvr: " + cmpstyp + ", " + rcvr);
+
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            dataType: 'html',
+            data: {
+                'compose_type': cmpstyp,
+                'receivers': rcvr
+            },
+            success: function (serverResponse_data) {
+                console.log("serverResponse_data: " + serverResponse_data);
+                $('#temp').html(serverResponse_data);
+                $('#compose_subject_modal_box').show();
+
+
+
+                //$('#ajax_response_messages').html(serverResponse_data);
+                //josCKEdit('reply');
+                //$('#message_modal_box').show();
+            },
+            fail: function () {
+                console.log("viewMessageThread fail");
+            }
+        });
+    }
+
+
+
 
     function  replyMessage(sect2save, mtid) {
         var reply_content = editors[sect2save].section_editor.getData();
