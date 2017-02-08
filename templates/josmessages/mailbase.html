@@ -31,36 +31,35 @@
 
 </div>
 
-
-{# FIXXXXXX #}
 <div id="compose_subject_modal_box" style="display: none;
      position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
      background-color: #C0C0C0; opacity: .98; z-index: 500;">
 
-    <div id="change_title" style="
-    position: absolute; top: 50px; left: 100px; height: 415px; width: 720px;
-    background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
-    font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+    <div id=" " style="
+         position: absolute; top: 50px; left: 195px; height: 330px; width: 880px;
+         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
         <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
              style="position: absolute; top: 10px; left: 10px; height: 65px;">
 
-        <div id="messageSpace" style="
-         display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
-         position: absolute; top: 20px; left: 90px; height: 385px; width: 610px">
-            Composing message to:<div id="temp">xxx</div><br><br>
+        <div id=" " style="margin: 20px 0 0 90px;">
+            
+            <span id="recip_ids" style="display: none"></span>
+                
+            Composing message to: <span id="recip_names" style="color: rgb(112, 154, 109); margin-left: 5px;"></span>
 
-            What is the subject?
+            <div style="margin-top: 30px;">What is the subject?</div>
 
             <input id="subject_input" type="text" style="
-               margin-top: 15px; padding: 8px 12px; width: 545px;
+               margin-top: 15px; padding: 8px 12px; width: 700px;
                color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
                    value="Re:">
 
             <div style="display: flex; align-self: flex-end; justify-content: flex-end;
-             align-items: flex-end; margin-top: 30px;">
+             align-items: flex-end; margin-top: 30px; width: 700px;">
                 <button id="title_save_btn" class="j_button_small j_save_button"
-                        style=" " onclick="event.stopPropagation(); enterNewThreadSubject();">
+                        style=" " onclick="event.stopPropagation(); composeWithSubject();">
                     <i class="fa fa-arrow-circle-right fa-fw"></i>
                     COMPOSE
                 </button>
@@ -173,7 +172,9 @@
 
                     <div class="jos_flex_container" style="justify-content: space-around;">
                         <button class="j_button_small j_action_button"
-                            onclick="composeMessageTo('member', '{{ favorite.id }}');">
+                            onclick="getThreadSubject('member',
+                                                      '{{ favorite.id }}',
+                                                      '{{ favorite.JOSProfile.friendly_jos_name }}');">
                             <i class="fa fa-send fa-fw"></i>
                             MESSAGE
                         </button>
@@ -266,36 +267,30 @@
         });
     }
 
-    function composeMessageTo(cmpstyp, rcvr) {
-        // console.log("called composeMessageTo; cmpstyp, rcvr: " + cmpstyp + ", " + rcvr);
-
-        $.ajax({
-            type: "GET",
-            url: AJAX_MESSAGE_URL,
-            dataType: 'html',
-            data: {
-                'compose_type': cmpstyp,
-                'receivers': rcvr
-            },
-            success: function (serverResponse_data) {
-                console.log("serverResponse_data: " + serverResponse_data);
-                $('#temp').html(serverResponse_data);
-                $('#compose_subject_modal_box').show();
-
-
-
-                //$('#ajax_response_messages').html(serverResponse_data);
-                //josCKEdit('reply');
-                //$('#message_modal_box').show();
-            },
-            fail: function () {
-                console.log("viewMessageThread fail");
-            }
-        });
+    function getThreadSubject(cmpstyp, rcvrids, rcvrname) {
+        // console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: "
+        //              + cmpstyp + ", " + rcvrids + ", " + rcvrname);
+        $('#recip_ids').text(rcvrids);
+        $('#recip_names').html(rcvrname);
+        $('#compose_subject_modal_box').show();
     }
 
+    function composeWithSubject() {
+        var subject = $('#subject_input').val();
+        var recip_ids = $('#recip_names').text();
 
+        if (subject === 'Re:') {
+            alert('Please enter a subject');
+        }
 
+        // Ajax call for compose, create thread with first receiver
+
+        //$('#ajax_response_messages').html(serverResponse_data);
+        //josCKEdit('reply');
+        //$('#message_modal_box').show();
+
+        console.log("called getThreadSubject; subject, recip_ids: " + subject + ", " + recip_ids);
+    }
 
     function  replyMessage(sect2save, mtid) {
         var reply_content = editors[sect2save].section_editor.getData();

@@ -7,14 +7,14 @@
 
     <div style="display: flex; align-self: center; position: absolute; top: 20px; left: 25px; font-size: 18pt; ">
         <div>Subject:
-            <span class="homehead" style="margin: 0 6px;">
-                {{ message_thread.subject | striptags }}, {{ message_thread.id }}
+            <span class="homehead" style="margin: 0 16px 0 6px;">
+                {{ message_thread.subject | striptags }}
             </span>
             to:
         </div>
 
         {% for recip in recipients %}
-            <div style="margin-left: 6px; padding-top: 25px;">
+            <div style="color: rgb(112, 154, 109); margin-left: 6px; padding-top: 25px;">
                 {% if recip != request.user %}
                     {% if forloop.last %}{{ recip.JOSProfile.friendly_jos_name }}{% else %}
                         {{ recip.JOSProfile.friendly_jos_name }},

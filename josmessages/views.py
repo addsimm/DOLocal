@@ -107,17 +107,21 @@ def ajax_message_info(request):
 
     if request.method == "GET":
         message_thread_id = int(request.GET.get("message_thread_id", "0"))
-        compose_type = request.GET.get("compose_type", "missing")
-        receivers = request.GET.get("receivers", "missing")
+
     elif request.method == "POST":
         message_thread_id = int(request.POST.get("message_thread_id", "0"))
 
-    if compose_type != 'missing':
-        new_message_thread = JOSMessageThread.objects.create(
-                first_recipient_id =receivers
-        )
 
-        return HttpResponse('RESPONSE new_message_thread.id: ' + str(new_message_thread.id))
+    ### Need logic to create thread with first receiver <<<<<<<< THEN TEAMS
+    # compose_type = request.GET.get("compose_type", "missing")
+    # receivers = request.GET.get("receivers", "missing")
+    #
+    # if compose_type != 'missing':
+    #     new_message_thread = JOSMessageThread.objects.create(
+    #             first_recipient_id =receivers
+    #     )
+    #
+    # return HttpResponse('RESPONSE new_message_thread.id: ' + str(new_message_thread.id))
 
 
     if message_thread_id > 0:
