@@ -96,7 +96,6 @@ def message_box(request, template_name="josmessages/mailbase.html"):
     return render(request, template_name, context)
 
 
-
 # composeMessageTo('member', '{{ favorite.id }}');
 
 def ajax_message_info(request):
@@ -107,10 +106,13 @@ def ajax_message_info(request):
 
     if request.method == "GET":
         message_thread_id = int(request.GET.get("message_thread_id", "0"))
+        subject = request.GET.get("subject", "0")
+        recip_ids = request.GET.get("recip_ids", "0")
+
+        return HttpResponse('RESPONSE subject, recip_ids: ' + subject + ', ' + recip_ids)
 
     elif request.method == "POST":
         message_thread_id = int(request.POST.get("message_thread_id", "0"))
-
 
     ### Need logic to create thread with first receiver <<<<<<<< THEN TEAMS
     # compose_type = request.GET.get("compose_type", "missing")
@@ -121,8 +123,7 @@ def ajax_message_info(request):
     #             first_recipient_id =receivers
     #     )
     #
-    # return HttpResponse('RESPONSE new_message_thread.id: ' + str(new_message_thread.id))
-
+    #
 
     if message_thread_id > 0:
         msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)

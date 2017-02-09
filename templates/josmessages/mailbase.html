@@ -18,11 +18,6 @@
 
 {% block all_content %}
 
-<style>
-
-
-</style>
-
 <div id="message_modal_box" style="display: none;
      position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
      background-color: #C0C0C0; opacity: .98; z-index: 500;">
@@ -141,7 +136,7 @@
 
         <button class="j_button_small j_back_button"
                 style="margin-left: 5px; height: 36px; align-self: center;"
-                onclick="$('#member_search_text').val(''); $('#member_search_results').html(' ');">
+                onclick="$('#member_search_text').val(' '); $('#member_search_results').html(' ');">
             <i class="fa fa-eraser fa-fw"></i>
             CLEAR
         </button>
@@ -204,7 +199,7 @@
 
                 <div style="display: flex;
                      height: 115px; margin: 15px 0 0 15px; padding: 10px; border: solid 1px rgb(65,45,120);
-                        {% if forloop.counter|divisibleby:2 %}
+                        {% if forloop.counter | divisibleby: 2 %}
                             background-color: aliceblue;
                         {% endif %}">
 
@@ -238,7 +233,6 @@
 
 </div>
 
-
 <script>
 
     var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
@@ -268,8 +262,7 @@
     }
 
     function getThreadSubject(cmpstyp, rcvrids, rcvrname) {
-        // console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: "
-        //              + cmpstyp + ", " + rcvrids + ", " + rcvrname);
+        console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: " + cmpstyp + ", " + rcvrids + ", " + rcvrname);
         $('#recip_ids').text(rcvrids);
         $('#recip_names').html(rcvrname);
         $('#compose_subject_modal_box').show();
@@ -279,17 +272,25 @@
         var subject = $('#subject_input').val();
         var recip_ids = $('#recip_names').text();
 
-        if (subject === 'Re:') {
-            alert('Please enter a subject');
-        }
-
-        // Ajax call for compose, create thread with first receiver
-
-        //$('#ajax_response_messages').html(serverResponse_data);
-        //josCKEdit('reply');
-        //$('#message_modal_box').show();
-
-        console.log("called getThreadSubject; subject, recip_ids: " + subject + ", " + recip_ids);
+        $.ajax({
+            type: "GET",
+            url: AJAX_MESSAGE_URL,
+            dataType: 'html',
+            data: {
+                'subject': subject,
+                'recip_ids': recip_ids
+            },
+            success: function (serverResponse_data) {
+                console.log(serverResponse_data);
+{#                console.log("serverResponse_data: " + serverResponse_data);#}
+{#                $('#ajax_response_messages').html(serverResponse_data);#}
+{#                josCKEdit('reply');#}
+{#                $('#message_modal_box').show();#}
+            },
+            fail: function () {
+                console.log("composeWithSubject fail");
+            }
+        });
     }
 
     function  replyMessage(sect2save, mtid) {
