@@ -44,7 +44,7 @@
                 
             Composing message to: <span id="recip_names" style="color: rgb(112, 154, 109); margin-left: 5px;"></span>
 
-            <div style="margin-top: 30px;">What is the subject?</div>
+            <div style="margin-top: 30px;">Please enter your subject:</div>
 
             <input id="subject_input" type="text" style="
                margin-top: 15px; padding: 8px 12px; width: 700px;
@@ -191,7 +191,7 @@
     {% endif %}{% endnevercache %}
 
     <!-- Teams -->
-   {% if teams_list %}
+   {% if teams_list.count > 0 %}
        <div class="josinstructions" style="margin-top: 40px;">My circles:</div>
 
        <div class="jos_flex_container" style="width: 100%; margin-bottom: 50px;">
@@ -250,7 +250,7 @@
                 'message_thread_id': mtid
             },
             success: function(serverResponse_data) {
-                // console.log("serverResponse_data: " + serverResponse_data);
+                // console.log("viewMessageThread: serverResponse_data: " + serverResponse_data);
                 $('#ajax_response_messages').html(serverResponse_data);
                 josCKEdit('reply');
                 $('#message_modal_box').show();
@@ -262,7 +262,7 @@
     }
 
     function getThreadSubject(cmpstyp, rcvrids, rcvrname) {
-        console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: " + cmpstyp + ", " + rcvrids + ", " + rcvrname);
+        // console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: " + cmpstyp + ", " + rcvrids + ", " + rcvrname);
         $('#recip_ids').text(rcvrids);
         $('#recip_names').html(rcvrname);
         $('#compose_subject_modal_box').show();
@@ -270,7 +270,7 @@
 
     function composeWithSubject() {
         var subject = $('#subject_input').val();
-        var recip_ids = $('#recip_names').text();
+        var recip_ids = $('#recip_ids').text();
 
         $.ajax({
             type: "GET",
@@ -281,11 +281,11 @@
                 'recip_ids': recip_ids
             },
             success: function (serverResponse_data) {
-                console.log(serverResponse_data);
-{#                console.log("serverResponse_data: " + serverResponse_data);#}
-{#                $('#ajax_response_messages').html(serverResponse_data);#}
-{#                josCKEdit('reply');#}
-{#                $('#message_modal_box').show();#}
+                // console.log("serverResponse_data: " + serverResponse_data);
+                $('#ajax_response_messages').html(serverResponse_data);
+                $('#compose_subject_modal_box').hide();
+                josCKEdit('reply');
+                $('#message_modal_box').show();
             },
             fail: function () {
                 console.log("composeWithSubject fail");
@@ -295,7 +295,7 @@
 
     function  replyMessage(sect2save, mtid) {
         var reply_content = editors[sect2save].section_editor.getData();
-        console.log('reply_content: ' + reply_content);
+        // console.log('called replyMessage: mtid, reply_content: ' + mtid + ', ' + reply_content);
 
         if (reply_content.indexOf("nter message here") > 0) {
             alert("Please delete 'Enter message here'");

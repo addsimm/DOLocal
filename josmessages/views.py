@@ -103,34 +103,32 @@ def ajax_message_info(request):
         return HttpResponse('Not ajax')
 
     message_thread_id = "0"
+    subject = "0"
+    recip_ids = "0"
 
     if request.method == "GET":
         message_thread_id = int(request.GET.get("message_thread_id", "0"))
         subject = request.GET.get("subject", "0")
         recip_ids = request.GET.get("recip_ids", "0")
 
-        return HttpResponse('RESPONSE subject, recip_ids: ' + subject + ', ' + recip_ids)
-
     elif request.method == "POST":
         message_thread_id = int(request.POST.get("message_thread_id", "0"))
 
-    ### Need logic to create thread with first receiver <<<<<<<< THEN TEAMS
-    # compose_type = request.GET.get("compose_type", "missing")
-    # receivers = request.GET.get("receivers", "missing")
-    #
-    # if compose_type != 'missing':
-    #     new_message_thread = JOSMessageThread.objects.create(
-    #             first_recipient_id =receivers
-    #     )
-    #
-    #
+    ### VVVVVVVVV THEN TEAMS VVVVVVVVV
+    if subject != '0':
+        first_recipient_id = int(recip_ids)
 
-    if message_thread_id > 0:
-        msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
-        all_thread_msgs = msg_thread.messages
+        msg_thread = JOSMessageThread.objects.create(
+            subject=subject,
+            first_recipient_id =first_recipient_id
+        )
     else:
-        return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
+        try:
+            msg_thread = get_object_or_404(JOSMessageThread, id=message_thread_id)
+        except:
+            return HttpResponse('Thread not found; message_thread_id: ' + str(message_thread_id))
 
+    all_thread_msgs = msg_thread.messages
     unique_recip_ids = msg_thread.messages_distinct_user_ids
 
     recipients = []
@@ -163,11 +161,10 @@ def ajax_message_info(request):
         reply_content = request.POST.get('reply_content', 'missing')
         msgs_user_ids = msg_thread.messages_distinct_user_ids
 
-        if len(msgs) > 0:
-            for msg in msgs:
-                if not msg.replied_at:
-                    msg.replied_at = timezone.now()
-                    msg.save()
+        for msg in msgs:
+            if not msg.replied_at:
+                msg.replied_at = timezone.now()
+                msg.save()
 
         for xid in msgs_user_ids:
             if xid != request.user.id:
@@ -182,9 +179,9 @@ def ajax_message_info(request):
                 send_message.save()
                 info(request, "Message successfully sent!")
 
-        return HttpResponse("Reply sent; message_thread_id: " + str(message_thread_id))
+        return HttpResponse("RESPONSE reply sent; message_thread_id: " + str(message_thread_id))
 
-    return HttpResponse('AJAX fall through')
+    return HttpResponse('RESPONSE AJAX fall through')
 
 
 def ajax_follow_unfollow(request):
