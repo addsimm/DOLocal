@@ -95,7 +95,6 @@
     </div>
 </div>
 
-
 <div id="landing_page text-center" class="josinstructions" style="margin: 30px; width: 1250px; z-index: 5;">
    <div>
 
@@ -185,9 +184,16 @@
         Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.
     </div>
 
+    <button class="j_button j_back_button" style="margin: 30px 0 0 30px;"
+            onclick=" "
+            data-toggle="tooltip" data-placement="bottom" title=" ">
+        <i class="fa fa-eye fa-fw"></i>
+        View other entrants and make comments
+    </button>
+
 </div>
 
-<div>
+<div id="phone_and_secret_button">
     <a class="phone_and_secret_button" style="z-index: 155;
        color: #d9534f; font-size: 20pt; font-weight: normal; margin-left: 20px;
        outline: none; border: none;"
@@ -210,17 +216,18 @@
                     "spymaster", "billionaire", "janitor", "farmer", "alien",
                     "astronaut", "bank teller", "househusband", "pharmacist",
                     "dancer", "manicurist", "paparazzi", "aunt", "grandfather", "thief",
-                    "cashier", "politician", "actor", "dentist", '*WILDCARD*'],
+                    "cashier", "politician", "actor", "dentist"],
                 worlds = [
                     "main street", "movie set", "school bus", "Taj Mahal",
                     "closet", "1880s London", "feudal Japan", "Garden of Eden",
                     "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
-                    "Tahiti", "pirate ship", "ancient Rome", "Vatican", "*WILDCARD*", "Mars"],
+                    "Tahiti", "pirate ship", "ancient Rome", "Vatican", "Mars"],
                 conflicts = [
                     "earthquake", "misfortune", "revolt", "kidnapping", "puzzle",
                     "rivalry", "adultery", "insanity", "passion", "desire", "heresy",
-                    "conformity", "mistaken belief", "lover's betrayal", '*WILDCARD*'],
-                first_character = 0, first_world = 0, first_conflict = 0;
+                    "conformity", "mistaken belief", "lover's betrayal"],
+                first_character = 0, first_world = 0, first_conflict = 0,
+                winners = [];
 
         function changeCharacter() {
             $('#character').html(characters[first_character]).css('color', getColor());
@@ -241,33 +248,61 @@
             spin_number++;
             $('#spin_button').hide();
             $('#winning_prompt').hide();
-            var timer = 1000 + Math.floor(Math.random() * 150);
-            $('.wheel').addClass('spin');
 
+            var wild = Math.floor(Math.random() * 3);
+            switch (wild) {
+                case 0:
+                    characters.push("* WILDCARD *");
+                    break;
+                case 1:
+                    worlds.push("* WILDCARD *");
+                    break;
+                case 2:
+                    conflicts.push("* WILDCARD *");
+                    break;
+            }
+
+            var timer = 900 + Math.floor(Math.random() * 250);
+            $('.wheel').addClass('spin');
 
             change_char = setInterval(changeCharacter, 50); // match css animation
             setTimeout(function () {
                 clearInterval(change_char);
                 $('#character').removeClass('spin');
-            }, timer);
+            }, timer + Math.floor(Math.random() * 150));
             change_world = setInterval(changeWorld, 50);
             setTimeout(function () {
                 clearInterval(change_world);
                 $('#world').removeClass('spin');
-            }, timer + 600);
+            }, timer + 500 + Math.floor(Math.random() * 150));
             change_conflict = setInterval(changeConflict, 50);
             setTimeout(function () {
                 clearInterval(change_conflict);
                 $('#conflict').removeClass('spin');
-            }, timer + 1200);
+            }, timer + 1100 + Math.floor(Math.random() * 150));
 
             setTimeout(function () {
-                $('#spin_number').html(ordinal_suffix_of(spin_number));
-                $('#winners').html(
-                        $('#character').html() + ' in/on '
-                        + $('#world').html() + ' faces '
-                        + $('#conflict').html());
-                $('#winning_prompt').show();
+                var winner = [
+                    ordinal_suffix_of(spin_number),
+                    $('#character').html(),
+                    $('#world').html(),
+                    $('#conflict').html()];
+                $('#winning_prompt').append(winner).show();
+
+                switch (wild) {
+                    case 0:
+                        var index1 = characters.indexOf("* WILDCARD *");
+                        characters.splice(index1, 1);
+                        break;
+                    case 1:
+                        var index2 = worlds.indexOf("* WILDCARD *");
+                        worlds.splice(index2, 1);
+                        break;
+                    case 2:
+                        var index3 = conflicts.indexOf("* WILDCARD *");
+                        conflicts.splice(index3, 1);
+                        break;
+                }
                 $('#spin_button').show();
             }, timer + 1500)
         }
