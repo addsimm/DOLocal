@@ -73,7 +73,7 @@
      src="{% static 'img/3create_4.5.png' %}"><br>
 
 <div class="josinstructions">
-<div id="design" style="margin: 20px; padding: 20px; background-color: aliceblue;">
+<!-- div id="design" style="margin: 20px; padding: 20px; background-color: aliceblue;">
     Links for designers (the log in is guest and the password is 123, if necessary):
 
     <div class="" style="display: flex; justify-content: space-between; width: 60%; margin: 15px 0 0 30px;">
@@ -94,7 +94,7 @@
             STORY EDITOR
         </button>
     </div>
-</div>
+</div -->
 
 <div id="landing_page_copy" style="margin: 30px; width: 1250px; z-index: 5;">
     <div>
@@ -256,7 +256,7 @@
                     break;
             }
 
-            var timer = 900 + Math.floor(Math.random() * 250);
+            var timer = 800 + Math.floor(Math.random() * 350);
             $('.wheel').addClass('spin');
 
             change_char = setInterval(changeCharacter, 50); // match css animation
@@ -268,12 +268,12 @@
             setTimeout(function () {
                 clearInterval(change_world);
                 $('#world').removeClass('spin');
-            }, timer + 500 + Math.floor(Math.random() * 150));
+            }, timer + 400 + Math.floor(Math.random() * 250));
             change_conflict = setInterval(changeConflict, 50);
             setTimeout(function () {
                 clearInterval(change_conflict);
                 $('#conflict').removeClass('spin');
-            }, timer + 1100 + Math.floor(Math.random() * 150));
+            }, timer + 1000 + Math.floor(Math.random() * 250));
 
 
             setTimeout(function () {
