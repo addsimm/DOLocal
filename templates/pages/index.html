@@ -72,7 +72,8 @@
 <img class="img" style="height: 200px; margin-top: -60px;"
      src="{% static 'img/3create_4.5.png' %}"><br>
 
-<div class="josinstructions" style="margin: 30px 0 0 30px; padding: 30px; background-color: aliceblue;">
+<div class="josinstructions">
+<div id="design" style="margin: 20px; padding: 20px; background-color: aliceblue;">
     Links for designers (the log in is guest and the password is 123, if necessary):
 
     <div class="" style="display: flex; justify-content: space-between; width: 60%; margin: 15px 0 0 30px;">
@@ -95,8 +96,8 @@
     </div>
 </div>
 
-<div id="landing_page text-center" class="josinstructions" style="margin: 30px; width: 1250px; z-index: 5;">
-   <div>
+<div id="landing_page_copy" style="margin: 30px; width: 1250px; z-index: 5;">
+    <div>
 
         FB AD HEADLINE<br>
         FB AD COPY<br><br>
@@ -108,94 +109,73 @@
         ENTER OUR WRITING CONTEST!<br>
         <ul>
             <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
-            <li>2ND PLACE: 21-Week Comprehensive Master Class on Better Storytelling</li>
+            <li>2ND PLACE (5 Winners): 21-Week Comprehensive Master Class on Better Storytelling</li>
             <li>First 25 entrants get feedback from award-winning author and educator</li>
             <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
-        </ul>
-        <br><br>
-        TO ENTER:<br>
+        </ul><br>
+        TO ENTER:<br><br>
         SPIN, WRITE AND WIN!<br><br>
-        Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a
-        story for our contest! Not crazy about what you spun? Just spin again!<br>
+        Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a story for our contest! Not crazy about what you spun? Just spin again!<br><br>
 
+        Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your story.<br><br>
+
+        Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.<br><br>
     </div>
+</div>
 
-   <!-- SPIN TO WIN -->
-   <div class="home_text" style="margin: 0 0 0 300px;">
+<!-- SPIN TO WIN -->
+<div class="home_text" style="margin: 0 0 0 300px;">
 
-        <div id="random_prompt_slots" class="jos_flex_container homehead" style="
-             position: relative; justify-content: space-around;
-             height: 360px; width: 630px; margin-top: 50px; padding: 15px 0;
-             font-size: 32pt; outline: 2px dashed rgb(65,45,120);">
+    <div id="random_prompt_slots" class="jos_flex_container homehead" style="
+         position: relative; justify-content: space-around;
+         height: 360px; width: 630px; margin-top: 50px; padding: 15px 0;
+         font-size: 32pt; outline: 2px dashed rgb(65,45,120);">
 
-            <div style=" ">
-                <img src="/static/img/icon-character.png" style=" ">
-                <div id='character' class="wheel" style=" ">
-                    -- Character --
-                </div>
+        <div style=" ">
+            <img src="/static/img/icon-character.png" style=" ">
+            <div id='character' class="wheel" style=" ">
+                -- Character --
             </div>
-            <div>
-                <img src="/static/img/icon-world.png" style=" ">
-                <div id='world' class="wheel" style=" ">
-                    -- World --
-                </div>
-
-            </div>
-            <div>
-                <img src="/static/img/icon-conflict.png" style=" ">
-                <div id='conflict' class="wheel" style=" ">
-                    -- Conflict --
-                </div>
-            </div>
-
-            <button id="spin_button" class="j_button j_discard_button" style="
-                        position: absolute; top: 115px; left: 470px;
-                        background-image: url('/static/img/spin-button-020417.png');
-                        height: 130px; width: 130px; border-radius: 65px;"
-                    onclick="startWheel();">
-            </button>
         </div>
-   </div>
-
-    <div id='winning_prompt' class="jos_flex_container" style="display: none;
-         justify-content: space-between; margin: 60px 0 0 90px; height: 200px;">
-
         <div>
-            Your <span id="spin_number" style="color: #d9534f"></span> prompt:
+            <img src="/static/img/icon-world.png" style=" ">
+            <div id='world' class="wheel" style=" ">
+                -- World --
+            </div>
+
+        </div>
+        <div>
+            <img src="/static/img/icon-conflict.png" style=" ">
+            <div id='conflict' class="wheel" style=" ">
+                -- Conflict --
+            </div>
         </div>
 
-        <div id='winners' class="homehead" style="font-size: 32pt; margin-left: 60px;"></div>
-
-        <div style="">
-            Now, spin again or
-            <button class="j_button j_save_button" style="margin-left: 10px;"
-                    onclick=" "
-                    data-toggle="tooltip" data-placement="bottom" title="Opens story editor">
-                <i class="fa fa-arrow-right fa-fw"></i>GO
-            </button>
-        </div>
-
+        <button id="spin_button" class="j_button j_discard_button" style="
+                    position: absolute; top: 115px; left: 470px;
+                    background-image: url('/static/img/spin-button-020417.png');
+                    height: 130px; width: 130px; border-radius: 65px;"
+                onclick="startWheel();">
+        </button>
     </div>
+</div>
 
-    <div style="margin-top: 60px;">
-        Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your
-        story.
+<div id='winners' class="jos_flex_container" style="margin: 60px 0 0 90px;">
 
-        Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.
-    </div>
+    <div>Choose (resets after 3 spins):</div>
 
-    <button class="j_button j_back_button" style="margin: 30px 0 0 30px;"
+</div>
+
+<div id="phone_and_secret_button" style="margin: 90px 0 30px 30px;">
+    <button id="contest_gallery_button" class="j_button j_back_button"
             onclick=" "
             data-toggle="tooltip" data-placement="bottom" title=" ">
         <i class="fa fa-eye fa-fw"></i>
         View other entrants and make comments
-    </button>
+    </button><br><br><br>
 
-</div>
-
-<div id="phone_and_secret_button">
     <a class="phone_and_secret_button" style="z-index: 155;
-       color: #d9534f; font-size: 20pt; font-weight: normal; margin-left: 20px;
+       color: #d9534f; font-size: 20pt; font-weight: normal;
        outline: none; border: none;"
        href="
     {% if request.user.id > 0 %}
@@ -206,6 +186,7 @@
         <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
         <b>(213) 465-0885</b>
     </a>
+</div>
 </div>
 
 <script>
@@ -228,6 +209,13 @@
                     "conformity", "mistaken belief", "lover's betrayal"],
                 first_character = 0, first_world = 0, first_conflict = 0,
                 winners = [];
+        
+        var start_button_html =
+                "<button class='j_button_small j_save_button' style='margin-left: 15px;' onclick = ' '>" +
+                "    <i class='fa fa-keyboard-o fa-fw' ></i>" +
+                "     GET STARTED" +
+                "</button>",
+            reset_html = "<div>Choose (resets after 3 spins):</div>";
 
         function changeCharacter() {
             $('#character').html(characters[first_character]).css('color', getColor());
@@ -246,8 +234,14 @@
 
         function startWheel() {
             spin_number++;
+            if (spin_number == 4) {
+                alert("This will erase earlier spins");
+                $('#winners').html(reset_html);
+                winners = [];
+                spin_number = 1;
+            }
+
             $('#spin_button').hide();
-            $('#winning_prompt').hide();
 
             var wild = Math.floor(Math.random() * 3);
             switch (wild) {
@@ -281,13 +275,25 @@
                 $('#conflict').removeClass('spin');
             }, timer + 1100 + Math.floor(Math.random() * 150));
 
+
             setTimeout(function () {
-                var winner = [
-                    ordinal_suffix_of(spin_number),
-                    $('#character').html(),
-                    $('#world').html(),
-                    $('#conflict').html()];
-                $('#winning_prompt').append(winner).show();
+
+                var spin_no = ordinal_suffix_of(spin_number),
+                    win_character = $('#character').html(),
+                    win_world = $('#world').html(),
+                    win_conflict = $('#conflict').html();
+
+                var winner = [spin_no, win_character, win_world, win_conflict];
+                winners.push(winner);
+                var winner_html =
+                        "<div style='margin: 12px;'>" +
+                        "<span style='color:red; margin-right: 7px;'>" + spin_no + ":</span>" +
+                            win_character + " in/on " +
+                            win_world + " faces " +
+                            win_conflict +
+                            start_button_html +
+                        "</div>";
+                $('#winners').append(winner_html);
 
                 switch (wild) {
                     case 0:
