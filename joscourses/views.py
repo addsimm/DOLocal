@@ -19,24 +19,22 @@ from .models import *
 User = get_user_model()
 
 
-@login_required
 def seven_day(request, template="joscourses/seven_day.html", extra_context=None):
 
-    try:
-        profile = get_object_or_404(JOSProfile, user=request.user)
-    except:
-        HttpResponse('Cannot find user')
+    # try:
+    #     profile = get_object_or_404(JOSProfile, user=request.user)
+    # except:
+    #     HttpResponse('Cannot find user')
 
     days = JOSCourseDay.objects.order_by('day_no')
 
-    context = {'days': days,
-               'profile': profile}
+    context = {'days': days}
+               # 'profile': profile}
     context.update(extra_context or {})
 
     return TemplateResponse(request, template, context)
 
 
-@login_required
 def one_day(request, day_num=0, template="joscourses/one_day.html", extra_context=None):
     if day_num != 0:
         day = get_object_or_404(JOSCourseDay, pk=day_num)

@@ -12,16 +12,17 @@
     /* ferris wheel */
 
     .icon_contain {
-        height: 50px;
-        width: 50px;
-    {#        outline: 2px solid grey;#} position: absolute;
+        position: absolute;
+        height: 68px;
+        width: 68px;
     }
 
     .segment_icon {
-        background-size: 50px 50px;
+        background-size: 68px 68px;
         height: 100%;
         width: 100%;
         position: relative;
+{#        outline: 2px solid grey;#}
     }
 
     .right_arrow {
@@ -54,6 +55,33 @@
         padding: 0 10px;
     }
 
+
+    {#    .active_step {#}
+    {#        background-color: #ccffb3;#}
+    {#    }#}
+    {#    @keyframes animateBorder {#}
+    {#        to {#}
+    {#            background-color: aliceblue;#}
+    {#        }#}
+    {#    }#}
+    {##}
+    {#    .active_step {#}
+    {#        animation: 2s animateBorder infinite;#}
+    {#    }#}
+
+    @keyframes top_anim {
+        0%, 70%, 100% {
+            opacity: 1;
+        }
+        80% {
+            opacity: 0;
+        }
+    }
+
+    #top_instruction {
+        animation: top_anim 2s linear infinite;
+    }
+
     @keyframes cwise {
         from {
             transform: rotate(0deg);
@@ -72,110 +100,86 @@
         }
     }
 
-    /* active_step */
-
-    .active_step {
-        background-color: #ccffb3;
-    }
-
-    @keyframes top {
-        0%, 60%, 100% {
-            opacity: 1;
-        }
-        80% {
-            opacity: 0;
-        }
-    }
-
-    #top_instruction {
-        animation: top 3s linear infinite;
-    }
-
-
-{#    @keyframes animateBorder {#}
-{#        to {#}
-{#            background-color: aliceblue;#}
-{#        }#}
-{#    }#}
-{##}
-{#    .active_step {#}
-{#        animation: 2s animateBorder infinite;#}
-{#    }#}
-    
-    #wheel, canvas {
-        animation: cwise 60s linear 30;
+    #wheel {
+        animation: cwise 75s linear 30;
     }
 
     .segment_icon {
-        animation: countwise 60s linear 30;
+        animation: countwise 75s linear 30;
     }
+
+    /* Wheel align */
+{#    #wheel {#}
+{#        transform: rotate(-288deg);#}
+{#    }#}
+{##}
+{#    .segment_icon {#}
+{#        transform: rotate(288deg);#}
+{#    }#}
 
 </style>
 
-<div id="seven_day_page" style="position: relative; width: 1280px;">
-    <div id='explain' class="text-center" style="font-family: 'Architects Daughter'; font-size: 24pt;
-         background-color: aliceblue;">
-        Enhance your storytelling skills as<br>
-        you complete a short, polished story.
+<div id="seven_day_page" style="position: relative; width: 1280px; font-size: 28pt;">
+    <div id='motivator' class="text-center">
+        <div style="font-family: 'Architects Daughter'; font-size: 24pt; background-color: aliceblue;">
+            Enhance your storytelling skills as<br>you complete a short, polished story.
+        </div>
+
+        <div style="font-weight: bold; margin-top: 50px;">
+            SEVEN DAYS TO BETTER STORYTELLING
+        </div>
+
+        <div id="top_instruction" style="margin-top: 30px;"></div>
     </div>
 
-    <div id=" " class="text-center" style="
-         font-size: 32pt; font-weight: bold; margin-top: 50px;">
-        SEVEN DAYS TO BETTER STORYTELLING
-    </div>
-
-    <div id="top_instruction" class="josinstructions text-center" style="font-size: 26pt; margin-top: 35px;">--
-        <span id="top_instruction_text">XXX</span>
-    --</div>
     <div style="position: relative;">
         <div id="wheel" class="jos_flex_container" style="
-             position: absolute; top: 70px; left: 315px;
-             width: 330px; height: 330px;">
+             position: absolute; top: 50px; left: 280px;
+             width: 360px; height: 360px;">
 
-            <div class="segments " style="position: absolute; height: 330px; width: 330px;
+            <div class="segments " style="position: absolute; height: 360px; width: 360px;
                 background-image: url('/static/img/wheel-small-background.png');
-                background-size: 330px 330px;
+                background-size: 360px 360px;
                 z-index: -10;">
 
-                <div id="conflict" class="icon_contain" style="left: 89px; top: 64px;">
-                    <div class="segment_icon"  style="
-                         background-image: url('/static/img/icon-conflict.png');"></div>
-                </div>
-
-                <div id="plot" class="icon_contain" style="left: 192px; top: 64px;">
-                    <div class="segment_icon" style="
-                         background-image: url('/static/img/icon-plot.png');"></div>
-                </div>
-
-                <div id="theme" class="icon_contain" style="left: 141px; top: 230px;">
+                <div id="theme" class="icon_contain" style="left: 146px; top: 240px;">
                     <div class="segment_icon" style="
                          background-image: url('/static/img/icon-theme.png');"></div>
                 </div>
 
-                <div id="world" class="icon_contain" style="left: 58px; top: 166px;">
+                <div id="world" class="icon_contain" style="left: 56px; top: 173px;">
                     <div class="segment_icon" style="
                         background-image: url('/static/img/icon-world.png');"></div>
                 </div>
 
-                <div id="character" class="icon_contain" style="left: 223px; top: 166px;">
+
+                <div id="conflict" class="icon_contain" style="left: 90px; top: 69px;">
+                    <div class="segment_icon"  style="
+                         background-image: url('/static/img/icon-conflict.png');"></div>
+                </div>
+
+                <div id="plot" class="icon_contain" style="left: 200px; top: 70px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-plot.png');"></div>
+                </div>
+
+                <div id="character" class="icon_contain" style="left: 235px; top: 175px;">
                     <div class="segment_icon" style="
                          background-image: url('/static/img/icon-character.png');"></div>
                 </div>
             </div>
         </div>
 
-        <div id="canvas" class="jos_flex_container" style="position: absolute; top: 70px; left: 315px;
-         width: 100%; height: 330px;">
-
         <img src="/static/img/icon-pnp-center.png" style="position: absolute;
-             top: 135px; left: 135px; height: 60px; width: 60px; z-index: 10;">
+                 top: 207px; left: 430px; height: 60px; width: 60px; z-index: 10;">
 
-        <canvas id="pie_canvas" width="330" height="330">
-            Your browser does not support HTML5 Canvas; please call us.
-        </canvas>
-    </div>
+        <div id='circle_guide' style="display: none; border: 3px solid black; border-radius: 130px;
+             position: absolute; top: 107px; left: 330px; height: 260px; width: 260px; z-index: 10;">
+        </div>
+
     </div>
 
+    {# Arrow #}
     <div style="position: relative;">
 
         <div id="start_arrow" class="right_arrow" style="left: 45px;"></div>
@@ -212,7 +216,7 @@
 
     </div>
 
-    <div id='DEBUG' style="margin-top: 550px;">
+    <div id='DEBUG' style="margin-top: 550px; font-size: 12pt;">
         DEBUG:<br>
         seven_day_progress: {{ request.user.JOSProfile.seven_day_progress }}<br>
         seven_day_els_complete: {{ request.user.JOSProfile.seven_day_els_complete }}
@@ -222,19 +226,13 @@
 <script>
 
     var seven_day_instructions = [
-        "Click WELCOME to begin",
-        "Click on a storywheel WEDGE to continue",
-        "Click DRAFT to continue",
-        "Click REVISION to continue",
-        "Click SHARE! to publish your story"
+        " Click WELCOME to begin ",
+        " Click on a storywheel WEDGE to continue ",
+        " Click DRAFT to continue ",
+        " Click REVISION to continue ",
+        " Click SHARE! to publish your story "
     ];
 
-
-    var C = document.getElementById('pie_canvas');
-    var ctx = C.getContext('2d');
-    var paths = [];
-    var wedges = ['none', 'conflict', 'character', 'theme', 'world', 'plot'];
-    var oldWedge = 0, newWedge = 0;
 
     var url_start = "https://joinourstory.com/joscourses/";
     var url_plot = url_start + "plot_template/" + "{{ wheel.id }}";
@@ -244,140 +242,10 @@
     var url_conflict = url_start + "conflict_template/" + "{{ wheel.id }}";
 
     $(document).ready(function () {
-        redraw();
         var seven_day_progress = Number('{{ request.user.JOSProfile.seven_day_progress }}');
         console.log('7d: ' + seven_day_progress + 3);
-        $('#top_instruction_text').text(seven_day_instructions[seven_day_progress]);
+        $('#top_instruction').html(seven_day_instructions[0]);  //// Change
     });
-
-
-    function redraw() {
-        console.log('drawing');
-        ctx.clearRect(0, 0, C.width, C.height);
-        paths = [];
-        var path1 = new Path2D(), path2 = new Path2D(), path3 = new Path2D();
-        var path4 = new Path2D(), path5 = new Path2D();
-
-        ctx.lineWidth = 2.01; // increase to see canvas
-
-        // pie/conflict
-        path1.moveTo(7.3, 114.2);
-        path1.bezierCurveTo(31.5, 46.0, 95.0, 2.3, 163.9, 0.3);
-        path1.lineTo(163.9, 165.0);
-        path1.lineTo(163.8, 165.0);
-        path1.lineTo(7.3, 114.1);
-        path1.closePath();
-        ctx.stroke(path1);
-        paths.push(path1);
-
-        // pie/character
-        path2.moveTo(322.4, 115.5);
-        path2.bezierCurveTo(342.9, 185.0, 317.2, 257.6, 262.7, 299.7);
-        path2.lineTo(165.9, 166.5);
-        path2.lineTo(165.9, 166.4);
-        path2.lineTo(322.5, 115.6);
-        path2.closePath();
-        ctx.stroke(path2);
-        paths.push(path2);
-
-        // pie/theme
-        path3.moveTo(262.0, 300.4);
-        path3.bezierCurveTo(202.3, 341.3, 125.3, 339.3, 68.4, 300.5);
-        path3.lineTo(165.2, 167.2);
-        path3.lineTo(165.2, 167.3);
-        path3.lineTo(262.0, 300.4);
-        path3.closePath();
-        ctx.stroke(path3);
-        paths.push(path3);
-
-        // pie/world
-        path4.moveTo(67.1, 299.8);
-        path4.bezierCurveTo(9.8, 255.6, -12.2, 181.8, 7.3, 115.7);
-        path4.lineTo(163.9, 166.5);
-        path4.lineTo(163.8, 166.6);
-        path4.lineTo(67.1, 299.7);
-        path4.closePath();
-        ctx.stroke(path4);
-        paths.push(path4);
-
-        // pie/plot
-        path5.moveTo(165.2, 0.7);
-        path5.bezierCurveTo(237.6, 2.7, 298.7, 49.5, 321.9, 114.4);
-        path5.lineTo(165.3, 165.3);
-        path5.lineTo(165.3, 165.2);
-        path5.lineTo(165.3, 0.7);
-        path5.lineTo(165.2, 0.7);
-        path5.closePath();
-        ctx.stroke(path5);
-        paths.push(path5);
-    }
-
-    // Handles hovering
-    $(document).mousemove(function (e) {
-
-        var wheel = document.getElementById('wheel_box');
-        if ($(wheel).css('display') !== 'none') {
-
-            var mousePos = getMousePos(C, e);
-
-            for (i = 0; i < 5; i++) {
-                if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
-                    newWedge = i + 1;
-                    break
-                } else {
-                    newWedge = 0;
-                }
-            }
-
-            if (newWedge !== oldWedge) {
-                redraw();
-                if (newWedge !== 0) {
-                    ctx.save();
-                    ctx.fillStyle = "white";
-                    ctx.globalAlpha = 0.6;
-                    ctx.fill(paths[newWedge - 1]);
-                    ctx.restore();
-                }
-                oldWedge = newWedge;
-            }
-        }
-    });
-
-    C.addEventListener('click', function (e) {
-        var segment = 0;
-        var mousePos = getMousePos(C, e);
-        for (i = 0; i < 5; i++) {
-            if (ctx.isPointInPath(paths[i], mousePos.x, mousePos.y)) {
-                segment = i + 1;
-                break
-            }
-        }
-
-        console.log(wedges[segment] + ' clicked');
-
-        //// add other wedges
-        if (wedges[segment] === 'plot') {
-            location.href = url_plot;
-        } else if (wedges[segment] === 'character') {
-            location.href = url_characters;
-        } else if (wedges[segment] === 'world') {
-            location.href = url_world;
-        } else if (wedges[segment] === 'theme') {
-            location.href = url_theme;
-        } else if (wedges[segment] === 'conflict') {
-            location.href = url_conflict;
-        } else {
-            console.log('click - no wedge found')
-        }
-    });
-
-    function getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
-        return {
-            x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
-        };
-    }
 
 </script>
 
