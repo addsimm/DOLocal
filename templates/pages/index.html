@@ -69,10 +69,14 @@
 
 </style>
 
+
+
+
 <img class="img" style="height: 200px; margin-top: -60px;"
      src="{% static 'img/3create_4.5.png' %}"><br>
 
 <div class="josinstructions">
+
 <!-- div id="design" style="margin: 20px; padding: 20px; background-color: aliceblue;">
     Links for designers (the log in is guest and the password is 123, if necessary):
 
@@ -96,31 +100,65 @@
     </div>
 </div -->
 
-<div id="landing_page_copy" style="margin: 30px; width: 1250px; z-index: 5;">
-    <div>
 
-        FB AD HEADLINE<br>
-        FB AD COPY<br><br>
-        Enjoy storytelling and interested in improving your writing skills?<br><br>
+<div id="spin_again_modal_box" style="display: none;
+     position: absolute; top: -65px; left: 0; height: 2215px; width: 1280px;
+     background-color:  #C0C0C0; opacity: .98; z-index: 500;">
 
-        Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
-        JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
+    <div id=" " style="position: absolute; top: 1392px; left: 300px; height: 375px; width: 720px;
+         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
 
-        ENTER OUR WRITING CONTEST!<br>
-        <ul>
-            <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
-            <li>2ND PLACE (5 Winners): 21-Week Comprehensive Master Class on Better Storytelling</li>
-            <li>First 25 entrants get feedback from award-winning author and educator</li>
-            <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
-        </ul><br>
-        TO ENTER:<br><br>
-        SPIN, WRITE AND WIN!<br><br>
-        Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a story for our contest! Not crazy about what you spun? Just spin again!<br><br>
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 15px; left: 15px; height: 80px;">
 
-        Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your story.<br><br>
+        <div id="messageSpace" class="text-center" style="
+             position: absolute; top: 115px; height: 185px; width: 720px">
+            <div id=" ">
+                Are you sure you want to spin again?<br>
+                <span style="font-size: 16pt;">Spinning again resets the recent spins</span><br><br>
+            </div>
 
-        Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.<br><br>
+            <div style="display: flex; justify-content: center;">
+                <button id="title_save_btn" class="j_button_small j_save_button"
+                        style=" " onclick="clearWinners();">
+                    <i class="fa fa-circle fa-fw"></i>
+                    RESET SPINS
+                </button>
+
+                <button id="title_discard_btn" class="j_button_small j_back_button"
+                        style="margin-left: 10px; "
+                        onclick="$('#spin_again_modal_box').hide();">
+                    <i class="fa fa-arrow-left fa-fw"></i>
+                    GO BACK
+                </button>
+            </div>
+        </div>
     </div>
+</div>
+{#landing_page_copy#}
+<div id="" style="margin: 30px; width: 1220px; z-index: 5;">
+    FB AD HEADLINE<br>
+    FB AD COPY<br><br>
+    Enjoy storytelling and interested in improving your writing skills?<br><br>
+
+    Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
+    JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
+
+    ENTER OUR WRITING CONTEST!<br>
+    <ul>
+        <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
+        <li>2ND PLACE (5 Winners): 21-Week Comprehensive Master Class on Better Storytelling</li>
+        <li>First 25 entrants get feedback from award-winning author and educator</li>
+        <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
+    </ul><br>
+    TO ENTER:<br><br>
+    SPIN, WRITE AND WIN!<br><br>
+    Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a story for our contest! Not crazy about what you spun? Just spin again!<br><br>
+
+    Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your story.<br><br>
+
+    Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.<br><br>
 </div>
 
 <!-- SPIN TO WIN -->
@@ -160,11 +198,7 @@
     </div>
 </div>
 
-<div id='winners' class="jos_flex_container" style="margin: 60px 0 0 90px;">
-
-    <div>Choose (resets after 3 spins):</div>
-
-</div>
+<div id='winners' class="jos_flex_container" style="margin: 60px 0 0 90px;"></div>
 
 <div id="phone_and_secret_button" style="margin: 90px 0 30px 30px;">
     <button id="contest_gallery_button" class="j_button j_back_button"
@@ -186,36 +220,43 @@
         <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
         <b>(213) 465-0885</b>
     </a>
-</div>
-</div>
+</div></div>
 
 <script>
 
         var spin_number = 0,
-                change_char, change_world, change_conflict,
-                characters = [
-                    "spymaster", "billionaire", "janitor", "farmer", "alien",
-                    "astronaut", "bank teller", "househusband", "pharmacist",
-                    "dancer", "manicurist", "paparazzi", "aunt", "grandfather", "thief",
-                    "cashier", "politician", "actor", "dentist"],
-                worlds = [
-                    "main street", "movie set", "school bus", "Taj Mahal",
-                    "closet", "1880s London", "feudal Japan", "Garden of Eden",
-                    "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
-                    "Tahiti", "pirate ship", "ancient Rome", "Vatican", "Mars"],
-                conflicts = [
-                    "earthquake", "misfortune", "revolt", "kidnapping", "puzzle",
-                    "rivalry", "adultery", "insanity", "passion", "desire", "heresy",
-                    "conformity", "mistaken belief", "lover's betrayal"],
-                first_character = 0, first_world = 0, first_conflict = 0,
-                winners = [];
+            change_char, change_world, change_conflict,
+            characters = [
+                "spymaster", "billionaire", "janitor", "farmer", "alien",
+                "astronaut", "bank teller", "househusband", "pharmacist",
+                "dancer", "manicurist", "paparazzi", "aunt", "grandfather", "thief",
+                "cashier", "politician", "actor", "dentist"],
+            worlds = [
+                "main street", "movie set", "school bus", "Taj Mahal",
+                "closet", "1880s London", "feudal Japan", "Garden of Eden",
+                "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
+                "Tahiti", "pirate ship", "ancient Rome", "Vatican", "Mars"],
+            conflicts = [
+                "earthquake", "misfortune", "revolt", "kidnapping", "puzzle",
+                "rivalry", "adultery", "insanity", "passion", "desire", "heresy",
+                "conformity", "mistaken belief", "lover's betrayal"],
+            first_character = 0, first_world = 0, first_conflict = 0,
+            winners = [];
         
         var start_button_html =
                 "<button class='j_button_small j_save_button' style='margin-left: 15px;' onclick = ' '>" +
                 "    <i class='fa fa-keyboard-o fa-fw' ></i>" +
                 "     GET STARTED" +
                 "</button>",
-            reset_html = "<div>Choose (resets after 3 spins):</div>";
+            reset_html = "<div>Choose one to start (resets after 3 spins):</div>";
+
+
+        function clearWinners() {
+            spin_number = 0;
+            $('#spin_again_modal_box').hide();
+            $('#winners').html(' ');
+            winners = [];
+        }
 
         function changeCharacter() {
             $('#character').html(characters[first_character]).css('color', getColor());
@@ -233,13 +274,12 @@
         }
 
         function startWheel() {
-            spin_number++;
-            if (spin_number == 4) {
-                alert("This will erase earlier spins");
-                $('#winners').html(reset_html);
-                winners = [];
-                spin_number = 1;
+
+            if (spin_number == 3) {
+                $('#spin_again_modal_box').show();
+                return
             }
+            spin_number++;
 
             $('#spin_button').hide();
 
@@ -277,6 +317,10 @@
 
 
             setTimeout(function () {
+
+                if (spin_number == 1) {
+                    $('#winners').html(reset_html);
+                }
 
                 var spin_no = ordinal_suffix_of(spin_number),
                     win_character = $('#character').html(),
