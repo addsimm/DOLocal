@@ -253,6 +253,8 @@
             }
         });
 
+        initJOSEditor('notes', 'small', 'ajax_session_update', '{{ user_created_note | escapejs }}');
+
         // Messages
         messageBox = document.getElementById('messageBox');
         messageSpace = document.getElementById('messageSpace');

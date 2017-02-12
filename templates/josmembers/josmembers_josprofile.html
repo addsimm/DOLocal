@@ -11,7 +11,7 @@
 
 {% block breadcrumb_menu %}
     {{ block.super }}
-    {{ profile.user.get_short_name }}'s Profile
+    {{ profile.user.get_short_name }}'s Profile and Stories
 {% endblock %}
 
 {% block all_content %}
@@ -40,9 +40,9 @@
             <div style="{% if edit %}outline: 3px dashed #28a4c9;{% endif %} padding: 10px;">
 
                 {% if "noimage" in profile.profile_image_id_str %}
-                    <img class="img-responsive" style="height: 256px;" src="{% static '/static/img/peeky-102216.png' %}">
+                    <img class="img-responsive" style="height: 192px;" src="{% static '/static/img/peeky-102216.png' %}">
                 {% else %}
-                    <img class="img-responsive" style="height: 256px;"
+                    <img class="img-responsive" style="height: 192px;"
                          src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ profile.profile_image_id_str }}">
                 {% endif %}
 
