@@ -37,51 +37,60 @@
 
 </style>
 
-<div id='top-buttons' class="row" style="width: 1250px; margin: 0;">
+<div id='top-buttons' class="row" style="width: 1265px; margin: 0;">
 
-    <button class="j_button j_relocate_button pull-right"
-            style="display: flex; justify-content: space-around; align-items: center;
-            font-size: 24px; margin-left: 15px;"
-            onclick="location.href='http://www.joinourstory.com/workshop_connect';">
-        <div class="fa fa-video-camera fa-fw"></div>
+{#<button class="j_button j_relocate_button pull-right"#}
+{#        style="display: flex; justify-content: space-around; align-items: center;#}
+{#        font-size: 24px; margin-left: 15px;"#}
+{#        onclick="location.href='http://www.joinourstory.com/workshop_connect';">#}
+{#    <div class="fa fa-video-camera fa-fw"></div>#}
+{##}
+{#    <div style="margin-left: 10px;">COMMUNITY ROOM</div>#}
+{#</button>#}
 
-        <div style="margin-left: 10px;">COMMUNITY ROOM</div>
-    </button>
-
-    <button class="j_button j_relocate_button pull-right" style="margin-left: 15px; padding: 0 15px 0 0;"
-            onclick="location.href='{% url "profile" request.user.id %}';">
-
-        <div style="display: flex; justify-content: space-between; align-items: center;
-             font-size: 24px;">
-            <img class=" " style="width: 50px; height: 50px;"
-                 src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}
-                          https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}
-                      {% else %}
-                          /static/img/peeky-102216.png
-                      {% endif %}">
-
-            <div class=" " style="margin-left: 15px;">PROFILE</div>
+    {% inbox_count as my_var %}
+    {% if my_var > 0 %}
+        <div class="pull-right" style="
+             display: flex; justify-content: flex-end; align-items: center;
+             position: relative; left: -8px; padding: 9px 10px;
+             color: white; font-size: 16pt; font-weight: bold; background-color: red;">
+            {{ my_var }}
         </div>
-
-    </button>
-
-    <button class="j_button j_relocate_button pull-right"
-            style="margin: 0 0 0 12px;"
-            onclick="location.href='{% url "josmembers:josmembers_list" %}';">
-        <i class="fa fa-users fa-fw"></i>
-        COMMUNITY
-    </button>
+    {% endif %}
 
     <button class="j_button j_relocate_button pull-right"
-            style="margin-right: 7px;"
+            style="margin-left: 15px; width: 285px;"
             onclick="location.href='{% url "josmessages:messages_redirect" %}';">
-        <i class="fa fa-envelope fa-fw"></i>
-        <span style="margin-left: 3px; ">MAIL</span>
-        {% if inbox_count > 0 %}
-        <span style="background-color: red; margin-left: 5px; padding: 0 4px;">{% inbox_count %}</span>
-        {% endif %}
-
+        <i class="fa fa-heart fa-fw"></i>
+        FRIENDS / MESSAGES
     </button>
+
+
+
+    <button class="j_button j_relocate_button pull-right" style=" "
+            onclick="location.href='{% url "profile" request.user.id %}';">
+        <i class="fa fa-user fa-fw"></i>
+        MY PROFILE / STORIES
+        {#<div style="display: flex; justify-content: space-between; align-items: center;#}
+        {#     font-size: 24px;">#}
+        {#    <img class=" " style="width: 50px; height: 50px;"#}
+        {#         src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}#}
+        {#                  https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}#}
+        {#              {% else %}#}
+        {#                  /static/img/peeky-102216.png#}
+        {#              {% endif %}">#}
+        {##}
+        {#    <div class=" " style="margin-left: 15px;"></div>#}
+        {#</div>#}
+    </button>
+{#<button class="j_button j_relocate_button pull-right"#}
+{#        style="margin: 0 0 0 12px;"#}
+{#        onclick="location.href='{% url "josmembers:josmembers_list" %}';">#}
+{#    <i class="fa fa-users fa-fw"></i>#}
+{#    COMMUNITY#}
+{#</button>#}
+
+
 </div>
 
 <div class="row" style="width: 1280px;">

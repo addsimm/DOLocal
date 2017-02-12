@@ -69,6 +69,7 @@ body, .body {
 
 .j_test_button:hover {
     color: black;
+    outline: 1px solid black;
 }
 
 .j_action_button, .j_action_button:visited, .j_action_button:focus {
@@ -77,6 +78,7 @@ body, .body {
 
 .j_action_button:hover {
     color: #412D78;
+    outline: 1px solid #412D78;
 }
 
 .j_back_button, .j_back_button:visited, .j_back_button:focus {
@@ -85,6 +87,7 @@ body, .body {
 
 .j_back_button:hover {
     color: #f0ad4e;
+    outline: 1px solid #f0ad4e;
 }
 
 .j_relocate_button, .j_relocate_button:visited, .j_relocate_button:focus {
@@ -92,7 +95,8 @@ body, .body {
 }
 
 .j_relocate_button:hover {
-    color: #709a6d;
+    color: rgb(112, 154, 109);
+    outline: 1px solid rgb(112, 154, 109);
 }
 
 .j_save_button, .j_save_button:visited, .j_save_button:focus {
@@ -101,6 +105,7 @@ body, .body {
 
 .j_save_button:hover {
     color: #5cb85c;
+    outline: 1px solid #5cb85c;
 }
 
 .j_discard_button, .j_discard_button:visited, .j_discard_button:focus {
@@ -109,6 +114,7 @@ body, .body {
 
 .j_discard_button:hover {
     color: #d9534f;
+    outline: 1px solid #d9534f;
 }
 
 .j_info_button, .j_info_button:visited, .j_info_button:focus {
@@ -117,6 +123,7 @@ body, .body {
 
 .j_info_button:hover {
     color: #5bc0de;
+    outline: 1px solid #5bc0de;
 }
 
 a, a:visited {
