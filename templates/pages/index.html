@@ -69,9 +69,6 @@
 
 </style>
 
-
-
-
 <img class="img" style="height: 200px; margin-top: -60px;"
      src="{% static 'img/3create_4.5.png' %}"><br>
 
@@ -200,27 +197,26 @@
 
 <div id='winners' class="jos_flex_container" style="margin: 60px 0 0 90px;"></div>
 
-<div id="phone_and_secret_button" style="margin: 90px 0 30px 30px;">
+<div id="phone" style="margin: 90px 0 0 30px;">
     <button id="contest_gallery_button" class="j_button j_back_button"
             onclick=" "
             data-toggle="tooltip" data-placement="bottom" title=" ">
         <i class="fa fa-eye fa-fw"></i>
         View other entrants and make comments
-    </button><br><br><br>
+    </button><br><br><br><br>
 
-    <a class="phone_and_secret_button" style="z-index: 155;
-       color: #d9534f; font-size: 20pt; font-weight: normal;
-       outline: none; border: none;"
-       href="
-    {% if request.user.id > 0 %}
-        {% url 'personaldesk' request.user.id %}
-    {% else %}
-        {% url 'josmembers:jossignup' %}
-    {% endif %}">
+    <div class="text-right" style="color: #d9534f; font-size: 14pt; margin-bottom: 10px; margin-right: 5px;">
         <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
         <b>(213) 465-0885</b>
-    </a>
-</div></div>
+        <span style="color: black;">
+                or email:
+            </span>
+        <a style="color: #d9534f; outline: none;" href="mailto:Joinus@joinourstory.com">
+            joinus@joinourstory.com
+        </a>
+    </div>
+</div>
+</div>
 
 <script>
 
