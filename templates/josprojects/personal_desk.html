@@ -39,14 +39,13 @@
 
 <div id='top-buttons' class="row" style="width: 1265px; margin: 0;">
 
-{#<button class="j_button j_relocate_button pull-right"#}
-{#        style="display: flex; justify-content: space-around; align-items: center;#}
-{#        font-size: 24px; margin-left: 15px;"#}
-{#        onclick="location.href='http://www.joinourstory.com/workshop_connect';">#}
-{#    <div class="fa fa-video-camera fa-fw"></div>#}
-{##}
-{#    <div style="margin-left: 10px;">COMMUNITY ROOM</div>#}
-{#</button>#}
+    <button class="j_button j_relocate_button pull-left"
+            style="display: flex; justify-content: space-around; align-items: center;
+            font-size: 24px; margin-left: 15px;"
+            onclick="location.href='http://www.joinourstory.com/workshop_connect';">
+        <i class="fa fa-video-camera fa-fw"></i>
+        COMMUNITY ROOM
+    </button>
 
     {% inbox_count as my_var %}
     {% if my_var > 0 %}

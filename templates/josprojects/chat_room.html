@@ -150,12 +150,12 @@
         NEW TAB
     </button>
 
-    {% if JOSName == "Celeste D." or JOSName == "Adam S." %}
-        <button id="share_button" class="j_button  j_test_button startshare pull-right"
-                onclick="controlShare('{{ JOSName }}')">
-            SHARE SCREEN
-        </button>
-    {% endif %}
+{#    {% if JOSName == "Celeste D." or JOSName == "Adam S." %}#}
+{#        <button id="share_button" class="j_button  j_test_button startshare pull-right"#}
+{#                onclick="controlShare('{{ JOSName }}')">#}
+{#            SHARE SCREEN#}
+{#        </button>#}
+{#    {% endif %}#}
 
     <script>
         function newTab() {
@@ -280,12 +280,12 @@
         // Peer Joined
         josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
             console.log('peerJoined: ' + peerId);
-            peerJOSName = 'Me';
-            if (!isSelf) {
-
-                peerJOSName = josSkylink.getUserData(peerId)['name'];
-                addMessage(peerJOSName, 'joined chat', 'action');
-            }
+{#            peerJOSName = 'Me';#}
+{#            if (!isSelf) {#}
+{##}
+{#                peerJOSName = josSkylink.getUserData(peerId)['name'];#}
+{#                addMessage(peerJOSName, 'joined chat', 'action');#}
+{#            }#}
         });
 
         // Peer left
@@ -294,7 +294,7 @@
             if (!isSelf) {
 
                 reclaimSlot(peerId);
-                addMessage(peerJOSName, 'left chat', 'action');
+{#                addMessage(peerJOSName, 'left chat', 'action');#}
             }
         });
 
@@ -317,46 +317,46 @@
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
         var pstn;
-        var peerJOSName = josSkylink.getUserData(peerId)['name'];
+{#        var peerJOSName = josSkylink.getUserData(peerId)['name'];#}
         var nextEmptyID = 'xxx';
-        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
+{#        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);#}
 
-        var stpshr = peerJOSName.indexOf("stps");
-        if (stpshr > 0) {
-            peerJOSName = peerJOSName.slice(0, -6);
-            $(scrnShrCntnr).addClass('hidden');
-            $(adncCntnr).removeClass('hidden');
-            // addMessage(usr = 'Guide', cntnt = 'stopped share', clssnm = 'action');
+{#        var stpshr = peerJOSName.indexOf("stps");#}
+{#        if (stpshr > 0) {#}
+{#            peerJOSName = peerJOSName.slice(0, -6);#}
+{#            $(scrnShrCntnr).addClass('hidden');#}
+{#            $(adncCntnr).removeClass('hidden');#}
+{#            // addMessage(usr = 'Guide', cntnt = 'stopped share', clssnm = 'action');#}
+{#        }#}
+
+{#        var shrscrn = peerJOSName.indexOf("shar");#}
+{#        if (shrscrn > 0) {#}
+{#            $(adncCntnr).addClass('hidden');#}
+{#            $(scrnShrCntnr).removeClass('hidden');#}
+{#            reclaimSlot(peerId);#}
+{#            // addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');#}
+{#            vidBox = document.getElementById('shared_video');#}
+{#        }#}
+{#        else {#}
+{#            if (isSelf) {#}
+{#                nextEmptyID = 'vid_2_empty';#}
+{#            } else {#}
+        for (c = 3; c < 8; c++) {
+            var testId = '#vid_' + c + '_empty';
+            if ($(testId).length) {
+                nextEmptyID = testId.substr(1);
+                break;
+            }
         }
+{#            }#}
 
-        var shrscrn = peerJOSName.indexOf("shar");
-        if (shrscrn > 0) {
-            $(adncCntnr).addClass('hidden');
-            $(scrnShrCntnr).removeClass('hidden');
-            reclaimSlot(peerId);
-            // addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');
-            vidBox = document.getElementById('shared_video');
-        }
-        else {
-            if (isSelf) {
-                nextEmptyID = 'vid_2_empty';
-            } else {
-                for (c = 3; c < 8; c++) {
-                    var testId = '#vid_' + c + '_empty';
-                    if ($(testId).length) {
-                        nextEmptyID = testId.substr(1);
-                        break;
-                    }
-                }
-            }
-
-            if (peerJOSName == "Celeste_D") {
-                nextEmptyID = 'vid_1_empty';
-            }
-
-            if (peerJOSName == "Adam_S") {
-                nextEmptyID = 'vid_6_empty';
-            }
+{#            if (peerJOSName == "Celeste_D") {#}
+{#                nextEmptyID = 'vid_1_empty';#}
+{#            }#}
+{##}
+{#            if (peerJOSName == "Adam_S") {#}
+{#                nextEmptyID = 'vid_6_empty';#}
+{#            }#}
 
             console.log('nextEmptyID: ' +  nextEmptyID);
 
@@ -364,13 +364,13 @@
             vidBox.id = nextEmptyID.slice(0, -5) + peerId;
             pstn = vidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById('name_' + pstn);
-            nameBox.innerHTML = peerJOSName;
+{#            nameBox.innerHTML = peerJOSName;#}
             var particBox = document.getElementById('box_' + pstn);
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
                 $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
             }
-        }
+{#        }#}
 
         if (isSelf) {
             vidBox.muted = true;
@@ -384,10 +384,10 @@
 {#            });#}
         }
 
-        if (peerJOSName !== '???') {
+{#        if (peerJOSName !== '???') {#}
             $(particBox).removeClass('hidden');
             attachMediaStream(vidBox, stream);
-        }
+{#        }#}
     });
 
     // Layout
