@@ -281,7 +281,7 @@
 
         // Peer Joined
         josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-            console.log('peerJoined: ' + peerId + ', peerInfo: ' + JSON.stringify(peerInfo));
+            console.log('peerJoined: ' + peerId);
             peerJOSName = 'Me';
             if (!isSelf) {
 
@@ -302,7 +302,9 @@
         });
 
         // Init: ENCRYPT ROOM NAME
-        josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
+        josSkylink.init({
+            apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
+            defaultRoom: 'Main'}, function () {
             console.log('Joining room');
             josSkylink.setUserData('{{ JOSName }}');
 
