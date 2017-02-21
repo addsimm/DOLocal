@@ -76,6 +76,7 @@ def story_gallery(request, template="josprojects/story_gallery.html", extra_cont
     return TemplateResponse(request, template, context)
 
 
+@login_required
 def community_room(request, incognito=False, jos_id=0, template="josprojects/chat_room.html"):
     JOSKey = 'e18f2a1f-f608-44ae-8fc9-e2a42bb0278e'
     try:

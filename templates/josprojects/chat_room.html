@@ -245,14 +245,15 @@
     {
         // media Access Required
         josSkylink.on('mediaAccessRequired', function (stream) {
-            console.log('mediaAccessRequired: ' + stream);
+            console.log('mediaAccessRequired');
+            josSkylink.setUserData('{{ JOSName }}');
             josSkylink.getUserMedia({
                 video: {
-                    resolution: {
-                        width: 80,
-                        height: 60
-                    },
-                    frameRate: 1 ///// change to one
+{#                    resolution: {#}
+{#                        width: 80,#}
+{#                        height: 60#}
+{#                    },#}
+                    frameRate: 10 ///// change to one
                 },
                 audio: true
             });
@@ -260,7 +261,8 @@
 
         // media Access Success
         josSkylink.on('mediaAccessSuccess', function (stream) {
-            console.log('mediaAccessSuccess: ' + stream);
+            console.log('mediaAccessSuccess: ' + stream + ', name: {{ JOSName }}');
+            josSkylink.setUserData('{{ JOSName }}');
         });
 
         // media Access Error
@@ -272,20 +274,20 @@
         josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
             var user = 'Me', className = 'message';
             if (!isSelf) {
-                user = josSkylink.getUserData(peerId)['name'];
+                user = josSkylink.getUserData(peerId);
             }
             addMessage(user, message.content, className);
         });
 
         // Peer Joined
         josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
-            console.log('peerJoined: ' + peerId);
-{#            peerJOSName = 'Me';#}
-{#            if (!isSelf) {#}
-{##}
-{#                peerJOSName = josSkylink.getUserData(peerId)['name'];#}
-{#                addMessage(peerJOSName, 'joined chat', 'action');#}
-{#            }#}
+            console.log('peerJoined: ' + peerId + ', peerInfo: ' + JSON.stringify(peerInfo));
+            peerJOSName = 'Me';
+            if (!isSelf) {
+
+                var peerJOSName = peerInfo.userData;
+                addMessage(peerJOSName, 'joined chat', 'action');
+            }
         });
 
         // Peer left
@@ -294,22 +296,21 @@
             if (!isSelf) {
 
                 reclaimSlot(peerId);
-{#                addMessage(peerJOSName, 'left chat', 'action');#}
+                peerJOSName = peerInfo.userData;
+                addMessage(peerJOSName, 'left chat', 'action');
             }
         });
 
         // Init: ENCRYPT ROOM NAME
         josSkylink.init({apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959', defaultRoom: 'Main'}, function () {
             console.log('Joining room');
+            josSkylink.setUserData('{{ JOSName }}');
+
             josSkylink.joinRoom({
                 audioFallback: true,
                 audio: true,
                 video: true,
                 manualGetUserMedia: true
-            });
-
-            josSkylink.setUserData({
-                name: '{{ JOSName }}'
             });
         });
     }
@@ -317,9 +318,10 @@
     // Incoming Stream
     josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
         var pstn;
-{#        var peerJOSName = josSkylink.getUserData(peerId)['name'];#}
+        var peerJOSName = josSkylink.getPeerInfo(peerId).userData;
+        
         var nextEmptyID = 'xxx';
-{#        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);#}
+        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
 
 {#        var stpshr = peerJOSName.indexOf("stps");#}
 {#        if (stpshr > 0) {#}
@@ -350,13 +352,13 @@
         }
 {#            }#}
 
-{#            if (peerJOSName == "Celeste_D") {#}
-{#                nextEmptyID = 'vid_1_empty';#}
-{#            }#}
-{##}
-{#            if (peerJOSName == "Adam_S") {#}
-{#                nextEmptyID = 'vid_6_empty';#}
-{#            }#}
+            if (peerJOSName == "Celeste_D") {
+                nextEmptyID = 'vid_1_empty';
+            }
+
+            if (peerJOSName == "Adam_S") {
+                nextEmptyID = 'vid_6_empty';
+            }
 
             console.log('nextEmptyID: ' +  nextEmptyID);
 
@@ -364,7 +366,7 @@
             vidBox.id = nextEmptyID.slice(0, -5) + peerId;
             pstn = vidBox.id.split('_')[1].toString();
             var nameBox = document.getElementById('name_' + pstn);
-{#            nameBox.innerHTML = peerJOSName;#}
+            nameBox.innerHTML = peerJOSName;
             var particBox = document.getElementById('box_' + pstn);
             vidBox.autoplay = 'autoplay';
             if (isSelf) {
@@ -384,10 +386,10 @@
 {#            });#}
         }
 
-{#        if (peerJOSName !== '???') {#}
+        if (peerJOSName !== '???') {
             $(particBox).removeClass('hidden');
             attachMediaStream(vidBox, stream);
-{#        }#}
+        }
     });
 
     // Layout
@@ -494,19 +496,19 @@
         });
 
         function controlShare(jsnm) {
-            var name = 'missing';
-            if ($(shrBt).hasClass('startshare')) {
-                $(shrBt).removeClass('startshare').addClass('stopshare');
-                shrBt.textContent = "Stop share";
-                name = jsnm + ', shar';josSkylink.setUserData({name: name});
-                josSkylink.shareScreen();
-            } else {
-                $(shrBt).removeClass('stopshare').addClass('startshare');
-                shrBt.textContent = "Share screen";
-                name = jsnm + ', stps';
-                josSkylink.setUserData({name: name});
-                josSkylink.stopScreen();
-            }
+{#            var name = 'missing';#}
+{#            if ($(shrBt).hasClass('startshare')) {#}
+{#                $(shrBt).removeClass('startshare').addClass('stopshare');#}
+{#                shrBt.textContent = "Stop share";#}
+{#                name = jsnm + ', shar';josSkylink.setUserData({name: name});#}
+{#                josSkylink.shareScreen();#}
+{#            } else {#}
+{#                $(shrBt).removeClass('stopshare').addClass('startshare');#}
+{#                shrBt.textContent = "Share screen";#}
+{#                name = jsnm + ', stps';#}
+{#                josSkylink.setUserData({name: name});#}
+{#                josSkylink.stopScreen();#}
+{#            }#}
         }
     }
 

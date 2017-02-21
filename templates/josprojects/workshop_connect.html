@@ -68,13 +68,13 @@
     var x = navigator.appVersion;
     var status_span = document.getElementById('browser_status');
     var join_button = document.getElementById('join_button');
-    if (x.indexOf("hrome") > 0) {
-        $(status_span).html("Everything looks OK!").css('color', 'green');
-    }
-    else {
-        $(status_span).html("We don't detect Chrome; please call.").css('color', 'red');
-        $(join_button).addClass('disabled');
-    }
+{#    if (x.indexOf("hrome") > 0) {#}
+{#        $(status_span).html("Everything looks OK!").css('color', 'green');#}
+{#    }#}
+{#    else {#}
+{#        $(status_span).html("We don't detect Chrome; please call.").css('color', 'red');#}
+{#        $(join_button).addClass('disabled');#}
+{#    }#}
     console.log(x);
 
 </script>
