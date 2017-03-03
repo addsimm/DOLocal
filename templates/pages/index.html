@@ -1,119 +1,377 @@
 {% extends "base.html" %}
+{% load i18n static %}
 
-{% block meta_title %}Landing{% endblock %}
+{% block meta_title %}Home{% endblock %}
+{% block title %}Home{% endblock %}
 
-{% block title %}Landing{% endblock %}
+{% block help %}{% endblock help %}
 
-{% block joslogo %}{% endblock %}
+{% block phone_number %}{% endblock phone_number %}
 
-{% block slogan %}{% endblock %}
-
-{% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
 
 {% block all_content %}
 
 <style>
 
-    .homehead {
-        font-size: 36pt;
-        margin-top: 70px;
-        text-align: center;
+    .secret-button:hover {
+        color: blue !important;
     }
 
-    #landing_page .hometext {
-        font-size: 22pt;
+    .homehead {
+        font-family: "Abril Fatface", serif;
+        font-size: 54pt;
+    }
+
+    .home_text {
+        font-size: 24pt;
         line-height: normal;
-        list-style: disc;
-        margin-left: 20px;
-        margin-top: 67px;
+    }
+
+    .wheel {
+        opacity: 1;
+        transition: all 0.15s ease;
+        display: inline-block;
+        position: relative;
+    }
+
+    .spin {
+        animation: spin .1s infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translatey(-25px);
+            opacity: 0;
+        }
+        50% {
+            transform: translatey(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translatey(20px);
+            opacity: 0;
+        }
+    }
+
+    #prompt_icons img {
+        height: 60px;
+        width: 60px;
+    }
+
+    .wheel {
+        margin-left: 30px;
+    }
+
+    #random_prompt_slots img {
+        margin-left: 40px;
     }
 
 </style>
 
-<div id="landing_page" style="margin-left: 150px;">
+<img class="img" style="height: 200px; margin-top: -60px;"
+     src="{% static 'img/3create_4.5.png' %}"><br>
 
-    <div class="row" style="margin-top: 0; margin-left: -90px; margin-right: -30px; background-color: transparent;">
+<div class="josinstructions">
 
-        <div class="col-xs-5" style="margin-top: 35px; background-color: transparent;">
-            <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-               {% else %}href="/"{% endif %} style="color: rgb(65, 45, 120); outline: none; padding: 0">
-                <img class="img img-responsive" style="height: 235px;" src="/static/img/JOSLogo121615.png">
-            </a>
-            <div class="text-center" style="font-size: 18pt; margin-left: -25px;">
-                A storytelling community for<br>happier souls and healthier minds.
-            </div>
+<div id="design" style="margin: 20px; padding: 20px; background-color: aliceblue;">
+    Links for designers (the log in is guest and the password is 123, if necessary):
 
-        </div>
-
-        <div class="col-xs-7" style="background-color: transparent;">
-
-            <span style="font-size: 18pt;">Click to learn about better storytelling:</span>
-            <video width="605" height="340" controls>
-                <source src="/static/media/JOSLandPage480p.mp4" type="video/mp4">
-                Sorry, your browser does not support this video. Please call us.
-            </video>
-
-        </div>
-    </div>
-
-    <div class="row" style="margin-left: -90px; margin-right: -30px; background-color: transparent; margin-top: 50px;">
-        <div class="col-xs-3" style="background-color: transparent;">
-            <img class="img img-responsive" style="padding-left:0;" src="/static/img/3enjoy_4.5.png">
-        </div>
-
-        <div class="hidden-xs col-sm-2" style="background-color: transparent;">
-            <p class="homehead">
-                Enjoy
-            </p>
-        </div>
-
-        <div class="col-xs-9 col-sm-7" style="background-color: transparent;">
-            <p class="hometext">
-                Have fun with smart, original content, lively workshops and a warm, supportive community.
-            </p>
-        </div>
-    </div>
-
-    <div class="row" style="margin-left: -90px; margin-right: -30px; background-color: transparent; margin-top: 35px;">
-        <div class="col-xs-3" style="background-color: transparent;">
-            <img class="img img-responsive" style="padding-left:0;" src="/static/img/3create_4.5.png">
-        </div>
-
-        <div class="hidden-xs col-sm-2" style="background-color: transparent;">
-            <p class="homehead">
-                Create
-            </p>
-        </div>
-
-        <div class="col-xs-9 col-sm-7" style="background-color: transparent;">
-            <p class="hometext">
-                Express yourself in stories, personal narratives and stimulating discussions.
-            </p>
-        </div>
-    </div>
-
-    <div class="row" style="margin-left: -90px; margin-right: -30px; background-color: transparent; margin-top: 35px;"><!-- MAIN -->
-        <div class="col-xs-3" style="margin-top: -10px;">
-            <img class="img img-responsive" style="padding-left:0;" src="/static/img/3share-4.5.png">
-        </div>
-        <div class="hidden-xs col-sm-2" style="background-color: transparent;">
-            <p class="homehead">
-                Share
-            </p>
-        </div>
-        <div class="col-xs-9 col-sm-7" style=" ">
-            <p class="hometext">
-                Meet people, make new friends and share your stories with the world!
-            </p>
-        </div>
-    </div>
-
-    <div class="row" style="margin-left: -90px; margin-right: -30px; margin-bottom: 25px;">
-        <div class="col-xs-9 hometext text-center" style=" ">
-            With much more to come ...
-        </div>
-
+    <div class="" style="display: flex; justify-content: space-between; width: 60%; margin: 15px 0 0 30px;">
+        <button class="j_button_small j_relocate_button"
+                onclick="window.location.href='https://joinourstory.com/playground';">
+            NEW PERSONAL DESK
+        </button>
+        <button class="j_button_small j_relocate_button"
+                onclick="window.location.href='https://joinourstory.com/joscourses/seven_day';">
+            SHORT COURSE PROGRESS
+        </button>
+        <button class="j_button_small j_relocate_button"
+                onclick="window.location.href='https://joinourstory.com/joscourses/one_day/1';">
+            ONE DAY
+        </button>
+        <button class="j_button_small j_relocate_button"
+                onclick="window.location.href='https://joinourstory.com/joscourses/josstory/0';">
+            STORY EDITOR
+        </button>
     </div>
 </div>
 
+
+<div id="spin_again_modal_box" style="display: none;
+     position: absolute; top: -65px; left: 0; height: 2215px; width: 1280px;
+     background-color:  #C0C0C0; opacity: .98; z-index: 500;">
+
+    <div id=" " style="position: absolute; top: 1392px; left: 300px; height: 375px; width: 720px;
+         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 15px; left: 15px; height: 80px;">
+
+        <div id="messageSpace" class="text-center" style="
+             position: absolute; top: 115px; height: 185px; width: 720px">
+            <div id=" ">
+                Are you sure you want to spin again?<br>
+                <span style="font-size: 16pt;">Spinning again resets the recent spins</span><br><br>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button id="title_save_btn" class="j_button_small j_save_button"
+                        style=" " onclick="clearWinners();">
+                    <i class="fa fa-circle fa-fw"></i>
+                    RESET SPINS
+                </button>
+
+                <button id="title_discard_btn" class="j_button_small j_back_button"
+                        style="margin-left: 10px; "
+                        onclick="$('#spin_again_modal_box').hide();">
+                    <i class="fa fa-arrow-left fa-fw"></i>
+                    GO BACK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{#landing_page_copy#}
+<div id="" style="margin: 30px; width: 1220px; z-index: 5;">
+    FB AD HEADLINE<br>
+    FB AD COPY<br><br>
+    Enjoy storytelling and interested in improving your writing skills?<br><br>
+
+    Beginner or experienced writer, Join Our Story can help you, giving you expert guidance and a supportive community
+    JOS is a place to express yourself in a respectful, secure environment, and become a better storyteller<br><br>
+
+    ENTER OUR WRITING CONTEST!<br>
+    <ul>
+        <li>1ST PLACE: $250 Visa Check Card and 21-Week Comprehensive Master Class on Better Storytelling</li>
+        <li>2ND PLACE (5 Winners): 21-Week Comprehensive Master Class on Better Storytelling</li>
+        <li>First 25 entrants get feedback from award-winning author and educator</li>
+        <li>Every entrant gets a free 7-day writing course that you can take from anywhere</li>
+    </ul><br>
+    TO ENTER:<br><br>
+    SPIN, WRITE AND WIN!<br><br>
+    Click “spin” to generate a random character, world and conflict situation. Then use all three elements to write a story for our contest! Not crazy about what you spun? Just spin again!<br><br>
+
+    Once you have your three elements, fill out this form and you’ll be directed to our story editor to write your story.<br><br>
+
+    Final date for contest entries is xx/xx/17. Winners will be notified by email on xx/xx/17.<br><br>
+</div>
+
+<!-- SPIN TO WIN -->
+<div class="home_text" style="margin: 0 0 0 300px;">
+
+    <div id="random_prompt_slots" class="jos_flex_container homehead" style="
+         position: relative; justify-content: space-around;
+         height: 360px; width: 630px; margin-top: 50px; padding: 15px 0;
+         font-size: 32pt; outline: 2px dashed rgb(65,45,120);">
+
+        <div style=" ">
+            <img src="/static/img/icon-character.png" style=" ">
+            <div id='character' class="wheel" style=" ">
+                -- Character --
+            </div>
+        </div>
+        <div>
+            <img src="/static/img/icon-world.png" style=" ">
+            <div id='world' class="wheel" style=" ">
+                -- World --
+            </div>
+
+        </div>
+        <div>
+            <img src="/static/img/icon-conflict.png" style=" ">
+            <div id='conflict' class="wheel" style=" ">
+                -- Conflict --
+            </div>
+        </div>
+
+        <button id="spin_button" class="j_button j_discard_button" style="
+                    position: absolute; top: 115px; left: 470px;
+                    background-image: url('/static/img/spin-button-020417.png');
+                    height: 130px; width: 130px; border-radius: 65px;"
+                onclick="startWheel();">
+        </button>
+    </div>
+</div>
+
+<div id='winners' class="jos_flex_container" style="margin: 60px 0 0 90px;"></div>
+
+<div id="phone" style="margin: 90px 0 0 30px;">
+    <button id="contest_gallery_button" class="j_button j_back_button"
+            onclick=" "
+            data-toggle="tooltip" data-placement="bottom" title=" ">
+        <i class="fa fa-eye fa-fw"></i>
+        View other entrants and make comments
+    </button><br><br><br><br>
+
+    <div class="text-right" style="color: #d9534f; font-size: 14pt; margin-bottom: 10px; margin-right: 5px;">
+        <span style="color: black;">Questions? Call 8am to 10pm Pacific:</span>
+        <b>(213) 465-0885</b>
+        <span style="color: black;">
+                or email:
+            </span>
+        <a style="color: #d9534f; outline: none;" href="mailto:Joinus@joinourstory.com">
+            joinus@joinourstory.com
+        </a>
+    </div>
+</div>
+</div>
+
+<script>
+
+        var spin_number = 0,
+            change_char, change_world, change_conflict,
+            characters = [
+                "spymaster", "billionaire", "janitor", "farmer", "alien",
+                "astronaut", "bank teller", "househusband", "pharmacist",
+                "dancer", "manicurist", "paparazzi", "aunt", "grandfather", "thief",
+                "cashier", "politician", "actor", "dentist"],
+            worlds = [
+                "main street", "movie set", "school bus", "Taj Mahal",
+                "closet", "1880s London", "feudal Japan", "Garden of Eden",
+                "Ancient Egypt", "1789 France", "Bangkok", "Mount Everest",
+                "Tahiti", "pirate ship", "ancient Rome", "Vatican", "Mars"],
+            conflicts = [
+                "earthquake", "misfortune", "revolt", "kidnapping", "puzzle",
+                "rivalry", "adultery", "insanity", "passion", "desire", "heresy",
+                "conformity", "mistaken belief", "lover's betrayal"],
+            first_character = 0, first_world = 0, first_conflict = 0,
+            winners = [];
+        
+        var start_button_html =
+                "<button class='j_button_small j_save_button' style='margin-left: 15px;' onclick = ' '>" +
+                "    <i class='fa fa-keyboard-o fa-fw' ></i>" +
+                "     GET STARTED" +
+                "</button>",
+            reset_html = "<div>Choose one to start (resets after 3 spins):</div>";
+
+
+        function clearWinners() {
+            spin_number = 0;
+            $('#spin_again_modal_box').hide();
+            $('#winners').html(' ');
+            winners = [];
+        }
+
+        function changeCharacter() {
+            $('#character').html(characters[first_character]).css('color', getColor());
+            first_character = (first_character + 1) % characters.length; // modulus repeats
+        }
+
+        function changeWorld() {
+            $('#world').html(worlds[first_world]).css('color', getColor());
+            first_world = (first_world + 1) % worlds.length;
+        }
+
+        function changeConflict() {
+            $('#conflict').html(conflicts[first_conflict]).css('color', getColor());
+            first_conflict = (first_conflict + 1) % conflicts.length;
+        }
+
+        function startWheel() {
+
+            if (spin_number == 3) {
+                $('#spin_again_modal_box').show();
+                return
+            }
+            spin_number++;
+
+            $('#spin_button').hide();
+
+            var wild = Math.floor(Math.random() * 3);
+            switch (wild) {
+                case 0:
+                    characters.push("* WILDCARD *");
+                    break;
+                case 1:
+                    worlds.push("* WILDCARD *");
+                    break;
+                case 2:
+                    conflicts.push("* WILDCARD *");
+                    break;
+            }
+
+            var timer = 800 + Math.floor(Math.random() * 350);
+            $('.wheel').addClass('spin');
+
+            change_char = setInterval(changeCharacter, 50); // match css animation
+            setTimeout(function () {
+                clearInterval(change_char);
+                $('#character').removeClass('spin');
+            }, timer + Math.floor(Math.random() * 150));
+            change_world = setInterval(changeWorld, 50);
+            setTimeout(function () {
+                clearInterval(change_world);
+                $('#world').removeClass('spin');
+            }, timer + 400 + Math.floor(Math.random() * 250));
+            change_conflict = setInterval(changeConflict, 50);
+            setTimeout(function () {
+                clearInterval(change_conflict);
+                $('#conflict').removeClass('spin');
+            }, timer + 1000 + Math.floor(Math.random() * 250));
+
+
+            setTimeout(function () {
+
+                if (spin_number == 1) {
+                    $('#winners').html(reset_html);
+                }
+
+                var spin_no = ordinal_suffix_of(spin_number),
+                    win_character = $('#character').html(),
+                    win_world = $('#world').html(),
+                    win_conflict = $('#conflict').html();
+
+                var winner = [spin_no, win_character, win_world, win_conflict];
+                winners.push(winner);
+                var winner_html =
+                        "<div style='margin: 12px;'>" +
+                        "<span style='color:red; margin-right: 7px;'>" + spin_no + ":</span>" +
+                            win_character + " in/on " +
+                            win_world + " faces " +
+                            win_conflict +
+                            start_button_html +
+                        "</div>";
+                $('#winners').append(winner_html);
+
+                switch (wild) {
+                    case 0:
+                        var index1 = characters.indexOf("* WILDCARD *");
+                        characters.splice(index1, 1);
+                        break;
+                    case 1:
+                        var index2 = worlds.indexOf("* WILDCARD *");
+                        worlds.splice(index2, 1);
+                        break;
+                    case 2:
+                        var index3 = conflicts.indexOf("* WILDCARD *");
+                        conflicts.splice(index3, 1);
+                        break;
+                }
+                $('#spin_button').show();
+            }, timer + 1500)
+        }
+
+        function getColor() {
+            return 'hsl(' + (Math.floor(Math.random() * 18)) * 20 + ', 85%, 55%)';
+        }
+
+        function ordinal_suffix_of(i) {
+            var j = i % 10,
+                    k = i % 100;
+            if (j == 1 && k != 11) {
+                return i + "st";
+            }
+            if (j == 2 && k != 12) {
+                return i + "nd";
+            }
+            if (j == 3 && k != 13) {
+                return i + "rd";
+            }
+            return i + "th";
+        }
+    </script>
+
 {% endblock all_content %}
+

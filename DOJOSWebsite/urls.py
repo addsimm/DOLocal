@@ -1,79 +1,81 @@
-from __future__ import unicode_literals
 
-from django.conf.urls import patterns, include, url
-from django.conf.urls.i18n import i18n_patterns
+
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from mezzanine.conf import settings
+from mezzanine.pages.views import page
+
+from josmembers.views import jos_new_password, password_reset_verify
+from josprojects.views import ajax_session_update, ajax_help_search, workshop_connect, community_room
+from josplayground.views import playground_view, ui_demo_view
 
 _slash = "/" if settings.APPEND_SLASH else ""
 _verify_pattern = "/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)"
 
 ACCOUNT_URL = getattr(settings, "ACCOUNT_URL", "/accounts/")
-PASSWORD_RESET_VERIFY_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL",
-                                    "/%s/password/verify/" % ACCOUNT_URL.strip("/"))
-JOS_NEW_PASSWORD_URL = getattr(settings, "PASSWORD_RESET_VERIFY_URL", "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
+PASSWORD_RESET_VERIFY_URL = \
+    getattr(settings, "PASSWORD_RESET_VERIFY_URL", "/%s/password/verify/" % ACCOUNT_URL.strip("/"))
+JOS_NEW_PASSWORD_URL = \
+    getattr(settings, "PASSWORD_RESET_VERIFY_URL", "/%s/jos_new_password/" % ACCOUNT_URL.strip("/"))
 
 admin.autodiscover()
 
-# Add the urlpatterns for any custom Django applications here.
-urlpatterns = i18n_patterns("",
+urlpatterns = [
     ### Admin
-    ("^admin/", include(admin.site.urls)),
-)
+    url("^admin/", include(admin.site.urls)),
+]
 
-# if settings.USE_MODELTRANSLATION:
-#     urlpatterns += patterns('',
-#         url('^i18n/$', 'django.views.i18n.set_language', name='set_language'),
-#     )
+urlpatterns += [
 
-import spirit.urls
+    ### HOMEPAGE
+    url("^$", page, {"slug": "/"}, name="home"),
 
-urlpatterns += patterns('',
-    # EDITABLE HOMEPAGE
-    url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+    ### Password reset
+    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), jos_new_password,
+        name="jos_new_password"),
+    url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash),
+        password_reset_verify, name="password_reset_verify"),
+    url('^', include('josmembers.urls', namespace='josmembers')),
 
-    ### Analytics ###
-    url(r'^tracking/', include('tracking.urls')),
+    ##### Adam's test playground
+    url("playground", playground_view, name="playground"),
+    url("uidemo", ui_demo_view, name="ui_demo"),
 
-    ### JOS Members / Accounts ###
-    url("^%s%s$" % (JOS_NEW_PASSWORD_URL.strip("/"), _slash), "josmembers.views.jos_new_password", name="jos_new_password"),
-    url("^%s%s%s$" % (PASSWORD_RESET_VERIFY_URL.strip("/"), _verify_pattern, _slash), "josmembers.views.password_reset_verify",name="password_reset_verify"),
-    ('^', include('josmembers.urls', namespace='josmembers')),
+    ### Tracking ###
+    # url(r'^tracking/', include('tracking.urls')),
 
-    ### JOS Projects / Courses ###
-    ("^", include("josprojects.urls")),
-    ("^joscourses/", include("joscourses.urls")),
+    ### Help w/ search
+    url("ajax_session_update", ajax_session_update, name="ajax_session_update"),
+    url(r"^search_help/$", ajax_help_search, name="search_help"),
 
-    ### JOS Staff ###
-    url("about/$", "josstaff.views.staffgallery", name="staffgallery"),
-    url("legals/$", "josstaff.views.legals", name="legals"),
-    url("community-rules/$", "josstaff.views.community_rules", name="community_rules"),
-    url("^%s%s$" % ("josstaff/stafftimesheet".strip("/"), _slash), "josstaff.views.stafftimesheet", name="josstaff_timesheet"),
-    url("^%s%s$" % ("josanal".strip("/"), _slash), "josstaff.views.josanal", name="josanal"),
+    ### Video conference ###
+    url("workshop_connect$", workshop_connect, name="workshop_connect"),
+    url("community_room/incognito/$", community_room, {'incognito': True}, name="community_room"),
+    url("community_room/(?P<jos_id>\d+)", community_room, name="community_room"),
 
-    ### DJOINGO ###
-    # url("djoingo/$", "josdjoingo.views.djoingo_main", name="djoingo_main"),
+    ### Messages
+    url(r'^messages/',
+        include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
 
-    ### Forums, Messaging, Etc. ###
-    url(r'^spirit/', include(spirit.urls)),
-    #url(r'^spirit/', include('spirit.urls', namespace="spirit", app_name='spirit')),
-    url(r'^messages/', include('josmessages.urls', namespace='josmessages', app_name='josmessages')),
+    ### JOS app includes
+    url("^", include("josstaff.urls", namespace='josstaff')),
+    url("^", include("josprojects.urls")),
+    url("^joscourses/", include("joscourses.urls", namespace='joscourses')),
 
-    # NOT IMPLEMENTED url(r'^calendar/', include('schedule.urls')),
 
-    ### ADD URLPATTERNS *ABOVE* MEZZANINE'S URLS
-    ("^", include("mezzanine.urls")),
-)
+    ##### PLACE URls *ABOVE* MEZZANINE
+    url("^", include("mezzanine.urls")),
+]
 
 ### DJANGO-DEBUG-TOOLBAR
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-        )
 
-# Adds ``STATIC_URL`` to the context of error pages, so that error
-# pages can use JS, CSS and images.
-handler404 = "mezzanine.core.views.page_not_found"
-handler500 = "mezzanine.core.views.server_error"
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
+
+### Adds 'STATIC_URL' to error page's context, so they use JS, CSS and images.
+# handler404 = "mezzanine.core.views.page_not_found"
+# handler500 = "mezzanine.core.views.server_error"

@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
-{% load pages_tags mezzanine_tags i18n staticfiles %}
+<html xmlns="http://www.w3.org/1999/html">
+{% load pages_tags mezzanine_tags i18n staticfiles static %}
 
 <head>
     <meta content="text/html">
@@ -10,30 +10,44 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <title>
         {% block meta_title %}{% endblock %}
-        {% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}
+        | JOS
     </title>
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
     {% compress css %}
+        <link rel="stylesheet" href="{% static "css/jquery-ui.css" %}">
+        <link rel="stylesheet" href="{% static "css/jquery-ui.structure.css" %}">
+        <link rel="stylesheet" href="{% static "css/jquery-ui.theme.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+{#        <link rel="stylesheet" href="{% static "ckeditor/contents.css" %}">#}
+{#        <link rel="stylesheet" href="{% static "ckeditor/skins/flat/editor.css" %}">#}
+{#        <link rel="stylesheet" href="{% static "ckeditor/skins/flat/editor_gecko.css" %}">#}
         <link rel="stylesheet" href="{% static "css/josmain.css" %}">
-        <link href='https://fonts.googleapis.com/css?family=Abril+Fatface|Source+Sans+Pro:400,600|Stalemate' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
-        <link rel="stylesheet" href="{% static "css/jquery-confirm.css" %}">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Architects+Daughter|Abril+Fatface|Open+Sans|Stalemate">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
         {% block extra_css %}{% endblock %}
     {% endcompress %}
 
     {% compress js %}
-        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+
+        <script src="/static/mezzanine/js/jquery.min.js"></script>
+        <script src="{% static "js/jquery-ui.js" %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
-        <script src="{% static "js/joseditor.js" %}"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-        <script src="http://cdn.ckeditor.com/4.5.9/full/ckeditor.js"></script>
-        <script src="{% static "js/jquery-confirm.js" %}"></script>
+        <script src="{% static "ckeditor/ckeditor.js" %}"></script>
+        <script src="{% static "js/underscore-min.js" %}"></script>
+{#        <script src="{% static "ckeditor/ckeditor.js" %}"></script>#}
+{#        <script src="{% static "ckeditor/styles.js" %}"></script>#}
+{#        <script src="{% static "ckeditor/config.js" %}"></script>#}
+{#        <script src="{% static "ckeditor/lang/en.js" %}"></script>#}
+
+        <script src="{% static "js/jos-editor-include.js" %}"></script>
+        <script src="{% static "js/central-editor-include.js" %}"></script>
+
         {% block extra_js %}{% endblock %}
     {% endcompress %}
 
@@ -43,111 +57,230 @@
     <![endif]-->
 
     {% block extra_head %}{% endblock %}
-
 </head>
 
-<body id="{% block body_id %}body{% endblock %}">
+<body id="body">
 
-<div class="container" style="background-color: white; margin-left: 20px; position: fixed; top:0; z-index: 100;">
+{% block login_button %}
+<button class="j_button j_action_button"
+        data-toggle="tooltip" data-placement="auto"
+        {% if request.user.is_authenticated %}
+        style="position: fixed; top: 10px; left: 1125px; width: 155px; z-index: 1001;"
+        onclick="location.href='{% url "logout" %}?next={{ request.path }}';"
+        title="Exit Join Our Story">
+            <i class="fa fa-sign-out fa-fw"></i>
+            LOGOUT
+        {% else %}
+            style="position: fixed; top: 10px; left: 1095px; width: 185px; z-index: 1001;"
+            onclick="location.href='{% url "login" %}';"
+            title="Sign in to Join Our Story">
+            <i class="fa fa-sign-in fa-fw"></i>
+            MEMBERS
+        {% endif %}
+</button>
+{% endblock login_button %}
 
-    <div class="row">
-        <!-- JOS LOGO -->
-        <div class="hidden-xs hidden-sm col-md-2" style="background-color: transparent">
-            {% block joslogo %}
-                <a {% if request.user.id > 0 %}href="{% url "personaldesk" %}/{{ request.user.id }}"
-                    {% else %}href="/"{% endif %} class="pull-left" style="outline: none; padding: 0">
-                    <img style="height: 100px;" src="/static/img/JOSLogo121615.png">
-                </a>
-            {% endblock joslogo %}
+{% block base-fixed-top-bar %}
+<div id='base-fixed-top-bar' style="
+    position: fixed; top: 0; left: 0; width: 1280px; height: 70px;
+    background-color: white; border-bottom: 2px solid #412D78; z-index: 900;">
+
+    <!-- Messages -->
+    {% nevercache %}
+        <div id="messageBox" class='hidden' style="
+            position: fixed; top: 75px; left: 15px; height: 95px; width: 1265px;
+            background-color: #b5fcb5; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+            font-size: 24pt; font-weight: bold; z-index: 600;">
+
+            <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+                 style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+            <div id="messageSpace" style="
+                position: absolute; top: 20px; left: 90px; height: 85px; width: 87%;
+                display: inline-block; overflow-y: scroll; word-wrap: break-word;">
+                Test message
+                {% for message in messages %}
+                    <input type="hidden" id="isMessage" name="isMessage"
+                           value="{{ message | striptags }}">
+                {% endfor %}
+            </div>
         </div>
+    {% endnevercache %}
 
-        <div class="hidden-xs col-sm-12 col-md-6">
-            {% nevercache %}{% if messages %}
-                <!-- MESSAGES -->
-                <div class="row messages" style="height: 75px; margin: 10px -90px 5px 25px; padding-top: 10px">
-                    <div class="col-xs-1" style=" " >
-                        <img src="/static/img/peeky-123115.png" height="40px">
-                    </div>
-                    <div class="col-xs-11" style="font-weight: bold; padding: 0 15px;">
-                        {% for message in messages %}
-                            {{ message | striptags }}<br>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% else %}
-                <!-- SLOGAN -->
-                {% block slogan %}
-                    <div class="hometext text-center" style="margin-left: 105px; margin-top: 22px;">
-                        A storytelling community for<br>happier souls and healthier minds.
-                    </div>
-                {% endblock slogan %}
-            {% endif %}{% endnevercache %}
-        </div>
+    <!-- Folder include -->
+    {% if request.user.is_authenticated %}
+        <button id="folder_button" class="j_button_small j_info_button isopen" style="
+                position: fixed; top: -3px; left: 995px; height: 39px; width: 108px;
+                border-radius: 0; z-index: 1001; padding-top: 10px;"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Reminders / How do I? / My notes" onclick="session_data_update('help_position');">
+            <i class="fa fa-folder fa-fw"></i>
+            FOLDER
+        </button>
 
-        <!-- USER PANEL -->
-        <div class="col-sm-12 col-md-4" style="background-color: transparent; margin-top: 10px;">
-            {% include "accounts/user_panel.html" %}
-        </div>
-    </div>
+        <div id="folder_triangle" class="help_down_triangle" style="
+     position: fixed; top: 36px; left: 995px; z-index: 1001;"></div>
+        {% include "jos_includes/my_folder.html" %}
+    {% endif %}
 
-    <!-- BREADCRUMB -->
-    {% block outer_breadcrumb %}
-        {% block breadcrumb_menu %}
-            {% include "pages/menus/breadcrumb.html" %}
-        {% endblock %}
-    {% endblock outer_breadcrumb %}
+    <!-- Back button -->
+    <button class="j_button j_back_button"
+            style="position: absolute; top: 10px; left: 15px;"
+            onclick=" window.history.back();">
+        <i class="fa fa-arrow-left fa-fw"></i>
+        BACK
+    </button>
 
-    {% block right_side_panel %}{% endblock %}
+    <!-- Desk button -->
+    {% if request.user.is_authenticated %}
+        <button class="j_button j_relocate_button"
+                style="position: absolute; top: 10px; left: 145px;"
+                onclick="location.href='{% url "personaldesk" %}/{{ request.user.id }}';">
+            <i class="fa fa-home fa-fw"></i>
+            DESK
+        </button>
+    {% endif %}
+
+    <!-- Breadcrumb -->
+    {% block breadcrumb_menu %}
+        <div style="position: absolute; top: 0; left: 300px;
+             padding-top: 8px; height: auto; width: 680px;">
+         <div class="text-center" style="font-size: 32pt; font-weight: bold; overflow: hidden;">
+    {% endblock %}</div></div>
+
+    <!-- Staff
+    {% if request.user.is_staff %}
+
+        <button class="j_button j_test_button"
+           style="position: fixed; top: 75px; left: 1005px; font-size: 12pt; width: 80px;"
+           onclick="window.location.href='{% url "josstaff:staff_base" %}?firstname={{ user.get_short_name }}';">
+            Staff
+        </button>
+
+    {% endif %}
+    {% if request.user.is_superuser %}
+
+        <button class="j_button j_test_button"
+           style="position: fixed; top: 25px; left: 1043px;  font-size: 8pt; z-index: 450;"
+                onclick="window.location.href='/admin';">
+            ADMIN
+        </button>
+
+    {% endif %}
+    -->
 
 </div>
+{% endblock base-fixed-top-bar %}
 
-{% block center_content %}{% endblock %}
+{% block extra_bar %}{% endblock extra_bar %}
 
 <!-- ALL CONTENT -->
-<div class="container" style="background-color: transparent; margin-left: 20px; min-height: 640px; z-index: 50;">
+<div id="main_container">
+
     {% block all_content %}
 
-        <div class="row" style="margin-top: 150px;">
-            <div class="col-xs-5 col-xs-offset-1">
-                Sorry, there is a "MISSING ALL CONTENT BLOCK" - <br>
-                Click:
-                <button class="btn btn-warning btn "
-                        style="border-radius: 15px; margin: 20px 10px;width: 80px;"
-                        onclick="goBack()">
-                    Back
-                </button>
-                <script>function goBack() {
-                    window.history.back();
-                }</script> or contact us for help.
-            </div>
+        <div style="margin-top: 80px; margin-left: 200px;">
+            Sorry, this content is missing - <br>Click: Back and call us for help.
         </div>
 
     {% endblock all_content %}
+
 </div>
+
+{% block footer %}
 
 <!-- FOOTER -->
 <footer>
-    <div class="container" style="margin-left: 20px; margin-top: 45px; padding: 0;">
-        <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
-            For info, call: (213) 465-0885 or email:
-            <a style="padding: 3px 7px;" href="mailto:Joinus@joinourstory.com">
-                joinus@joinourstory.com
-            </a>
-        </div>
+    <div id='footer' class="container" style="width: 1280px; padding: 15px 0 0 0;">
+
+        {% block phone_number %}
+            <div class="text-right" style="color: #d9534f; margin-bottom: 10px; margin-right: 5px;">
+                <span style="color: black;">
+                     Questions? Call 8am to 10pm Pacific:
+                </span>
+                <b>(213) 465-0885</b>
+                <span style="color: black;">
+                    or email:
+                </span>
+                <a style="color: #d9534f; outline: none;" href="mailto:Joinus@joinourstory.com">
+                    joinus@joinourstory.com
+                </a>
+            </div>
+        {% endblock phone_number %}
+
         {% page_menu "pages/menus/footer.html" %}
 
-        <p class="text-left" style="font-size: 8pt; margin-top: 0;">
+        <p class="text-left" style="font-size: 8pt; margin: 0 0 0 30px;">
             Join Our Story is a California Benefit Corporation &copy 2014
-
-            {% ifinstalled mezzanine.mobile %}
-                <span class="separator">|</span>
-                <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">
-                    {% trans "View Mobile Site" %}
-                </a>
-            {% endifinstalled %}
         </p>
     </div>
-    {% include "includes/footer_scripts.html" %}
+
 </footer>
+
+{% endblock footer %}
+
 </body>
+
+<script>
+
+    $(document).ready( function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // CSRF get cookie for csrf
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does string begin with name?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrf_token = getCookie('csrftoken');
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                }
+            }
+        });
+
+        initJOSEditor('notes', 'small', 'ajax_session_update', '{{ user_created_note | escapejs }}');
+
+        // Messages
+        messageBox = document.getElementById('messageBox');
+        messageSpace = document.getElementById('messageSpace');
+        isMessage = document.getElementById("isMessage");
+        if (isMessage !== null) {
+            var message = isMessage.value;
+        }
+        if (message) {
+            $(messageBox).removeClass('hidden');
+            $(messageBox).delay(3250).fadeOut(1000);
+            $(messageSpace).text(message);
+        }
+    });
+
+    {% if settings.GOOGLE_ANALYTICS_ID and not request.user.is_staff %}
+        var _gaq = _gaq || [['_trackPageview']];
+        _gaq.unshift(['_setAccount', '{{ settings.GOOGLE_ANALYTICS_ID }}']);
+        (function (d, t) {
+            var g = d.createElement(t),
+                    s = d.getElementsByTagName(t)[0];
+            g.async = true;
+            g.src = '//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s);
+        })(document, 'script');
+    {% endif %}
+
+</script>
+
 </html>
