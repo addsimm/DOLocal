@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+
+
+from django.db import migrations, models
+import django.contrib.postgres.fields
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='JoingoCard',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, editable=False)),
+                ('updated', models.DateTimeField(null=True, editable=False)),
+                ('card_serial', models.PositiveIntegerField()),
+                ('entries', django.contrib.postgres.fields.ArrayField(default=None, null=True, base_field=models.IntegerField(), size=25)),
+                ('tags', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=200), size=None)),
+            ],
+            options={
+                'verbose_name': 'Joingo Card',
+                'verbose_name_plural': 'Joingo Cards',
+            },
+        ),
+    ]

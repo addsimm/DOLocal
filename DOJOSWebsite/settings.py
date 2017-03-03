@@ -1,4 +1,4 @@
-from __future__ import absolute_import, unicode_literals
+
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -115,7 +115,6 @@ INSTALLED_APPS = (
     ### 3rd party apps
     'request',
     'floppyforms',
-    'tracking',
     'friendship',
     'josmessages',
     'cloudinary',
@@ -288,12 +287,12 @@ if os.path.exists(f):
 ####################
 # DYNAMIC SETTINGS #
 # set_dynamic_settings() rewrites global  defaults.
-try:
-    from mezzanine.utils.conf import set_dynamic_settings
-except ImportError:
-    pass
-else:
-    set_dynamic_settings(globals())
+
+# try:
+from mezzanine.utils.conf import set_dynamic_settings
+# except ImportError:
+#     pass
+# else:
 
 DEBUG = False
 
