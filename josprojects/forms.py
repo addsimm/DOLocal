@@ -1,10 +1,4 @@
 
-from django import forms
-
-from mezzanine.core.forms import Html5Mixin
-
-from .models import CKRichTextHolder, JOSStory
-
 # class CKRichTextEditForm(Html5Mixin, forms.ModelForm):
 #
 #     pk = forms.IntegerField(widget=forms.HiddenInput())

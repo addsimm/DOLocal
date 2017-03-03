@@ -1,16 +1,13 @@
 """
-Based on http://www.djangosnippets.org/snippets/595/
-by sopelkin
+Based on http://www.djangosnippets.org/snippets/595/ by sopelkin
 """
 
 from django import forms
+from django.contrib.auth.models import User
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 
-from josmessages.utils import get_user_model, get_username_field
-
-User = get_user_model()
-
+from josmessages.utils import get_username_field
 
 class CommaSeparatedUserInput(widgets.Input):
     input_type = 'text'

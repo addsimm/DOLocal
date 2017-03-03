@@ -287,12 +287,12 @@ if os.path.exists(f):
 ####################
 # DYNAMIC SETTINGS #
 # set_dynamic_settings() rewrites global  defaults.
+
 # try:
 from mezzanine.utils.conf import set_dynamic_settings
 # except ImportError:
 #     pass
 # else:
-set_dynamic_settings(globals())
 
 DEBUG = False
 

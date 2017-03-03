@@ -1,74 +1,94 @@
 {% extends "josmessages/mailbase.html" %}
 {% load i18n %}
 
+{% block inner_breadcrumb_menu %}
+    <span style="font-size: 18pt;">Message to:</span> {{ recipient.JOSProfile.friendly_jos_name }}
+{% endblock %}
+
 {% block all_content %}
 
-    <div class="row">
+<div class="row">
 
-        <div class="col-xs-10 col-xs-offset-1">
+<div class="col-xs-10 col-xs-offset-1">
 
-            <br><br>
-            <div class="josinstructions" style="margin-top: 30px;">Send message to {{ jos_name }}:</div>
-            <br>
-            <form action="" method="post">
-                {% csrf_token %}
+    <div class="josinstructions" style="margin: 50px 0 15px 0;">Send new message to:</div>
 
-                <div style="margin-left: 60px;">
+    {% for recipient in recipients %}
+        {% include "josmembers/../jos_includes/user_picture_include.html" with user=recipient height=60 %}
+    {% endfor %}
 
-                    {% for field in form %}
-                        {% if field.label == "Recipient" %}
-                            {{ field.as_hidden }}
-                            <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
-                        {% else %}
-                            <div class="form-group input_{{ field.id_for_label }}
-                                                                 {{ field.field.type }}
-                                                                 {% if field.errors %}
-                                                                    has-error
-                                                                 {% endif %}">
-                                {# field.name #}
-                                {% if field.label %}
-                                    <label class="control-label"
-                                           for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                                {% endif %}
+    <div class="row" style="margin: 30px 0 0 0;">
+    <form action="" method="post">
+        {% csrf_token %}
 
-                                {{ field }}
+        <div style="margin-left: 60px;">
+            <input id="id_recipients" type='hidden' value="{{ recip_ids }}" name="recipient_ids_submit">
+            {% for field in form %}
 
-                                {% if field.errors %}
-                                    <p class="help-block">
-                                        {% for e in field.errors %}
-                                            {% if not forloop.first %} / {% endif %}{{ e }}
-                                        {% endfor %}
-                                    </p>
+                    <div class="form-group input_
+                                {{ field.id_for_label }}
+                                {{ field.field.type }}
+                                {% if field.errors %}has-error{% endif %}">
 
-                                {% elif field.help_text %}
-                                    <p class="help-block">
-                                        {{ field.help_text }}
-                                    </p>
-                                {% endif %}
-
-                            </div>
+                        {# field.name #}
+                        {% if field.label %}
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label | title }}
+                            </label>
                         {% endif %}
-                    {% endfor %}
 
-                    <button class="btn btn-warning"
-                            style=" "
-                            onclick="goBack()">Go back
-                    </button>
+                        {{ field }}
 
-                    <script>function goBack() {
-                        window.history.back();
-                    }</script>
+                        {% if field.errors %}
+                            <p class="help-block">
+                                {% for e in field.errors %}
+                                    {% if not forloop.first %} / {% endif %}{{ e }}
+                                {% endfor %}
+                            </p>
+                        {% elif field.help_text %}
+                            <p class="help-block">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
 
-                    <input class="btn btn-default"
-                           style="width: 100px;"
-                           type="submit" value="Send">
+                    </div>
 
-                </div>
+            {% endfor %}
 
-            </form>
+            <a class="btn btn-warning"
+                    style=" "
+                    href="{% url "josmembers:josmembers_list" %}">
+                Cancel
+            </a>
+
+            <input class="btn btn-default"
+                   style="margin-left: 10px; width: 100px;"
+                   type="submit"
+                   value="Send">
 
         </div>
-
+    </form>
     </div>
+</div>
+</div>
+
+
+<script>
+
+        $(document).ready(function() {
+            CKEDITOR.replace(id_body, {
+                toolbar: [
+                    {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                ],
+                contentsCss: '/static/ckeditor/ckeditor/contents.css',
+                disableNativeSpellChecker: false,
+                width: '95%',
+                tabSpaces: 4,
+                uiColor: '#28a4c9',
+                extraPlugins: 'colorbutton',
+                removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+            });
+        });
+
+</script>
 
 {% endblock %}

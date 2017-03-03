@@ -1,154 +1,85 @@
-{% extends "base.html" %}
+{% extends "joscourses/joscourseweek.html" %}
 {% load i18n mezzanine_tags accounts_tags static %}
-
-{% block meta_title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
-{% block title %}{{ handout.title | safe | truncatechars:25 }}{% endblock %}
-{% block breadcrumb_menu %}{{ block.super }}
-    {{ handout.title  | safe | truncatechars:35 }}
-    </div></div>
-{% endblock %}
 
 {% block all_content %}
 
-<style> .cke {margin-left: 25px;}</style>
-
-<div class="row" style="margin-top: 40px;">
-
+{{ block.super }}
 <!-- Main Panel -->
-<div class="col-xs-10 scrollit" style="border-right: 1px solid rgb(65, 45, 120);">
 
-    <!-- Title -->
-    <div class="row" style=" ">
-        <div class="col-xs-12">
+<!-- DEBUG -->
+<div class='hidden' style="color: rgb(217, 83, 79); margin: 30px 30px;">
+    DEBUG:<br><br>
+    format: {{ format }}
 
-            <div style="height: 30px; margin-bottom: 10px; margin-left: 15px;">
-                <span class="joshint"
-                      style="display: none; font-size: 16pt;"
-                      data-toggle="tooltip"
-                      title="Dragging bottom right triangle changes the editor's height"
-                      data-placement="bottom">
-                Hint: Drag to change editor height
-                </span>
-            </div>
+    <br><br>
 
-            <div id='border_title'
-                 class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 3px;">
+    id: {{ handout.id }}<br>
+    download_filename: {{ download_filename }}<br>
+    image_handout : {{ handout.image_handout }}<br>
+    pdf_handout: {{ handout.pdf_handout }}<br>
 
-                <!-- Title Edit Buttons -->
-                {% include "jos_editor.html" with section='title' %}
+</div>
 
-                <div class="row">
-                    <form id='title_form'
-                          method="post"
-                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+<div class="row text-center" style="margin-top: 150px;">
 
-                        <div id='title' class="col-xs-12 homehead text-center">
-                            {{ handout.title | safe }}<br>
-                        </div>
+    {% if handout.element_no == 14 %}
 
-                        <input id="title_holder" type="hidden" name='nucontent' value=" ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="title">
+        <iframe
+            src="{{ week.video }}" width="960" height="540" frameborder="0"
+            webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        </iframe>
 
-                    </form>
-                </div>
-            </div>
+    {% else %}
+
+        <div class="col-xs-10" style="padding-left: 50px;">
+
+            {% if pdf_missing %}
+
+                Sorry, this PDF is missing - Click back call us, please!
+
+            {% else %}
+
+{#                <img src="https://joinourstory.com/static/img/temp{{ request.user.id }}.png"#}
+{#                     style="position: relative; left: 50px; outline: 1px solid rgb(65,45,120); margin-left: 0;" width="100%">#}
+
+                <iframe id="pdf_frame" title="PDF" name="PDF"
+                        src="https://joinourstory.com/static/media/{{ handout.pdf_handout }}"
+                        width="100%" height="750px"
+                        style=" ">
+                    Your web browser doesn't support 'iframes' - please call.
+                </iframe>
+
+            {% endif %}
+
+
         </div>
-    </div>
 
-    <!-- Content -->
-    <div class="row" style="margin-top: 10px;">
+        <div class="col-xs-2" style="position: relative; left: -70px; margin-top: 105px;">
 
-        <div class="col-xs-12">
+            <button class="j_button j_action_button affix" onclick="printPDF();" style=" ">
+                PRINT
+            </button>
 
-            <div id='border_content' class="{% if edit %}edit_border{% endif %} edit_border_class"
-                 style="padding: 3px;">
+            <a class="j_button j_action_button affix" style="margin-top: 85px;"
+               onclick="window.location.href='https://joinourstory.com/static/media/{{ handout.pdf_handout }}';"
+               download="{{ download_filename }}">
+                DOWNLOAD
+            </a>
 
-                <!-- Content Edit Buttons -->
-                {% include "jos_editor.html" with section='content' %}
-
-                <div class="row">
-                    <form id='content_form' method="post"
-                          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-
-                        <div id='content' class="col-xs-12">
-                            {{ handout.content | richtext_filters | safe }}<br>
-                        </div>
-
-                        <input id="content_holder" type="hidden" name='nucontent' value=" ">
-                        <input id="field_to_edit_holder" type="hidden" name="field_to_edit" value="content">
-
-
-                    </form>
-                </div>
-            </div>
         </div>
-    </div>
-</div>
 
-<!-- Side Panel -->
-<div id="editing_side_panel_hint"
-     class="col-xs-2 fixed hidden"
-     style="font-size: 18pt; margin-top: 90px;">
-    Hint:<br>Choose "Discard" or "Save" to exit editing mode
-</div>
-
-<div id="editing_side_panel" class="col-xs-2 fixed">
-
-    <div style="height: 70px; text-align: center;">
-        {% if not edit %}
-            <span class="joshint"
-                  data-toggle="tooltip"
-                  title="The column on left scrolls"
-                  data-placement="bottom">
-            Hint: Left column scrolls
-        </span>
-        {% endif %}
-    </div>
-
-    {% include "updated.html" with myobj=handout %}<br>
-
-    {% if request.user.is_staff %}
-
-        <a id="edit_mode_button" class="btn pull-right btn-info"
-           style="margin-top: 30px;"
-                {% if edit %}
-           href="{% url "handout" handout.id %}">
-                    {% trans "Hide edit" %}
-                {% else %}
-                    href="{% url "handout_edit" handout.id %}">
-                    {% trans "Edit" %}
-                {% endif %}
-        </a><br>
-
-        <a class="btn pull-right {% if handout.publish %}btn-danger{% else %}btn-success{% endif %}"
-           style="margin-top: 30px;"
-                {% if handout.publish %}
-           href="{% url "handout" %}/{{ handout.id }}/?pub=remove">
-                    {% trans "Unshare" %}
-                {% else %}
-                    href="{% url "handout" %}/{{ handout.id }}/?pub=publish">
-                    {% trans "Publish" %}
-                {% endif %}
-        </a><br>
-
-        <a class="btn pull-right btn-warning"
-           style="margin-top: 30px;"
-           href="{% url "course_week" %}/{{ handout.courseweek.id }}">
-            {% trans "Week" %}
-        </a>
-    {% endif %}<br>
-
-</div>
+    {% endif %}
 </div>
 
 <script>
 
-    $(document).ready(function () {
-        CKEDITOR.disableAutoInline = true;
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    function printPDF() {
+        var getMyFrame = document.getElementById('pdf_frame');
+        getMyFrame.focus();
+        getMyFrame.contentWindow.print();
+        }
 
 </script>
 
-{% endblock %}
+    {% endblock %}
+

@@ -4,98 +4,178 @@
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
+{% block help %}{% endblock help %}
+{% block login_button %}{% endblock login_button %}
+{% block breadcrumb_menu %}
 
-{% block outer_breadcrumb %}
-
-    <div class="row breadcrumbtitle"
-         style="background-color: rgba(65, 45, 120, .2);
-                border-radius: 0;
-                height: 45px;
-                margin-bottom: 0;
-                margin-right: -15px;
-                margin-top: 10px;
-                padding-top: 6px;">
-        <span style="margin-left: 100px;">{{ title }}</span>
-    </div>
+    {{ block.super }}
+    {{ title }}
 
 {% endblock %}
 
 {% block all_content %}
 
-    <div class="row">
-        <div class="col-xs-offset-1 col-xs-10">
-            {% block accounts_content %}
-                {# form.as_p #}
-                {% errors_for form %}
+<div class="row">
+<div class="col-xs-11" style="margin-top: 30px; padding-left: 50px;">
+{% block accounts_content %}
 
-                <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-                    <fieldset>
-                        {% nevercache %}
-                            <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
-                            {% csrf_token %}
-                        {% endnevercache %}
+    {% errors_for form %}
 
-                        {% for field in form %}
-                            {% if field.is_hidden %}
-                                {{ field }}
-                            {% else %}
-                                 <div class="form-group input_{{ field.id_for_label }}
-                                                             {{ field.field.type }}
-                                                             {% if field.errors %}
-                                                                has-error
-                                                             {% endif %}">
-                                    {# field.name #}
-                                    {% if field.label %}
-                                        <label class="control-label"
-                                        for="{{ field.auto_id }}">{{ field.label | title }}</label>
-                                    {% endif %}
+    <form class="form-horizontal"
+          method="post"
+          {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}
+          novalidate>
 
-                                    {{ field }}
+        <fieldset>
+        {% nevercache %}
+            <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+            {% csrf_token %}
+        {% endnevercache %}
 
-                                    {% if field.errors %}
-                                        <p class="help-block">
-                                            {% for e in field.errors %}
-                                                {% if not forloop.first %} / {% endif %}{{ e }}
-                                            {% endfor %}
-                                        </p>
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
 
-                                    {% elif field.help_text %}
-                                        <p class="help-block">
-                                            {{ field.help_text }}
-                                        </p>
-                                    {% endif %}
+            {% else %}
+                <div class="form-group input_{{ field.id_for_label }}
+                                             {{ field.field.type }}
+                                             {% if field.errors %}
+                                                has-error
+                                             {% endif %}">
+                    {% if field.label %}
+                        <label class="control-label"
+                            for="{{ field.auto_id }}">{{ field.label | title }}
+                        </label>
+                    {% endif %}
 
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {{ field }}
 
-                        <div class="form-actions"><!-- sumbit -->
-                            {% block account_form_actions %}
-                                {% if title == "Sign up" %}
-                                    <div class="josinstructions" style="margin-top: 10px; margin-bottom: 10px;">
-                                        I agree to the
-                                        <a href="/community-rules">community rules</a>
-                                        as well as the <a href="/legals">terms and conditions</a>.
-                                    </div>
-                                {% endif %}
-                                <input class="btn btn-default btn-lg pull-left"
-                                       style="margin-top: 10px; width: 145px;"
-                                       type="submit"
-                                       value="{{ title }}">
-                            {% endblock account_form_actions %}
-                        </div>
+                    {% if field.errors %}
+                        <p class="help-block">
+                            {% for e in field.errors %}
+                                {% if not forloop.first %} / {% endif %}{{ e }}
+                            {% endfor %}
+                        </p>
 
-                </form>
-            </div>
+                    {% elif field.help_text %}
+                        <p class="help-block">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
 
-            {% endblock accounts_content %}
+                </div>
+            {% endif %}
+        {% endfor %}</fieldset>
 
-        <div class="col-xs-1"></div>
+        <div class="form-actions"><!-- sumbit -->
+            {% block account_form_actions %}
+                {% if title == "Sign up" %}
+                    <div class="josinstructions" style="margin-bottom: 20px;">
+                        <b>I agree to the community rules & terms and conditions</b><br>
+                    </div>
+                {% endif %}
 
-    </div>
+                <button class="j_button j_action_button pull-left"
+                        type="submit">
+                    <i class="fa fa-sign-in fa-fw"></i>{{ title | upper }}
+                </button>
+            {% endblock account_form_actions %}
+        </div>
+    </form>
+</div>
+
+{% endblock accounts_content %}
+<div class="col-xs-1"></div>
+</div>
+
+<style>
+
+    .form-group > input[type="text"],
+    .form-group > input[type="email"],
+    .form-group > input[type="number"],
+    .form-group > input[type="password"],
+    .form-group > textarea {
+        background-color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        outline: 2px dotted #28a4c9;
+        box-shadow: none;
+        color: rgb(65, 45, 120);
+        display: block;
+        font-size: 14pt;
+        line-height: normal;
+        max-width: 85%;
+        padding: 6px 12px;
+        transition: none;
+        vertical-align: middle;
+        width: 85%;
+    }
+
+    .form-group > input[type="text"],
+    .form-group > input[type="email"],
+    .form-group > input[type="password"],
+    .form-group > input[type="number"] {
+        height: 50px;
+    }
+
+    .form-group > input[type="checkbox"] {
+        height: 80px;
+    }
+
+    input[type='radio'] {
+        height: 1.35em;
+        margin-right: 7px;
+        margin-top: 0;
+        width: 1.35em;
+    }
+
+    input[type='checkbox'] {
+        height: 1.75em;
+        width: 1.75em;
+        margin-left: 7px;
+        vertical-align: middle;
+    }
+
+    .control-label {
+        vertical-align: middle;
+    }
+
+    label[for*='id_email_frequency_'] {
+
+    }
+
+</style>
+
+<script>
+
+// Then move the input to outside of the label
+//// $('.input_id_email_frequency > label > input').each(function () {$(this).parent().before(this);});
+
+    var radio_box_selectors = [
+        ".input_id_email_frequency",
+        ".input_id_primary_device",
+        ".input_id_primary_os"
+    ];
+    for (i = 0; i < radio_box_selectors.length; i++) {
+        //console.log('radio_box_selectors: ' + radio_box_selectors[i]);
+        $(radio_box_selectors[i] + " ul").contents().unwrap();
+        $(radio_box_selectors[i] + " li").contents().unwrap();
+        $(radio_box_selectors[i]).children()
+                .wrap("<div class='radio' style='margin-left: 30px; margin-top: 10px;'></div>");
+        $(radio_box_selectors[i] + " .control-label").unwrap();
+        // $(radio_box_selectors[i] + " label").removeAttr('for');
+
+        // $("label[for*='" + radio_box_selectors[i] + "_']").addClass('radio-inline');
+        // $('<br>').insertBefore(radio_box_selectors[i] + " > label");
+    }
+
+    $(".form-group").each(function(index) {
+        $(this).wrap("<div class='col-xs-6' style='margin-top: 15px;'></div>");
+        // console.log(index + ": " + $(this).parent().attr('class'));
+    });
+
+</script>
 
 {% endblock all_content %}
-
-
 
 

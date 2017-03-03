@@ -1,0 +1,36 @@
+{% load static %}
+
+<style>
+
+    .particBox:hover {
+        outline: 2px solid #f0ad4e;
+
+    }
+
+</style>
+
+<a class="particBox row"
+   href="{% url "profile" user.id %}"
+   style= "background-color: white;
+           display: inline-block;
+           padding: 5px 0 0 0;
+           margin: 0 10px 0 0;
+           width: {{ height|add:60 }}px;
+           ">
+
+    <div class="col-xs-12 text-center" style="padding: 0;">
+        <img class='pictureBox' style="width: {{ height }}px; height: {{ height }}px;"
+            {% if user.JOSProfile.profile_image_id_str != "noimage1" %}
+                     src="https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}"
+            {% else %}
+                     src="//www.joinourstory.com/static/img/peeky-102216.png"
+            {% endif %}>
+    </div>
+
+    <div class="col-xs-12 text-center"
+         style="color: rgb(0, 128, 0); padding: 0 0 3px 0; font-size:
+                {% if user.JOSProfile.user.get_short_name|length < 6 %}16pt{% else %}14pt{% endif %};">
+        {{ user.JOSProfile.user.get_short_name }}
+    </div>
+
+</a>

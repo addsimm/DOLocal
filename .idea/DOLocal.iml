@@ -17,6 +17,10 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.6.0 (/usr/local/bin/python3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="TB" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="opentok" level="application" />
+    <orderEntry type="library" name="skylink.complete" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

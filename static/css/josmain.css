@@ -1,48 +1,145 @@
 
-body {
-    color: rgb(65, 45, 120);
-    font-family: 'source sans pro', sans-serif;
-    font-size: 16pt;
-    line-height: normal;
-    padding-top: 140px;
-}
-
 p {
     margin: 0;
+}
+
+i {
+    margin-right: 2px;
+}
+
+body, .body {
+    padding: 0;
+    position: relative;
+    color: #412D78;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14pt;
+    line-height: normal;
+    width: 1280px;
+    z-index: 1;
+    /* padding */
+}
+
+#main_container {
+    min-height: 870px;
+    margin: 65px 0 0 15px;
+    padding-top: 30px;
+    width: 1250px;
+}
+
+.moveDown {
+    margin-top: 560px;
+}
+
+/* Base button */
+
+.j_button, .j_button:visited, .j_button:focus {
+    color: white;
+    font-family: "Open Sans";
+    font-size: 16pt;
+    padding: 9px 17px 9px 14px;
+    height: auto; width: auto;
+    border-radius: 12px; border: none; outline: none;
+    background-image: none;
+    -webkit-focus-ring-color: none;
+}
+
+.j_button_small, .j_button_small:visited, .j_button_small:focus {
+    color: white;
+    font-family: "Open Sans";
+    font-size: 12pt;
+    padding: 7px 12px 7px 10px;
+    height: auto; width: auto;
+    border-radius: 8px; border: none; outline: none;
+    background-image: none;
+    -webkit-focus-ring-color: none;
+}
+
+.j_button:hover,
+.j_button_small:hover  {
+    background-color: white;
+    border: none;
+    outline: none;
+    -webkit-focus-ring-color: none;
+}
+
+/* Other buttons */
+.j_test_button, .j_test_button:visited, .j_test_button:focus {
+    background-color: black;
+}
+
+.j_test_button:hover {
+    color: black;
+    outline: 1px solid black;
+}
+
+.j_action_button, .j_action_button:visited, .j_action_button:focus {
+    background-color: #412D78;
+}
+
+.j_action_button:hover {
+    color: #412D78;
+    outline: 1px solid #412D78;
+}
+
+.j_back_button, .j_back_button:visited, .j_back_button:focus {
+    background-color: #f0ad4e;
+}
+
+.j_back_button:hover {
+    color: #f0ad4e;
+    outline: 1px solid #f0ad4e;
+}
+
+.j_relocate_button, .j_relocate_button:visited, .j_relocate_button:focus {
+    background-color: rgb(112, 154, 109);
+}
+
+.j_relocate_button:hover {
+    color: rgb(112, 154, 109);
+    outline: 1px solid rgb(112, 154, 109);
+}
+
+.j_save_button, .j_save_button:visited, .j_save_button:focus {
+    background-color: #5cb85c;
+}
+
+.j_save_button:hover {
+    color: #5cb85c;
+    outline: 1px solid #5cb85c;
+}
+
+.j_discard_button, .j_discard_button:visited, .j_discard_button:focus {
+    background-color: #d9534f;
+}
+
+.j_discard_button:hover {
+    color: #d9534f;
+    outline: 1px solid #d9534f;
+}
+
+.j_info_button, .j_info_button:visited, .j_info_button:focus {
+    background-color: #5bc0de;
+}
+
+.j_info_button:hover {
+    color: #5bc0de;
+    outline: 1px solid #5bc0de;
 }
 
 a, a:visited {
     background-color: white;
     color: rgb(112, 154, 109);
+    cursor: pointer;
     font-weight: bold;
     outline: 2px dotted rgb(112, 154, 109);
-    padding: 3px;
+    padding: 3px 6px;
+    border-radius: 4px;
 }
 
 a:hover {
     color: #f0ad4e;
+    outline: 2px solid #f0ad4e;
     text-decoration: none;
-}
-
-.joslargelinkbutton {
-    font-size: 18pt;
-    margin-left: 20px;
-    padding: 8px;
-    width: 165px;
-}
-
-.messages {
-    background-color: lightgreen;
-    font-size: 18pt;
-    font-weight: bold;
-}
-
-.breadcrumbtitle {
-    color: black;
-    font-size: 24pt;
-    font-weight: bold;
-    line-height: normal;
-    margin-right: 10px;
 }
 
 .joscursive {
@@ -51,8 +148,8 @@ a:hover {
 }
 
 .josinstructions {
-    font-size: 22pt;
-    line-height: 165%;
+    font-size: 20pt;
+    line-height: 1.4;
 }
 
 .josinstructions ul {
@@ -78,9 +175,9 @@ a:hover {
 .form-actions {
     background-color: white;
     border-radius: 0;
-    border-top: 2px solid rgba(65, 25, 140, 0.85);
+    border-top: none;
     margin-bottom: 15px;
-    margin-top: 30px;
+    margin-top: 15px;
     padding: 20px;
 }
 
@@ -102,14 +199,26 @@ a:hover {
 table {
     font-family: "Open Sans", sans-serif;
     font-size: 16pt;
+    outline: 1px solid rgb(65, 45, 120);
     border-collapse: collapse;
     width: 100%;
+}
+
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    vertical-align: middle;
 }
 
 td {
     border: 1px solid #ddd;
     text-align: left;
-    padding: 20px 10px;
+    padding: 8px 4px;
+    vertical-align: middle;
 }
 
 th {
@@ -117,14 +226,15 @@ th {
     text-align: center;
     color: white;
     padding: 10px;
+    vertical-align: middle;
 }
 
 tr:nth-child(even) {
-    background-color: rgba(65, 45, 120, .2);
+    background-color: aliceblue;
 }
 
 tr:hover {
-    background-color: #ddd;
+    background-color: inherit;
 }
 
 footer {
@@ -136,66 +246,38 @@ footer {
     padding-bottom: 0;
 }
 
-.btn, .btn:visited {
-    background-image: none;
-    background-repeat: no-repeat;
-    box-shadow: none;
-    color: white;
-    font-size: 16pt;
-    outline: none;
-    text-decoration: none;
-    text-shadow: none;
-    width: 100px;
-}
-
-.btn-default:visited,
-.btn-primary:visited,
-.btn-success:visited,
-.btn-info:visited,
-.btn-warning:visited,
-.btn-danger:visited {
-    background-color: inherit;
-    opacity: 1;
-}
-
-.btn-default, .btn-default:visited {
-    background-color: rgb(231, 209, 222);
-    border-color: rgb(65, 25, 140);
-    color: rgb(65, 25, 140);
-    font-weight: bold;
-}
-
-.fixed {
-    height: 600px;
-    overflow: hidden;
-}
-
-.scrollit {
-    min-height: 400px;
-    overflow-y: scroll;
-}
-
 .edit_border {
     background-color: white;
-    border: 3px dashed #28a4c9;
+    border: 3px dashed #5bc0de;
 }
 
-.edit_border_active {
-    background-color: #28a4c9;
-    border: 10px solid #28a4c9;
-}
-
-.joshint {
-    font-size: 10pt;
+.tooltip {
+    background-color: lightyellow;
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    line-height: 1.4;
+    visibility: visible;
 }
 
 .tooltip-inner {
-    background: lightyellow;
-    border: solid 2px rgb(65, 45, 120);
+    background: rgb(255, 255, 224);
+    border-radius: 4px;
+    border: 3px dotted rgb(65, 45, 120);
     color: rgb(65, 45, 120);
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Open sans', sans-serif;
     font-size: 16pt;
-    padding: 5px;
+    font-weight: bold;
+    padding: 12px 15px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.jos_flex_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 

@@ -1,20 +1,23 @@
 ### josmembers/forms.py
 from __future__ import unicode_literals
 
-import datetime
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.manager import Manager
-from django import forms
 
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
+
 from mezzanine.conf import settings
 from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
+
+import floppyforms.__future__ as forms
+
+from models import *
 
 User = get_user_model()
 
@@ -25,9 +28,7 @@ else:
 
 _exclude_fields = tuple(getattr(settings, "ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS", ()))
 
-# If a profile model has been configured with the ``AUTH_PROFILE_MODULE``
-# setting, create a model form for it that will have its fields added to
-# ``ProfileForm``.
+# If an ``AUTH_PROFILE_MODULE`` is set, creating a model form for it will add fields to ``ProfileForm``.
 try:
     class ProfileFieldsForm(forms.ModelForm):
         class Meta:
@@ -41,6 +42,62 @@ if settings.ACCOUNTS_NO_USERNAME:
     username_label = _("Email address")
 else:
     username_label = _("Username or email address")
+
+
+class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
+    password1 = forms.CharField(label=_("Password"), widget=forms.TextInput())
+    password2 = forms.CharField(label=_("Password (again)"), widget=forms.TextInput())
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+    def __init__(self, *args, **kwargs):
+        super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
+        # self.user_id = self.data['user_id']
+        for field in self.fields:
+            if field.startswith("password"):
+                self.fields[field].widget.attrs["autocomplete"] = "off"
+                self.fields[field].widget.attrs.pop("required", "")
+            self.fields["email"].widget.attrs["readonly"] = "readonly"
+
+    def clean_password2(self):
+        """
+        Ensure the password fields are equal, and match the minimum
+        length defined by ``ACCOUNTS_MIN_PASSWORD_LENGTH``.
+        """
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+
+        if password1:
+            errors = []
+            if password1 != password2:
+                errors.append(ugettext("Passwords do not match"))
+            if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
+                errors.append(
+                        ugettext("Password must be at least %s characters") %
+                        settings.ACCOUNTS_MIN_PASSWORD_LENGTH)
+            if errors:
+                self._errors["password1"] = self.error_class(errors)
+        return password2
+
+    def save(self, *args, **kwargs):
+        """
+        Create the new user. If no username is supplied (may be hidden
+        via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
+        ``ACCOUNTS_NO_USERNAME``), we generate a unique username, so
+        that if profile pages are enabled, we still have something to
+        use as the profile's slug.
+        """
+        kwargs["commit"] = False
+        user = super(JOSNewPasswordForm, self).save(*args, **kwargs)
+
+        password = self.cleaned_data.get("password1")
+
+        user.set_password(password)
+        user.save()
+
+        return user
 
 
 class JOSProfileForm(Html5Mixin, forms.ModelForm):
@@ -227,60 +284,78 @@ class JOSSignupForm(Html5Mixin, forms.ModelForm):
         return user
 
 
-class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
-
-    # user_id = forms.HiddenInput()
-    # fakeemail = forms.EmailField(label="Change for Account Email:")
-    password1 = forms.CharField(label=_("Password"), widget=forms.TextInput())
-    password2 = forms.CharField(label=_("Password (again)"), widget=forms.TextInput())
+class JOSReserveSpaceForm(Html5Mixin, forms.ModelForm):
 
     class Meta:
-        model = User
-        fields = ('email',)
+        model = JOSReservation
+        fields = '__all__'
+        exclude = ('staff_notes', 'status', 'ready', 'confirmed')
+
+    email_frequency = forms.ChoiceField(
+        label='How often do you check your email?',
+        widget=forms.RadioSelect(), choices=EMAIL_FREQ_CHOICES
+    )
+
+    primary_device = forms.ChoiceField(
+            label='How do you usually access the internet?',
+            widget=forms.RadioSelect(), choices=PRIMARY_DEVICE_CHOICES
+    )
+
+    primary_os = forms.ChoiceField(
+            label='What is its operating system?',
+            widget=forms.RadioSelect(), choices=PRIMARY_OS_CHOICES
+    )
+
+
+    phone_text = forms.NullBooleanField(label='Check this if you ever use text on your phone:',
+                                    initial=False,
+                                    widget=forms.CheckboxInput,
+                                    required=False)
+    webcam     = forms.NullBooleanField(label='Check this if you have a webcam:',
+                                        widget=forms.CheckboxInput,
+                                        initial=False,
+                                        required=False)
+    printer = forms.NullBooleanField(label='Check this you have a printer:',
+                                    widget=forms.CheckboxInput,
+                                    initial=False,
+                                    required=False)
+    phone      = forms.CharField(label='Phone number (only if you are serious)')
+    email      = forms.EmailField(label='What is your email address?')
+    zip        = forms.CharField(label='What is your 5 digit zip code?')
+
+    best_time_to_call = forms.CharField(label='When are the best times to call you?',
+                                        widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))
+
+    browser    = forms.CharField(label='Bonus: what internet browsers do you know?',
+                                 initial='Not certain',
+                                 required=False,
+                                 widget=forms.Textarea(attrs = {'cols': 50, 'rows': 5}))
+
+    refer      = forms.CharField(label='Finally, how did you hear about Join Our Story?',
+                                 required=False,
+                                 widget=forms.Textarea(attrs={'cols': 50, 'rows': 5}))
 
     def __init__(self, *args, **kwargs):
-        super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
-        # self.user_id = self.data['user_id']
+        super(JOSReserveSpaceForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            if field.startswith("password"):
-                self.fields[field].widget.attrs["autocomplete"] = "off"
-                self.fields[field].widget.attrs.pop("required", "")
-            self.fields["email"].widget.attrs["readonly"] = "readonly"
+            self.fields[field].required = True
 
-    def clean_password2(self):
+    def clean_email(self):
         """
-        Ensure the password fields are equal, and match the minimum
-        length defined by ``ACCOUNTS_MIN_PASSWORD_LENGTH``.
+        Ensure the email address is not already registered.
         """
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-
-        if password1:
-            errors = []
-            if password1 != password2:
-                errors.append(ugettext("Passwords do not match"))
-            if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
-                errors.append(
-                    ugettext("Password must be at least %s characters") %
-                    settings.ACCOUNTS_MIN_PASSWORD_LENGTH)
-            if errors:
-                self._errors["password1"] = self.error_class(errors)
-        return password2
+        email = self.cleaned_data.get("email")
+        qs = JOSReservation.objects.exclude(id=self.instance.id).filter(email=email)
+        if len(qs) == 0:
+            return email
+        raise forms.ValidationError(
+                ugettext("This email is already registered"))
 
     def save(self, *args, **kwargs):
-        """
-        Create the new user. If no username is supplied (may be hidden
-        via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
-        ``ACCOUNTS_NO_USERNAME``), we generate a unique username, so
-        that if profile pages are enabled, we still have something to
-        use as the profile's slug.
-        """
         kwargs["commit"] = False
-        user = super(JOSNewPasswordForm, self).save(*args, **kwargs)
+        reservation = super(JOSReserveSpaceForm, self).save(*args, **kwargs)
+        reservation.save()
 
-        password = self.cleaned_data.get("password1")
+        ### Notify Adam
 
-        user.set_password(password)
-        user.save()
-
-        return user
+        return reservation

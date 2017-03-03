@@ -1,23 +1,22 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic import RedirectView
 
-from josmessages.views import *
+from josmessages.views import message_box, jos_message_compose, ajax_message_info, delete
 
 # messages implemented to avoid disclosing addresses
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', RedirectView.as_view(permanent=True, url='inbox/'), name='messages_redirect'),
-    url(r'^inbox/$', inbox, name='messages_inbox'),
-    url(r'^outbox/$', outbox, name='messages_outbox'),
+    url(r'^inbox/$', message_box, name='messages_inbox'),
     url(r'^compose/(?P<id>\d+)/$', jos_message_compose, name='messages_compose'),
-    url(r'^compose/$', jos_message_compose, name='messages_compose'),
-    url(r'^compose/(?P<recipient>[\w.@+-]+)/$', compose, name='messages_compose_to'),
-    url(r'^reply/(?P<message_id>[\d]+)/$', jos_message_reply, name='messages_reply'),
-    url(r'^view/(?P<message_id>[\d]+)/$', view, name='messages_detail'),
-    url(r'^delete/(?P<message_id>[\d]+)/$', delete, name='messages_delete'),
-    url(r'^undelete/(?P<message_id>[\d]+)/$', undelete, name='messages_undelete'),
-    url(r'^trash/$', trash, name='messages_trash'),
-)
+    url(r'^compose/*$', jos_message_compose, name='messages_compose'),
 
 
+    # url(r'^view/(?P<message_thread_id>[\d]+)/$', view, name='messages_detail'),
+    url(r'^delete/(?P<message_thread_id>[\d]+)/$', delete, name='messages_delete'),
 
+    url("ajax_message_info", ajax_message_info, name="ajax_message_info")
+
+    # url(r'^undelete/(?P<message_id>[\d]+)/$', undelete, name='messages_undelete'),
+    # url(r'^trash/$', trash, name='messages_trash'),
+]

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n staticfiles static %}
+
+{% block meta_title %}Home{% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block help %}{% endblock help %}
+
+{% block phone_number %}{% endblock phone_number %}
+
+{% block base-fixed-top-bar %}{% endblock base-fixed-top-bar %}
+
+{% block footer %}{% endblock footer %}
+
+{% block all_content %}
+
+<style>
+
+    .secret-button:hover {
+        color: blue !important;
+    }
+
+    .homehead {
+        font-family: "Abril Fatface", serif;
+        font-size: 54pt;
+    }
+
+    .home_text {
+        font-size: 24pt;
+        line-height: normal;
+    }
+
+    .wheel {
+        opacity: 1;
+        transition: all 0.15s ease;
+        display: inline-block;
+        position: relative;
+    }
+
+    .spin {
+        animation: spin .1s infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translatey(-25px);
+            opacity: 0;
+        }
+        50% {
+            transform: translatey(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translatey(20px);
+            opacity: 0;
+        }
+    }
+
+    #prompt_icons img {
+        height: 60px;
+        width: 60px;
+    }
+
+</style>
+
+    <!-- Messages -->
+    {% nevercache %}
+        <div id="messageBox" class='hidden' style="
+            position: fixed; top: 75px; left: 15px; height: 95px; width: 1265px;
+            background-color: #b5fcb5; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+            font-size: 24pt; font-weight: bold; z-index: 600;">
+
+            <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+                 style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+            <div id="messageSpace" style="
+                position: absolute; top: 20px; left: 90px; height: 85px; width: 87%;
+                display: inline-block; overflow-y: scroll; word-wrap: break-word;">
+                Test message
+                {% for message in messages %}
+                    <input type="hidden" id="isMessage" name="isMessage"
+                           value="{{ message | striptags }}">
+                {% endfor %}
+            </div>
+        </div>
+    {% endnevercache %}
+
+
+<div id="landing_page text-center" style="margin: 0 15px; width: 1250px; z-index: 5;">
+
+    <div id='reserve_button' class=" " style="font-size: 28pt; font-weight: bold; margin-top: 30px;">
+
+        SILVER TIGERS:<br><br>
+
+        - Communication is required to organize action<br>
+        - Organized action is required for change<br>
+        - Change is necessary and change is good<br>
+        - Make change for ourselves, for the world and for the future<br><br>
+
+        We are organizing progressive, smart and motivated older women.<br><br>
+
+        We created this website in 15 minutes -<br>
+        With your help, what we can accomplish this week or this year?<br><br>
+
+
+        <button class="j_button j_save_button"
+                onclick="window.location.href = 'https://joinourstory.com/reserve_space';"
+                style="font-size: 22pt; font-weight: bold; padding: 13px 25px;">
+            CLICK HERE TO JOIN US!
+        </button>
+    </div>
+
+
+</div>
+
+    <script>
+
+    $(document).ready(function () {
+
+        // Messages
+        messageBox = document.getElementById('messageBox');
+        messageSpace = document.getElementById('messageSpace');
+        isMessage = document.getElementById("isMessage");
+        if (isMessage !== null) {
+            var message = isMessage.value;
+        }
+        if (message) {
+            $(messageBox).removeClass('hidden');
+            $(messageBox).delay(3250).fadeOut(1000);
+            $(messageSpace).text(message);
+        }
+    });
+
+    </script>
+
+{% endblock all_content %}
+
+
