@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags %}
+
+{% block meta_title %}
+    {{ user.get_short_name }}'s Desk
+{% endblock %}
+{% block title %}
+    {{ user.get_short_name }}'s Desk
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ user.get_short_name }}'s Desk
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+    <style>
+
+        .nav-tabs.nav-justified > li > a {
+            outline: none;
+        }
+
+        .nav-tabs.nav-justified > li {
+            border-bottom: 2px dotted #412d78;
+            border-right: 2px dotted #412d78;
+            border-radius: 0;
+        }
+
+        .nav-tabs.nav-justified > li.active {
+            border: 3px dashed #412d78;
+            border-bottom: none;
+            border-radius: 0;
+        }
+
+        #worktabs a {
+            color: #412d78;
+            font-family: "Abril Fatface", Serif;
+            font-size: 24pt;
+            font-weight: normal;
+            outline: none;
+        }
+
+    </style>
+
+    <div class="row" style="margin-left: 0; margin-top: 45px;">
+        <div class="col-xs-12" style="padding: 0;">
+            <img style="display: inline; height: 90px;"
+                 src="{% if profile.profile_image_idstr != "noimage1" %}
+                            http://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_idstr }}
+              {% else %}
+                    /static/img/coming-soon-profile.png
+              {% endif %}
+             ">
+
+            <a class="joslargelinkbutton" href="{% url "profile" request.user.id %}">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    My profile
+               </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-xs-12 text-center" style=" ">
+            <ul id="worktabs" class="nav nav-tabs nav-justified">
+                <li class="active"><a data-toggle="tab" href="#enjoy">
+                    <i class="fa fa-television fa-fw" style="margin-right: 10px;"></i>Enjoy
+                </a></li>
+                <li><a data-toggle=" " href="#create">
+                    <i class="fa fa-keyboard-o fa-lg fa-fw" style="margin-right: 10px;"></i>Create
+                </a></li>
+                <li><a data-toggle=" " href="#share">
+                    <i class="fa fa-globe fa-lg fa-fw" style="margin-right: 10px;"></i>Share
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content">
+
+        <!--#############-->
+        <!--### ENJOY ###-->
+        <!--#############-->
+        <div id="enjoy" class="tab-pane fade in active">
+            <div class="row" style="margin: 40px 0;">
+
+                <div class="col-xs-5" style=" ">
+                    <div class="josinstructions">Better storytelling course:</div><br>
+
+                    {% for week in weeks %}
+
+                        Week #{{ week.weekno }}:
+                        <a class="joslargelinkbutton" href="{% url "course_week" %}/{{ week.id }}">
+                           <span style="margin-left: 5px; margin-right: 5px;">
+                                {{ week.week_title }}
+                           </span>
+                        </a><br><br><br>
+
+                    {% endfor %}
+
+                </div>
+                <div class="col-xs-4" style="margin-top: 70px;">
+                    <a class="joslargelinkbutton" href="{% url "mystory_list" %}">
+                       <span style="margin-left: 5px; margin-right: 5px;">
+                            My stories
+                       </span>
+                    </a><br><br><br>
+
+                    <a class="btn btn-default" style="margin-left: 17px; width: 200px;"
+                       href="{% url 'josstory' %}/0">
+                       Create new story
+                    </a><br><br><br>
+
+                </div>
+
+                <div class="col-xs-3" style="margin-top: 70px;">
+
+                    <a class="joslargelinkbutton" href="{% url "story_gallery" %}">
+                       <span style="margin-left: 5px; margin-right: 5px;">
+                            Story gallery
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!--##############-->
+        <!--### CREATE ###-->
+        <!--##############-->
+        <div id="create" class="tab-pane fade">
+            <div class="row" style="margin: 40px 0;">
+                <div class="col-xs-10 col-xs-offset-1" style=" ">
+
+                    <a class="joslargelinkbutton" href="{% url "mystory_list" %}">
+                       <span style="margin-left: 5px; margin-right: 5px;">
+                            My stories
+                       </span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!--#############-->
+        <!--### SHARE ###-->
+        <!--#############-->
+        <div id="share" class="tab-pane fade">
+
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-xs-12" style="padding-left: 30px;">
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

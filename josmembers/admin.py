@@ -5,23 +5,14 @@ from django.contrib import admin
 
 from josmembers.models import JOSProfile
 
-# josprofile_fieldsets = deepcopy(admin.ModelAdmin.fieldsets)
-# josprofile_list_display = ["title", "user", "status", "admin_link"]
-# josprofile_fieldsets[0][1]["fields"].insert(-2, "profile_photo")
-# josprofile_list_display.insert(0, "admin_thumb")
-# josprofile_fieldsets = list(josprofile_fieldsets)
-
-# Register your models here.
-
 class JOSProfileAdmin(admin.ModelAdmin):
     """
     Admin class for JOSProfiles.
     """
 
-    readonly_fields = ('created', 'updated',)
-
     verbose_name = 'JOS Profile'
-    verbose_name_plural = 'JOS Profiles'
+
+    readonly_fields = ('created', 'updated',)
 
     # fieldsets = josprofile_fieldsets
     # list_display = josprofile_list_display

@@ -1,0 +1,206 @@
+
+body {
+    color: rgb(65, 45, 120);
+    font-family: 'source sans pro', sans-serif;
+    font-size: 16pt;
+    line-height: normal;
+    padding-top: 140px;
+}
+
+p {
+    margin: 0;
+}
+
+a, a:visited {
+    background-color: white;
+    color: rgb(112, 154, 109);
+    font-weight: bold;
+    outline: 2px dotted rgb(112, 154, 109);
+    padding: 3px;
+}
+
+a:hover {
+    color: #f0ad4e;
+    text-decoration: none;
+}
+
+.joslargelinkbutton {
+    font-size: 18pt;
+    margin-left: 20px;
+    padding: 8px;
+    width: 165px;
+}
+
+.messages {
+    background-color: lightgreen;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.breadcrumbtitle {
+    color: black;
+    font-size: 24pt;
+    font-weight: bold;
+    line-height: normal;
+    margin-right: 10px;
+}
+
+.joscursive {
+    font-family: 'Stalemate', cursive;
+    font-size: 48pt;
+}
+
+.josinstructions {
+    font-size: 22pt;
+    line-height: 165%;
+}
+
+.josinstructions ul {
+    margin-left: 4%;
+}
+
+.josinstructions li {
+    margin-top: 15px;
+}
+
+.interior-text {
+    line-height: normal;
+    margin-top: 6px;
+    text-align: justify;
+    padding: 10px 20px;
+}
+
+.homehead {
+    font-family: "Abril Fatface", Serif;
+    font-size: 36pt;
+}
+
+.form-actions {
+    background-color: white;
+    border-radius: 0;
+    border-top: 2px solid rgba(65, 25, 140, 0.85);
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.side-panel {
+    padding-left: 15px;
+    padding-right: 0;
+    padding-top: 15px;
+}
+
+.navbar-default {
+    background-image: none;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    box-shadow: none;
+    background-color: white;
+    border-color: black;
+}
+
+table {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16pt;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 20px 10px;
+}
+
+th {
+    background-color: rgb(112, 154, 109);
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(65, 45, 120, .2);
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+footer {
+    background-color: white;
+    border-top: none;
+    margin-top: 0;
+    margin-bottom: 5px;
+    padding-top: 15px;
+    padding-bottom: 0;
+}
+
+.btn, .btn:visited {
+    background-image: none;
+    background-repeat: no-repeat;
+    box-shadow: none;
+    color: white;
+    font-size: 16pt;
+    outline: none;
+    text-decoration: none;
+    text-shadow: none;
+    width: 100px;
+}
+
+.btn-default:visited,
+.btn-primary:visited,
+.btn-success:visited,
+.btn-info:visited,
+.btn-warning:visited,
+.btn-danger:visited {
+    background-color: inherit;
+    opacity: 1;
+}
+
+.btn-default, .btn-default:visited {
+    background-color: rgb(231, 209, 222);
+    border-color: rgb(65, 25, 140);
+    color: rgb(65, 25, 140);
+    font-weight: bold;
+}
+
+.fixed {
+    height: 600px;
+    overflow: hidden;
+}
+
+.scrollit {
+    min-height: 400px;
+    overflow-y: scroll;
+}
+
+.edit_border {
+    background-color: white;
+    border: 3px dashed #28a4c9;
+}
+
+.edit_border_active {
+    background-color: #28a4c9;
+    border: 10px solid #28a4c9;
+}
+
+.joshint {
+    font-size: 10pt;
+}
+
+.tooltip-inner {
+    background: lightyellow;
+    border: solid 2px rgb(65, 45, 120);
+    color: rgb(65, 45, 120);
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16pt;
+    padding: 5px;
+}
+
+
+
+
+
+
+

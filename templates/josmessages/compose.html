@@ -1,0 +1,74 @@
+{% extends "josmessages/mailbase.html" %}
+{% load i18n %}
+
+{% block all_content %}
+
+    <div class="row">
+
+        <div class="col-xs-10 col-xs-offset-1">
+
+            <br><br>
+            <div class="josinstructions" style="margin-top: 30px;">Send message to {{ jos_name }}:</div>
+            <br>
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <div style="margin-left: 60px;">
+
+                    {% for field in form %}
+                        {% if field.label == "Recipient" %}
+                            {{ field.as_hidden }}
+                            <input id="id_recipient" type="hidden" value="{{ recipient }}" name="recipient">
+                        {% else %}
+                            <div class="form-group input_{{ field.id_for_label }}
+                                                                 {{ field.field.type }}
+                                                                 {% if field.errors %}
+                                                                    has-error
+                                                                 {% endif %}">
+                                {# field.name #}
+                                {% if field.label %}
+                                    <label class="control-label"
+                                           for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                                {% endif %}
+
+                                {{ field }}
+
+                                {% if field.errors %}
+                                    <p class="help-block">
+                                        {% for e in field.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif field.help_text %}
+                                    <p class="help-block">
+                                        {{ field.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <button class="btn btn-warning"
+                            style=" "
+                            onclick="goBack()">Go back
+                    </button>
+
+                    <script>function goBack() {
+                        window.history.back();
+                    }</script>
+
+                    <input class="btn btn-default"
+                           style="width: 100px;"
+                           type="submit" value="Send">
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+{% endblock %}

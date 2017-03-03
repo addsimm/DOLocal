@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block meta_title %}
+    Story Gallery
+{% endblock %}
+{% block title %}
+    Story Gallery
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    Story Gallery
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+<div class="row" style="margin-top: 40px;">
+
+    <div class="col-xs-10 col-xs-offset-1" style="padding: 0;">
+
+        <div class="row" style="margin-bottom: 30px;">
+            <!-- a class="joslargelinkbutton" href=" ">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    All my stories
+               </span>
+            </a -->
+            <!-- a class="joslargelinkbutton" href=" ">
+               <span style="margin-left: 5px; margin-right: 5px;">
+                    Stories I've published
+               </span>
+            </a -->
+            <br><br>
+            <span class="josinstructions">Please click a title to view (also, click for author profiles):</span>
+        </div>
+
+
+        <table data-toggle="table">
+            <thead>
+                <tr>
+                    <th data-sortable="true">Author</th>
+                    <th data-sortable="true">Title</th>
+                    <th data-sortable="true">Last change</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in stories %}
+                    <tr>
+                        <td>
+                            <a class="joslargelinkbutton" href="{% url "profile" story.author.id %}">
+                                {{ story.author.JOSProfile.jos_name }}
+                            </a><br><br>
+                        </td>
+
+                        <td>
+                            <a class="joslargelinkbutton" href="{% url 'josstory' %}/{{ story.id }}">
+                                <span style="margin-left: 5px; margin-right: 5px;">
+                                    {{ story.title | striptags | safe |truncatechars:25 }}
+                                </span>
+                            </a>
+                        </td>
+
+                        <td>{{ story.updated }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock all_content %}
+
+
+
+
+
+
+

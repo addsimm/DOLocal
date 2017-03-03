@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags cloudinary %}
+{% cloudinary_includes %}
+
+{% block meta_title %}{{ user.JOSProfile.jos_name }}{% endblock %}
+{% block title %}{{ user.JOSProfile.jos_name }}{% endblock %}
+{# block body_id }account{ endblock #}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ user.get_short_name }}'s Friends
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+    <div class="josinstructions" style="margin-top: 40px;"><b>My favorites:</b></div>
+
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
+
+            {% if  following.count > 0 %}
+                <table>
+                    <tbody>
+                    {% for favorite in following %}
+
+                        <tr>
+                            <td style="width: 15%;">
+                                {% if favorite.JOSProfile.profile_image_idstr != "noimage1" %}
+                                    <img class="img-responsive" style="display: inline; max-height: 75px;"
+                                         src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ favorite.JOSProfile.profile_image_idstr }}">
+                                {% else %}
+                                    <img class="img-responsive"
+                                         style="background-color: white; display: inline; max-height: 75px;"
+                                         src="/static/img/coming-soon-profile.png">
+                                {% endif %}
+                            </td>
+                            <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
+                                {{ favorite.JOSProfile.jos_name }}
+                            </td>
+                            <td style="width: 60%;">
+                                <a class="btn btn-default"
+                                   style="margin-left: 10px; width: 150px;"
+                                   href="{% url "profile" favorite.id %}">
+                                    View profile
+                                </a>
+
+                                <a class="btn btn-default"
+                                   style="margin-left: 10px; width: 150px;"
+                                   href="{% url 'josmessages:messages_compose' %}{{ favorite.id }}">
+                                    Message
+                                </a>
+
+                                <a class="btn btn-default"
+                                   style="margin-left: 10px; width: 150px;"
+                                   href="{% url 'josmembers:josmembers_list' %}/?remove_favorite={{ favorite.id }} ">
+                                    Unfavorite
+                                </a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                -- Favorite someone?
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="josinstructions" style="margin-top: 30px;"><b>My teams:</b></div>
+
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 15px; padding-left: 85px;">
+
+            -- Join a team?
+
+        </div>
+    </div>
+
+    <div class="josinstructions" style="margin-top: 30px;"><b>Search members:</b></div>
+
+    <div class="row" style="margin-top: 15px;">
+
+        <div class="col-xs-12" style="padding-left: 85px;">
+            <div class="josinstructions">Please begin typing a name. The computer starts responding after two letters.</div>
+
+
+            <input id="member_search_text" style="font-size: 20pt; margin-top: 15px; padding: 5px; width: 350px;" type="text" placeholder="Start typing here">
+            <a class="btn btn-warning btn-lg" style="color: white; outline: none; margin-top: -9px; width: 150px;" href="{% url "josmembers:josmembers_list" %}">
+                Start over
+            </a>
+
+            <script>function startOver() {
+                document.getElementById('member_search_text').value = "Start typing here";
+            }</script>
+
+            <div id="member_search_results"></div>
+
+        </div>
+    </div>
+
+    <script type='text/javascript'
+            src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+    <script language="javascript">
+        /* Before our JavaScript, the urls need to be set. */
+        var SUBMIT_URL = "{% url 'josmembers:search_member_list' %}";
+    </script>
+
+    <script language="javascript">
+        /** Executes a search for colors containing a substring. */
+        var processSearch = function () {
+            //Get and trim the search text.
+            var searchText = $('#member_search_text').val().trim().toLowerCase();
+
+            if (searchText.length < 2) {
+                //Too short. Ignore the submission, and erase any current results.
+                $('#member_search_results').html("<i>Keep typing ...</i>");
+
+            } else {
+                // Execute the search.
+                var processServerResponse = function (serverResponse_data,
+                                                      textStatus_ignored,
+                                                      jqXHR_ignored) {
+                    /* alert("SUBMIT_URL=" + SUBMIT_URL +
+                            "; member_search_text=" + searchText +
+                            "; serverResponse_data=" + serverResponse_data +
+                            "; textStatus_ignored=" + textStatus_ignored +
+                            "; jqXHR_ignored=" + jqXHR_ignored
+                    ); */
+                    $('#member_search_results').html(serverResponse_data);
+                }
+
+                var config = {
+                    type: "GET",
+                    url: SUBMIT_URL,
+                    data: {
+                        'member_search_text': searchText,
+                    },
+                    dataType: 'html',
+                    success: processServerResponse,
+                    fail: function () {
+                        alert("Fail")
+                    }
+                };
+                $.ajax(config);
+            }
+        };
+
+    </script>
+
+    <script language="javascript">
+
+        /** The Ajax "main" function. Attaches the listeners to the elements on page load,
+         each of which only take effect every MILLS_TO_IGNORE_LIKES seconds - requires importing underscore-min.js. Noy underscore-min.map */
+
+        var MILLS_TO_IGNORE_SEARCH = 100;
+        var MILLS_TO_IGNORE_LIKES = 500;
+        $(document).ready(function () {
+            /* This attaches a listener. Calling this again would attach a *second* */
+            $('#member_search_text').keyup(_.debounce(processSearch,
+                    MILLS_TO_IGNORE_SEARCH, true));
+        });
+
+    </script>
+
+{% endblock all_content %}
+
+
+
+
+
+

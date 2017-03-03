@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block meta_title %}
+    {{ user.JOSProfile.jos_name }} Mail
+{% endblock %}
+{% block title %}
+    {{ user.JOSProfile.jos_name }} Mail
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ user.get_short_name }}'s Mail
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+    <div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 60px;">
+
+        <div class="col-xs-12" style="padding: 0;">
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_inbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-inbox fa-fw" style=" "></i>
+                    My inbox
+                </span>
+            </a>
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_outbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-paper-plane fa-fw" style=" "></i>
+                    Sent
+                </span>
+            </a>
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_trash' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-trash fa-fw" style=" "></i>
+                    Deleted
+                </span>
+            </a>
+
+            <span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>
+            <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-heart fa-fw" style=" "></i>
+                    Friends
+                </span>
+            </a>
+
+        </div>
+    </div>
+
+{% endblock %}
+

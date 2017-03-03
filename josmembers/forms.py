@@ -1,14 +1,14 @@
 ### josmembers/forms.py
 from __future__ import unicode_literals
 
+import datetime
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.manager import Manager
 from django import forms
+
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext, ugettext_lazy as _
-from django.shortcuts import get_object_or_404, render_to_response
-
 
 from mezzanine.accounts import (get_profile_model, get_profile_user_fieldname,
                                 get_profile_for_user, ProfileNotConfigured)
@@ -17,6 +17,11 @@ from mezzanine.core.forms import Html5Mixin
 from mezzanine.utils.urls import slugify, unique_slug
 
 User = get_user_model()
+
+if "notification" in settings.INSTALLED_APPS:
+    from notification import models as notification
+else:
+    notification = None
 
 _exclude_fields = tuple(getattr(settings, "ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS", ()))
 
@@ -40,9 +45,7 @@ else:
 
 class JOSProfileForm(Html5Mixin, forms.ModelForm):
     """
-    ModelForm for auth.User - used for signup and profile update.
-    If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
-    fields are injected into the form.
+    ModelForm for auth.User - ``AUTH_PROFILE_MODULE``fields injected into the form.
     """
 
     class Meta:
@@ -72,11 +75,7 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
 
     def save(self, *args, **kwargs):
         """
-        Create the new user. If no username is supplied (may be hidden
-        via ``ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS`` or
-        ``ACCOUNTS_NO_USERNAME``), we generate a unique username, so
-        that if profile pages are enabled, we still have something to
-        use as the profile's slug.
+        Create the new user. If no username is supplied generates a unique username.
         """
 
         kwargs["commit"] = False
@@ -100,10 +99,10 @@ class JOSProfileForm(Html5Mixin, forms.ModelForm):
 
 class JOSSignupForm(Html5Mixin, forms.ModelForm):
     password1 = forms.CharField(label=_("Password"),
-                                widget=forms.PasswordInput(render_value=False))
+                                widget=forms.TextInput())
 
     password2 = forms.CharField(label=_("Password (again)"),
-                                widget=forms.PasswordInput(render_value=False))
+                                widget=forms.TextInput())
 
     class Meta:
         model = User
@@ -227,19 +226,17 @@ class JOSSignupForm(Html5Mixin, forms.ModelForm):
                                     is_active=True)
         return user
 
+
 class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
 
     # user_id = forms.HiddenInput()
     # fakeemail = forms.EmailField(label="Change for Account Email:")
-    password1 = forms.CharField(label=_("New Password"),
-                                widget=forms.PasswordInput(render_value=False))
-
-    # password2 = forms.CharField(label=_("Confirm New Password"),
-    #                             widget=forms.PasswordInput(render_value=False))
+    password1 = forms.CharField(label=_("Password"), widget=forms.TextInput())
+    password2 = forms.CharField(label=_("Password (again)"), widget=forms.TextInput())
 
     class Meta:
         model = User
-        fields = ()
+        fields = ('email',)
 
     def __init__(self, *args, **kwargs):
         super(JOSNewPasswordForm, self).__init__(*args, **kwargs)
@@ -248,6 +245,7 @@ class JOSNewPasswordForm(Html5Mixin, forms.ModelForm):
             if field.startswith("password"):
                 self.fields[field].widget.attrs["autocomplete"] = "off"
                 self.fields[field].widget.attrs.pop("required", "")
+            self.fields["email"].widget.attrs["readonly"] = "readonly"
 
     def clean_password2(self):
         """

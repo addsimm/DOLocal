@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  %}
+
+{% block meta_title %}
+    {{ week.week_title | safe | truncatechars:25 }}
+{% endblock %}
+{% block title %}
+    {{ week.week_title | safe | truncatechars:25 }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {{ week.course | cut:"Course: " }}: Week #{{ week.weekno }}
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+<style>
+    p {margin: 0;}
+</style>
+
+<div class="row" style="margin-bottom: 30px; margin-top: 70px;">
+
+    <div class="col-xs-9 col-xs-offset-1">
+        <div class="josinstructions">
+
+            <span style="font-size: larger;
+                         padding: 5px 10px;">
+                {{ week.week_title | striptags | safe }}
+            </span>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+            <iframe src="{{ week.video }}"
+                    width="640" height="360"
+                    frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="row" style="margin-top: 30px;">
+
+            <b>Handouts:</b><br><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number:</th>
+                        <th>Title:</th>
+                        <th>Updated:</th>
+                {% for handout in handouts %}
+
+                    <tr>
+                        <td style="text-align: right;">
+                            {{ handout.handoutno }}
+                        </td>
+                        <td>
+                            <a class="joslargelinkbutton" style="font-size: 14pt;" href="{% url "handout" %}/{{ handout.id }}">
+                                {{ handout.title | striptags | safe }}
+                            </a>
+                        </td>
+                        <td style=" ">
+                            {{ handout.updated }}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-2" style="margin-top: 50px;">
+
+        {% include "updated.html" with myobj=week %}
+
+        <a class="btn pull-right btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px;"
+           href="{% url "personaldesk" %}/{{ request.user.id }}">
+            {% trans "Course" %}
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

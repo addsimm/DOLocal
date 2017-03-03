@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+{% block meta_title %}Community Rules{% endblock %}
+{% block title %}Community Rules{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    Join Our Story: Community Rules
+    </div></div>
+
+{% endblock %}
+
+{% block all_content %}
+
+    <style>
+
+        #rules li {
+            margin-top: 15px;
+        }
+
+    </style>
+
+    <div id="rules" class="row" style=" ">
+        <div class="col-xs-10 col-xs-offset-1" style="margin-top: 80px;">
+
+            Join Our Story is a friendly, supportive community. Everyone here helps everyone else enjoy, create, and share.<br><br>
+
+            Strive to be kind, though honest and constructive. Always be respectful and encouraging.<br><br>
+
+            <b>Things to keep in mind:</b><br>
+
+            <ul style="margin-left: 50px;">
+
+                <li>
+                    Report problems immediately by the easiest means available.<br>
+                </li>
+
+                <li>
+                    Let the facilitators / instructors guide. They are responsible for setup and keeping things running smoothly. Help them help everyone.<br>
+                </li>
+
+                <li>
+                    Everyone deserves the opportunity to learn and to be heard. Avoid interruptions. There will always be ways to signal that you want to the floor. At the same time, respect others' time when speaking.<br>
+                </li>
+
+                <li>Always be constructive and gentle in discussions of someone else's efforts. Observe on how facilitators / instructors act.<br>
+                </li>
+
+                <li>
+                    When your efforts are being discussed, try to listen before talking.
+                </li>
+
+            </ul><br>
+
+            <b>In order to ensure the integrity of our community:</b><br><br>
+
+
+            &nbsp&nbsp&nbsp&nbspBeing mean results in loss of privileges and probation.<br><br>
+
+            &nbsp&nbsp&nbsp&nbspBeing cruel results in an immediate and permanent ban.
+
+        </div>
+    </div>
+
+
+{% endblock all_content %}

@@ -11,11 +11,6 @@
 <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 <link rel="apple-touch-icon" href="">
 
-{% ifinstalled mezzanine.blog %}
-<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}" />
-<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}" />
-{% endifinstalled %}
-
 {% compress css %}
 <link rel="stylesheet" href="{% static "css/global-mobile.css" %}">
 <link rel="stylesheet" href="{% static "css/jquery.mobile-1.2.1.min.css" %}" />
@@ -54,8 +49,6 @@
 
 {% compress js %}
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
-<script src="{% static "js/jquery.mobile-1.2.1.min.js" %}"></script>
-{% include "mobile/includes/footer_scripts.html" %}
 {% endcompress %}
 
 </body>

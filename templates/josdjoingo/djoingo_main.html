@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+{% block meta_title %}Play Joingo!{% endblock %}
+{% block title %}Play Joingo!{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    <li class="active">Joingo</li>
+
+{% endblock %}
+
+{% block all_content %}
+<div class="row">
+
+Hello<br><br>
+
+card_serial {{ card.card_serial }}<br><br>
+
+card_entries {{ card.entries }}<br><br>
+
+card_id {{ card.id }}<br><br>
+
+{% if card.tags %}
+    card.tags {{ card.tags }}<br><br>
+{% endif %}
+
+card_tags {{ card_tags }}<br><br>
+
+
+<ul>
+    {% for x in card.tags %}
+
+        <li>
+            {{ forloop.counter0 }}
+            tag {{ x }}
+        </li><br><br>
+
+    {% empty %}
+
+        Nothing in list
+
+    {% endfor %}
+</ul>
+
+end
+
+</div>
+{% endblock all_content %}
