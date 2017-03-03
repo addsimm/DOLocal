@@ -1,34 +1,48 @@
 
-Searching for "{{ member_search_text }}" - Found {{ member_search_results.count}} members:<br>
-
+<div class= "josinstructions" style="color: #5bc0de; margin-top: 15px;">
+    Searching for "{{ member_search_text }}" - Found {{ member_search_results.count}} members:<br>
 {% if  member_search_results.count > 0 %}
+    <table>
+        <tbody>
+            {% for member in member_search_results %}
+                <tr>
+                    <td style="width: 15%;">
+                        {% if member.profile_image_idstr != "noimage1" %}
+                            <img class="img-responsive" style="display: inline; max-height: 75px;"
+                                 src="http://res-4.cloudinary.com/desg88u7l/image/upload/{{ member.profile_image_idstr }}">
+                        {% else %}
+                            <img class="img-responsive" style="background-color: white; display: inline; max-height: 75px;"
+                                 src="/static/img/coming-soon-profile.png">
+                        {% endif %}
+                    </td>
+                    <td style="color: rgb(65,45,120); font-size: 20pt; font-weight: bold; width: 25%;">
+                    {{ member.jos_name }}
+                    </td>
+                    <td style="width: 60%;">
+                        <a class="btn btn-default"
+                           style="margin-left: 10px; width: 150px;"
+                           href="{% url "profile" member.user.id %}">
+                            View profile
+                        </a>
 
-    {% for member in member_search_results %}
+                        <a class="btn btn-default"
+                           style="margin-left: 10px; width: 150px;"
+                           href="{% url 'josmessages:messages_compose' %}{{ member.user.id }}">
+                            Message
+                        </a>
 
-        <div style="display: flex; justify-content: center;
-             padding: 10px; width: 280px; margin: 10px 0 0 15px; height: 115px; border: 1px solid rgb(65,45,120);">
+                        <a class="btn btn-default"
+                           style="margin-left: 10px; width: 150px;"
+                           href="{% url 'josmembers:josmembers_list' %}/?add_favorite={{ member.user.id }} ">
+                            Favorite
+                        </a>
 
-            <div>
-                {% include "jos_includes/user_picture_include.html" with user=member.user height=60 %}<br>
-            </div>
-
-            <div class="jos_flex_container" style="justify-content: space-around;">
-                <button class="j_button_small j_action_button"
-                    onclick="getThreadSubject('member','{{ member.user.id }}','{{ member.user.JOSProfile.friendly_jos_name }}');">
-                    <i class="fa fa-send fa-fw"></i>
-                    MESSAGE
-                </button>
-
-                <button class="j_button_small j_info_button" style="width: 120px;"
-                    onclick="favor('{{ member.user.id }}');">
-                    <i class="fa fa-heart fa-fw"></i>
-                    FAVOR
-                </button>
-            </div>
-        </div>
-
-    {% endfor %}
-
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     ---
 {% endif %}
+<br><br><br>

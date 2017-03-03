@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+
+{% block meta_title %}Timekeeping{% endblock %}
+{% block title %}Timekeeping{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}
+    {{ story.author.JOSProfile.jos_name }} Timekeeping
+    </div></div>
+{% endblock %}
+
+{% block all_content %}
+
+    <link rel="stylesheet" href="{% static "css/datepicker.css" %}">
+
+    <style>
+
+        #id_hours_notes {
+            font-size: 14pt;
+            height: 150px;
+            padding: 10px;
+            width: 500px;
+        }
+
+        #id_hours_claimed {
+            font-size: 18pt;
+            padding: 10px;
+            width: 100px;
+        }
+
+        #id_period_date_start, #id_period_date_end {
+            text-align: center;
+            margin-left: 20px;
+            width: 165px;
+        }
+
+    </style>
+
+    <div class="row" style="margin-bottom: 50px; margin-top: 30px;">
+        <div class="col-xs-2">
+            <img class="img-responsive" src="{{ MEDIA_URL }}{% thumbnail member.bio_image 100 0 %}">
+        </div>
+        <div class="col-xs-8">
+
+            <h3>Previous Entries:</h3>
+            <div class="row">
+
+                <div class="col-xs-2 col-xs-offset-1">Start</div>
+                <div class="col-xs-2">End</div>
+                <div class="col-xs-2 text-right">Hours</div>
+                <div class="col-xs-2 text-center">Status</div>
+                <div class="col-xs-3 text-right">Total Claim:</div><br><br>
+
+            </div>
+            {% for instance in member_entries %}
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-1">{{ instance.period_date_start | date:'m/d/y' }}</div>
+                    <div class="col-xs-2">{{ instance.period_date_end | date:'m/d/y'}}</div>
+                    <div class="col-xs-2 text-right">{{ instance.hours_claimed }}</div>
+                    <div class="col-xs-2">
+                        {% if instance.time_claim_approved %}
+                            Approved
+                        {% else %}
+                            Pend.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-xs-2" style="color: green; font-size: 36pt; margin-top: 60px;">
+            {{ total_hours }}
+        </div>
+    </div>
+
+    {# form.as_p #}
+
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-2" style="border-top: 2px solid rgba(65, 25, 140, 0.25);">
+
+            {% errors_for form %}
+
+            <form method="post">
+                {% nevercache %}
+                    <input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+                    {% csrf_token %}
+                {% endnevercache %}
+                <h3>New Entry:</h3>
+                <div class="row" style=" ">
+                    <div class='col-xs-3 col-xs-offset-1'>
+                        <h5 class=" ">Choose start date:</h5>
+                        <div id="datepickerstart" data-provide="datepicker-inline"></div>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    <div class='col-xs-3'>
+                        <h5 class=" ">End date:</h5>
+                        <div id="datepickerend" data-provide="datepicker-inline"></div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    {% for field in form %}
+                        {% if field.is_hidden %}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="form-group input_{{ field.id_for_label }}
+                                                 {{ field.field.type }}
+                                                 {% if field.errors %}
+                                                    has-error
+                                                 {% endif %}">
+
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                {{ form.period_date_start }}
+                                {% if form.period_date_start.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.period_date_start.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.period_date_start.help_text %}
+                                    <p class="help-block">
+                                        {{ form.period_date_start.help_text }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                {{ form.period_date_end }}
+                                {% if form.period_date_end.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.period_date_end.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.period_date_end.help_text %}
+                                    <p class="help-block">
+                                        {{ form.period_date_end.help_text }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 25px;">
+                            <div class="col-xs-4 col-xs-offset-1" style="margin-top: 25px;">
+
+                                <label class="control-label" style="font-size: 18pt;"
+                                       for="{{ form.hours_claimed.auto_id }}">
+                                    Hours Claimed:
+                                </label>
+
+                                {{ form.hours_claimed }}
+
+                                {% if form.hours_claimed.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.hours_claimed.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.hours_claimed.help_text %}
+                                    <p class="help-block">
+                                        {{ form.hours_claimed.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-xs-5">
+
+                                <label class="control-label" style="font-size: 14pt;"
+                                       for="{{ form.hours_notes.auto_id }}">
+                                    Notes:
+                                </label>
+
+                                {{ form.hours_notes }}
+
+                                {% if form.hours_notes.errors %}
+                                    <p class="help-block">
+                                        {% for e in form.hours_notes.errors %}
+                                            {% if not forloop.first %} / {% endif %}{{ e }}
+                                        {% endfor %}
+                                    </p>
+
+                                {% elif form.hours_notes.help_text %}
+                                    <p class="help-block">
+                                        {{ form.hours_notes.help_text }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- sumbit -->
+                <div class="form-actions">
+                    {% block account_form_actions %}
+                        <input class="btn btn-default btn-lg pull-left"
+                               style="margin-top: 10px;" type="submit" value="Submit">
+                    {% endblock account_form_actions %}
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static "mezzanine/js/bootstrap-datepicker.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datepickerstart').datepicker()
+                                 .on("changeDate", function () {
+                $('#id_period_date_start').val($('#datepickerstart').datepicker('getFormattedDate'));
+            });
+            $('#datepickerend').datepicker()
+                               .on("changeDate", function () {
+                $('#id_period_date_end').val($('#datepickerend').datepicker('getFormattedDate'));
+            });
+        });
+    </script>
+
+{% endblock all_content %}

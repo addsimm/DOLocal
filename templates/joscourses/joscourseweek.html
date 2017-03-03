@@ -2,133 +2,91 @@
 {% load i18n mezzanine_tags accounts_tags  %}
 
 {% block meta_title %}
-    {{ week.week_title | safe | truncatechars:20 }}
+    {{ week.week_title | safe | truncatechars:25 }}
 {% endblock %}
 {% block title %}
-    {{ week.week_title | safe | truncatechars:20 }}
+    {{ week.week_title | safe | truncatechars:25 }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {{ week.week_title | safe | truncatechars:45 }}
-    - Part {{ handouts.0.part_no }}
+    {{ week.course | cut:"Course: " }}: Week #{{ week.weekno }}
+    </div></div>
 
 {% endblock %}
 
 {% block all_content %}
 
 <style>
-    p {
-        margin: 0;
-    }
-
-    #work_tabs a, #work_tabs a:visited {
-        border: 3px dotted rgb(112, 154, 109);
-        color: rgb(112, 154, 109);
-        font-family: "Abril Fatface", cursive;
-        font-size: 24pt;
-        font-weight: normal;
-        outline:none;
-        padding: 5px 15px;
-    }
-
-    #work_tabs a:hover, #work_tabs a:focus {
-        color: rgb(240, 173, 78);
-        border-color: rgb(240, 173, 78);
-        background-color: white;
-    }
-
-    #two_work_tabs a, #two_work_tabs a:visited {
-        border: 3px dotted rgb(112, 154, 109);
-        color: white;
-        font-size: 18pt;
-        font-weight: bold;
-        margin: 0 0 0 15px; !important;
-        outline: none;
-        padding: 5px 15px;
-        width: 150px !important;
-    }
-
-    #two_work_tabs a:hover, #two_work_tabs a:focus {
-        color: rgb(240, 173, 78);
-        border-color: rgb(240, 173, 78);
-        background-color: white;
-    }
-
+    p {margin: 0;}
 </style>
 
-    <div style="position: fixed; top: 100px; left: 60px; padding-top: 30px; background-color: white; z-index: 95;">
-<!-- Segments -->
-<div class="row" style="margin: 0 0 0 -10px; padding-top: 0; width: 1120px;">
+<div class="row" style="margin-bottom: 30px; margin-top: 70px;">
 
-    <div class="col-xs-12 text-center" style=" ">
+    <div class="col-xs-9 col-xs-offset-1">
+        <div class="josinstructions">
 
-        {% if segments|length > 0 %}
+            <span style="font-size: larger;
+                         padding: 5px 10px;">
+                {{ week.week_title | striptags | safe }}
+            </span>
 
-            <ul id="work_tabs" class="nav nav-tabs nav-justified">
+        </div>
 
-                {% for seg in segments %}
-                    <li><a style="
-                               {% if seg.segment_no == handout.segment_no %}
-                                   position: relative;
-                                   bottom: -3px;
-                                   color: rgb(65,45,120);
-                                   background-color: rgb(209,209,209);
-                                   border: 3px solid rgb(65,45,120);
-                                   border-bottom: 3px solid rgb(209,209,209);
-                                   z-index: 50;
-                               {% endif %}"
-                           href="{% url "joscourses:course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ seg.segment_no }}/1">
-                        {{ seg.get_segment_no_display }}
-                    </a></li>
-                {% endfor %}
+        <div class="row" style="margin-top: 30px;">
+            <iframe src="{{ week.video }}"
+                    width="640" height="360"
+                    frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe>
+        </div>
 
-            </ul>
+        <div class="row" style="margin-top: 30px;">
 
-        {% else %}
-            Content coming soon!
-        {% endif %}
-    </div>
-</div>
+            <b>Handouts:</b><br><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number:</th>
+                        <th>Title:</th>
+                        <th>Updated:</th>
+                {% for handout in handouts %}
 
-<!-- Elements -->
-<div class="row" style="margin: 0 0 0 -10px; width: 1120px;">
-
-    <div class="col-xs-12 text-center"
-         style="margin-left: 15px;
-         padding: 15px 0 0 0;
-         width: 1090px;
-         background-color: rgb(209,209,209);
-         border: 3px solid rgb(65,45,120);">
-
-        {% if segments|length > 0 %}
-
-            <ul id="two_work_tabs" class="nav nav-tabs">
-                {% for hand in handouts %}
-
-                    <li><a class="joslargelinkbutton"
-                       style="{% if hand.element_no == handout.element_no %}
-                                   background-color: white;
-                                   border: 3px solid rgb(65,45,120);
-                                   border-bottom-color: white;
-                                   bottom: -3px;
-                                   color: rgb(65,45,120);
-                                   position: relative;
-                                   z-index: 50;
-                              {% endif %}"
-                       href="{% url "joscourses:course_week" %}/{{ week.week_no }}/{{ part_no }}/{{ hand.segment_no }}/{{ hand.id }}">
-                            {{ hand.get_element_no_display }}
-                    </a></li>
+                    <tr>
+                        <td style="text-align: right;">
+                            {{ handout.handoutno }}
+                        </td>
+                        <td>
+                            <a class="joslargelinkbutton" style="font-size: 14pt;" href="{% url "handout" %}/{{ handout.id }}">
+                                {{ handout.title | striptags | safe }}
+                            </a>
+                        </td>
+                        <td style=" ">
+                            {{ handout.updated }}
+                        </td>
+                    </tr>
 
                 {% endfor %}
-            </ul>
-        {% else %}
-            No published handouts
-        {% endif %}
-    </div>
-</div>
+            </table>
+
+        </div>
+
     </div>
 
-{% endblock all_content %}
+    <div class="col-xs-2" style="margin-top: 50px;">
+
+        {% include "updated.html" with myobj=week %}
+
+        <a class="btn pull-right btn-default"
+           style="background-color: #f0ad4e; border: none; color: white; outline: none; margin-top: 30px;"
+           href="{% url "personaldesk" %}/{{ request.user.id }}">
+            {% trans "Course" %}
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
 

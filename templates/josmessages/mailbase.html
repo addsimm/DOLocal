@@ -1,425 +1,65 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags %}
+{% load i18n %}
+{% load url from future %}
 
 {% block meta_title %}
-    {{ user.JOSProfile.friendly_jos_name }} Community
+    {{ user.JOSProfile.jos_name }} Mail
 {% endblock %}
 {% block title %}
-    {{ user.JOSProfile.friendly_jos_name }} Community
+    {{ user.JOSProfile.jos_name }} Mail
 {% endblock %}
+
 {% block breadcrumb_menu %}
 
     {{ block.super }}
-    {% block inner_breadcrumb_menu %}
-        {{ user.get_short_name }}'s Community
-    {% endblock inner_breadcrumb_menu %}
+    {{ user.get_short_name }}'s Mail
+    </div></div>
 
 {% endblock %}
 
 {% block all_content %}
 
-<div id="message_modal_box" style="display: none;
-     position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
-     background-color: #C0C0C0; opacity: .98; z-index: 500;">
+    <div class="row" style="margin-left: 0; margin-bottom: 40px; margin-top: 60px;">
 
-    <div id="ajax_response_messages"></div>
+        <div class="col-xs-12" style="padding: 0;">
 
-</div>
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_inbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-inbox fa-fw" style=" "></i>
+                    My inbox
+                </span>
+            </a>
 
-<div id="compose_subject_modal_box" style="display: none;
-     position: absolute; top: 0; left: 0; height: 1200px; width: 1280px;
-     background-color: #C0C0C0; opacity: .98; z-index: 500;">
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_outbox' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-paper-plane fa-fw" style=" "></i>
+                    Sent
+                </span>
+            </a>
 
-    <div id=" " style="
-         position: absolute; top: 50px; left: 195px; height: 330px; width: 880px;
-         background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
-         font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url 'josmessages:messages_trash' %} ">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-trash fa-fw" style=" "></i>
+                    Deleted
+                </span>
+            </a>
 
-        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
-             style="position: absolute; top: 10px; left: 10px; height: 65px;">
+            <span class="josinstructions" style="margin-left: 30px;">To send messages, use:</span>
+            <a style="margin-left: 15px; margin-right: 160px" href="{% url "josmembers:josmembers_list" %}">
+                <span style="margin-left: 5px; margin-right: 5px;">
+                    <i class="fa fa-heart fa-fw" style=" "></i>
+                    Friends
+                </span>
+            </a>
 
-        <div id=" " style="margin: 20px 0 0 90px;">
-            
-            <span id="recip_ids" style="display: none"></span>
-                
-            Composing message to: <span id="recip_names" style="color: rgb(112, 154, 109); margin-left: 5px;"></span>
-
-            <div style="margin-top: 30px;">Please enter your subject:</div>
-
-            <input id="subject_input" type="text" style="
-               margin-top: 15px; padding: 8px 12px; width: 700px;
-               color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
-                   value="Re:">
-
-            <div style="display: flex; align-self: flex-end; justify-content: flex-end;
-             align-items: flex-end; margin-top: 30px; width: 700px;">
-                <button id="title_save_btn" class="j_button_small j_save_button"
-                        style=" " onclick="event.stopPropagation(); composeWithSubject();">
-                    <i class="fa fa-arrow-circle-right fa-fw"></i>
-                    COMPOSE
-                </button>
-
-                <button id="title_discard_btn" class="j_button_small j_discard_button"
-                        style="margin-left: 10px; "
-                        onclick="event.stopPropagation(); window.location.href = '{% url 'josmessages:messages_redirect' %}';">
-                    <i class="fa fa-trash fa-fw"></i>
-                    CANCEL
-                </button>
-            </div>
         </div>
     </div>
-</div>
-
-<!-- Inbox -->
-<div class="josinstructions" style="margin: 20px 0 0 60px;">Inbox (click subject to read):</div>
-{% if inbox_list %}
-    <table data-toggle="table" style="margin-left: 60px; width: 95%; outline: 1px solid rgb(65, 45, 120);">
-        <thead>
-        <tr>
-            <th style="width: 120px;">Status:</th>
-            <th style="width: 210px;">Received:</th>
-            <th style="width: 210px;">From:</th>
-            <th>Subject:</th>
-            <th style="width: 120px;"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for message in inbox_list %}
-            <tr>
-                <td style="padding-left: 10px; width: 120px;">
-                    {% if not message.read_at %}
-                        <span class=" " style="color: rgb(112, 154, 109) ;">New</span>
-                    {% elif message.replied %}
-                        <span class=" " style="color: black;">Replied</span>
-                    {% endif %}
-                </td>
-                <td style="padding-left: 20px; width: 210px;">
-                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}
-                </td>
-                <td style="padding-left: 20px; width: 210px;">
-                    {{ message.sender.JOSProfile.friendly_jos_name }}
-                </td>
-                <td>
-                    <button class="j_button j_action_button"
-                        style="margin-left: 10px;"
-                        onclick="viewMessageThread('{{ message.message_thread.id }}');">
-                        {{ message.subject | striptags | truncatechars:45 }}
-                    </button>
-                </td>
-                <td style="width: 120px;">
-                    <button class="j_button_small j_discard_button"
-                       style="margin-left: 10px;"
-                            onclick="window.location.href=
-                               '{% url 'josmessages:messages_delete' message.message_thread.id %}';">
-                        <i class="fa fa-trash fa-fw"></i>
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p style="margin: 50px 0 0 30px;">No messages</p>
-{% endif %}
-
-<!-- Search -->
-<div class="josinstructions" style="
-     margin: 50px 0 0 60px; padding: 15px; width: 795px;
-     outline: 1px solid rgb(65,45,120); background-color: aliceblue;">
-    To send a new message or favor a member, type their name:
-
-    <div style="display: flex; margin: 10px 0 0 15px;">
-
-        <input id="member_search_text" style="padding: 3px 12px; width: 350px; height: auto;"
-               type="text" placeholder="Type here">
-
-        <button class="j_button_small j_back_button"
-                style="margin-left: 5px; height: 36px; align-self: center;"
-                onclick="$('#member_search_text').val(' '); $('#member_search_results').html(' ');">
-            <i class="fa fa-eraser fa-fw"></i>
-            CLEAR
-        </button>
-
-    </div>
-    <div id="member_search_results" class="josinstructions" style="color: #d9534f;
-         margin: 10px 0 0 5px; width: 745px; padding: 10px; background-color: aliceblue;"></div>
-
-</div>
-
-<div id='friends_and_circles' class="josinstructions" style="margin: 40px 0 0 60px;">
-
-    <!-- Favorites -->
-    <div class="josinstructions" style="margin-top: 20px;">My favorites:</div>
-
-    {% nevercache %}{% if following.count > 0 %}
-
-        <div style="display: flex; flex-wrap: wrap; width: 100%; margin-top: 10px;">
-            {% for favorite in following %}
-
-                <div style="display: flex; justify-content: center;
-                     padding: 10px; width: 280px; margin-left: 15px; height: 115px;
-                     border: 1px solid rgb(65,45,120);">
-
-                    <div>
-                        {% include "jos_includes/user_picture_include.html" with user=favorite height=60 %}
-                    </div>
-
-                    <div class="jos_flex_container" style="justify-content: space-around;">
-                        <button class="j_button_small j_action_button"
-                            onclick="getThreadSubject('member',
-                                                      '{{ favorite.id }}',
-                                                      '{{ favorite.JOSProfile.friendly_jos_name }}');">
-                            <i class="fa fa-send fa-fw"></i>
-                            MESSAGE
-                        </button>
-
-                        <button class="j_button_small j_info_button"
-                            onclick="unfavor('{{ favorite.id }}');">
-                            <i class="fa fa-arrow-down fa-fw"></i>
-                            UNFAVOR
-                        </button>
-                    </div>
-
-                </div>
-
-            {% endfor %}
-        </div>
-
-    {% else %}
-        -- Favor a friend by typing a name above.
-    {% endif %}{% endnevercache %}
-
-    <!-- Teams -->
-   {% if teams_list.count > 0 %}
-       <div class="josinstructions" style="margin-top: 40px;">My circles:</div>
-
-       <div class="jos_flex_container" style="width: 100%; margin-bottom: 50px;">
-           {% for team_dict in teams_list %}
-
-                <div style="display: flex;
-                     height: 115px; margin: 15px 0 0 15px; padding: 10px; border: solid 1px rgb(65,45,120);">
-{#                        {% if forloop.counter | divisibleby: 2 %}#}
-{#                            background-color: aliceblue;#}
-{#                        {% endif %}#}
-
-                    <div class="jos_flex_container" style="padding: 5px; width: 185px;">
-                        <div>
-                            {{ team_dict.name }}
-                        </div>
-
-                        <button class="j_button_small j_action_button" style="margin-top: 10px;">
-{# onclick="window.location.href='{% url 'josmessages:messages_compose' %}/?team={{ team_dict.name }}';">#}
-                            <i class="fa fa-send fa-fw"></i>
-                            MESSAGE
-                        </button>
-
-                    </div>
-
-                    <div>
-
-                        {% for usr in team_dict.users %}
-
-                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=usr height=60 %}
-
-                        {% endfor %}
-
-                    </div>
-                </div>
-
-            {% endfor %}
-       </div>
-    {% endif %}
-
-</div>
-
-<script>
-
-    var AJAX_MESSAGE_URL = "{% url 'josmessages:ajax_message_info' %}";
-    var AJAX_FOLLOW_URL = "{% url 'josmembers:ajax_follow_unfollow' %}";
-
-    initJOSEditor('reply', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', "<i>Enter message here</i>");
-
-    function viewMessageThread(mtid) {
-        // console.log("called viewMessageThread; mtid: " + mtid);
-        $.ajax({
-            type: "GET",
-            url: AJAX_MESSAGE_URL,
-            dataType: 'html',
-            data: {
-                'message_thread_id': mtid
-            },
-            success: function(serverResponse_data) {
-                // console.log("viewMessageThread: serverResponse_data: " + serverResponse_data);
-                $('#ajax_response_messages').html(serverResponse_data);
-                josCKEdit('reply');
-                $('#message_modal_box').show();
-            },
-            fail: function () {
-                console.log("viewMessageThread fail");
-            }
-        });
-    }
-
-    function getThreadSubject(cmpstyp, rcvrids, rcvrname) {
-        // console.log("called getThreadSubject; cmpstyp, rcvrids, rcvrname: " + cmpstyp + ", " + rcvrids + ", " + rcvrname);
-        $('#recip_ids').text(rcvrids);
-        $('#recip_names').html(rcvrname);
-        $('#compose_subject_modal_box').show();
-    }
-
-    function composeWithSubject() {
-        var subject = $('#subject_input').val();
-        var recip_ids = $('#recip_ids').text();
-
-        $.ajax({
-            type: "GET",
-            url: AJAX_MESSAGE_URL,
-            dataType: 'html',
-            data: {
-                'subject': subject,
-                'recip_ids': recip_ids
-            },
-            success: function (serverResponse_data) {
-                // console.log("serverResponse_data: " + serverResponse_data);
-                $('#ajax_response_messages').html(serverResponse_data);
-                $('#compose_subject_modal_box').hide();
-                josCKEdit('reply');
-                $('#message_modal_box').show();
-            },
-            fail: function () {
-                console.log("composeWithSubject fail");
-            }
-        });
-    }
-
-    function  replyMessage(sect2save, mtid) {
-        var reply_content = editors[sect2save].section_editor.getData();
-        // console.log('called replyMessage: mtid, reply_content: ' + mtid + ', ' + reply_content);
-
-        if (reply_content.indexOf("nter message here") > 0) {
-            alert("Please delete 'Enter message here'");
-        } else {
-            $.ajax({
-                type: "POST",
-                url: AJAX_MESSAGE_URL,
-                data: {
-                    'message_thread_id': mtid,
-                    'reply_content': reply_content
-                },
-                success: function (serverResponse_data) {
-                    console.log("Reply post success: " + serverResponse_data);
-                    window.location.href = "{% url 'josmessages:messages_inbox' %}"
-                },
-                fail: function () {
-                    console.log("Reply post fail");
-                }
-            });
-        }
-    }
-
-    /* Member search */ {
-        var SUBMIT_URL_PAL = "{% url 'josmembers:search_member_list' %}";
-
-        var processSearchPal = function () {
-            //Get and trim the search text.
-            var searchText = $('#member_search_text').val().trim().toLowerCase();
-
-            if (searchText.length < 2) {
-                //Too short. Ignore the submission, and erase any current results.
-                $('#member_search_results').html("<i>Keep typing ...</i>");
-
-            } else {
-                // Execute the search.
-                var processServerResponsePal = function (serverResponse_data) // textStatus_ignored, jqXHR_ignored)
-                {
-                    $('#member_search_results').html(serverResponse_data);
-                };
-
-                var config = {
-                    type: "GET",
-                    url: SUBMIT_URL_PAL,
-                    data: {
-                        'member_search_text': searchText
-                    },
-                    dataType: 'html',
-                    success: processServerResponsePal,
-                    fail: function () {
-                        alert("Fail")
-                    }
-                };
-                $.ajax(config);
-            }
-        };
-
-        var MILLS_TO_IGNORE_SEARCH = 100;
-        $(document).ready(function () {
-            /* This attaches a listener. Calling this again would attach a *second* */
-            $('#member_search_text').keyup(_.debounce(processSearchPal,
-                    MILLS_TO_IGNORE_SEARCH, true));
-        });
-    }
-
-    function unfavor(otherid) {
-            // console.log("called unfavor; unfavor: " + otherid);
-            $.ajax({
-                type: "GET",
-                url: AJAX_FOLLOW_URL,
-                data: {
-                    'remove_user_id': otherid
-                },
-                success: function (serverResponse_data) {
-                    console.log("unfavor serverResponse_data: " + serverResponse_data);
-                    location.reload(true);
-                },
-                fail: function () {
-                    console.log("viewMessageThread fail");
-                }
-            });
-        }
-
-    function favor(favorid) {
-        // console.log("called favor: " + favorid);
-        $.ajax({
-            type: "GET",
-            url: AJAX_FOLLOW_URL,
-            data: {
-                'favorite_user_id': favorid
-            },
-            success: function (serverResponse_data) {
-                console.log("favorite serverResponse_data: " + serverResponse_data);
-                location.reload(true);
-            },
-            fail: function () {
-                console.log("viewMessageThread fail");
-            }
-        });
-    }
-
-</script>
 
 {% endblock %}
 
-
-{# OFF #}{% if sent_list %}
-    {#    <div class="jos_flex_container" style="font-size: 16pt; margin: 50px 0 0 60px;">#}
-    {#        <div style="display: flex; width: 80%; align-items: flex-end;">#}
-    {#            <div style="width: 250px;">Last 4 messages sent:</div>#}
-    {#            <div style="width: 210px;">Date</div>#}
-    {#            <div style="width: 210px;">To</div>#}
-    {#            <div style=" ">Subject</div>#}
-    {#        </div>#}
-    {#        {% for message in sent_list %}#}
-    {#            <div style="display: flex; width: 80%; margin: 5px 0 0 0">#}
-    {#                <div class="josinstructions" style="width: 250px;"></div>#}
-    {#                <div style="width: 210px;">#}
-    {#                    {{ message.sent_at | date:"M d" }}; {{ message.sent_at | time:"f A" }}#}
-    {#                </div>#}
-    {#                <div style="width: 210px;">{{ message.recipient.JOSProfile.friendly_jos_name }}</div>#}
-    {#                <div>{{ message.subject | truncatechars:45 }}</div>#}
-    {#            </div>#}
-    {#        {% endfor %}#}
-    {#    </div>#}
-    {#{% else %}#}
-    {#    <p style="margin: 30px 0 0 30px;">No messages</p>#}
-{% endif %}
