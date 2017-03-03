@@ -1,0 +1,548 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+
+{% block meta_title %}Comm. Room{% endblock %}
+{% block title %}Comm. Room{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}Community Room{% endblock %}
+
+{% block all_content %}
+
+<style>
+
+    .row {
+        margin: 0 -25px;
+    }
+
+    .segment {
+        display: inline-block;
+        margin-left: 10px;
+        padding: 3px 0;
+        width: 100px;
+        text-align: center;
+        border: 2px solid rgb(209,209,209);
+    }
+
+    .segment-active {
+        color: white;
+        background-color: rgb(65, 45, 120);
+    }
+
+    #shared_video {
+        height: 700px;
+        max-width: 99%;
+        outline: 2px dashed rgb(65, 45, 120);
+    }
+
+    .particbox {
+        background-color: rgb(65, 45, 120);
+        border: none;
+        margin: 15px 0 0 20px;
+        outline: 2px solid rgb(65, 45, 120);
+        padding: 0;
+        width: 260px;
+    }
+
+    .videoContainer {
+        margin: 0;
+        padding: 0;
+        width: 260px;
+        height: 195px;
+        z-index: -1;
+    }
+
+    .nameContainer {
+        background-color: rgba(255, 255, 255, .8);
+        bottom: 0;
+        color: rgb(112, 154, 109);
+        font-family: "Open Sans", sans-serif;
+        font-size: 14pt;
+        font-weight: bold;
+        height: 35px;
+        left: 0;
+        margin: 0;
+        padding: 5px 0 0 9px;
+        position: absolute;
+        text-align: left;
+        width: 260px;
+    }
+
+    .mute-button {
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: 1;
+    }
+
+    .action {
+        color: #28a4c9;
+        font-style: italic;
+    }
+
+    .usr {
+        color: rgb(112, 154, 109) ;
+    }
+
+    .me {
+        color: rgb(217, 83, 79) ; ) ; ;
+    }
+
+    .tdclass {
+        border: none;
+        outline: none;
+        font-family: "Open Sans", sans-serif;
+        font-size: 14pt !important;
+        line-height: normal;
+        padding: 8px 6px 8px 3px !important;
+    }
+
+    tr {
+        border-top: 1px solid rgb(209,209,209);
+        border-left: 1px solid rgb(209,209,209);
+        border-right: 1px solid rgb(209,209,209);
+    }
+
+    tr:hover {
+        background-color: inherit;
+    }
+
+    .table {
+        background-color: white;
+        margin: 0;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .btn-send, .btn-send:visited {
+        border: none;
+        box-shadow: none;
+        font-size: 11pt;
+        height: 41px;
+        margin: 0;
+        outline: 2px solid #28a4c9;
+        padding: 0;
+        width: 100%;
+    }
+
+    .btn-send:hover, .btn-send:focus {
+        color: orange;
+        background-image: none;
+        background-color: white;
+        background-position: 0;
+    }
+
+</style>
+
+<!-- HTML -->
+<div>
+
+<!-- Top Nav -->
+<div class="row" onload="chatInstruct();" style="margin: -15px -15px 0 0;">
+
+    <button class="j_button j_action_button pull-right" style="margin: 0 0 0 15px;"
+            onclick="location.reload();">
+        <i class="fa fa-refresh fa-fw"></i>
+        REFRESH
+    </button>
+
+    <button class="j_button j_relocate_button pull-right" style="margin: 0 0 0 15px;" onclick="newTab();">
+        <i class="fa fa-square fa-fw"></i>
+        NEW TAB
+    </button>
+
+{#    {% if JOSName == "Celeste D." or JOSName == "Adam S." %}#}
+{#        <button id="share_button" class="j_button  j_test_button startshare pull-right"#}
+{#                onclick="controlShare('{{ JOSName }}')">#}
+{#            SHARE SCREEN#}
+{#        </button>#}
+{#    {% endif %}#}
+
+    <script>
+        function newTab() {
+            window.open('www.joinourstory.com/personaldesk/{{ JOSId }}', '_blank');
+        }
+    </script>
+
+</div>
+
+<!-- Main Section -->
+<div class="row" style="margin-top: 65px; padding: 10px 0 0 0;">
+
+    {# video_section #}
+    <div style="margin: 5px 0 0 10px; min-height: 600px; width: 875px; padding: 0;">
+
+        <div id="screen_share_container" class="text-center hidden" style="padding: 0;">
+            <video id="shared_video" autoplay></video>
+        </div>
+
+        <div id="audience_container" style="margin-top: -60px; padding: 0 30px;" ></div>
+
+    </div>
+
+    {# chat_section #}
+    <div id="messages_section"
+        style="position: absolute; top: 90px; left: 860px; background-color: rgb(209,209,209); padding: 0;
+         width: 425px;">
+
+        <div id="messages_container"
+             class="text-center"
+             style="margin: 0;
+                    height: 552px;
+                    overflow-x: hidden;
+                    overflow-y: auto;">
+
+        </div>
+
+        <table id="compose_section" style="margin: 0;">
+            <tr>
+                <td style="padding: 0; width: 83%;">
+                    <input id="compose_input"
+                           type="text"
+                           style = "font-size: 14pt;
+                                    height: 40px;
+                                    width: 100%;
+                                    padding: 8px 4px;
+                                    border: none;
+                                    outline: 2px dashed #28a4c9;"
+                           placeholder="Chat ...">
+                </td>
+                <td style="border: none; padding: 0; width: 21%;">
+                    <button class="btn-success btn-xs btn-send"
+                            onclick="sendMessage();">
+                        <i class="fa fa-send fa-fw"></i>
+                        SEND
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</div>
+
+{# Scripts #}
+<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
+<script charset="utf-8">
+
+    layoutVideoContainers();
+
+    // Vars
+    {
+        var adncCntnr = document.getElementById('audience_container'),
+            scrnShrCntnr = document.getElementById('screen_share_container'),
+            cmpsNpt = document.getElementById('compose_input'),
+            mssgCntnr = document.getElementById('messages_container'),
+            nwMssgBt = document.getElementById('new_message_button'),
+            shrBt = document.getElementById('share_button');
+
+        var josSkylink = new Skylink();
+
+        //// josSkylink.setLogLevel(josSkylink.LOG_LEVEL.INFO);
+        //// josSkylink.setDebugMode(true);
+    }
+
+    // Events
+    {
+        // media Access Required
+        josSkylink.on('mediaAccessRequired', function (stream) {
+            console.log('mediaAccessRequired');
+            josSkylink.setUserData('{{ JOSName }}');
+            josSkylink.getUserMedia({
+                video: {
+{#                    resolution: {#}
+{#                        width: 80,#}
+{#                        height: 60#}
+{#                    },#}
+                    frameRate: 10 ///// change to one
+                },
+                audio: true
+            });
+        });
+
+        // media Access Success
+        josSkylink.on('mediaAccessSuccess', function (stream) {
+            console.log('mediaAccessSuccess: ' + stream + ', name: {{ JOSName }}');
+            josSkylink.setUserData('{{ JOSName }}');
+        });
+
+        // media Access Error
+        josSkylink.on('mediaAccessError', function (stream) {
+            console.log('mediaAccessError: ' + stream);
+        });
+
+        // Incoming Message
+        josSkylink.on('incomingMessage', function (message, peerId, peerInfo, isSelf) {
+            var user = 'Me', className = 'message';
+            if (!isSelf) {
+                user = josSkylink.getUserData(peerId);
+            }
+            addMessage(user, message.content, className);
+        });
+
+        // Peer Joined
+        josSkylink.on('peerJoined', function (peerId, peerInfo, isSelf) {
+            console.log('peerJoined: ' + peerId);
+            peerJOSName = 'Me';
+            if (!isSelf) {
+
+                var peerJOSName = peerInfo.userData;
+                addMessage(peerJOSName, 'joined chat', 'action');
+            }
+        });
+
+        // Peer left
+        josSkylink.on('peerLeft', function (peerId, peerInfo, isSelf) {
+            console.log('peerLeft peerId: ' + peerId);
+            if (!isSelf) {
+
+                reclaimSlot(peerId);
+                peerJOSName = peerInfo.userData;
+                addMessage(peerJOSName, 'left chat', 'action');
+            }
+        });
+
+        // Init: ENCRYPT ROOM NAME
+        josSkylink.init({
+            apiKey: '441543cd-a1c5-4d93-a25c-3339daa9b959',
+            defaultRoom: 'Main'}, function () {
+            console.log('Joining room');
+            josSkylink.setUserData('{{ JOSName }}');
+
+            josSkylink.joinRoom({
+                audioFallback: true,
+                audio: true,
+                video: true,
+                manualGetUserMedia: true
+            });
+        });
+    }
+
+    // Incoming Stream
+    josSkylink.on("incomingStream", function (peerId, stream, isSelf) {
+        var pstn;
+        var peerJOSName = josSkylink.getPeerInfo(peerId).userData;
+        
+        var nextEmptyID = 'xxx';
+        console.log('incomingStream peerId: ' + peerId + ', peerJOSName: ' + peerJOSName);
+
+{#        var stpshr = peerJOSName.indexOf("stps");#}
+{#        if (stpshr > 0) {#}
+{#            peerJOSName = peerJOSName.slice(0, -6);#}
+{#            $(scrnShrCntnr).addClass('hidden');#}
+{#            $(adncCntnr).removeClass('hidden');#}
+{#            // addMessage(usr = 'Guide', cntnt = 'stopped share', clssnm = 'action');#}
+{#        }#}
+
+{#        var shrscrn = peerJOSName.indexOf("shar");#}
+{#        if (shrscrn > 0) {#}
+{#            $(adncCntnr).addClass('hidden');#}
+{#            $(scrnShrCntnr).removeClass('hidden');#}
+{#            reclaimSlot(peerId);#}
+{#            // addMessage(usr = 'Guide', cntnt = 'started share', clssnm = 'action');#}
+{#            vidBox = document.getElementById('shared_video');#}
+{#        }#}
+{#        else {#}
+{#            if (isSelf) {#}
+{#                nextEmptyID = 'vid_2_empty';#}
+{#            } else {#}
+        for (c = 3; c < 8; c++) {
+            var testId = '#vid_' + c + '_empty';
+            if ($(testId).length) {
+                nextEmptyID = testId.substr(1);
+                break;
+            }
+        }
+{#            }#}
+
+            if (peerJOSName == "Celeste_D") {
+                nextEmptyID = 'vid_1_empty';
+            }
+
+            if (peerJOSName == "Adam_S") {
+                nextEmptyID = 'vid_6_empty';
+            }
+
+            console.log('nextEmptyID: ' +  nextEmptyID);
+
+            var vidBox = document.getElementById(nextEmptyID);
+            vidBox.id = nextEmptyID.slice(0, -5) + peerId;
+            pstn = vidBox.id.split('_')[1].toString();
+            var nameBox = document.getElementById('name_' + pstn);
+            nameBox.innerHTML = peerJOSName;
+            var particBox = document.getElementById('box_' + pstn);
+            vidBox.autoplay = 'autoplay';
+            if (isSelf) {
+                $(vidBox).css('transform', 'rotateY(-180deg)', 'z-index', '10');
+            }
+{#        }#}
+
+        if (isSelf) {
+            vidBox.muted = true;
+            bttn = document.getElementById('hidden_' + pstn);
+            $(bttn).replaceWith("<button id='but_" + peerId + "' onclick='mutePeer(this.id);'>Mute</button>");
+            $('#but_' + peerId).addClass('btn mute-button btn-success btn-xs');
+{#            $.confirm({#}
+{#                confirmButton: 'Will do!',#}
+{#                cancelButton: false,#}
+{#                content: "If you do not see video after clicking 'Will do!', please type 'hello' in the purple chat on the right. Call us, if there is a problem."#}
+{#            });#}
+        }
+
+        if (peerJOSName !== '???') {
+            $(particBox).removeClass('hidden');
+            attachMediaStream(vidBox, stream);
+        }
+    });
+
+    // Layout
+    function layoutVideoContainers() {
+        for (i = 0; i < 3; i++) {
+            var rowI = document.createElement('div');
+            $(rowI).addClass('row');
+            rowI.id = 'row_' + i;
+            document.getElementById('audience_container').appendChild(rowI);
+            for (j = 1; j < 4; j++) {
+                var pstn = (i * 3) + j;
+                var newParticBox = document.createElement('div');
+                $(newParticBox).addClass('col-xs-4 text-center particbox hidden'); //// hidden
+                newParticBox.id = 'box_' + pstn;
+                var videoBoxId = 'vid_' + pstn + '_empty';
+                var nameBoxId = 'name_' + pstn;
+                var particBoxLayout = [
+                    "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                    "</video>",
+                    "<div id='hidden_" + pstn + "'></div>",
+                    "<div id=" + nameBoxId + " class='text-center nameContainer'>",
+                    "</div>"
+                ].join('\n');
+                $(newParticBox).html(particBoxLayout);
+                rowI.appendChild(newParticBox);
+            }
+        }
+    }
+
+    // Reclaim / Mute / Chat / Screen share
+    {
+        function reclaimSlot(peerId) {
+            for (c = 1; c < 9; c++) {
+                var othtestId = '#vid_' + c + '_' + peerId;
+                if ($(othtestId).length) {
+                    reclaimedID = othtestId.substr(1);
+                    break;
+                }
+            }
+
+            var pstn = reclaimedID.split('_')[1].toString();
+            reParticBox = document.getElementById('box_' + pstn);
+            $(reParticBox).addClass('hidden');
+            var videoBoxId = 'vid_' + pstn + '_empty';
+            var nameBoxId = 'name_' + pstn;
+            var particBoxLayout = [
+                "<video id=" + videoBoxId + " class='videoContainer' autoplay='autoplay'>",
+                "</video>",
+                "<div id='hidden_" + pstn + "'></div>",
+                "<div id=" + nameBoxId + " class='text-center nameContainer'></div>"
+            ].join('\n');
+            $(reParticBox).html(particBoxLayout);
+        }
+
+        function mutePeer(buttonId) {
+            var peerId = buttonId.slice(4);
+            var vidId = 'video[id*="' + peerId + '"]';
+
+            mtBttn = document.getElementById(buttonId);
+            if ($(mtBttn).hasClass('btn-success')) {
+                $(mtBttn).removeClass('btn-success').addClass('btn-danger').text('Unmute');
+                josSkylink.muteStream({
+                    audioMuted: true,
+                    videoMuted: false
+                });
+                $(vidId).css('border', '10px dotted red');
+            } else {
+                $(mtBttn).removeClass('btn-danger').addClass('btn-success').text('Mute');
+                josSkylink.muteStream({
+                    audioMuted: false,
+                    videoMuted: false
+                });
+                $(vidId).css('border', 'none');
+            }
+        }
+
+        function addMessage(usr, cntnt, clssnm) {
+            var div = document.createElement('table');
+            $(div).addClass('table ' + clssnm);
+            var cntntClass = 'cntnt';
+            if (usr == 'Me') {
+                cntntClass = 'cntnt me';
+            }
+            chatMessage = [
+                "<tr class='chat-message'>",
+                "    <td class='usr tdclass' style='overflow-x: hidden; width: 26%; padding: 0 6px 0 3px;'>" + usr + "</td>",
+                "    <td class='" + cntntClass + " tdclass' style='overflow-x: hidden;'>" + cntnt + "</td>",
+                "</tr>"
+            ].join('\n');
+            div.innerHTML = chatMessage;
+            mssgCntnr.appendChild(div);
+            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;
+        }
+
+        function sendMessage() {
+            josSkylink.sendP2PMessage(cmpsNpt.value);
+            cmpsNpt.value = '';
+        }
+
+        $(cmpsNpt).keypress(function (e) {  // sends message on return
+            if (e.which == 13) {
+                sendMessage();
+            }
+        });
+
+        function controlShare(jsnm) {
+{#            var name = 'missing';#}
+{#            if ($(shrBt).hasClass('startshare')) {#}
+{#                $(shrBt).removeClass('startshare').addClass('stopshare');#}
+{#                shrBt.textContent = "Stop share";#}
+{#                name = jsnm + ', shar';josSkylink.setUserData({name: name});#}
+{#                josSkylink.shareScreen();#}
+{#            } else {#}
+{#                $(shrBt).removeClass('stopshare').addClass('startshare');#}
+{#                shrBt.textContent = "Share screen";#}
+{#                name = jsnm + ', stps';#}
+{#                josSkylink.setUserData({name: name});#}
+{#                josSkylink.stopScreen();#}
+{#            }#}
+        }
+    }
+
+</script>
+
+{% endblock all_content %}
+
+<div>
+{#        mssgCntnr.onscroll = function () {#}
+{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
+{#            if (isAtBottom) {#}
+{#                $(nwMssgBt).addClass('invisible').prop("disabled", true);#}
+{#            }#}
+{#        };#}
+{##}
+{#        function goToNewMessages() {#}
+{#            mssgCntnr.scrollTop = mssgCntnr.scrollHeight;#}
+{#            $(nwMssgBt).addClass('invisible').prop("disabled", true);#}
+{#        }#}
+
+{#            var isAtBottom = (mssgCntnr.scrollHeight - mssgCntnr.scrollTop) === mssgCntnr.clientHeight;#}
+{#            if (isAtBottom) {#}
+{#                mssgCntnr.scrollTop = mssgCntnr.scrollHeight;#}
+{#            } else {#}
+{#                $(nwMssgBt).removeClass('invisible').prop("disabled", false);#}
+{#            }#}
+
+{#        <button id='new_message_button'#}
+{#                class="btn btn-warning invisible"#}
+{#                style="font-size: 14pt; width: 98%;"#}
+{#                onclick="goToNewMessages()"#}
+{#                disabled>#}
+{#            New message - click here to scroll down.#}
+{#        </button>#}
+</div>

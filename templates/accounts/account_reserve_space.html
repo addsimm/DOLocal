@@ -1,0 +1,27 @@
+{% extends "accounts/account_form.html" %}
+{% load i18n %}
+{% block login_button %}{% endblock login_button %}
+{% block accounts_content %}
+
+    {% if request.user.is_authenticated  %}
+
+        <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
+
+    {% else %}
+        <div class="josinstructions" style="margin-bottom: 30px;">
+            <br>Thank you!<br></br>
+            - Communication is required to organize action!<br>
+            - Complete this form to ensure reliable communication.<br>
+            - We will never share this information without your permission<br><br>
+            <div style="margin-left: 60px;">
+                We will contact you ASAP<br>
+                Stay strong, stay loud <i class="fa fa-thumbs-up"></i>
+            </div>
+        </div>
+
+        {{ block.super }}
+
+    {% endif %}
+
+{% endblock accounts_content %}
+œ

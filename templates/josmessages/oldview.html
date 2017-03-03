@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block inner_breadcrumb_menu %}
+    Re: {{ subject | striptags }}
+{% endblock %}
+
+{% block all_content %}
+
+{#    DEBUG:<br>#}
+{#    "form": {{ form }}<br>#}
+{#    "message_thread": {{ message_thread }}<br>#}
+{#    "msgs_user_ids": {{ msgs_user_ids }}<br>#}
+{#    "emails": {{ emails }}<br>#}
+
+
+<div id="view_message" style="
+     position: absolute; top: 50px; left: 100px; height: 800px; width: 800px;
+     background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+     font-size: 24pt; font-weight: bold;"
+     onclick="event.stopPropagation();">
+
+    <span class="josinstructions">Subject:</span>
+    <span class="homehead" style="margin-left: 15px;">
+        {{ message_thread.subject | striptags }}
+    </span>
+
+<!-- Messages -->
+
+    {% for msg in emails %}
+
+        <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+            <div class="col-xs-3">
+                {{ msg.sent_at | date:"M d" }}; {{ msg.sent_at | time:"f A" }}
+
+            </div>
+        </div>
+
+        <div class="row" style="font-size: 20pt; margin-top: 20px;">
+
+            {% if msg.sender != request.user %}
+
+                <div class="col-xs-2" style="padding: 0;">
+                    {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
+                </div>
+
+                <div class="col-xs-10" style="margin-left: -25px; border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                    "{{ msg.body | striptags | safe }}"
+                </div>
+
+            {% else %}
+
+                <div class="col-xs-10" style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                    "{{ msg.body | striptags | safe }}"
+                </div>
+
+                <div class="col-xs-2">
+                    {% include "josmembers/../jos_includes/user_picture_include.html" with user=msg.sender height=60 %}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+</div>
+
+<div id="reply_thread_form" class="row hidden" style="margin-top: 30px;">
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div style="margin-left: 60px;">
+
+            {% for field in form %}
+                {% if field.name == "message_thread.id" %}
+                    {{ field.as_hidden }}
+                    <input id="id_message_thread_id" type="hidden" value="{{ message_thread.id }}" name="message_thread_id">
+                {% else %}
+                    <div class="form-group input_{{ field.id_for_label }}
+                                                 {{ field.field.type }}
+                                                 {% if field.errors %}
+                                                    has-error
+                                                 {% endif %}">
+                        {# field.name #}
+                        {% if field.label %}
+                            <label class="control-label"
+                                   for="{{ field.auto_id }}">{{ field.label | title }}</label>
+                        {% endif %}
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <p class="help-block">
+                                {% for e in field.errors %}
+                                    {% if not forloop.first %} / {% endif %}{{ e }}
+                                {% endfor %}
+                            </p>
+
+                        {% elif field.help_text %}
+                            <p class="help-block">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <button id="#button_cancel"
+                    type="button"
+                    class="j_button j_back_button"
+                    style=" "
+                    onclick="cancel_reply();">CANCEL
+            </button>
+
+            <input id="#button_send"
+                   class="j_button j_action_button"
+                   style="margin-left: 10px; width: 100px;"
+                   type="submit" value="SEND">
+
+        </div>
+    </form>
+</div>
+
+    <!-- Bottom buttons -->
+    <div class="row" style="margin-top: 50px;">
+
+        <div class="col-xs-12">
+
+            <a id="button_inbox"
+               class="btn btn-warning"
+               style="margin-left: 40px;"
+               href="{% url 'josmessages:messages_inbox' %}">
+                Back
+            </a>
+
+            <a id="button_reply"
+               class="btn btn-default"
+               style="margin-left: 10px; width: 100px;"
+               onclick="activateCKEdit()"
+               data-toggle="tooltip"
+               title="Activates the word processor to reply"
+               data-placement="right">
+                {% trans "Reply" %}
+            </a>
+
+{#            <a id="button_delete"#}
+{#               class="btn btn-danger"#}
+{#               style="margin-left: 10px;"#}
+{#               href="{% url 'josmessages:messages_delete' message_thread.id %}">#}
+{#                Delete#}
+{#            </a>#}
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function cancel_reply() {
+        $('#button_cancel').addClass('hidden');
+        $('#button_send').addClass('hidden');
+        $('#reply_thread_form').addClass('hidden');
+        $('#button_reply').removeClass('hidden');
+        $('#button_inbox').removeClass('hidden');
+        $('#button_delete').removeClass('hidden');
+    }
+
+    function activateCKEdit() {
+        $('#reply_thread_form').removeClass('hidden');
+        $('#button_cancel').removeClass('hidden');
+        $('#button_send').removeClass('hidden');
+        $('#button_reply').addClass('hidden');
+        $('#button_inbox').addClass('hidden');
+        $('#button_delete').addClass('hidden');
+        CKEDITOR.replace(id_body, {
+            toolbar: [
+                {'name': 'clipboard', 'items': ['Undo', 'Redo', 'Cut', 'Copy', 'Paste']},
+                {'name': 'editing', 'items': ['SelectAll', 'Find']}
+            ],
+            contentsCss: '/static/ckeditor/ckeditor/contents.css',
+            disableNativeSpellChecker: false,
+            width: '95%',
+            tabSpaces: 4,
+            uiColor: '#28a4c9',
+            extraPlugins: 'colorbutton',
+            removePlugins: 'liststyle,tabletools,scayt,contextmenu'
+        });
+    }
+
+</script>
+
+{% endblock all_content %}
+
+

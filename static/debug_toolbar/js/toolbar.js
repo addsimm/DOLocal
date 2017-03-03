@@ -117,7 +117,7 @@
                         $this.find('.djToggleSwitch').text(btn.text());
                     }
                 });
-                return;
+
             });
 
             $('#djHideToolBarButton').click(function() {
@@ -183,7 +183,7 @@
                 // Otherwise, just minimize the toolbar
                 if ($('#djDebugToolbar').is(':visible')) {
                     djdt.hide_toolbar(true);
-                    return;
+
                 }
             });
             if (djdt.cookie.get('djdt') == 'hide') {

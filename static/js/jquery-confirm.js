@@ -448,7 +448,7 @@ var jconfirm, Jconfirm;
                 var contentHeight = 0;
                 var paneHeight = 0;
             } else {
-                var contentHeight = this.$content.outerHeight();
+                var contentHeight = this.$content.outerHeight()+10;
                 var paneHeight = this.$contentPane.height();
                 if (paneHeight == 0)
                     paneHeight = contentHeight;
@@ -470,17 +470,18 @@ var jconfirm, Jconfirm;
             var windowHeight = $(window).height();
             var boxHeight = this.$b.outerHeight() - paneHeight + contentHeight;
             var topMargin = (windowHeight - boxHeight) / 2;
+            topMargin = topMargin - 150;
             var minMargin = 100;
             if (boxHeight > (windowHeight - minMargin)) {
                 var style = {
                     'margin-top': minMargin / 2,
                     'margin-bottom': minMargin / 2
-                }
+                };
                 $('body').addClass('jconfirm-noscroll');
             } else {
                 var style = {
                     'margin-top': topMargin
-                }
+                };
                 $('body').removeClass('jconfirm-noscroll');
             }
             this.$b.css(style);

@@ -1,0 +1,37 @@
+
+<style>
+
+</style>
+
+<div id="library_include"
+     style="display: flex;
+     flex-direction: column; justify-content: space-around; align-items: center;
+     height: 250px; margin-top: 50px;">
+
+    <div style="font-size: 24pt;"><b>Library</b></div>
+
+    <button class="j_button j_action_button"
+            onclick="window.location.href = '{% url 'joscourses:josstory' 0 %}';">
+        <i class="fa fa-bolt fa-fw"></i>
+        NEW STORY
+    </button>
+
+    <div style="margin-top: 10px; width: 100%; border-top: 1px dashed rgb(45,25,160);"></div>
+
+    <button class="j_button j_relocate_button" onclick="location.href='{% url "story_gallery" %}';">
+        <i class="fa fa-gift fa-fw"></i>
+        PUBLISHED
+    </button>
+{##}
+{#    <div style="font-size: 20pt; width: 100%; padding-top: 20px; border-top: 1px dashed rgb(45,25,160);"><b>My circles</b></div>#}
+
+{#    {% for team in user.JOSProfile.teams.all %}#}
+{##}
+{#        <button class="j_button j_relocate_button" onclick="location.href='{% url "story_gallery" %}/?team={{ team.id }}';">#}
+{#            <i class="fa fa-heart fa-fw" style="margin-right: 5px;"></i>#}
+{#            {{ team | upper}}#}
+{#        </button>#}
+{##}
+{#    {% endfor %}#}
+
+</div>

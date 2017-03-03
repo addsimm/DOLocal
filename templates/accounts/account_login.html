@@ -3,45 +3,31 @@
 
 {% block accounts_content %}
 
-    {% if request.user.is_authenticated %}
+    <div class="josinstructions" style="margin-top: 50px;">
 
-        <div class="josinstructions" style="margin-top: 100px;">
-            {% trans "You're are already signed in. If you'd like to sign in as a different user, please log out." %}
-        </div>
+        {% if request.user.is_authenticated %}
+                You're already signed in; please log out to sign in as a different user.
+    </div>
+        {% else %}
 
-    {% else %}
+            {% url "jossignup" as signup_url %}
+            {% url "jos_password_reset" as password_reset_url %}
+            {% url "home" as home_url %}
 
-        {% url "jossignup" as signup_url %}
-        {% url "jos_password_reset" as password_reset_url %}
-        {% url "home" as home_url %}
+            <div class="josinstructions" style="margin: 50px 0 30px 0;">
 
+                <b>Please enter your email and password, then click "{{ title }}"</b> or you can:
+                <button class="j_button_small j_action_button" style="margin-left: 5px;"
+                        onclick="window.location.href = '{% url 'josmembers:jos_password_reset' %}';"><i
+                        class="fa fa-key fa-fw"></i>RESET PASSWORD
+                </button>
 
-        <div class="josinstructions" style="margin-bottom: 30px; margin-top: 30px;">
-            If you:
-            <ul>
-                <li>
-                    haven't signed up yet, please click here:
-                    <a href="{% url "josmembers:jossignup" %}">
-                        Sign Up
-                    </a>
-                </li>
-                <li>
-                    have password problems, click here:
-                    <a href="{% url "josmembers:jos_password_reset" %}">
-                        Reset Password
-                    </a>
-                </li>
-            </ul>
-            Otherwise:<br>
-            <b>Please enter your email and password, then press "{{ title }}."</b>
-        </div>
+                {{ block.super }}
 
+            </div>
+    </div>
 
-        {{ block.super }}
-
-    {% endif %}
-
-
+        {% endif %}
 
 {% endblock accounts_content %}
 

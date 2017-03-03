@@ -2,6 +2,11 @@
 *.pyo
 *.db
 *.xml
+*.ids
 .DS_Store
 .coverage
 local_settings.py
+.idea/dataSources.ids
+.idea/inspectionProfiles/
+.idea/jsLinters/
+jospybb/

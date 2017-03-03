@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+{% block meta_title %}Spinning wheels{% endblock %}
+{% block title %}}Spinning wheels{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}Spinning wheels{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block all_content %}
+<style>
+
+   /* ferris wheel */
+
+    .cabinContainer {
+        height: 50px;
+        width: 50px;
+{#        outline: 2px solid grey;#}
+        position: absolute;
+    }
+
+    .hinge {
+        background-size: 50px 50px;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+   @keyframes cwise {
+       from {
+           transform: rotate(0deg);
+       }
+       to {
+           transform: rotate(360deg);
+       }
+   }
+
+   @keyframes countwise {
+       from {
+           transform: rotate(0deg);
+       }
+       to {
+           transform: rotate(-360deg);
+       }
+   }
+
+   #wheel {
+       animation: cwise 30s linear infinite;
+   }
+
+   .hinge {
+       animation: countwise 30s linear infinite;
+   }
+
+</style>
+
+<img src="/static/img/icon-pnp-center.png" style="
+         position: absolute; height: 39px; width: 39px;
+         top: 177px; left: 162px; z-index: 10;">
+
+<div id="wheel" style="
+        height: 330px;
+        width: 330px;
+        position: relative;">
+
+
+
+
+    <div class="cabins" style="
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-image: url('/static/img/wheel-small-background.png');
+            background-size: 330px 330px;
+            z-index: -10;">
+
+        <div id="conflict" class="cabinContainer" style="
+                left: 89px;
+                top: 64px;">
+
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-conflict.png');
+                    ">
+
+            </div>
+        </div>
+
+        <div id="plot" class="cabinContainer" style="
+                left: 192px;
+                top: 64px;">
+
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-plot.png');
+                    ">
+
+            </div>
+        </div>
+
+        <div id="theme" class="cabinContainer" style="
+                left: 141px;
+                top: 230px;">
+
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-theme.png');
+                    ">
+
+            </div>
+        </div>
+
+        <div id="world" class="cabinContainer" style="
+                left: 58px;
+                top: 166px;">
+
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-world.png');
+                    ">
+
+            </div>
+        </div>
+
+        <div id="character" class="cabinContainer" style="
+                left: 223px;
+                top: 166px;">
+
+            <div class="hinge" style="
+                    background-image: url('/static/img/icon-character.png');
+                    ">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- Gauge wheel -->
+{#    <img src="/static/img/wheel-011617.png"#}
+{#         height=330px width=330px style="#}
+{#         position: absolute; top: 30px; left: 15px; z-index: -50;">#}
+
+
+
+{% endblock all_content %}
+
+
+
+

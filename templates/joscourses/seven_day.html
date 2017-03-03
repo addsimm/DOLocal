@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags static %}
+
+{% block meta_title %}Seven Days{% endblock %}
+{% block title %}Seven Days{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}{% endblock %}
+
+{% block all_content %}
+
+<style>
+
+    /* ferris wheel */
+
+    .icon_contain {
+        position: absolute;
+        height: 68px;
+        width: 68px;
+    }
+
+    .segment_icon {
+        background-size: 68px 68px;
+        height: 100%;
+        width: 100%;
+        position: relative;
+{#        outline: 2px solid grey;#}
+    }
+
+    .right_arrow {
+        position: absolute;
+        top: 198px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 40px 0 40px 60px;
+        border-color: transparent transparent transparent rgb(65, 45, 120);
+    }
+
+    .arrow_circle {
+        position: absolute;
+        top: 209px;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        background-color: white;
+        border: 3px solid rgb(65, 45, 120);
+    }
+
+    .arrow_text {
+        position: absolute;
+        top: 320px;
+        transform: rotate(-50deg);
+        font-size: 24pt;
+        font-weight: bold;
+        background-color: transparent;
+        padding: 0 10px;
+    }
+
+
+    {#    .active_step {#}
+    {#        background-color: #ccffb3;#}
+    {#    }#}
+    {#    @keyframes animateBorder {#}
+    {#        to {#}
+    {#            background-color: aliceblue;#}
+    {#        }#}
+    {#    }#}
+    {##}
+    {#    .active_step {#}
+    {#        animation: 2s animateBorder infinite;#}
+    {#    }#}
+
+    @keyframes top_anim {
+        0%, 70%, 100% {
+            opacity: 1;
+        }
+        80% {
+            opacity: 0;
+        }
+    }
+
+    #top_instruction {
+        animation: top_anim 2s linear infinite;
+    }
+
+    @keyframes cwise {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes countwise {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(-360deg);
+        }
+    }
+
+    #wheel {
+        animation: cwise 75s linear 30;
+    }
+
+    .segment_icon {
+        animation: countwise 75s linear 30;
+    }
+
+    /* Wheel align */
+{#    #wheel {#}
+{#        transform: rotate(-288deg);#}
+{#    }#}
+{##}
+{#    .segment_icon {#}
+{#        transform: rotate(288deg);#}
+{#    }#}
+
+</style>
+
+<div id="seven_day_page" style="position: relative; width: 1280px; font-size: 28pt;">
+    <div id='motivator' class="text-center">
+        <div style="font-family: 'Architects Daughter'; font-size: 24pt; background-color: aliceblue;">
+            Enhance your storytelling skills as<br>you complete a short, polished story.
+        </div>
+
+        <div style="font-weight: bold; margin-top: 50px;">
+            SEVEN DAYS TO BETTER STORYTELLING
+        </div>
+
+        <div id="top_instruction" style="margin-top: 30px;"></div>
+    </div>
+
+    <div style="position: relative;">
+        <div id="wheel" class="jos_flex_container" style="
+             position: absolute; top: 50px; left: 280px;
+             width: 360px; height: 360px;">
+
+            <div class="segments " style="position: absolute; height: 360px; width: 360px;
+                background-image: url('/static/img/wheel-small-background.png');
+                background-size: 360px 360px;
+                z-index: -10;">
+
+                <div id="theme" class="icon_contain" style="left: 146px; top: 240px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-theme.png');"></div>
+                </div>
+
+                <div id="world" class="icon_contain" style="left: 56px; top: 173px;">
+                    <div class="segment_icon" style="
+                        background-image: url('/static/img/icon-world.png');"></div>
+                </div>
+
+
+                <div id="conflict" class="icon_contain" style="left: 90px; top: 69px;">
+                    <div class="segment_icon"  style="
+                         background-image: url('/static/img/icon-conflict.png');"></div>
+                </div>
+
+                <div id="plot" class="icon_contain" style="left: 200px; top: 70px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-plot.png');"></div>
+                </div>
+
+                <div id="character" class="icon_contain" style="left: 235px; top: 175px;">
+                    <div class="segment_icon" style="
+                         background-image: url('/static/img/icon-character.png');"></div>
+                </div>
+            </div>
+        </div>
+
+        <img src="/static/img/icon-pnp-center.png" style="position: absolute;
+                 top: 207px; left: 430px; height: 60px; width: 60px; z-index: 10;">
+
+        <div id='circle_guide' style="display: none; border: 3px solid black; border-radius: 130px;
+             position: absolute; top: 107px; left: 330px; height: 260px; width: 260px; z-index: 10;">
+        </div>
+
+    </div>
+
+    {# Arrow #}
+    <div style="position: relative;">
+
+        <div id="start_arrow" class="right_arrow" style="left: 45px;"></div>
+
+        <div id="stripe" style="position: absolute; top: 229px; left: 45px;
+             width: 975px; height: 20px; background-color: rgb(65,45,120); z-index: -20;">
+        </div>
+
+        <div id="welcome_circle" class="arrow_circle" style="left: 175px;">
+            <i class="fa fa-check fa-fw" style="position: relative;
+            top: -20px; left: -15px; color: rgb(92,184,92); font-size: 60pt;"></i>
+        </div>
+
+        <div id="welcome_text" class="arrow_text active_step" style="left: 37px;">WELCOME</div>
+
+        <div id="draft_circle" class="arrow_circle" style="left: 730px;"></div>
+
+        <div id="draft_text" class="arrow_text text-right" style="left: 589px;">
+            1ST DRAFT</div>
+
+        <div id="revision_circle" class="arrow_circle" style="left: 875px;"></div>
+
+        <div id="revision_text" class="arrow_text text-right" style="left: 739px;">&nbsp&nbspREVISION</div>
+
+        <div id="end_arrow" class="right_arrow" style="left: 1010px;"></div>
+
+        <button class="j_button j_save_button" style="
+                position: absolute; top: 159px; left: 1085px;
+                font-size: 24pt; font-weight: bold;
+                height: 150px; width: 150px; border-radius: 75px;"
+            onclick=" ">
+            SHARE!
+        </button>
+
+    </div>
+
+    <div id='DEBUG' style="margin-top: 550px; font-size: 12pt;">
+        DEBUG:<br>
+        seven_day_progress: {{ request.user.JOSProfile.seven_day_progress }}<br>
+        seven_day_els_complete: {{ request.user.JOSProfile.seven_day_els_complete }}
+    </div>
+</div>
+
+<script>
+
+    var seven_day_instructions = [
+        " Click WELCOME to begin ",
+        " Click on a storywheel WEDGE to continue ",
+        " Click DRAFT to continue ",
+        " Click REVISION to continue ",
+        " Click SHARE! to publish your story "
+    ];
+
+
+    var url_start = "https://joinourstory.com/joscourses/";
+    var url_plot = url_start + "plot_template/" + "{{ wheel.id }}";
+    var url_characters = url_start + "characters_template/" + "{{ wheel.id }}/0";
+    var url_world = url_start + "world_template/" + "{{ wheel.id }}";
+    var url_theme = url_start + "theme_template/" + "{{ wheel.id }}";
+    var url_conflict = url_start + "conflict_template/" + "{{ wheel.id }}";
+
+    $(document).ready(function () {
+        var seven_day_progress = Number('{{ request.user.JOSProfile.seven_day_progress }}');
+        console.log('7d: ' + seven_day_progress + 3);
+        $('#top_instruction').html(seven_day_instructions[0]);  //// Change
+    });
+
+</script>
+
+{% endblock all_content %}
+

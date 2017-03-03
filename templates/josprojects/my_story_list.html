@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block meta_title %}{{ user.get_short_name }}'s Stories{% endblock %}
+{% block title %}{{ user.get_short_name }}'s Stories{% endblock %}
+{% block breadcrumb_menu %}{{ block.super }}{{ user.get_short_name }}'s Stories{% endblock %}
+
+{% block all_content %}
+
+
+<div id="my_story_list_instructions" class="row" style="margin: 45px;">
+    <div class="col-xs-8 josinstructions">
+        Click a title to edit, or start a
+        <button class="j_button j_action_button" style="margin-left: 10px;"
+                onclick="window.location.href = '{% url 'joscourses:josstory' 0 %}';">
+            <i class="fa fa-bolt fa-fw"></i>
+            NEW STORY
+        </button>
+    </div>
+</div>
+
+<div id="my_story_list_table" class="row" style="margin: 45px 30px;">
+    <div class="col-xs-12">
+    {% if stories.count > 0 %}
+
+        <table data-toggle="table" width="100%">
+            <col style="width:60%;">
+            <col style="width:25%;">
+            <col style="width:15%;">
+            <thead>
+                <tr>
+                    <th data-sortable="true">Title</th>
+                    <th>Updated</th>
+                    <th data-sortable="true">Share</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for story in stories %}
+                    <tr>
+                        <td>
+                            <button class="j_button j_relocate_button" style="margin-left: 15px;"
+                                    onclick="window.location.href='{% url 'joscourses:josstory' story.id %}';">
+                                {{ story.title | striptags  | safe | truncatechars:45 }}
+                            </button>
+                        </td>
+                        <td style="text-align:center;">
+                            {{ story.updated | date:"M d" }}; {{ story.updated | time:"f A" }}</td>
+                        <td style=" ">
+
+                            {% if story.publish_permission == 1 %}
+                                <span style="color: #d9534f;">Me</span>
+                            {% elif story.publish_permission == 2 %}
+                                <span style="color: #f0ad4e;">My team</span>
+                            {% else %}
+                                <span style="color: #5cb85c;">All</span>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+
+        <span style="font-size: 36pt;">Click "Create new story" to get started!</span>
+
+    {% endif %}
+
+    </div>
+</div>
+
+{% endblock all_content %}
+
+
+
+
+
+
+

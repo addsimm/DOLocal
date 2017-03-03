@@ -1,0 +1,668 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+{% block meta_title %}{{ story.title | striptags | safe | truncatechars:25 }}{% endblock %}
+{% block title %}{{ story.title | striptags  | safe | truncatechars:25 }}{% endblock %}
+{% block breadcrumb_menu %}
+    {{ block.super }}{{ story.title  | striptags | safe | truncatechars:120 }}{% endblock %}
+
+{% block all_content %}
+
+<style>
+
+    .wheel_open {
+        margin-top: 775px;
+    }
+
+    #right_story_tools input {
+        display: none;
+    }
+
+    /* The auto_save_checkbox, around the autosave_slider */
+    .auto_save_checkbox {
+        position: relative;
+        top: 3px;
+        margin-left: 10px;
+        height: 38px;
+        width: 100px;
+        outline: 2px solid #412d78;
+    }
+
+    /* autosave_slider */
+    .autosave_slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+    }
+
+    .autosave_slider:before {
+        position: absolute;
+        color: white;
+        font-size: 14pt;
+        text-align: center;
+        content: "OFF";
+        top: 0;
+        left: 0;
+        height: 38px;
+        width: 50px;
+        padding-top: 7px;
+        background-color: #5bc0de;
+    }
+
+    .autosave_slider:hover::before {
+        color:  #f0ad4e;
+        background-color: white;
+    }
+
+    input:checked + .autosave_slider {
+        background-color: #5cb85c;
+    }
+
+    input:checked + .autosave_slider:before {
+        transform: translateX(50px);
+        content: "ON";
+    }
+
+    /* permissions radio */
+    .perm_label {
+        background-color: white;
+        font-size: 16pt;
+        text-align: center;
+        height: 40px;
+        width: 70px;
+        color: #5bc0de;
+        cursor: pointer;
+    }
+
+    i:hover, .perm_label:hover {
+        color: #f0ad4e;
+        background-color: white;
+    }
+
+    .perm_uncheck {
+        color: #5bc0de;
+        background-color: white;
+    }
+
+    .perm_checked {
+        color: white !important;
+        background-color: #5bc0de !important;
+    }
+
+    #left_story_tools button {
+        margin-left: 10px;
+    }
+
+    .story_control_button {
+        width: 140px;
+        height: 46px;
+    }
+
+
+    #tools_triangle {
+        position: absolute;
+        top: 8px;
+        left: 143px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+
+    .right_triangle {
+        border-width: 23px 0 23px 23px;
+        border-color: transparent transparent transparent #5bc0de;
+    }
+
+    .left_triangle {
+        border-width: 23px 23px 23px 0;
+        border-color: transparent #f0ad4e transparent transparent;
+    }
+
+    .up_triangle {
+        border-width: 0 70px 23px 70px;
+        border-color: transparent transparent #f0ad4e transparent;
+    }
+
+    .down_triangle {
+        border-width: 23px 70px 0 70px;
+        border-color: #5bc0de transparent transparent transparent;
+    }
+
+    #wheel_triangle {
+        position: fixed;
+        top: {% if request.session.help_position == 'down' %}623{% else %}123{% endif %}px;
+        left: 1135px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        z-index: 501;
+    }
+
+    th, td {
+        padding: 5px 0;
+    }
+</style>
+
+<div id="version_modal_box" style="display: none;
+ position: absolute; top: 0px; left: 0px; height: 1000px; width: 1275px;
+ background-color: #C0C0C0; opacity: .98; z-index: 500;">
+
+    <div id="previous_versions_table" style="
+        position: absolute; top: 50px; left: 100px; height: 700px; width: 1115px;
+        background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+        font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+
+        <button id='help_done_btn' class='j_button_small j_back_button' style='
+            position: absolute; top: 25px; left: 755px; z-index: 501;'
+                onclick="$('#version_modal_box').hide(); $('#story_wheel_tab, #wheel_triangle').show();">
+            <i class="fa fa-arrow-left fa-fw"></i>DONE
+        </button>
+
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+        <div id="messageSpace" style="
+             display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+             margin: 20px 0 0 90px;">
+            <div id=" ">Click a title (stored every hour for 4 hours):</div>
+        </div>
+
+        <table data-toggle="table" style="font-size: 14pt; margin: 15px 0 0 15px; width: 97%; background-color: white;">
+            <col style="width:25%;">
+            <thead>
+                <tr>
+                    <th>Saved</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for version in prior_versions %}
+                    <tr>
+                        <td style="text-align:center;">
+                            {{ version.pv_date }}
+                        </td>
+                        <td>
+                            <button class="j_button_small j_relocate_button" style="margin-left: 15px;"
+                                    onclick="priorVersionsHandler(
+                                            '{{ version.pv_date }}',
+                                            '{{ version.pv_story_content | escapejs}}');">
+                                {{ version.pv_title | striptags  | safe | truncatechars:150 }}
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="prior_version_date" style="margin: 20px 0 0 90px;">
+            Content for ________________________
+
+        </div>
+
+        <div id="prior_version_content" style="height: 300px; width: 96%; overflow-x: hidden; overflow-y: scroll;
+             font-size: 14pt; margin: 15px 0 0 20px; padding: 15px; background-color: white; outline: 1px solid rgb(65,45,120);">
+
+            Content displays here.
+
+        </div>
+    </div>
+</div>
+
+<div id="story_modal_box" style="display: none;
+     position: absolute; top: 0; left: 0; height: 1000px; width: 1275px;
+     background-color: #C0C0C0; opacity: .98; z-index: 500;">
+
+    <div id="change_title" style="
+        position: absolute; top: 50px; left: 100px; height: 215px; width: 720px;
+        background-color: lavender; border: 2px dotted rgb(65,45,120); outline: 5px solid white;
+        font-size: 24pt; font-weight: bold;" onclick="event.stopPropagation();">
+
+        <img src="https://www.joinourstory.com/static/img/peeky-102216.png"
+             style="position: absolute; top: 10px; left: 10px; height: 65px;">
+
+        <div id="messageSpace" style="
+             display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+             position: absolute; top: 20px; left: 90px; height: 185px; width: 610px">
+            <div id="modal_message_message"></div>
+
+            <input id="new_title_input" type="text" style="
+                   margin-top: 15px; padding: 8px 12px; width: 545px;
+                   color: rgb(65,45,120); font-size: 14pt; border: 2px dashed rgb(65,45,120);"
+                   value ="{{ story.title }}">
+
+            <div style="display: flex; align-self: flex-end; justify-content: flex-end;
+                 align-items: flex-end; margin-top: 30px;">
+                <button id="title_save_btn" class="j_button_small j_save_button"
+                        style=" " onclick="event.stopPropagation(); titleUpdate();"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Updates story content">
+                    <i class="fa fa-arrow-circle-up fa-fw"></i>
+                    SAVE NEW TITLE
+                </button>
+
+                <button id="title_discard_btn" class="j_button_small j_discard_button"
+                        style="margin-left: 10px; "
+                        onclick="event.stopPropagation(); window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Reloads recent save and discards changes">
+                    <i class="fa fa-trash fa-fw"></i>
+                    CANCEL
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Wheel tab -->
+{% if story.author == request.user %}
+    <button id='story_wheel_tab' class="j_button j_info_button story_control_button" style="
+            position: fixed; top:{% if request.session.help_position == 'down' %}573{% else %}73{% endif %}px; left: 1135px;
+            width: 140px; height: 50px; border-radius: 0; z-index: 501;"
+            onclick="wheelHandler();"
+            data-toggle="tooltip" data-placement="bottom"
+            title="Wheel with templates">
+        <i class="fa fa-pie-chart fa-fw"></i>
+        WHEEL
+    </button>
+
+    <div id="wheel_triangle" class="down_triangle"></div>
+{% endif %}
+
+<div id="wheel_box" style="display: none; position: fixed;
+     top:{% if request.session.help_position == 'down' %}583{% else %}83{% endif %}px;
+     left: 12px; height: 750px; width: 1265px; background-color: white; z-index: 499;">
+
+    <div id="wheel_navigation" style="background-color: transparent;
+        position: absolute; top: 10px; left: 10px; height: 330px; width: 330px; z-index: 130;">
+        {% include 'joscourses/wheel.html' with wheel=story.wheel %}
+    </div>
+
+    <div id="element_template" style="position: absolute; top: 0; left: 0; height: 750px; width: 1265px;
+         background-color: white; outline: 4px solid #EE3B38; z-index: 125;">
+        {% include 'joscourses/sw-plot.html' with plot_template=story.wheel.plot wheel=story.wheel %}
+    </div>
+</div>
+
+<div id="story_container" style="position: absolute; top: 0; left: 0; width: 1280px;
+     border-right: 2px solid rgb(65,45,120)">
+
+    <div id="story_tools_section">
+        {% if story.author == request.user %}
+            <button id='story_tools_tab' class="j_button j_info_button story_control_button" style="
+                    position: absolute; top: 8px; left: 3px; width: 140px;
+                    border-radius: 0;"
+                    onclick="toolsTabHandler(this.id);"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Versions / Read / Autosave / Sharing">
+                <i class="fa fa-cogs fa-fw" style="margin-right: 5px;"></i>
+                TOOLS
+            </button>
+
+            <div id="tools_triangle" class="right_triangle"></div>
+        {% endif %}
+
+        <div id="left_story_tools" style="background-color: aliceblue; visibility: hidden;
+            position: absolute; top: 0; left: 170px; height: 55px; width: 495px;
+            display: flex; justify-content: flex-start; align-items: center;">
+
+            <button class="j_button_small j_relocate_button"
+                    onclick="$('#version_modal_box').show(); $('#story_wheel_tab, #wheel_triangle').hide();"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="View previous versions">
+                <i class="fa fa-hourglass fa-fw"></i>
+                PAST VERSIONS
+            </button>
+
+            <button class="j_button_small j_action_button"
+                    onclick="window.location.href = 'https://joinourstory.com/joscourses/story_reader/' + {{ story.id }};"
+                    style="margin-left: 10px;"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Preview formatting / email to friends">
+                <i class="fa fa-send fa-fw"></i>
+                PREVIEW / SEND
+            </button>
+        </div>
+
+        <div id="right_story_tools" style="background-color: aliceblue; visibility: hidden;
+         position: absolute; top: 0; left: 530px; height: 55px; width: 560px;
+         display: flex; justify-content: flex-start; align-items: center;
+         padding-top: 5px;">
+
+        <!-- Autosave -->
+        <div style="font-size: 12pt; font-weight: bold; text-align: right; margin-left: 30px;">
+            AUTOSAVE:
+        </div>
+        <label class="auto_save_checkbox">
+            <input id="auto_save_checkbox" type="checkbox" onchange="toggleAutosave();">
+            <div class="autosave_slider"></div>
+        </label>
+
+        <!-- Permission -->
+        <div style="font-size: 12pt; font-weight: bold;
+             margin-left: 30px; text-align: right">
+            SHARING:
+        </div>
+        <div id="sharing_box" style="
+             position: relative; top:0; margin-left: 10px;
+             display: flex;  justify-content: space-between; align-items: flex-start;
+
+             height: 40px; width: 210px;
+             outline: 2px solid #412d78;">
+
+            <label id="perm_1" class="perm_label" style="font-size: 14pt; padding-top: 7px;"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="Only me">
+                <input type="radio" name="toggle">
+                NONE
+            </label>
+
+            <label id="perm_2" class="perm_label" style="padding-top: 4px;"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="My circles">
+                <input type="radio" name="toggle">
+                <i class="fa fa-opera fa-fw"></i>
+            </label>
+
+            <label id="perm_3" class="perm_label" style="font-size: 20pt; padding-top: 1px;"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="Publish">
+                <input type="radio" name="toggle">
+                <i class="fa fa-globe fa-fw"></i>
+            </label>
+
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Editor buttons -->
+    <div style="margin: 85px 0 0 30px; width: 1215px; display: flex; justify-content: flex-start; align-items: center;">
+
+        <button id="story_content_edit_btn" class="j_button_small j_save_button"
+                style="" onclick="checkTitleThenSave();"
+                data-toggle="tooltip" data-placement="bottom"
+                title="Updates story content">
+            <i class="fa fa-arrow-circle-up fa-fw"></i>
+            SAVE NOW
+        </button>
+
+        <!-- Updated -->
+        <div style="margin-left: 45px;">
+            {% include "josprojects/../jos_includes/updated_include.html" with myobj=story %}
+        </div>
+
+        <button id="change_title" class="j_button_small j_action_button" style="
+                margin-left: 45px;"
+                onclick="modalMessage('change_title', 'Enter new title:');">
+            <i class="fa fa-pencil fa-fw"></i>
+            CHANGE TITLE
+        </button>
+
+        <!-- Discuss -->
+        <button class="j_button_small j_relocate_button" style="margin-left: 10px;"
+                onclick="window.location.href='#discuss';">
+            <i class="fa fa-comments fa-fw"></i>
+            DISCUSS
+        </button>
+
+    </div>
+
+    <!-- Story content, holds editor -->
+    <div id="story_content_editor_container" style="margin: 5px 0 0 30px; width: 1220px;
+         background-color: white;"></div>
+
+    <!-- Discussion -->
+    <div class="row">
+
+        <div id="discussion_header" class="homehead" style="font-size: 28pt; margin: 50px 0 0 45px;">
+            Community discussion:
+        </div>
+
+        <div id="comments_section" class="col-xs-11 col-xs-offset-1" style="margin-top: 0;">
+
+            {% for comment in comments %}
+
+                <div class="row" style="color: rgb(217,83,79); font-size: 20pt; margin-top: 20px;">
+                    <div class="col-xs-3">
+                        {{ comment.sent_at | date:"M d" }}; {{ comment.sent_at | time:"f A" }}
+                    </div>
+                </div>
+
+                <div class="row" style="font-size: 20pt; margin-top: 20px;">
+
+                    {% if comment.sender != request.user %}
+
+                        <div class="col-xs-2" style="padding: 0;">
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
+                        </div>
+
+                        <div class="col-xs-9"
+                             style="border: 1px solid rgb(65, 45, 120); padding: 15px; min-height: 103px;">
+                            "{{ comment.body | striptags | safe }}"
+                        </div>
+
+                    {% else %}
+
+                        <div class="col-xs-9"
+                             style="border: 1px solid rgb(65, 45, 120); padding: 15px;  min-height: 103px;">
+                            "{{ comment.body | striptags | safe }}"
+                        </div>
+
+                        <div class="col-xs-2">
+                            {% include "josmembers/../jos_includes/user_picture_include.html" with user=comment.sender height=60 %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div id="discuss" class="row" style="margin: 30px 0 15px 0;">
+        <div class="col-xs-10 col-xs-offset-1">
+
+            <!-- Editor buttons -->
+            <div style="margin: 0; display: flex; justify-content: flex-start; align-items: center;">
+
+                <button id="comment_edit_btn" class="j_button j_info_button"
+                        style=" " onclick="josCKEdit('comment');"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Activates editor">
+                    <i class="fa fa-comments fa-fw"></i>
+                    ADD YOUR THOUGHT ...
+                </button>
+
+                <button id="comment_cancel_btn" class="j_button j_discard_button"
+                        style="margin-left: 5px; display: none;"
+                        onclick="window.location.href = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Discards comment">
+                    <i class="fa fa-trash fa-fw"></i>
+                    DISCARD
+                </button>
+
+            </div>
+
+            <!-- This div holds editor -->
+            <div id="comment_editor_container" style=" "></div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        // reload to get new story id
+        if (Number(window.location.href.split('/')[5]) === 0) {
+            reload_url = 'https://joinourstory.com/joscourses/josstory/' + {{ story.id }};
+            window.location.href = reload_url;
+        } else {
+            var current_title = '{{ story.title }}';
+            if (current_title.indexOf("ntitled") > 0) {
+                modalMessage('change_title', 'Please title your story:')
+            }
+        }
+
+        var auto_save = '{{ story.auto_save }}';
+        if (auto_save === 'True') {
+            var auto_save_control = document.getElementById('auto_save_checkbox');
+            $(auto_save_control).prop('checked', true);
+
+            function autoSave() {
+                josCKSave('story_content');
+                centralCKEditSave('plot', '/joscourses/wheel_update/?id='
+                        + '{{ wheel.id }}'); //// CHANGE TO ACTUAL TEMPLATE
+            }
+
+            setTimeout(autoSave, 150000); // Autosave interval ms.
+        }
+
+        var permission_control_id = 'perm_' + {{ story.publish_permission }};
+        var permission_control = document.getElementById(permission_control_id);
+        $(permission_control).addClass('perm_checked');
+
+
+        initJOSEditor('story_content', 'large', '/joscourses/story_update/?id=' + '{{ story.id }}', "{{ story.story_content | escapejs }}");
+        initJOSEditor('comment', 'small', '/joscourses/story_update/?id=' + '{{ story.id }}', " ");
+
+
+        var editor_div = document.getElementById('story_content_editor_container');
+        josCKEdit('story_content');
+
+        if ('{{ request.session.wheel_position }}' === 'down') {
+            // folder down
+            wheelHandler();
+        }
+    });
+
+    function priorVersionsHandler(date, content) {
+        $('#prior_version_date').html('Content for <u>' + date + '</u>:');
+        $('#prior_version_content').html(content);
+    }
+
+    function wheelHandler() {
+        var wheel_tab = document.getElementById('story_wheel_tab');
+        var wheel_triangle = document.getElementById('wheel_triangle');
+        var data = {};
+
+        if ($(wheel_tab).hasClass('j_info_button')) {
+            $('#story_container').addClass('wheel_open');
+            $(wheel_tab)
+                    .html("<i class='fa fa-pie-chart fa-fw'></i>CLOSE")
+                    .addClass("isopen j_back_button")
+                    .removeClass("isclosed j_info_button");
+            $(wheel_triangle).removeClass('down_triangle').addClass('up_triangle');
+            $('#wheel_box').slideDown();
+            data = {"wheel_position": 'down'};
+        } else {
+            $('#story_container').removeClass('wheel_open');
+            $(wheel_tab)
+                    .html("<i class='fa fa-pie-chart fa-fw'></i>WHEEL")
+                    .addClass("isclosed j_info_button")
+                    .removeClass("isopen j_back_button");
+            $('#wheel_box').slideUp();
+            $(wheel_triangle).removeClass('up_triangle').addClass('down_triangle');
+            data = {"wheel_position": 'up'};
+        }
+
+        console.log('updating wheel: ' + JSON.stringify(data));
+         /* var active_template = document.getElementById('< template >');
+            data = { < active_templage >}; */
+
+        if (data !== {}) {
+            $.ajax({
+                type: "POST",
+                url: '/ajax_session_update/', //// CHANGE
+                data: data,
+                success: function (serverResponse_data) {
+                    console.log('ajax wheel update response: ' + serverResponse_data);
+                }
+            });
+        }
+    }
+
+    {
+        var labels = $('#sharing_box').children();
+        $(labels).click(function () {
+        window.location.href =
+                "{% url "joscourses:josstory" story.id %}/?pubperm=" + this.id.split("_")[1];
+        $(this).addClass('perm_checked').removeClass('perm_uncheck');
+        $(this).siblings().removeClass('perm_checked').addClass('perm_uncheck');
+    });
+    } // Sharing
+
+    function toggleAutosave() {
+        console.log('toggle auto_save');
+        var auto_save = '{{ story.auto_save }}';
+        var auto_save_value = 'True';
+        if (auto_save === 'True') {
+            auto_save_value = 'False';
+        }
+        window.location.href =
+                "{% url "joscourses:josstory" story.id %}/?autosave=" + auto_save_value;
+    }
+
+    function versionModal() {
+        $('#version_modal_box')
+                .show()
+                .click(function () {
+                    $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
+                })
+    }
+
+    function titleUpdate() {
+        var new_title_input = document.getElementById('new_title_input');
+        var new_title = new_title_input.value;
+        window.location.href =
+                "{% url "joscourses:josstory" story.id %}/?newtitle=" + new_title;
+    }
+
+    function modalMessage(subject, message) {
+        if (subject === 'change_title') {
+            $('#modal_message_message').html(message);
+            $('#story_modal_box')
+                    .show()
+                    .click(function () {
+                        $('#change_title').effect("shake", {times: 1, distance: 20}, 500);
+                    })
+        }
+    }
+
+    function toolsTabHandler(i) {
+        var story_tools_tab = document.getElementById(i);
+        var tools_triangle = document.getElementById('tools_triangle');
+
+        if ($(story_tools_tab).hasClass('j_info_button')) {
+            $(story_tools_tab)
+                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>HIDE")
+                    // .tooltip('disable')
+                    .addClass("isopen j_back_button")
+                    .removeClass("isclosed j_info_button");
+            $(tools_triangle).removeClass('right_triangle').addClass('left_triangle');
+            $("#right_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+            $("#left_story_tools").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 1000);
+        } else {
+            $(story_tools_tab)
+                    .html("<i class='fa fa-cogs fa-fw' style='margin-right: 5px;'></i>TOOLS")
+                    .addClass("isclosed j_info_button")
+                    .removeClass("isopen j_back_button");
+            // .tooltip('enable');
+            $(tools_triangle).removeClass('left_triangle').addClass('right_triangle');
+            $("#right_story_tools").css({visibility: "hidden"});
+            $("#left_story_tools").css({visibility: "hidden"});
+        }
+    }
+
+</script>
+
+{% endblock all_content %}
+
+{% block footer %}{% endblock %}

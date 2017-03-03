@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags  static %}
+
+{% block meta_title %}Connect{% endblock %}
+{% block title %}Connect{% endblock %}
+
+{% block outer_breadcrumb %}{% endblock outer_breadcrumb %}
+
+{% block all_content %}
+
+<style>
+
+    #center {
+        margin-top: 0;
+        font-size: 24pt;
+        background-color: lightyellow;
+        border: 3px solid rgb(65, 45, 120);
+        padding: 50px;
+    }
+
+</style>
+
+<div id="center" class="row josinstructions" style="margin: 0 0 0 30px;">
+
+    <div class="col-xs-12">
+        Important:<br>&nbsp&nbsp&nbspOnly Google's Chrome browser allows you to see everyone.<br>
+        &nbsp&nbsp&nbspStatus:&nbsp&nbsp&nbsp<span id="browser_status"></span>
+    </div>
+
+    <div class="col-xs-7" style="margin-top: 50px;">
+        Instructions:<br>
+        &nbsp&nbsp&nbspPlease click "Join" when ready.<br>
+        &nbsp&nbsp&nbspIf Chrome says this
+        <i class="fa fa-arrow-right" style="margin-left: 15px;"></i>
+        <i class="fa fa-arrow-right" style="margin-left: 15px;"></i>
+        <i class="fa fa-arrow-right" style="margin-left: 15px;"></i>
+        <i class="fa fa-arrow-right" style="margin-left: 15px;"></i><br>
+        &nbsp&nbsp&nbspthen, click "Share selected device"
+    </div>
+    <div class="col-xs-5" style="margin-top: 50px;">
+        <img src="static/img/chrome-cam-share.png" style='height: 156px; margin: 0 0 0 -50px; border: 3px solid black;'><br>
+    </div>
+
+    <div class="col-xs-12 text-center" style="margin-top: 50px;">
+       Now have fun!
+    </div>
+    <div class="col-xs-12 text-center" style="margin-top: 50px;">
+        <button id='join_button'
+           class="j_button j_action_button"
+           onclick="window.location.href='https://www.joinourstory.com/community_room/{{ user.id }}';">
+            <i class="fa fa-camera fa-fw"></i>
+            JOIN COMMUNITY ROOM
+        </button>
+        {% if request.user.is_staff %}
+            <button class="j_button j_action_button"
+               style="margin-left: 15px;"
+               href="https://www.joinourstory.com/community_room/incognito">
+                <i class="fa fa-search"></i>
+                -- JOIN INCOGNITO --
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+
+    var x = navigator.appVersion;
+    var status_span = document.getElementById('browser_status');
+    var join_button = document.getElementById('join_button');
+{#    if (x.indexOf("hrome") > 0) {#}
+{#        $(status_span).html("Everything looks OK!").css('color', 'green');#}
+{#    }#}
+{#    else {#}
+{#        $(status_span).html("We don't detect Chrome; please call.").css('color', 'red');#}
+{#        $(join_button).addClass('disabled');#}
+{#    }#}
+    console.log(x);
+
+</script>
+
+{% endblock all_content %}
+
+

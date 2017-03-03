@@ -91,7 +91,7 @@ var mediaLibrary = {
 	}
 };
 
-// Compatibility for libraries that depend on old non-namespaced function
+// Compatibility for libraries that depend on aaold non-namespaced function
 var browseMediaLibrary = mediaLibrary.open;
 
 jQuery(function() {

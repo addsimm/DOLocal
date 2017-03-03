@@ -48,7 +48,7 @@ def format_subject(subject):
             prefix = u"[%d]" % (num+1)
             subject = subject[6+len(str(num)):]
         except:
-            # if anything fails here, fall back to the old mechanism
+            # if anything fails here, fall back to the aaold mechanism
             pass
         
     return ugettext(u"Re%(prefix)s: %(subject)s") % {

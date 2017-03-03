@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block meta_title %}
+    {{ user.JOSProfile.friendly_jos_name }} Staff
+{% endblock %}
+{% block title %}
+    {{ user.JOSProfile.friendly_jos_name }} Staff
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    {{ block.super }}
+    {% block inner_breadcrumb_menu %}
+        <span style="background-color: rgb(217, 83, 79) ; ) ; ; padding: 0 20px;">{{ user.get_short_name }} - Staff</span>
+    {% endblock inner_breadcrumb_menu %}
+
+{% endblock %}
+
+{% block all_content %}
+
+    <div class="row" style="margin-left: 0; margin-bottom: 30px; margin-top: 20px;">
+
+        <div class="col-xs-12" style="padding: 0;">
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url "josstaff:referral" %}?firstname={{ user.get_short_name }}">
+                <i class="fa fa-thumbs-up fa-fw" style=" "></i>
+                Referral
+            </a>
+
+            <a class="joslargelinkbutton"
+               style=" "
+               href="{% url "josstaff:josstaff_timesheet" %}?firstname={{ user.get_short_name }}">
+                <i class="fa fa-clock-o fa-fw" style=" "></i>
+                Timekeeping
+            </a>
+
+        </div>
+    </div>
+
+{% endblock %}
+

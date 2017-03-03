@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags accounts_tags inbox %}
+
+{% block meta_title %}{{ user.get_short_name }}'s Desk{% endblock %}
+{% block title %}{{ user.get_short_name }}'s Desk{% endblock %}
+
+{% block breadcrumb_menu %}
+    {{ block.super }}
+    {{ user.get_short_name }}'s Desk
+{% endblock %}
+
+{% block all_content %}
+
+<style>
+
+    #week-box .homehead {
+        font-size: 24pt;
+    }
+
+    .part-click, .part-click:visited {
+        background-color: white;
+        border-radius: 6px;
+        border: 1px solid rgb(65, 45, 120);
+        color: rgb(65, 45, 120);
+        height: 60px;
+        margin: 0;
+        padding: 8px 0 0 0;
+        outline: none;
+        width: 15%;
+    }
+
+    .part-click:hover, .part-click:focus {
+        color: orange;
+        border-color: orange;
+        outline: none;
+    }
+
+</style>
+
+<div id='top-buttons' class="row" style="width: 1265px; margin: 0;">
+
+    <button class="j_button j_relocate_button pull-left"
+            style="display: flex; justify-content: space-around; align-items: center;
+            font-size: 24px; margin-left: 15px;"
+            onclick="location.href='http://www.joinourstory.com/workshop_connect';">
+        <i class="fa fa-video-camera fa-fw"></i>
+        COMMUNITY ROOM
+    </button>
+
+    {% inbox_count as my_var %}
+    {% if my_var > 0 %}
+        <div class="pull-right" style="
+             display: flex; justify-content: flex-end; align-items: center;
+             position: relative; left: -8px; padding: 9px 10px;
+             color: white; font-size: 16pt; font-weight: bold; background-color: red;">
+            {{ my_var }}
+        </div>
+    {% endif %}
+
+    <button class="j_button j_relocate_button pull-right"
+            style="margin-left: 15px; width: 285px;"
+            onclick="location.href='{% url "josmessages:messages_redirect" %}';">
+        <i class="fa fa-heart fa-fw"></i>
+        FRIENDS / MESSAGES
+    </button>
+
+
+
+    <button class="j_button j_relocate_button pull-right" style=" "
+            onclick="location.href='{% url "profile" request.user.id %}';">
+        <i class="fa fa-user fa-fw"></i>
+        MY PROFILE / STORIES
+        {#<div style="display: flex; justify-content: space-between; align-items: center;#}
+        {#     font-size: 24px;">#}
+        {#    <img class=" " style="width: 50px; height: 50px;"#}
+        {#         src="{% if user.JOSProfile.profile_image_id_str != "noimage1" %}#}
+        {#                  https://res-4.cloudinary.com/desg88u7l/image/upload/{{ user.JOSProfile.profile_image_id_str }}#}
+        {#              {% else %}#}
+        {#                  /static/img/peeky-102216.png#}
+        {#              {% endif %}">#}
+        {##}
+        {#    <div class=" " style="margin-left: 15px;"></div>#}
+        {#</div>#}
+    </button>
+{#<button class="j_button j_relocate_button pull-right"#}
+{#        style="margin: 0 0 0 12px;"#}
+{#        onclick="location.href='{% url "josmembers:josmembers_list" %}';">#}
+{#    <i class="fa fa-users fa-fw"></i>#}
+{#    COMMUNITY#}
+{#</button>#}
+
+
+</div>
+
+<div class="row" style="width: 1280px;">
+    <div class="col-xs-10" style=" ">
+
+        <div class="row text-center" style="margin: 45px 0 0 0;">
+            <span class="josinstructions" style="font-size: 36pt; font-weight: bold;">Better Storytelling</span>
+        </div>
+
+        <div id='better-storytelling' class="row text-center" style="margin: 30px 0 0 0;">
+
+            {% for week in weeks %}
+
+                <div id="week-box"
+                     class="row"
+                     style="
+                        font-size: 18pt;
+                        margin: 0;
+                        padding: 20px 0;
+                        border-bottom: 1px solid rgb(209,209,209);
+                        height: 100px;
+                        ">
+
+{#                    <div class="col-xs-2" style="margin: 0 0 0 -30px;">#}
+{#                        <img src="{{ STATIC_URL }}/img/ModIcon{{ week.icon_name }}.png"#}
+{#                             style="height: 60px; width: 60px;">#}
+{#                    </div>#}
+
+                    <div class="col-xs-5 col-xs-offset-1 homehead text-left" style="padding: 5px 0 0 0; margin: 0 25px 0 120px;">
+                        {{ week.week_title }}:
+                    </div>
+
+                    <a class="part-click col-xs-2 homehead text-center"
+                       href="{% url "joscourses:course_week" %}/{{ week.week_no }}/1/9/1">
+                        I
+                    </a>
+
+                    <a class="part-click col-xs-2 homehead text-center"
+                       style="margin-left: 30px;"
+                       href="{% url "joscourses:course_week" %}/{{ week.week_no }}/2/9/1">
+                        II
+                    </a>
+                </div>
+
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div class="col-xs-2" style="margin: 40px 0 0 0;">
+
+        {% include 'josprojects/../jos_includes/library_include.html' %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+

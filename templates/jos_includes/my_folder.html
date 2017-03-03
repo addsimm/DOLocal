@@ -1,0 +1,377 @@
+
+<style>
+
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .5);
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+    }
+
+    li.active .jos_tab_active {
+        background-color: rgb(255, 255, 224) !important;
+        border: 3px solid rgb(112, 154, 109) !important;
+        border-bottom-color: rgb(255, 255, 224) !important;
+        color: rgb(112, 154, 109) !important;
+        font-weight: bold;
+        top: 3px !important;
+    }
+
+    .tab-pane {
+        left: 50px;
+        margin-top: 20px;
+        padding: 20px;
+        position: fixed;
+        top: 50px;
+        height: 465px;
+        width: 1280px;
+        z-index: 1005;
+    }
+
+    #folder_nav_tabs .j_relocate_button, #folder_nav_tabs .j_relocate_button:visited {
+        margin-left: 15px;
+        position: relative;
+        top: 5px;
+        width: 175px;
+        border-radius: 0;
+    }
+
+    #folder_nav_tabs .j_relocate_button:hover {
+        background-color: rgb(255, 255, 224) !important;
+    }
+
+    #folder_triangle {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+
+    .help_up_triangle {
+
+        border-width: 0 54px 18px 54px;
+        border-color: transparent transparent #f0ad4e transparent;
+    }
+
+    .help_down_triangle {
+        border-width: 18px 54px 0 54px;
+        border-color: #5bc0de transparent transparent transparent;
+    }
+
+</style>
+
+<!-- Session debug -->
+<!--div id='session_debug' class='row' style="position: fixed; top: 50px; left: 1280px; opacity: .9; padding: 15px;
+     color: blue; font-size: 18pt; line-height: 1.5; background-color: lightgrey;  z-index: 1001;">
+    <div class="col-xs-7">
+        wheel_position:<br>
+        uc_note: <br>
+        editor_status:<br>
+        active tab: <br>
+        help pos: <br>
+        help item no: <br>
+    </div>
+    <div class="col-xs-4" style="color: red;">
+        {{ request.session.wheel_position }}<br>
+        {{ user_created_note }}<br>
+        {{ request.session.editor_status }}<br>
+
+        {{ request.session.active_tab }}<br>
+        {{ request.session.help_position }}<br>
+        {{ request.session.help_item_no }}<br>
+    </div>
+</div -->
+
+<div id="folder_main_screen" style="background-color: rgba(255, 255, 255, .7); display: none;
+     position: fixed; top: 0; left: 0; height: 560px; width: 1280px;
+     padding: 0; z-index: 1000;">
+
+    <div id="folder_inner" style="position: fixed; top: 0; left: 50px;
+         height: 550px;  width: 1180px; background-color: rgb(255, 255, 224);
+         outline: 3px solid rgb(112, 154, 109); z-index: 1005;">
+
+        <ul id="folder_nav_tabs" class="nav nav-tabs" style="position: fixed; top: 0;
+            left: 50px; width: 1183px; padding-top: 25px; background-color: rgba(255, 255, 255, .7);
+            border-bottom: 3px solid rgb(112, 154, 109);">
+
+            <li><button id='reminders_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#reminders">REMINDERS</button></li>
+
+            <li><button id='how_do_i_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#how_do_i">HOW DO I?</button></li>
+
+            <li><button id='my_notes_btn' class="j_button j_relocate_button"
+                        data-toggle="tab" href="#my_notes">MY NOTES</button></li></ul>
+    </div>
+</div>
+
+<div class="tab-content">
+
+    <div id="reminders" class="tab-pane fade">REMINDERS HERE</div>
+
+    <div id="how_do_i" class="tab-pane fade josinstructions">
+        <div id="main_help">
+
+            <div style="position: absolute; top: 30px; left: 30px;
+            display: flex; flex-direction: column; justify-content: space-around; align-items: flex-start;
+            background-color: rgb(255, 255, 224);">
+
+                <div class="josinstructions" style="display: flex; justify-content: space-around; align-items: center;">
+                    To search:
+
+                    <input id="help_search_text" style="margin-left: 15px; padding: 5px; width: 330px;"
+                           type="text" placeholder="start typing here">
+                    <button class="j_button j_action_button" style="font-size: 14pt; margin-left: 15px; "
+                            onclick="window.location.reload();">
+                        <i class="fa fa-refresh fa-fw"></i>
+                        START OVER
+                    </button>
+                </div>
+
+                <div id="help_search_results" class="row text-left" style="height: 340px; width: 850px;
+                     margin: 15px 0 0 30px; padding: 15px 30px;
+                     outline: 2px solid rgb(65,45,120); overflow-x: hidden; overflow-y: scroll;">
+
+                    {% if help_search_text %}
+                        <div class="josinstructions" style=" margin-top: 15px; color: #5bc0de;">
+                            Searching for "{{ help_search_text }}" - Found {{ help_items.count }} items:<br>
+                        </div>
+                    {% endif %}
+
+                    {% for help in help_items %}
+                        <button class="j_button j_relocate_button" style="margin-bottom: 25px;"
+                                onclick="showHelpItem('{{ help.id }}');">
+                            <i class="fa fa-question fa-fw"></i>
+                            {{ help.title | upper }}
+                        </button><br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div id='help_item_content'
+             style="position: absolute; top: 75px; left: 110px;">
+        </div>
+
+        <button id='help_done_btn' class='j_button j_back_button' style='position: absolute; top: 50px;
+                left: 825px;' onclick='showHelpItem();'>
+            <i class="fa fa-arrow-left fa-fw"></i>DONE
+        </button>
+    </div>
+
+    <div id="my_notes" class="tab-pane fade">
+
+        <button id="notes_edit_btn"
+           class="j_button_small j_info_button"
+           style="position: fixed; top: 105px; left: 1015px;"
+           onclick="josCKEdit('notes'); session_data_update('editor_status');"
+           >
+            <i class="fa fa-pencil fa-fw"></i>
+            EDIT NOTES
+        </button>
+
+        <button id="notes_cancel_btn"
+           class="j_button_small j_discard_button"
+           style="position: fixed; top: 160px; left: 1015px; display: none;"
+           onclick="josCKDestroy('notes'); session_data_update('editor_status');"
+           data-toggle="tooltip"
+           data-placement="auto"
+           title="Warning: does not save changes!"
+        >
+            <i class="fa fa-trash fa-fw"></i>
+            DISCARD
+        </button>
+
+        <div style="position: relative; top: 15px; width: 920px; height: 415px; left: 0;">
+
+            <!-- This div holds editor. -->
+            <div id="notes_editor_container" style="width: 920px;"></div>
+
+
+            <!-- This div displays contents. -->
+            <div id="notes_original_content" class="edit_border"
+                 style="padding: 20px; width: 920px; height: 415px; overflow-x: hidden; overflow-y: scroll;">
+                {{ user_created_note | safe }}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Drawer javascript -->
+<script>
+
+    $(document).ready(function () {
+
+        // Init(section, toolbar, url and original content)
+        $('#help_search_text').keyup(function () {
+
+            //// AJAX help search function
+            var MILLS_TO_IGNORE_SEARCH = 100;
+            var SUBMIT_URL = "{% url 'search_help' %}";
+            // Get, trim search text
+            var searchText = $('#help_search_text').val().trim().toLowerCase();
+            console.log('searchText: ' + searchText);
+
+            if (searchText.length < 3) {
+                //Too short
+                $('#help_search_results').html("<i>Keep typing ...</i>");
+
+            } else {
+                console.log("SUBMIT_URL=" + SUBMIT_URL + "; help_search_text=" + searchText);
+                // Execute the search.
+                var processServerResponse = function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
+
+                    $('#help_search_results').html(serverResponse_data);
+                };
+
+                $.ajax({
+                    type: "GET",
+                    url: SUBMIT_URL,
+                    data: {
+                        'help_search_text': searchText
+                    },
+                    dataType: 'html',
+                    success: processServerResponse,
+                    fail: function () {
+                        console.log("Fail");
+                    }
+                });
+            }
+        });
+
+
+        // arrange things after load according to session status
+        hb = document.getElementById('folder_button');
+        folder_triangle = document.getElementById('folder_triangle');
+        if ('{{ request.session.help_position }}' === 'down') {
+
+            // folder down
+            $(hb).html("<i class='fa fa-folder-open fa-fw' style='margin-right: 5px;'></i>CLOSE").removeClass("isopen j_info_button").addClass("isclosed  j_back_button").attr("data-original-title", "Saves changes");
+            $(folder_triangle).removeClass('help_down_triangle').addClass('help_up_triangle');
+
+            $("body").addClass('moveDown');
+            $("#folder_main_screen").slideDown("slow");
+
+            active_tab = '#{{ request.session.active_tab }}';
+            $(active_tab).tab('show');
+
+            showHelpItem('{{ request.session.help_item_no }}');
+
+            if ('{{ request.session.editor_status }}' === 'active') {
+                josCKEdit('notes');
+            }
+
+        } else {
+
+            // folder up
+            $(hb).html("<i class='fa fa-folder fa-fw' style='margin-right: 5px;'></i>FOLDER").removeClass("isclosed  j_back_button").addClass("isopen j_info_button").attr("data-original-title", "To do - How do I? - My notes");
+            $(folder_triangle).removeClass('help_up_triangle').addClass('help_down_triangle');
+            $("body").removeClass('moveDown');
+            $("#folder_main_screen").slideUp("slow");
+        }
+    });
+
+    function session_data_update(element) {
+        console.log('updating: ' + element);
+        var data = {};
+
+        if (Number.isInteger(parseInt(element))) {
+            data = {"help_item_no": element};
+        } else {
+            switch (element) {
+                case 'help_position':
+                    var hlpBtn = document.getElementById('folder_button');
+                    var help_pos = 'up';
+                    if ($(hlpBtn).hasClass("isopen")) {
+                        help_pos = 'down';
+                    }
+                    data = {"help_position": help_pos};
+                    break;
+
+                case 'active_tab':
+                        console.log('active tab');
+                    var active_tab = $('.jos_tab_active').attr('id');
+                    data = {"active_tab": active_tab};
+                    break;
+
+                case 'none':
+                    data = {"help_item_no": 'none'};
+                    break;
+
+                case 'editor_status':
+                    var status = 'inactive';
+                    if (editors['notes'].section_editor) {
+                        status = 'active'
+                    }
+                    data = {"editor_status": status};
+                    break;
+                default:
+                    data = {};
+                    break;
+            }
+        }
+
+        // console.log('session_data_update; data: ' + JSON.stringify(data));
+
+        if (data !== {}) {
+            $.ajax({
+                type: "POST",
+                url: '/ajax_session_update/',
+                data: data,
+                success: function () {
+                    if (element === 'help_position' && '{{ request.session.help_position }}' !== help_pos) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
+
+    $('.nav-tabs').on({
+        'show.bs.tab': function (event) {
+            $('button').removeClass('jos_tab_active');
+            $(event.target).addClass('jos_tab_active');
+            session_data_update('active_tab');
+        }
+    });
+
+    function showHelpItem(idno) {
+        idno = typeof idno !== 'undefined' ? idno : 'none';
+        console.log('called help item: ' + idno);
+
+        if ($.isNumeric(idno)) {
+
+            $('#main_help').hide();
+            $('#help_item_box').show();
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'search_help' %}",
+                data: {
+                    'help_search_text': idno
+                },
+                dataType: 'html',
+                success: function (serverResponse_data) { //  textStatus_ignored, jqXHR_ignored
+                    $('#help_item_content').html(serverResponse_data);
+                    $('#help_done_btn').show();
+                }
+            });
+
+        } else {
+            $('#main_help').show();
+            $('#help_item_box').hide();
+            $('#help_done_btn').hide();
+            $('#help_item_content').html(' ');
+            idno = 'none';
+        }
+
+        session_data_update(idno);
+    }
+
+</script>

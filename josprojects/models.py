@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from mezzanine.core.models import TimeStamped
+from mezzanine.core.models import TimeStamped, RichTextField
+from taggit.managers import TaggableManager
 
 from josmessages.models import JOSMessageThread
 
@@ -24,7 +25,7 @@ class CKRichTextHolder(TimeStamped, models.Model):
         return jos_name
 
 
-class JOSStory(TimeStamped, models.Model):
+class JOSStory1(TimeStamped, models.Model):
     class Meta:
         verbose_name = 'Story'
         verbose_name_plural = 'Stories'
@@ -33,10 +34,20 @@ class JOSStory(TimeStamped, models.Model):
     author = models.ForeignKey(User)
     title = models.TextField(default="Untitled")
     content = models.TextField(default="Coming soon")
-    publish = models.BooleanField(default=False)
+    publish_permission = models.IntegerField(default=1)
+    tags = TaggableManager()
 
     def get_jos_name(author):
         first_name = author.get_short_name()[:9]
         last_initial = author.user.last_name[:1].upper()
         jos_name = first_name + " " + last_initial + "."
         return jos_name
+
+
+class JOSHelpItem(models.Model):
+    class Meta:
+        verbose_name = 'Help'
+        verbose_name_plural = 'Help Items'
+
+    title = models.CharField(max_length=255, default="missing")
+    content = RichTextField(default="missing")
